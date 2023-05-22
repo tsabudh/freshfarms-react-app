@@ -1,0 +1,33 @@
+.ticket {
+  display: flex;
+  flex-basis: 2rem;
+  justify-content: space-between;
+  border: 1px solid blue;
+
+  & .date-and-time {
+    border: 1px solid red;
+
+    & .time {
+      font-size: 2.5rem;
+      font-weight: 600;
+    }
+    & .date {
+    }
+  }
+
+  & .product-and-customer {
+    & .product {
+      font-size: 2.5rem;
+      font-weight: 600;
+    }
+  }
+  & .quantity-and-sale {
+    display: flex;
+    & .quantity {
+    }
+    & .sale {
+      font-size: 2.5rem;
+      font-weight: 600;
+    }
+  }
+}

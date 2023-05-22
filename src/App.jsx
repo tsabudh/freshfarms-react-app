@@ -7,14 +7,14 @@ import './App.css';
 
 function App() {
 
+
+
+  return (
   <BrowserRouter>
   <Routes>
     <Route path="/dashboard" element={<Dashboard />}/>
   </Routes>
-  </BrowserRouter>
-
-
-  return (<div>Hi</div> )
+  </BrowserRouter> )
 }
 
 export default App
