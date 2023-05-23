@@ -32,6 +32,7 @@ const Ticket = (props) => {
     props.items.map((saleItem, saleItemIndex, items) => {
         totalCost += saleItem.priceThen;
         
+        
     });
     return (
         <div>
