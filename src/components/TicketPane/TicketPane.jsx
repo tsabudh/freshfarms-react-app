@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import Ticket from '../ticket/Ticket';
 
-const fetchTransactions = () => {
+const transactionPromiseFunc = () => {
     return new Promise(function (resolve, reject) {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState === XMLHttpRequest.DONE) {
-                let transactions = JSON.parse(xhttp.responseText);
-                return resolve(transactions);
+                let responseReceived = JSON.parse(xhttp.responseText);
+                resolve(responseReceived.data);
             }
         };
         xhttp.open('GET', 'http://127.0.0.1:3000/transactions/');
@@ -22,21 +22,34 @@ const fetchTransactions = () => {
 };
 
 const TicketPane = () => {
-    const [transactions, setTransactions] = useState({});
+    const [transactions, setTransactions] = useState([]);
     console.log('Ticket Pane');
-    // console.log(transactions);
 
     useEffect(() => {
-        let x = async () => {
-            let transactionsReceived = await fetchTransactions();
-            console.log('tkskfdjk');
-            console.log(transactionsReceived);
-            return transactionsReceived;
+        let asyncWrapper = async () => {
+            try {
+                let result = await transactionPromiseFunc();
+                setTransactions(result);
+            } catch (error) {
+                console.log(error);
+            }
         };
-        setTransactions(x);
+        asyncWrapper();
     }, []);
+
     return (
         <div>
+            {transactions.map((transaction, index, transactionArray) => {
+                return (
+                    <Ticket
+                        key={transaction._id}
+                        serialNumber={index}
+                        items={transaction.items}
+                        timeStamp={transaction.issuedTime}
+                        customer={transaction.customer}
+                    />
+                );
+            })}
             <Ticket />
         </div>
     );
