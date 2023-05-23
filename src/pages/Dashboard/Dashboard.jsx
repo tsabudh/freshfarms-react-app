@@ -1,4 +1,4 @@
-import Ticket from "../../components/Ticket/Ticket";
+import TicketPane from "../../components/TicketPane/TicketPane";
 
 const Dashboard = () => {
 
@@ -6,7 +6,7 @@ const Dashboard = () => {
         <div className="dashboard">
             <div className="sidebar"></div>
             <div className="window">
-                <Ticket/>
+                <TicketPane/>
             </div>
         </div>
     )
