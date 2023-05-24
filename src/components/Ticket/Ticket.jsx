@@ -1,4 +1,4 @@
-import React from 'react';
+import SalesTable from './SalesTable/SalesTable';
 
 import styles from './Ticket.module.scss';
 
@@ -29,22 +29,33 @@ const Ticket = (props) => {
     let totalCost = 0;
     let productList = [];
 
+    let customer = props.customer[0];
+    let transactionTime = new Date(props.timeStamp).toLocaleTimeString();
+    let transactionDate = new Date(props.timeStamp).toLocaleDateString(
+        undefined,
+        {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+        }
+    );
+
     props.items.map((saleItem, saleItemIndex, items) => {
-        totalCost += saleItem.priceThen;
-        
-        
+        productList.push(saleItem.productName);
     });
     return (
         <div>
             <div className={styles.ticket}>
                 <div className={styles['date-and-time']}>
-                    <div className={styles.time}>9:00</div>
-                    <div className={styles.date}>2023/05/22</div>
+                    <div className={styles.time}>{transactionTime}</div>
+                    <div className={styles.date}>{transactionDate}</div>
                 </div>
                 <div className={styles['transaction-details']}>
-                    <div className={styles.customer}>Balaram Subedi</div>
-                    <SalesTable />
+                    <div className={styles.customer}>{customer.name}</div>
+                    {/* <SalesTable items={props.items}/> */}
                 </div>
+                <div>{props.cost}</div>
 
                 <div className="edit">Edit</div>
             </div>

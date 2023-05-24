@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Ticket from '../ticket/Ticket';
+import Ticket from '../Ticket/Ticket';
 
 const transactionPromiseFunc = () => {
     return new Promise(function (resolve, reject) {
@@ -40,17 +40,18 @@ const TicketPane = () => {
     return (
         <div>
             {transactions.map((transaction, index, transactionArray) => {
+                let customer = [transaction.customer];
                 return (
                     <Ticket
                         key={transaction._id}
                         serialNumber={index}
                         items={transaction.items}
                         timeStamp={transaction.issuedTime}
-                        customer={transaction.customer}
+                        customer={customer}
+                        cost={transaction.cost}
                     />
                 );
             })}
-            <Ticket />
         </div>
     );
 };

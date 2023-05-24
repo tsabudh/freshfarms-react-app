@@ -1,4 +1,3 @@
-
 import styles from '../Ticket.module.scss';
 
 const SalesRow = (props) => {
@@ -50,7 +49,5 @@ const SalesTable = () => {
         </table>
     );
 };
-
-
 
 export default SalesTable;
