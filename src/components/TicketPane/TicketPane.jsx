@@ -23,7 +23,6 @@ const transactionPromiseFunc = () => {
 
 const TicketPane = () => {
     const [transactions, setTransactions] = useState([]);
-    console.log('Ticket Pane');
 
     useEffect(() => {
         let asyncWrapper = async () => {
@@ -48,7 +47,7 @@ const TicketPane = () => {
                         items={transaction.items}
                         timeStamp={transaction.issuedTime}
                         customer={customer}
-                        cost={transaction.cost}
+                        totalCost={transaction.cost}
                     />
                 );
             })}
