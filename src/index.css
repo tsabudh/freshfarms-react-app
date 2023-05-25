@@ -1,7 +1,10 @@
-:root{
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,700;1,100;1,300;1,400&display=swap');
+
+:root {
     font-size: 10px;
     box-sizing: border-box;
 }
-body{
+body {
     font-size: 1.6rem;
+    font-family: "Roboto";
 }

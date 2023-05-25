@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import styles from '../Ticket.module.scss';
+import styles from './SalesTable.module.scss';
 
 const SalesRow = (props) => {
     return (
@@ -21,7 +21,7 @@ const SalesTable = (props) => {
     return (
         <React.Fragment>
             {!isExpanded && (
-                <ul>
+                <ul className={styles['product-list']}>
                     {items.map((item) => {
                         return (
                             <li key={item.id}>
