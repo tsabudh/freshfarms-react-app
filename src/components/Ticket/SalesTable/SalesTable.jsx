@@ -6,10 +6,10 @@ const SalesRow = (props) => {
     return (
         <tr>
             <td>{props.serialNumber}</td>
-            <td>{props.product}</td>
-            <td>{props.price}</td>
+            <td className={styles.product}>{props.product}</td>
+            <td>{props.priceThen}</td>
             <td>{props.quantity}</td>
-            <td>{props.cost}</td>
+            <td>{props.totalPrice}</td>
         </tr>
     );
 };
@@ -30,7 +30,7 @@ const SalesTable = (props) => {
                                 </a>
                             </li>
                         );
-                    })}{' '}
+                    })}
                 </ul>
             )}
 
@@ -39,10 +39,10 @@ const SalesTable = (props) => {
                     <thead>
                         <tr>
                             <th>S.N</th>
-                            <th>Product</th>
+                            <th >Product</th>
                             <th>Price</th>
                             <th>Quantity</th>
-                            <th>Cost</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,9 +52,9 @@ const SalesTable = (props) => {
                                     key={item._id}
                                     serialNumber={index + 1}
                                     product={item.productName}
-                                    price={item.price}
+                                    priceThen={item.priceThen}
                                     quantity={item.quantity}
-                                    cost={item.priceThen}
+                                    totalPrice={item.priceThen * item.quantity}
                                 />
                             );
                         })}
@@ -64,7 +64,7 @@ const SalesTable = (props) => {
                             <td></td>
                             <td>Total</td>
                             <td>{items.length}</td>
-                            <td>{props.cost}</td>
+                            <td>{props.transactionAmount}</td>
                         </tr>
                     </tbody>
                 </table>

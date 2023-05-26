@@ -18,7 +18,7 @@
 }
 
 .sales-table {
-    flex-grow: 2;
+    // flex-grow: 2;
     flex-basis: 30rem;
 
     &,
@@ -27,5 +27,15 @@
     th {
         border: 1px solid burlywood;
         border-collapse: collapse;
+        text-align: center;
     }
+& th{
+    font-weight: 500;
+
+}
+    & .product{
+        text-transform: capitalize;
+        text-align: left;
+    }
+
 }

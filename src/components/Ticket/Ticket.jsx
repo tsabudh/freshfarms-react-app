@@ -6,7 +6,6 @@ import styles from './Ticket.module.scss';
 
 const Ticket = (props) => {
     const [isExpanded, setIsExpanded] = useState(false);
-    let tickets = [];
 
     const ticketClickHandler = () => {
         setIsExpanded(!isExpanded);
@@ -46,11 +45,12 @@ const Ticket = (props) => {
                 <SalesTable
                     items={props.items}
                     isExpanded={isExpanded}
-                    cost={props.totalCost}
+                    transactionAmount={props.transactionAmount}
+                    // transactionItemsQuantity={props.transactionItemsQuantity}
                 />
             </div>
             {isExpanded ? null : (
-                <div className={styles.cost}>Rs. {props.totalCost}</div>
+                <div className={styles.cost}>Rs. {props.transactionAmount}</div>
             )}
 
             {/* <div className="edit">Edit</div> */}

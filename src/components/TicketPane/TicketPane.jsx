@@ -47,7 +47,8 @@ const TicketPane = () => {
                         items={transaction.items}
                         timeStamp={transaction.issuedTime}
                         customer={customer}
-                        totalCost={transaction.cost}
+                        transactionAmount={transaction.transactionAmount}
+                        // transactionItemsQuantity={transaction.transactionItemsQuantity}
                     />
                 );
             })}
