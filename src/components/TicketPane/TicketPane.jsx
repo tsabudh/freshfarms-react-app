@@ -10,7 +10,38 @@ const transactionPromiseFunc = () => {
                 resolve(responseReceived.data);
             }
         };
-        xhttp.open('GET', 'http://127.0.0.1:3000/transactions/');
+
+        let filterObject = {
+            transactionAmountRange: {
+                from: 351,
+                to: 351,
+            },
+            transactionItemsQuantity: {
+                from: 3,
+                to: 5,
+            },
+
+            itemsPerTicketRange: {
+                from: 0,
+                to: 3,
+            },
+
+            productArray: ['paneer'],
+
+            dateRange: {
+                from: new Date('2023-05-23T15:24:13.295+00:00'),
+                to: new Date('2023-05-26T15:24:13.295+00:00'),
+            },
+            customerArray: ['Abhishek', 'sabudh'],
+        };
+
+        const filterString = JSON.stringify(filterObject);
+
+        const filterParam = btoa(filterString);
+        xhttp.open(
+            'GET',
+            `http://127.0.0.1:3000/transactions/?filter=${filterParam}`
+        );
 
         //* Hard coded authorization for Sachin Paudel(admin)
         xhttp.setRequestHeader(
