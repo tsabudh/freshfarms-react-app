@@ -1,0 +1,20 @@
+.sort-filter-tab {
+    display: flex;
+    justify-content: space-around;
+
+    & .sort ul,
+    & .filter ul {
+        display: flex;
+        list-style-type: none;
+        & li {
+            margin: 0.5rem;
+        }
+    }
+
+    & .sort,
+    & .filter {
+    }
+}
+
+.added-filters {
+}

@@ -24,7 +24,7 @@ const SalesTable = (props) => {
                 <ul className={styles['product-list']}>
                     {items.map((item) => {
                         return (
-                            <li key={item.id}>
+                            <li key={item._id}>
                                 <a className={styles.product}>
                                     {item.productName}
                                 </a>
