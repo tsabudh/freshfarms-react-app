@@ -12,10 +12,10 @@ function partial(func /*, 0..n args */) {
 }
 
 const initialFilterState = {
-    dateRange: { isOpened: false, from: '', to: '' },
+    dateRange: { isOpened: false, from: '', to: Date.now() },
     products: { isOpened: false, set: new Set() },
     customers: { isOpened: false, set: new Set() },
-    quantity: { isOpened: false, from: 0, to: 10 },
+    quantity: { isOpened: false, from: 1, to: 10 },
     variety: { isOpened: false, from: 0, to: 10 },
 };
 
@@ -29,38 +29,65 @@ const filterReducer = (filterState, action) => {
 
         if (action.update === 'dateRangeTo')
             newFilterState.dateRange.to = action.to;
+        if (action.update === 'remove') {
+            newFilterState.dateRange.isOpened = false;
+        }
 
-        console.log(newFilterState);
         return newFilterState;
     }
     if (action.type === 'products') {
         newFilterState.products.isOpened = true;
 
         if (action.update === 'productSet') {
-            newFilterState.products.set.add(action.newProduct);
-            console.log('newFilterState');
+            if (action.newProduct) {
+                newFilterState.products.set.add(action.newProduct);
+            }
         }
-
+        if (action.update === 'remove') {
+            newFilterState.products.isOpened = false;
+        }
         return newFilterState;
     }
     if (action.type === 'customers') {
         newFilterState.customers.isOpened = true;
 
         if (action.update == 'customerSet') {
-            newFilterState.customers.set.add(action.newCustomer);
+            if (action.newCustomer) {
+                newFilterState.customers.set.add(action.newCustomer);
+            }
+        }
+        if (action.update === 'remove') {
+            newFilterState.customers.isOpened = false;
         }
         return newFilterState;
     }
     if (action.type === 'quantity') {
         newFilterState.quantity.isOpened = true;
-        newFilterState.quantity.from = 0;
-        newFilterState.quantity.to = 10;
+
+        if (action.update === 'quantityRangeFrom') {
+            newFilterState.quantity.from = action.from;
+        }
+        if (action.update === 'quantityRangeTo') {
+            newFilterState.quantity.to = action.to;
+        }
+        if (action.update === 'remove') {
+            newFilterState.quantity.isOpened = false;
+        }
+
         return newFilterState;
     }
     if (action.type === 'variety') {
         newFilterState.variety.isOpened = true;
-        newFilterState.variety.from = 0;
-        newFilterState.variety.to = 10;
+        console.log(action.to);
+        if (action.update === 'varietyRangeFrom') {
+            newFilterState.variety.from = action.from;
+        }
+        if (action.update === 'varietyRangeTo') {
+            newFilterState.variety.to = action.to;
+        }
+        if (action.update === 'remove') {
+            newFilterState.variety.isOpened = false;
+        }
         return newFilterState;
     }
 };
@@ -80,11 +107,16 @@ const SortAndFilter = (props) => {
                 update: 'dateRangeFrom',
                 from: e.target.value,
             });
-        } else if (method == 'dateRangeTo') {
+        } else if (method === 'dateRangeTo') {
             dispatchFilter({
                 type: 'dateRange',
                 update: 'dateRangeTo',
                 to: e.target.value,
+            });
+        } else if (method === 'remove') {
+            dispatchFilter({
+                type: 'dateRange',
+                update: 'remove',
             });
         } else {
             dispatchFilter({
@@ -101,6 +133,11 @@ const SortAndFilter = (props) => {
                 update: 'productSet',
                 newProduct: newProduct,
             });
+        } else if (method === 'remove') {
+            dispatchFilter({
+                type: 'products',
+                update: 'remove',
+            });
         } else {
             dispatchFilter({
                 type: 'products',
@@ -115,25 +152,64 @@ const SortAndFilter = (props) => {
                 update: 'customerSet',
                 newCustomer: newCustomer,
             });
+        } else if (method === 'remove') {
+            dispatchFilter({
+                type: 'customers',
+                update: 'remove',
+            });
+        } else {
+            dispatchFilter({
+                type: 'customers',
+            });
         }
-        dispatchFilter({
-            type: 'customers',
-            customerArray: ['sabudh', 'Abhishek'],
-        });
     };
-    const handleQuantity = () => {
-        dispatchFilter({
-            type: 'quantity',
-            from: 0,
-            to: 5,
-        });
+    const handleQuantity = (method, e) => {
+        if (method == 'quantityRangeFrom') {
+            dispatchFilter({
+                type: 'quantity',
+                update: 'quantityRangeFrom',
+                from: e.target.value,
+            });
+        } else if (method == 'quantityRangeTo') {
+            dispatchFilter({
+                type: 'quantity',
+                update: 'quantityRangeTo',
+                to: e.target.value,
+            });
+        } else if (method === 'remove') {
+            dispatchFilter({
+                type: 'quantity',
+                update: 'remove',
+            });
+        } else {
+            dispatchFilter({
+                type: 'quantity',
+            });
+        }
     };
-    const handleVariety = () => {
-        dispatchFilter({
-            type: 'variety',
-            from: 0,
-            to: 4,
-        });
+    const handleVariety = (method, e) => {
+        if (method === 'varietyRangeFrom') {
+            dispatchFilter({
+                type: 'variety',
+                update: 'varietyRangeFrom',
+                from: e.target.value,
+            });
+        } else if (method === 'varietyRangeTo') {
+            dispatchFilter({
+                type: 'variety',
+                update: 'varietyRangeTo',
+                to: e.target.value,
+            });
+        } else if (method === 'remove') {
+            dispatchFilter({
+                type: 'variety',
+                update: 'remove',
+            });
+        } else {
+            dispatchFilter({
+                type: 'variety',
+            });
+        }
     };
 
     //* -------------------------------------------
@@ -197,7 +273,9 @@ const SortAndFilter = (props) => {
                         >
                             Update
                         </button>
-                        <button>Delete</button>
+                        <button onClick={() => handleDateRange('remove')}>
+                            Remove
+                        </button>
                     </div>
                 )}
 
@@ -225,6 +303,9 @@ const SortAndFilter = (props) => {
                         >
                             Add
                         </button>
+                        <button onClick={() => handleProducts('remove')}>
+                            Remove
+                        </button>
                     </div>
                 )}
 
@@ -251,30 +332,59 @@ const SortAndFilter = (props) => {
                         >
                             Add
                         </button>
+                        <button onClick={() => handleCustomers('remove')}>
+                            Remove
+                        </button>
                     </div>
                 )}
                 {filterState.quantity.isOpened && (
                     <div className={styles['filter-configuration']}>
+                        Quantity
                         <label htmlFor="quantityRangeFrom">From</label>
-                        <input type="number" id="quantityRangeFrom" />
-
+                        <input
+                            type="number"
+                            id="quantityRangeFrom"
+                            defaultValue={1}
+                            onChange={(e) =>
+                                handleQuantity('quantityRangeFrom', e)
+                            }
+                        />
                         <label htmlFor="quantityRangeTo">To</label>
-                        <input type="number" id="quantityRangeTo" />
-
-                        <button>Update</button>
-                        <button>Delete</button>
+                        <input
+                            type="number"
+                            id="quantityRangeTo"
+                            defaultValue={10}
+                            onChange={(e) =>
+                                handleQuantity('quantityRangeTo', e)
+                            }
+                        />
+                        <button onClick={() => handleQuantity('remove')}>
+                            Remove
+                        </button>
                     </div>
                 )}
                 {filterState.variety.isOpened && (
                     <div>
+                        Variety
                         <label htmlFor="varietyRangeFrom">From</label>
-                        <input type="number" id="varietyRangeFrom" />
-
+                        <input
+                            type="number"
+                            id="varietyRangeFrom"
+                            defaultValue={1}
+                            onChange={(e) =>
+                                handleVariety('varietyRangeFrom', e)
+                            }
+                        />
                         <label htmlFor="varietyRangeTo">To</label>
-                        <input type="number" id="varietyRangeTo" />
-
-                        <button>Update</button>
-                        <button>Delete</button>
+                        <input
+                            type="number"
+                            id="varietyRangeTo"
+                            defaultValue={10}
+                            onChange={(e) => handleVariety('varietyRangeTo', e)}
+                        />
+                        <button onClick={() => handleVariety('remove')}>
+                            Remove
+                        </button>
                     </div>
                 )}
                 <div>
@@ -299,10 +409,13 @@ const applyFilter = (filterState, setFilterObject) => {
     if (filterState.dateRange.isOpened && filterState.dateRange.from) {
         filterObject.dateRange = {};
         filterObject.dateRange.from = new Date(filterState.dateRange.from);
-        console.log('heheheh');
+
         console.log(filterState.dateRange.to);
         filterObject.dateRange.to = new Date(filterState.dateRange.to);
-        if(!filterObject.dateRange.to)filterObject.dateRange.to = new Date();
+
+        if (filterObject.dateRange.to == 'Invalid Date') {
+            filterObject.dateRange.to = new Date();
+        }
         console.log(filterState.dateRange.to);
     }
 
@@ -312,6 +425,20 @@ const applyFilter = (filterState, setFilterObject) => {
 
     if (filterState.customers.isOpened && filterState.customers.set.size != 0) {
         filterObject.customerArray = Array.from(filterState.customers.set);
+    }
+
+    if (filterState.quantity.isOpened) {
+        filterObject.quantityPerTicketRange = {
+            from: parseInt(filterState.quantity.from),
+            to: parseInt(filterState.quantity.to),
+        };
+    }
+    if (filterState.variety.isOpened) {
+        console.log(filterState.variety.to);
+        filterObject.itemsVariety = {
+            from: parseInt(filterState.variety.from),
+            to: parseInt(filterState.variety.to),
+        };
     }
     console.log(filterObject);
     setFilterObject(filterObject);
