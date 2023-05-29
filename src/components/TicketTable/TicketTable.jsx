@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Ticket from '../Ticket/Ticket';
 
-const transactionPromiseFunc = () => {
+const transactionPromiseFunc = (filterObject) => {
     return new Promise(function (resolve, reject) {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = () => {
@@ -9,27 +9,6 @@ const transactionPromiseFunc = () => {
                 let responseReceived = JSON.parse(xhttp.responseText);
                 resolve(responseReceived.data);
             }
-        };
-
-        let filterObject = {
-            // transactionAmountRange: {
-            //     from: 351,
-            //     to: 351,
-            // },
-            // transactionItemsQuantity: {
-            //     from: 3,
-            //     to: 5,
-            // },
-            // itemsPerTicketRange: {
-            //     from: 0,
-            //     to: 3,
-            // },
-            // productArray: ['paneer'],
-            // dateRange: {
-            //     from: new Date('2023-05-23T15:24:13.295+00:00'),
-            //     to: new Date('2023-05-26T15:24:13.295+00:00'),
-            // },
-            // customerArray: ['Abhishek', 'sabudh'],
         };
 
         const filterString = JSON.stringify(filterObject);
@@ -49,20 +28,23 @@ const transactionPromiseFunc = () => {
     });
 };
 
-const TicketTable = () => {
-    const [transactions, setTransactions] = useState([]);
+const TicketTable = (props) => {
+    const { filterObject } = props;
 
+    const [transactions, setTransactions] = useState([]);
+    let asyncWrapper = async () => {
+        try {
+            console.log('running useEffect');
+            let result = await transactionPromiseFunc(filterObject);
+            setTransactions(result);
+            console.log(filterObject);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     useEffect(() => {
-        let asyncWrapper = async () => {
-            try {
-                let result = await transactionPromiseFunc();
-                setTransactions(result);
-            } catch (error) {
-                console.log(error);
-            }
-        };
         asyncWrapper();
-    }, []);
+    }, [filterObject]);
 
     return (
         <div>
