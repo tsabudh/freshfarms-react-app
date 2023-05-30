@@ -34,7 +34,7 @@ const TicketTable = (props) => {
     const [transactions, setTransactions] = useState([]);
     let asyncWrapper = async () => {
         try {
-            console.log('running useEffect');
+            console.log('Fetching Transactions...');
             let result = await transactionPromiseFunc(filterObject);
             setTransactions(result);
             console.log(filterObject);

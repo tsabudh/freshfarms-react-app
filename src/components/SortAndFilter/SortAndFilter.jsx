@@ -13,25 +13,61 @@ function partial(func /*, 0..n args */) {
 }
 
 const initialFilterState = {
-    dateRange: { isOpened: false, from: '', to: Date.now() },
-    products: { isOpened: false, set: new Set() },
-    customers: { isOpened: false, set: new Set() },
-    quantity: { isOpened: false, from: 1, to: 10 },
-    variety: { isOpened: false, from: 0, to: 10 },
+    issuedTime: {
+        isOpened: false,
+        from: '',
+        to: Date.now(),
+        isSorted: false,
+        order: undefined,
+    },
+    products: {
+        isOpened: false,
+        set: new Set(),
+        isSorted: false,
+        order: undefined,
+    },
+    customers: {
+        isOpened: false,
+        set: new Set(),
+        isSorted: false,
+        order: undefined,
+    },
+    quantity: {
+        isOpened: false,
+        from: 1,
+        to: 10,
+        isSorted: false,
+        order: undefined,
+    },
+    variety: {
+        isOpened: false,
+        from: 0,
+        to: 10,
+        isSorted: false,
+        order: undefined,
+    },
+   
 };
 
 const filterReducer = (filterState, action) => {
     const newFilterState = Object.assign({}, filterState);
-    if (action.type === 'dateRange') {
-        newFilterState.dateRange.isOpened = true;
 
-        if (action.update === 'dateRangeFrom')
-            newFilterState.dateRange.from = action.from;
+    if (action.type === 'sortBy') {
+        if (action.update === 'issuedTime') {
+            newFilterState.issuedTime = action.order;
+        }
+    }
 
-        if (action.update === 'dateRangeTo')
-            newFilterState.dateRange.to = action.to;
+    if (action.type === 'issuedTime') {
+        newFilterState.issuedTime.isOpened = true;
+
+        if (action.update === 'issuedTimeFrom')
+            newFilterState.issuedTime.from = action.from;
+
+        if (action.update === 'issuedTimeTo')
+            newFilterState.issuedTime.to = action.to;
         if (action.update === 'remove') {
-            newFilterState.dateRange.isOpened = false;
+            newFilterState.issuedTime.isOpened = false;
         }
 
         return newFilterState;
@@ -101,28 +137,39 @@ const SortAndFilter = (props) => {
         initialFilterState
     );
 
-    const handleDateRange = (method, e) => {
-        if (method == 'dateRangeFrom') {
+    const handleSortBy = (method, e) => {
+        if (method == 'issuedTime') {
+            console.log(e.target.value);
             dispatchFilter({
-                type: 'dateRange',
-                update: 'dateRangeFrom',
+                type: 'sortBy',
+                update: 'issuedTime',
+                order: e.target.value,
+            });
+        }
+    };
+
+    const handleIssuedTime = (method, e) => {
+        if (method == 'issuedTimeFrom') {
+            dispatchFilter({
+                type: 'issuedTime',
+                update: 'issuedTimeFrom',
                 from: e.target.value,
             });
-        } else if (method === 'dateRangeTo') {
+        } else if (method === 'issuedTimeTo') {
             dispatchFilter({
-                type: 'dateRange',
-                update: 'dateRangeTo',
+                type: 'issuedTime',
+                update: 'issuedTimeTo',
                 to: e.target.value,
             });
         } else if (method === 'remove') {
             console.log('handle remove');
             dispatchFilter({
-                type: 'dateRange',
+                type: 'issuedTime',
                 update: 'remove',
             });
         } else {
             dispatchFilter({
-                type: 'dateRange',
+                type: 'issuedTime',
                 isOpened: true,
             });
         }
@@ -214,23 +261,161 @@ const SortAndFilter = (props) => {
         }
     };
 
-    //* -------------------------------------------
+    //* UI Rendering
     return (
         <div className="">
             <div className={styles['sort-filter-tab']}>
                 <div className={styles.sort}>
                     Sort by:
-                    <ul>
-                        <li>Customer</li>
-                        <li>Product</li>
-                        <li>Date</li>
-                    </ul>
+                    <div>
+                        <input type="checkbox" id="issuedTimeSort" />
+                        <label htmlFor="issuedTimeSort">Date</label>
+                        <ul>
+                            <li>
+                                <input
+                                    type="radio"
+                                    id="issuedTimeSortAsc"
+                                    name="issuedTime"
+                                    value="1"
+                                    onChange={(e) =>
+                                        handleSortBy('issuedTime', e)
+                                    }
+                                />
+                                <label htmlFor="issuedTimeSortAsc">
+                                    Date Asc
+                                </label>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    id="issuedTimeSortDesc"
+                                    value="-1"
+                                    name="issuedTime"
+                                    onChange={(e) =>
+                                        handleSortBy('issuedTime', e)
+                                    }
+                                />
+                                <label htmlFor="issuedTimeSortDesc">
+                                    Date Desc
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="customerSort" />
+                        <label htmlFor="customerSort">Customer</label>
+                        <ul>
+                            <li>
+                                <input
+                                    type="radio"
+                                    id="customerSortAsc"
+                                    value={'1'}
+                                    onChange={(e) =>
+                                        handleSortBy('customer', e)
+                                    }
+                                />
+                                <label htmlFor="customerSortAsc">
+                                    Customer Asc
+                                </label>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    id="customerSortDesc"
+                                    value={'-1'}
+                                    onChange={(e) =>
+                                        handleSortBy('customer', e)
+                                    }
+                                />
+                                <label htmlFor="customerSortDesc">
+                                    Customer Desc
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="itemsVarietySort" />
+                        <label htmlFor="itemsVarietySort">Variety</label>
+                        <ul>
+                            <li>
+                                <input
+                                    type="radio"
+                                    id="itemsVarietySortAsc"
+                                    value={'1'}
+                                    onChange={(e) =>
+                                        handleSortBy('itemsVariety', e)
+                                    }
+                                />
+                                <label htmlFor="itemsVarietySortAsc">
+                                    Variety Asc
+                                </label>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    id="itemsVarietySortDesc"
+                                    value={'-1'}
+                                    onChange={(e) =>
+                                        handleSortBy('itemsVariety', e)
+                                    }
+                                />
+                                <label htmlFor="itemsVarietySortDesc">
+                                    VarietyDesc{' '}
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        {' '}
+                        <input
+                            type="checkbox"
+                            id="quantityPerTicketRangeSort"
+                        />
+                        <label htmlFor="quantityPerTicketRangeSort">
+                            Quantity
+                        </label>
+                        <ul>
+                            Quantity
+                            <li>
+                                <input
+                                    type="radio"
+                                    id="quantityPerTicketRangeSortAsc"
+                                    value={'1'}
+                                    onChange={(e) =>
+                                        handleSortBy(
+                                            'quantityPerTicketRange',
+                                            e
+                                        )
+                                    }
+                                />
+                                <label htmlFor="quantityPerTicketRangeSortAsc">
+                                    Quantity Asc
+                                </label>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    id="quantityPerTicketRangeSortDesc"
+                                    value={'-1'}
+                                    onChange={(e) =>
+                                        handleSortBy(
+                                            'quantityPerTicketRange',
+                                            e
+                                        )
+                                    }
+                                />
+                                <label htmlFor="quantityPerTicketRangeSortDesc">
+                                    Quantity Desc
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div className={styles.filter}>
                     Filters:
                     <ul>
                         <li>
-                            <button onClick={handleDateRange}>Date</button>
+                            <button onClick={handleIssuedTime}>Date</button>
                         </li>
                         <li>
                             <button onClick={handleProducts}>Products</button>
@@ -248,35 +433,35 @@ const SortAndFilter = (props) => {
                 </div>
             </div>
             <div className={styles['added-filters']}>
-                {filterState.dateRange.isOpened && (
+                {filterState.issuedTime.isOpened && (
                     <div className={styles['filter-bar']}>
                         <div className="">
-                            <label htmlFor="dateRangeFrom">From</label>
+                            <label htmlFor="issuedTimeFrom">From</label>
                             <input
                                 type="datetime-local"
-                                id="dateRangeFrom"
-                                value={filterState.dateRange.from}
+                                id="issuedTimeFrom"
+                                value={filterState.issuedTime.from}
                                 onChange={(e) =>
-                                    handleDateRange('dateRangeFrom', e)
+                                    handleIssuedTime('issuedTimeFrom', e)
                                 }
                             />
                         </div>
 
                         <div className="">
-                            <label htmlFor="dateRangeTo">To</label>
+                            <label htmlFor="issuedTimeTo">To</label>
                             <input
                                 type="datetime-local"
-                                id="dateRangeTo"
-                                value={filterState.dateRange.to}
+                                id="issuedTimeTo"
+                                value={filterState.issuedTime.to}
                                 onChange={(e) =>
-                                    handleDateRange('dateRangeTo', e)
+                                    handleIssuedTime('issuedTimeTo', e)
                                 }
                             />
                         </div>
 
                         <Button
                             className={'primary01'}
-                            onClick={() => handleDateRange('remove')}
+                            onClick={() => handleIssuedTime('remove')}
                         >
                             Remove
                         </Button>
@@ -424,18 +609,25 @@ export default SortAndFilter;
 
 const applyFilter = (filterState, setFilterObject) => {
     let filterObject = {};
+    filterObject.sortBy = {
+        issuedTime: undefined,
+        customer: undefined,
+        itemsVariety: undefined,
+        quantityPerTicketRange: undefined,
+    };
 
-    if (filterState.dateRange.isOpened && filterState.dateRange.from) {
-        filterObject.dateRange = {};
-        filterObject.dateRange.from = new Date(filterState.dateRange.from);
+    //* FILTERING
+    if (filterState.issuedTime.isOpened && filterState.issuedTime.from) {
+        filterObject.issuedTime = {};
+        filterObject.issuedTime.from = new Date(filterState.issuedTime.from);
 
-        console.log(filterState.dateRange.to);
-        filterObject.dateRange.to = new Date(filterState.dateRange.to);
+        console.log(filterState.issuedTime.to);
+        filterObject.issuedTime.to = new Date(filterState.issuedTime.to);
 
-        if (filterObject.dateRange.to == 'Invalid Date') {
-            filterObject.dateRange.to = new Date();
+        if (filterObject.issuedTime.to == 'Invalid Date') {
+            filterObject.issuedTime.to = new Date();
         }
-        console.log(filterState.dateRange.to);
+        console.log(filterState.issuedTime.to);
     }
 
     if (filterState.products.isOpened && filterState.products.set.size != 0) {
@@ -459,6 +651,9 @@ const applyFilter = (filterState, setFilterObject) => {
             to: parseInt(filterState.variety.to),
         };
     }
-    console.log(filterObject);
+
+    //* SORTING
+
+    //* setting filterObject for fetch trigger
     setFilterObject(filterObject);
 };
