@@ -1,0 +1,32 @@
+button {
+    cursor: pointer;
+
+    &.primary01 {
+        padding: 0.7rem 1rem;
+        border: 1px solid red;
+        border-radius: 0.8rem;
+        color: white;
+        background: linear-gradient(
+            to right,
+            rgb(230, 30, 77) 0%,
+            rgb(227, 28, 95) 50%,
+            rgb(215, 4, 102) 100%
+        );
+    }
+    &.primary02 {
+        padding: 0.7rem 1rem;
+        border: 1px solid rgb(236, 240, 235);
+        border-radius: 0.8rem;
+
+        color: white;
+        background-color: #007c89;
+    }
+    &.primary03 {
+        padding: 0.7rem 1rem;
+        border: 1px solid rgb(236, 24, 208);
+        border-radius: 1rem;
+
+        color: white;
+        background-color: #dd548d;
+    }
+}

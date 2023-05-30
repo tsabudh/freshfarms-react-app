@@ -1,6 +1,7 @@
 import { useReducer } from 'react';
 
 import styles from './SortAndFilter.module.scss';
+import Button from '../UI/Button';
 
 //* referencing function with parameters
 function partial(func /*, 0..n args */) {
@@ -114,6 +115,7 @@ const SortAndFilter = (props) => {
                 to: e.target.value,
             });
         } else if (method === 'remove') {
+            console.log('handle remove');
             dispatchFilter({
                 type: 'dateRange',
                 update: 'remove',
@@ -247,41 +249,43 @@ const SortAndFilter = (props) => {
             </div>
             <div className={styles['added-filters']}>
                 {filterState.dateRange.isOpened && (
-                    <div>
-                        <label htmlFor="dateRangeFrom">From</label>
-                        <input
-                            type="datetime-local"
-                            id="dateRangeFrom"
-                            value={filterState.dateRange.from}
-                            onChange={(e) =>
-                                handleDateRange('dateRangeFrom', e)
-                            }
-                        />
+                    <div className={styles['filter-bar']}>
+                        <div className="">
+                            <label htmlFor="dateRangeFrom">From</label>
+                            <input
+                                type="datetime-local"
+                                id="dateRangeFrom"
+                                value={filterState.dateRange.from}
+                                onChange={(e) =>
+                                    handleDateRange('dateRangeFrom', e)
+                                }
+                            />
+                        </div>
 
-                        <label htmlFor="dateRangeTo">To</label>
-                        <input
-                            type="datetime-local"
-                            id="dateRangeTo"
-                            value={filterState.dateRange.to}
-                            onChange={(e) => handleDateRange('dateRangeTo', e)}
-                        />
+                        <div className="">
+                            <label htmlFor="dateRangeTo">To</label>
+                            <input
+                                type="datetime-local"
+                                id="dateRangeTo"
+                                value={filterState.dateRange.to}
+                                onChange={(e) =>
+                                    handleDateRange('dateRangeTo', e)
+                                }
+                            />
+                        </div>
 
-                        <button
-                            onClick={() => {
-                                handleDateRange('update');
-                            }}
+                        <Button
+                            className={'primary01'}
+                            onClick={() => handleDateRange('remove')}
                         >
-                            Update
-                        </button>
-                        <button onClick={() => handleDateRange('remove')}>
                             Remove
-                        </button>
+                        </Button>
                     </div>
                 )}
 
                 {filterState.products.isOpened && (
-                    <div className={styles.inline}>
-                        products:
+                    <div className={styles['filter-bar']}>
+                        Products:
                         {Array.from(filterState.products.set).map(
                             (product, index) => (
                                 <button key={index}>{product}</button>
@@ -291,7 +295,8 @@ const SortAndFilter = (props) => {
                             Enter to add product:
                         </label>
                         <input type="text" id="newProductFilter" />
-                        <button
+                        <Button
+                            className={'primary02'}
                             onClick={() =>
                                 handleProducts(
                                     'products',
@@ -302,15 +307,18 @@ const SortAndFilter = (props) => {
                             }
                         >
                             Add
-                        </button>
-                        <button onClick={() => handleProducts('remove')}>
+                        </Button>
+                        <Button
+                            className={'primary01'}
+                            onClick={() => handleProducts('remove')}
+                        >
                             Remove
-                        </button>
+                        </Button>
                     </div>
                 )}
 
                 {filterState.customers.isOpened && (
-                    <div className={styles.inline}>
+                    <div className={styles['filter-bar']}>
                         customers:
                         {Array.from(filterState.customers.set).map(
                             (product, index) => (
@@ -321,7 +329,8 @@ const SortAndFilter = (props) => {
                             Enter to add customer:
                         </label>
                         <input type="text" id="newCustomerFilter" />
-                        <button
+                        <Button
+                            className={'primary02'}
                             onClick={() =>
                                 handleCustomers(
                                     'customers',
@@ -331,16 +340,19 @@ const SortAndFilter = (props) => {
                             }
                         >
                             Add
-                        </button>
-                        <button onClick={() => handleCustomers('remove')}>
+                        </Button>
+                        <Button
+                            className={'primary01'}
+                            onClick={() => handleCustomers('remove')}
+                        >
                             Remove
-                        </button>
+                        </Button>
                     </div>
                 )}
                 {filterState.quantity.isOpened && (
-                    <div className={styles['filter-configuration']}>
+                    <div className={styles['filter-bar']}>
                         Quantity
-                        <label htmlFor="quantityRangeFrom">From</label>
+                        <label htmlFor="quantityRangeFrom">From:</label>
                         <input
                             type="number"
                             id="quantityRangeFrom"
@@ -349,7 +361,7 @@ const SortAndFilter = (props) => {
                                 handleQuantity('quantityRangeFrom', e)
                             }
                         />
-                        <label htmlFor="quantityRangeTo">To</label>
+                        <label htmlFor="quantityRangeTo">To:</label>
                         <input
                             type="number"
                             id="quantityRangeTo"
@@ -358,13 +370,16 @@ const SortAndFilter = (props) => {
                                 handleQuantity('quantityRangeTo', e)
                             }
                         />
-                        <button onClick={() => handleQuantity('remove')}>
+                        <Button
+                            className={'primary01'}
+                            onClick={() => handleQuantity('remove')}
+                        >
                             Remove
-                        </button>
+                        </Button>
                     </div>
                 )}
                 {filterState.variety.isOpened && (
-                    <div>
+                    <div className={styles['filter-bar']}>
                         Variety
                         <label htmlFor="varietyRangeFrom">From</label>
                         <input
@@ -382,19 +397,23 @@ const SortAndFilter = (props) => {
                             defaultValue={10}
                             onChange={(e) => handleVariety('varietyRangeTo', e)}
                         />
-                        <button onClick={() => handleVariety('remove')}>
+                        <Button
+                            className={'primary01'}
+                            onClick={() => handleVariety('remove')}
+                        >
                             Remove
-                        </button>
+                        </Button>
                     </div>
                 )}
                 <div>
-                    <button
+                    <Button
+                        className={'primary03'}
                         onClick={() =>
                             applyFilter(filterState, setFilterObject)
                         }
                     >
                         APPLY FILTER
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>
