@@ -1,7 +1,6 @@
 import styles from './Button.module.scss';
 
 const Button = (props) => {
-    console.log(props.className);
     return (
         <button
             className={`${styles[`${props.className}`]}`}

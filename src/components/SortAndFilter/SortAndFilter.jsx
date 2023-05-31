@@ -32,30 +32,55 @@ const initialFilterState = {
         isSorted: false,
         order: undefined,
     },
-    quantity: {
+    totalQuantity: {
         isOpened: false,
         from: 1,
         to: 10,
         isSorted: false,
         order: undefined,
     },
-    variety: {
+    itemsVariety: {
         isOpened: false,
         from: 0,
         to: 10,
         isSorted: false,
         order: undefined,
     },
-   
 };
 
 const filterReducer = (filterState, action) => {
     const newFilterState = Object.assign({}, filterState);
 
     if (action.type === 'sortBy') {
-        if (action.update === 'issuedTime') {
-            newFilterState.issuedTime = action.order;
+        if (action.update === 'issuedTimeState') {
+            newFilterState.issuedTime.isSorted = action.state;
+        } else if (action.update === 'issuedTime') {
+            newFilterState.issuedTime.isSorted = true;
+            newFilterState.issuedTime.order = parseInt(action.order);
+        } else if (action.update === 'customersState') {
+            newFilterState.customers.isSorted = action.state;
+        } else if (action.update === 'customers') {
+            console.log('ss');
+            newFilterState.customers.isSorted = true;
+            newFilterState.customers.order = parseInt(action.order);
+        } else if (action.update === 'productsState') {
+            newFilterState.products.isSorted = action.state;
+        } else if (action.update === 'products') {
+            newFilterState.products.isSorted = true;
+            newFilterState.products.order = parseInt(action.order);
+        } else if (action.update === 'totalQuantityState') {
+            newFilterState.totalQuantity.isSorted = action.state;
+        } else if (action.update === 'totalQuantity') {
+            newFilterState.totalQuantity.isSorted = true;
+            newFilterState.totalQuantity.order = parseInt(action.order);
+        } else if (action.update === 'itemsVarietyState') {
+            newFilterState.itemsVariety.isSorted = action.state;
+        } else if (action.update === 'itemsVariety') {
+            newFilterState.itemsVariety.isSorted = true;
+            newFilterState.itemsVariety.order = parseInt(action.order);
         }
+
+        return newFilterState;
     }
 
     if (action.type === 'issuedTime') {
@@ -98,35 +123,36 @@ const filterReducer = (filterState, action) => {
         }
         return newFilterState;
     }
-    if (action.type === 'quantity') {
-        newFilterState.quantity.isOpened = true;
+    if (action.type === 'totalQuantity') {
+        newFilterState.totalQuantity.isOpened = true;
 
-        if (action.update === 'quantityRangeFrom') {
-            newFilterState.quantity.from = action.from;
+        if (action.update === 'totalQuantityRangeFrom') {
+            newFilterState.totalQuantity.from = action.from;
         }
-        if (action.update === 'quantityRangeTo') {
-            newFilterState.quantity.to = action.to;
+        if (action.update === 'totalQuantityRangeTo') {
+            newFilterState.totalQuantity.to = action.to;
         }
         if (action.update === 'remove') {
-            newFilterState.quantity.isOpened = false;
+            newFilterState.totalQuantity.isOpened = false;
         }
 
         return newFilterState;
     }
-    if (action.type === 'variety') {
-        newFilterState.variety.isOpened = true;
+    if (action.type === 'itemsVariety') {
+        newFilterState.itemsVariety.isOpened = true;
         console.log(action.to);
-        if (action.update === 'varietyRangeFrom') {
-            newFilterState.variety.from = action.from;
+        if (action.update === 'itemsVarietyRangeFrom') {
+            newFilterState.itemsVariety.from = action.from;
         }
-        if (action.update === 'varietyRangeTo') {
-            newFilterState.variety.to = action.to;
+        if (action.update === 'itemsVarietyRangeTo') {
+            newFilterState.itemsVariety.to = action.to;
         }
         if (action.update === 'remove') {
-            newFilterState.variety.isOpened = false;
+            newFilterState.itemsVariety.isOpened = false;
         }
         return newFilterState;
     }
+    console.log(newFilterState);
 };
 
 const SortAndFilter = (props) => {
@@ -144,6 +170,69 @@ const SortAndFilter = (props) => {
                 type: 'sortBy',
                 update: 'issuedTime',
                 order: e.target.value,
+            });
+        } else if (method === 'issuedTimeState') {
+            console.log(e.target.checked);
+            dispatchFilter({
+                type: 'sortBy',
+                update: 'issuedTimeState',
+                state: e.target.checked,
+            });
+        } else if (method == 'customers') {
+            console.log(e.target.value);
+            dispatchFilter({
+                type: 'sortBy',
+                update: 'customers',
+                order: e.target.value,
+            });
+        } else if (method === 'customersState') {
+            console.log(e.target.checked);
+            dispatchFilter({
+                type: 'sortBy',
+                update: 'customersState',
+                state: e.target.checked,
+            });
+        } else if (method == 'products') {
+            console.log(e.target.value);
+            dispatchFilter({
+                type: 'sortBy',
+                update: 'products',
+                order: e.target.value,
+            });
+        } else if (method === 'productsState') {
+            console.log(e.target.checked);
+            dispatchFilter({
+                type: 'sortBy',
+                update: 'productsState',
+                state: e.target.checked,
+            });
+        } else if (method == 'totalQuantity') {
+            console.log(e.target.value);
+            dispatchFilter({
+                type: 'sortBy',
+                update: 'totalQuantity',
+                order: e.target.value,
+            });
+        } else if (method === 'totalQuantityState') {
+            console.log(e.target.checked);
+            dispatchFilter({
+                type: 'sortBy',
+                update: 'totalQuantityState',
+                state: e.target.checked,
+            });
+        } else if (method == 'itemsVariety') {
+            console.log(e.target.value);
+            dispatchFilter({
+                type: 'sortBy',
+                update: 'itemsVariety',
+                order: e.target.value,
+            });
+        } else if (method === 'itemsVarietyState') {
+            console.log(e.target.checked);
+            dispatchFilter({
+                type: 'sortBy',
+                update: 'itemsVarietyState',
+                state: e.target.checked,
             });
         }
     };
@@ -213,50 +302,50 @@ const SortAndFilter = (props) => {
         }
     };
     const handleQuantity = (method, e) => {
-        if (method == 'quantityRangeFrom') {
+        if (method == 'totalQuantityRangeFrom') {
             dispatchFilter({
-                type: 'quantity',
-                update: 'quantityRangeFrom',
+                type: 'totalQuantity',
+                update: 'totalQuantityRangeFrom',
                 from: e.target.value,
             });
-        } else if (method == 'quantityRangeTo') {
+        } else if (method == 'totalQuantityRangeTo') {
             dispatchFilter({
-                type: 'quantity',
-                update: 'quantityRangeTo',
+                type: 'totalQuantity',
+                update: 'totalQuantityRangeTo',
                 to: e.target.value,
             });
         } else if (method === 'remove') {
             dispatchFilter({
-                type: 'quantity',
+                type: 'totalQuantity',
                 update: 'remove',
             });
         } else {
             dispatchFilter({
-                type: 'quantity',
+                type: 'totalQuantity',
             });
         }
     };
-    const handleVariety = (method, e) => {
-        if (method === 'varietyRangeFrom') {
+    const handleItemsVariety = (method, e) => {
+        if (method === 'itemsVarietyRangeFrom') {
             dispatchFilter({
-                type: 'variety',
-                update: 'varietyRangeFrom',
+                type: 'itemsVariety',
+                update: 'itemsVarietyRangeFrom',
                 from: e.target.value,
             });
-        } else if (method === 'varietyRangeTo') {
+        } else if (method === 'itemsVarietyRangeTo') {
             dispatchFilter({
-                type: 'variety',
-                update: 'varietyRangeTo',
+                type: 'itemsVariety',
+                update: 'itemsVarietyRangeTo',
                 to: e.target.value,
             });
         } else if (method === 'remove') {
             dispatchFilter({
-                type: 'variety',
+                type: 'itemsVariety',
                 update: 'remove',
             });
         } else {
             dispatchFilter({
-                type: 'variety',
+                type: 'itemsVariety',
             });
         }
     };
@@ -268,7 +357,12 @@ const SortAndFilter = (props) => {
                 <div className={styles.sort}>
                     Sort by:
                     <div>
-                        <input type="checkbox" id="issuedTimeSort" />
+                        <input
+                            type="checkbox"
+                            checked={filterState.issuedTime.isSorted}
+                            id="issuedTimeSort"
+                            onChange={(e) => handleSortBy('issuedTimeState', e)}
+                        />
                         <label htmlFor="issuedTimeSort">Date</label>
                         <ul>
                             <li>
@@ -302,16 +396,22 @@ const SortAndFilter = (props) => {
                         </ul>
                     </div>
                     <div>
-                        <input type="checkbox" id="customerSort" />
+                        <input
+                            type="checkbox"
+                            id="customerSort"
+                            checked={filterState.customers.isSorted}
+                            onChange={(e) => handleSortBy('customersState', e)}
+                        />
                         <label htmlFor="customerSort">Customer</label>
                         <ul>
                             <li>
                                 <input
                                     type="radio"
                                     id="customerSortAsc"
+                                    name="customers"
                                     value={'1'}
                                     onChange={(e) =>
-                                        handleSortBy('customer', e)
+                                        handleSortBy('customers', e)
                                     }
                                 />
                                 <label htmlFor="customerSortAsc">
@@ -322,6 +422,7 @@ const SortAndFilter = (props) => {
                                 <input
                                     type="radio"
                                     id="customerSortDesc"
+                                    name="customers"
                                     value={'-1'}
                                     onChange={(e) =>
                                         handleSortBy('customer', e)
@@ -334,77 +435,82 @@ const SortAndFilter = (props) => {
                         </ul>
                     </div>
                     <div>
-                        <input type="checkbox" id="itemsVarietySort" />
-                        <label htmlFor="itemsVarietySort">Variety</label>
+                        <input
+                            type="checkbox"
+                            id="itemsVarietySort"
+                            checked={filterState.itemsVariety.isSorted}
+                            onChange={(e) =>
+                                handleSortBy('itemsVarietyState', e)
+                            }
+                        />
+                        <label htmlFor="itemsVarietySort">itemsVariety</label>
                         <ul>
                             <li>
                                 <input
                                     type="radio"
                                     id="itemsVarietySortAsc"
+                                    name="itemsVariety"
                                     value={'1'}
                                     onChange={(e) =>
                                         handleSortBy('itemsVariety', e)
                                     }
                                 />
                                 <label htmlFor="itemsVarietySortAsc">
-                                    Variety Asc
+                                    itemsVariety Asc
                                 </label>
                             </li>
                             <li>
                                 <input
                                     type="radio"
                                     id="itemsVarietySortDesc"
+                                    name="itemsVariety"
                                     value={'-1'}
                                     onChange={(e) =>
                                         handleSortBy('itemsVariety', e)
                                     }
                                 />
                                 <label htmlFor="itemsVarietySortDesc">
-                                    VarietyDesc{' '}
+                                    itemsVarietyDesc{' '}
                                 </label>
                             </li>
                         </ul>
                     </div>
                     <div>
-                        {' '}
                         <input
                             type="checkbox"
-                            id="quantityPerTicketRangeSort"
+                            id="totalQuantitySort"
+                            checked={filterState.totalQuantity.isSorted}
+                            onChange={(e) =>
+                                handleSortBy('totalQuantityState', e)
+                            }
                         />
-                        <label htmlFor="quantityPerTicketRangeSort">
-                            Quantity
-                        </label>
+                        <label htmlFor="totalQuantitySort">Quantity</label>
                         <ul>
-                            Quantity
                             <li>
                                 <input
                                     type="radio"
-                                    id="quantityPerTicketRangeSortAsc"
+                                    id="totalQuantitySortAsc"
+                                    name="totalQuantity"
                                     value={'1'}
                                     onChange={(e) =>
-                                        handleSortBy(
-                                            'quantityPerTicketRange',
-                                            e
-                                        )
+                                        handleSortBy('totalQuantity', e)
                                     }
                                 />
-                                <label htmlFor="quantityPerTicketRangeSortAsc">
+                                <label htmlFor="totalQuantitySortAsc">
                                     Quantity Asc
                                 </label>
                             </li>
                             <li>
                                 <input
                                     type="radio"
-                                    id="quantityPerTicketRangeSortDesc"
+                                    id="totalQuantitySortDesc"
+                                    name="totalQuantity"
                                     value={'-1'}
                                     onChange={(e) =>
-                                        handleSortBy(
-                                            'quantityPerTicketRange',
-                                            e
-                                        )
+                                        handleSortBy('totalQuantity', e)
                                     }
                                 />
-                                <label htmlFor="quantityPerTicketRangeSortDesc">
+                                <label htmlFor="totalQuantitySortDesc">
                                     Quantity Desc
                                 </label>
                             </li>
@@ -427,7 +533,9 @@ const SortAndFilter = (props) => {
                             <button onClick={handleQuantity}>Quantity</button>
                         </li>
                         <li>
-                            <button onClick={handleVariety}>Variety</button>
+                            <button onClick={handleItemsVariety}>
+                                itemsVariety
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -534,7 +642,7 @@ const SortAndFilter = (props) => {
                         </Button>
                     </div>
                 )}
-                {filterState.quantity.isOpened && (
+                {filterState.totalQuantity.isOpened && (
                     <div className={styles['filter-bar']}>
                         Quantity
                         <label htmlFor="quantityRangeFrom">From:</label>
@@ -543,7 +651,7 @@ const SortAndFilter = (props) => {
                             id="quantityRangeFrom"
                             defaultValue={1}
                             onChange={(e) =>
-                                handleQuantity('quantityRangeFrom', e)
+                                handleQuantity('totalQuantityRangeFrom', e)
                             }
                         />
                         <label htmlFor="quantityRangeTo">To:</label>
@@ -552,7 +660,7 @@ const SortAndFilter = (props) => {
                             id="quantityRangeTo"
                             defaultValue={10}
                             onChange={(e) =>
-                                handleQuantity('quantityRangeTo', e)
+                                handleQuantity('totalQuantityRangeTo', e)
                             }
                         />
                         <Button
@@ -563,28 +671,30 @@ const SortAndFilter = (props) => {
                         </Button>
                     </div>
                 )}
-                {filterState.variety.isOpened && (
+                {filterState.itemsVariety.isOpened && (
                     <div className={styles['filter-bar']}>
-                        Variety
-                        <label htmlFor="varietyRangeFrom">From</label>
+                        itemsVariety
+                        <label htmlFor="itemsVarietyRangeFrom">From</label>
                         <input
                             type="number"
-                            id="varietyRangeFrom"
+                            id="itemsVarietyRangeFrom"
                             defaultValue={1}
                             onChange={(e) =>
-                                handleVariety('varietyRangeFrom', e)
+                                handleItemsVariety('itemsVarietyRangeFrom', e)
                             }
                         />
-                        <label htmlFor="varietyRangeTo">To</label>
+                        <label htmlFor="itemsVarietyRangeTo">To</label>
                         <input
                             type="number"
-                            id="varietyRangeTo"
+                            id="itemsVarietyRangeTo"
                             defaultValue={10}
-                            onChange={(e) => handleVariety('varietyRangeTo', e)}
+                            onChange={(e) =>
+                                handleItemsVariety('itemsVarietyRangeTo', e)
+                            }
                         />
                         <Button
                             className={'primary01'}
-                            onClick={() => handleVariety('remove')}
+                            onClick={() => handleItemsVariety('remove')}
                         >
                             Remove
                         </Button>
@@ -613,7 +723,7 @@ const applyFilter = (filterState, setFilterObject) => {
         issuedTime: undefined,
         customer: undefined,
         itemsVariety: undefined,
-        quantityPerTicketRange: undefined,
+        totalQuantity: undefined,
     };
 
     //* FILTERING
@@ -638,21 +748,33 @@ const applyFilter = (filterState, setFilterObject) => {
         filterObject.customerArray = Array.from(filterState.customers.set);
     }
 
-    if (filterState.quantity.isOpened) {
-        filterObject.quantityPerTicketRange = {
-            from: parseInt(filterState.quantity.from),
-            to: parseInt(filterState.quantity.to),
+    if (filterState.totalQuantity.isOpened) {
+        filterObject.totalQuantity = {
+            from: parseInt(filterState.totalQuantity.from),
+            to: parseInt(filterState.totalQuantity.to),
         };
     }
-    if (filterState.variety.isOpened) {
-        console.log(filterState.variety.to);
+    if (filterState.itemsVariety.isOpened) {
+        console.log(filterState.itemsVariety.to);
         filterObject.itemsVariety = {
-            from: parseInt(filterState.variety.from),
-            to: parseInt(filterState.variety.to),
+            from: parseInt(filterState.itemsVariety.from),
+            to: parseInt(filterState.itemsVariety.to),
         };
     }
 
     //* SORTING
+    if (filterState.issuedTime.isSorted) {
+        filterObject.sortBy.issuedTime = filterState.issuedTime.order;
+    }
+    if (filterState.customers.isSorted) {
+        filterObject.sortBy.customer = filterState.customers.order;
+    }
+    if (filterState.totalQuantity.isSorted) {
+        filterObject.sortBy.totalQuantity = filterState.totalQuantity.order;
+    }
+    if (filterState.itemsVariety.isSorted) {
+        filterObject.sortBy.itemsVariety = filterState.itemsVariety.order;
+    }
 
     //* setting filterObject for fetch trigger
     setFilterObject(filterObject);
