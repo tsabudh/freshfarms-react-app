@@ -1,7 +1,8 @@
 import { useReducer } from 'react';
 
 import styles from './SortAndFilter.module.scss';
-import Button from '../UI/Button';
+import Button from '../UI/Button/Button';
+import Tag from '../UI/Tag/Tag';
 
 //* referencing function with parameters
 function partial(func /*, 0..n args */) {
@@ -88,10 +89,9 @@ const filterReducer = (filterState, action) => {
 
         if (action.update === 'issuedTimeFrom')
             newFilterState.issuedTime.from = action.from;
-
-        if (action.update === 'issuedTimeTo')
+        else if (action.update === 'issuedTimeTo')
             newFilterState.issuedTime.to = action.to;
-        if (action.update === 'remove') {
+        else if (action.update === 'remove') {
             newFilterState.issuedTime.isOpened = false;
         }
 
@@ -104,8 +104,9 @@ const filterReducer = (filterState, action) => {
             if (action.newProduct) {
                 newFilterState.products.set.add(action.newProduct);
             }
-        }
-        if (action.update === 'remove') {
+        } else if (action.update === 'removeProduct') {
+            newFilterState.products.set.delete(action.selected);
+        } else if (action.update === 'remove') {
             newFilterState.products.isOpened = false;
         }
         return newFilterState;
@@ -117,8 +118,11 @@ const filterReducer = (filterState, action) => {
             if (action.newCustomer) {
                 newFilterState.customers.set.add(action.newCustomer);
             }
-        }
-        if (action.update === 'remove') {
+        } else if (action.update === 'removeCustomer') {
+            if (action.selected) {
+                newFilterState.customers.set.delete(action.selected);
+            }
+        } else if (action.update === 'remove') {
             newFilterState.customers.isOpened = false;
         }
         return newFilterState;
@@ -264,12 +268,18 @@ const SortAndFilter = (props) => {
         }
     };
 
-    const handleProducts = (method, newProduct) => {
+    const handleProducts = (method, value) => {
         if (method == 'products') {
             dispatchFilter({
                 type: 'products',
                 update: 'productSet',
-                newProduct: newProduct,
+                newProduct: value,
+            });
+        } else if (method === 'removeProduct') {
+            dispatchFilter({
+                type: 'products',
+                update: 'removeProduct',
+                selected: value,
             });
         } else if (method === 'remove') {
             dispatchFilter({
@@ -283,12 +293,18 @@ const SortAndFilter = (props) => {
             });
         }
     };
-    const handleCustomers = (method, newCustomer) => {
+    const handleCustomers = (method, value) => {
         if (method == 'customers') {
             dispatchFilter({
                 type: 'customers',
                 update: 'customerSet',
-                newCustomer: newCustomer,
+                newCustomer: value,
+            });
+        } else if (method === 'removeCustomer') {
+            dispatchFilter({
+                type: 'customers',
+                update: 'removeCustomer',
+                selected: value,
             });
         } else if (method === 'remove') {
             dispatchFilter({
@@ -354,6 +370,7 @@ const SortAndFilter = (props) => {
     return (
         <div className="">
             <div className={styles['sort-filter-tab']}>
+                {/* //* Sorting */}
                 <div className={styles.sort}>
                     Sort by:
                     <div>
@@ -455,9 +472,7 @@ const SortAndFilter = (props) => {
                                         handleSortBy('itemsVariety', e)
                                     }
                                 />
-                                <label htmlFor="itemsVarietySortAsc">
-                                    itemsVariety Asc
-                                </label>
+                                <label htmlFor="itemsVarietySortAsc">Asc</label>
                             </li>
                             <li>
                                 <input
@@ -470,7 +485,7 @@ const SortAndFilter = (props) => {
                                     }
                                 />
                                 <label htmlFor="itemsVarietySortDesc">
-                                    itemsVarietyDesc{' '}
+                                    Desc
                                 </label>
                             </li>
                         </ul>
@@ -517,6 +532,7 @@ const SortAndFilter = (props) => {
                         </ul>
                     </div>
                 </div>
+                {/* //* Filtering */}
                 <div className={styles.filter}>
                     Filters:
                     <ul>
@@ -579,11 +595,24 @@ const SortAndFilter = (props) => {
                 {filterState.products.isOpened && (
                     <div className={styles['filter-bar']}>
                         Products:
-                        {Array.from(filterState.products.set).map(
-                            (product, index) => (
-                                <button key={index}>{product}</button>
-                            )
-                        )}
+                        <div>
+                            {Array.from(filterState.products.set).map(
+                                (product, index) => (
+                                    <Tag
+                                        // className={'primary01'}
+                                        key={index}
+                                        onClick={() =>
+                                            handleProducts(
+                                                'removeProduct',
+                                                product
+                                            )
+                                        }
+                                    >
+                                        {product}
+                                    </Tag>
+                                )
+                            )}
+                        </div>
                         <label htmlFor="newProductFilter">
                             Enter to add product:
                         </label>
@@ -595,7 +624,7 @@ const SortAndFilter = (props) => {
                                     'products',
                                     // 'burger'
                                     document.getElementById('newProductFilter')
-                                        .value
+                                        .value.toLocaleLowerCase()
                                 )
                             }
                         >
@@ -613,11 +642,23 @@ const SortAndFilter = (props) => {
                 {filterState.customers.isOpened && (
                     <div className={styles['filter-bar']}>
                         customers:
-                        {Array.from(filterState.customers.set).map(
-                            (product, index) => (
-                                <button key={index}>{product}</button>
-                            )
-                        )}
+                        <div>
+                            {Array.from(filterState.customers.set).map(
+                                (customer, index) => (
+                                    <Tag
+                                        key={index}
+                                        onClick={() =>
+                                            handleCustomers(
+                                                'removeCustomer',
+                                                customer
+                                            )
+                                        }
+                                    >
+                                        {customer}
+                                    </Tag>
+                                )
+                            )}
+                        </div>
                         <label htmlFor="newCustomerFilter">
                             Enter to add customer:
                         </label>
@@ -628,7 +669,7 @@ const SortAndFilter = (props) => {
                                 handleCustomers(
                                     'customers',
                                     document.getElementById('newCustomerFilter')
-                                        .value
+                                        .value.toLocaleLowerCase()
                                 )
                             }
                         >
@@ -700,7 +741,7 @@ const SortAndFilter = (props) => {
                         </Button>
                     </div>
                 )}
-                <div>
+                <div >
                     <Button
                         className={'primary03'}
                         onClick={() =>
