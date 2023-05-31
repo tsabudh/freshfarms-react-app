@@ -1,5 +1,6 @@
 .tag{
     display: inline;
+    cursor: pointer;
     background: #ECF8F9;
     // text-underline-position: below;
     color: black;
@@ -12,6 +13,6 @@
     border: 1px solid rgba(179, 131, 223, 0.767);
 
     &.primary01{
-        background: red;
+        background: rgb(49, 167, 94);
     }
 }

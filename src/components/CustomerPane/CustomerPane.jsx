@@ -1,5 +1,7 @@
+import Calender from '../Calender/Calender';
+
 const CustomerPane = () => {
-    return <div>CustomerPane</div>;
+    return <Calender />;
 };
 
 export default CustomerPane;
