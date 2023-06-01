@@ -1,11 +1,18 @@
 .calender-container {
     background: burlywood;
+    --width-of-container:61rem;
     width: 61rem;
+
+    & .header{
+        display: flex;
+        justify-content: space-around;
+        padding: 1rem;
+    }
     & .calender {
         display: flex;
         flex-wrap: wrap;
         & .weekdays {
-            width: calc((610px - 70px) / 7);
+            width: calc((var(--width-of-container) - 70px) / 7);
 
             // height: 8rem;
             border: 1px solid azure;
@@ -13,7 +20,7 @@
             overflow: hidden;
         }
         & .day {
-            width: calc((610px - 70px) / 7);
+            width: calc((var(--width-of-container) - 70px) / 7);
 
             height: 8rem;
             border: 1px solid azure;

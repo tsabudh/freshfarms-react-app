@@ -26,20 +26,8 @@ const monthNames = [
     'November',
     'December',
 ];
-// let dt = new Date(2023, 3, 0);
-// let day = dt.getDay();
-// let month = dt.getMonth();
-// let date = dt.getDate();
-// let year = dt.getFullYear();
-
-// let numberOfDays = new Date(year, month + 1, 0).getDate();
-// let paddings = new Date(year, month, 1).getDay();
-
-// console.log(day, month, date, numberOfDays, paddings);
 
 let initialDateState = {
-    // dateObject: new Date(),
-    day:0,
     set dateObject(assignedValue) {
         this.dateX = new Date(assignedValue);
 
@@ -60,64 +48,110 @@ let initialDateState = {
         return monthNames[this.month];
     },
 };
-// console.log((initialDateState.date = new Date()));
-// console.log(typeof initialDateState.date);
 
 const dateStateReducer = (dateState, action) => {
-    let newDateState = Object.assign({}, dateState);
-    console.log(newDateState.dateObject);
+    let newDateState = Object.create(
+        dateState,
+        Object.getOwnPropertyDescriptors(dateState)
+    );
 
     switch (action.type) {
         case 'initialize': {
             newDateState.dateObject = new Date();
-            return newDateState;
+
             break;
         }
         case 'navigate': {
             if (action.step == -1) {
-                console.log(dateState.year, dateState.month);
                 newDateState.dateObject = new Date(
                     dateState.year,
                     dateState.month - 1,
                     1
                 );
+            } else if (action.step == 1) {
+                newDateState.dateObject = new Date(
+                    dateState.year,
+                    dateState.month + 1,
+                    1
+                );
             }
             break;
+        }
+        case 'selectMonth': {
+            newDateState.dateObject = new Date(
+                dateState.year,
+                action.selected,
+                1
+            );
         }
     }
     return newDateState;
 };
 
-const Calender = () => {
+const Calender = (props) => {
     const [dateState, dispatchDateState] = useReducer(
         dateStateReducer,
         initialDateState
     );
-    console.log(dateState);
 
+    const { currentCustomer } = props;
+    console.log(currentCustomer);
     useEffect(() => {
         dispatchDateState({
             type: 'initialize',
         });
     }, []);
 
-    console.log(dateState.dateObject);
-    const navigateMonth = (step) => {
-        dispatchDateState({
-            type: 'navigate',
-            step: step,
-        });
-        // dateState.numberOfDays = new Date(year, month + 1 + step, 0).getDate();
-        // dateState.paddings = new Date(year, month + step, 1).getDay();
+    const navigateMonth = (type, value) => {
+        switch (type) {
+            case 'navigate': {
+                dispatchDateState({
+                    type: 'navigate',
+                    step: value,
+                });
+                break;
+            }
+            case 'selectMonth': {
+                dispatchDateState({
+                    type: 'selectMonth',
+                    selected: value.target.value,
+                });
+                break;
+            }
+        }
     };
 
     return (
         <div className={styles['calender-container']}>
             <div className={styles.header}>
-                <Button onClick={() => navigateMonth(-1)}>Previous</Button>
+                <Button onClick={() => navigateMonth('navigate', -1)}>
+                    Previous
+                </Button>
                 Month:{monthNames[dateState.month]}
+                <select
+                    className="form-select"
+                    id="month"
+                    name="month"
+                    onChange={(e) => navigateMonth('selectMonth', e)}
+                    value={dateState.month}
+                >
+                    {monthNames.map((month, index) => (
+                        <option
+                            key={index}
+                            value={index}
+                            name="calenderMonth"
+                            select={
+                                dateState.month === index ? 'true' : 'false'
+                            }
+                        >
+                            {month}
+                        </option>
+                    ))}
+                </select>
                 Year:{dateState.year}
-                <Button onClick={() => navigateMonth(-1)}>Next</Button>
+                <Button onClick={() => navigateMonth('navigate', 1)}>
+                    Next
+                </Button>
             </div>
 
             {/* weekdays header  */}
