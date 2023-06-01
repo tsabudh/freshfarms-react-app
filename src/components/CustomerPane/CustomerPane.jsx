@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Calender from '../Calender/Calender';
 
+import styles from "./CustomerPane.module.scss";
 let global;
 
 const fetchCustomers = () => {
@@ -59,7 +60,7 @@ const CustomerPane = () => {
     };
     console.log(customers);
     return (
-        <React.Fragment>
+        <div className={styles['customer-pane']}>
             <div>
                 <label htmlFor="customer">Select Customer</label>
                 <select
@@ -82,7 +83,7 @@ const CustomerPane = () => {
                 </select>
             </div>
             <Calender currentCustomer={currentCustomer} />
-        </React.Fragment>
+        </div>
     );
 };
 

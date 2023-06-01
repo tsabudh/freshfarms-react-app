@@ -393,7 +393,7 @@ const SortAndFilter = (props) => {
                                     }
                                 />
                                 <label htmlFor="issuedTimeSortAsc">
-                                    Date Asc
+                                Asc
                                 </label>
                             </li>
                             <li>
@@ -407,7 +407,7 @@ const SortAndFilter = (props) => {
                                     }
                                 />
                                 <label htmlFor="issuedTimeSortDesc">
-                                    Date Desc
+                                 Desc
                                 </label>
                             </li>
                         </ul>
@@ -432,7 +432,7 @@ const SortAndFilter = (props) => {
                                     }
                                 />
                                 <label htmlFor="customerSortAsc">
-                                    Customer Asc
+                                   Asc
                                 </label>
                             </li>
                             <li>
@@ -446,7 +446,7 @@ const SortAndFilter = (props) => {
                                     }
                                 />
                                 <label htmlFor="customerSortDesc">
-                                    Customer Desc
+                                  Desc
                                 </label>
                             </li>
                         </ul>
@@ -460,7 +460,7 @@ const SortAndFilter = (props) => {
                                 handleSortBy('itemsVarietyState', e)
                             }
                         />
-                        <label htmlFor="itemsVarietySort">itemsVariety</label>
+                        <label htmlFor="itemsVarietySort">Variety</label>
                         <ul>
                             <li>
                                 <input
@@ -512,7 +512,7 @@ const SortAndFilter = (props) => {
                                     }
                                 />
                                 <label htmlFor="totalQuantitySortAsc">
-                                    Quantity Asc
+                                  Asc
                                 </label>
                             </li>
                             <li>
@@ -526,7 +526,7 @@ const SortAndFilter = (props) => {
                                     }
                                 />
                                 <label htmlFor="totalQuantitySortDesc">
-                                    Quantity Desc
+                                  Desc
                                 </label>
                             </li>
                         </ul>
@@ -623,7 +623,8 @@ const SortAndFilter = (props) => {
                                 handleProducts(
                                     'products',
                                     // 'burger'
-                                    document.getElementById('newProductFilter')
+                                    document
+                                        .getElementById('newProductFilter')
                                         .value.toLocaleLowerCase()
                                 )
                             }
@@ -668,7 +669,8 @@ const SortAndFilter = (props) => {
                             onClick={() =>
                                 handleCustomers(
                                     'customers',
-                                    document.getElementById('newCustomerFilter')
+                                    document
+                                        .getElementById('newCustomerFilter')
                                         .value.toLocaleLowerCase()
                                 )
                             }
@@ -741,7 +743,7 @@ const SortAndFilter = (props) => {
                         </Button>
                     </div>
                 )}
-                <div >
+                <div>
                     <Button
                         className={'primary03'}
                         onClick={() =>

@@ -4,14 +4,23 @@ import styles from './Calender.module.scss';
 import Button from '../UI/Button/Button';
 import { useTheme } from 'styled-components';
 const weekdays = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
+    'Sun',
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat',
 ];
+// const weekdays = [
+//     'Sunday',
+//     'Monday',
+//     'Tuesday',
+//     'Wednesday',
+//     'Thursday',
+//     'Friday',
+//     'Saturday',
+// ];
 const monthNames = [
     'January',
     'February',
@@ -127,7 +136,7 @@ const Calender = (props) => {
                 <Button onClick={() => navigateMonth('navigate', -1)}>
                     Previous
                 </Button>
-                Month:{monthNames[dateState.month]}
+                {monthNames[dateState.month]}
                 <select
                     className="form-select"
                     id="month"
@@ -148,7 +157,7 @@ const Calender = (props) => {
                         </option>
                     ))}
                 </select>
-                Year:{dateState.year}
+                {dateState.year}
                 <Button onClick={() => navigateMonth('navigate', 1)}>
                     Next
                 </Button>
