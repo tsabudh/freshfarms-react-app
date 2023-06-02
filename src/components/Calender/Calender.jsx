@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useState } from 'react';
 import styles from './Calender.module.scss';
 
 import { transactionPromiseFunc } from '../TicketTable/TicketTable';
@@ -89,8 +89,9 @@ const Calender = (props) => {
         initialDateState
     );
 
-    const { currentCustomer, setFilterObject , transactions} = props;
+    const { currentCustomer, setFilterObject, transactions } = props;
 
+    let [transactionDays, setTransactionDays] = useState([]);
 
     // Initialize dateState
     useEffect(() => {
@@ -98,6 +99,12 @@ const Calender = (props) => {
             type: 'initialize',
         });
     }, []);
+
+    transactionDays = new Array(dateState.numberOfDays).fill(null);
+
+    transactions.map((transaction, index) => {
+        transactionDays[parseInt(transaction.issuedTime.split('-')[2])] = 1;
+    });
 
     // Set filterObject according to dateState or currentCustomer
     useEffect(() => {
@@ -151,9 +158,9 @@ const Calender = (props) => {
             }
         }
     };
-    
+
     //apply classes to date squares when transactions are changed
-    
+
     return (
         <div className={styles['calender-container']}>
             <div className={styles.header}>
@@ -197,9 +204,9 @@ const Calender = (props) => {
                     );
                 })}
                 {/* Paddings  */}
-                {Array.from(Array(dateState.paddings)).map((day) => {
+                {Array.from(Array(dateState.paddings)).map((day, index) => {
                     return (
-                        <div key={day} className={styles.day}>
+                        <div key={index} className={styles.day}>
                             {day}
                         </div>
                     );
@@ -207,7 +214,23 @@ const Calender = (props) => {
                 {/* Days */}
                 {Array.from(Array(dateState.numberOfDays)).map((item, date) => {
                     return (
-                        <div key={date} className={styles.day}>
+                        <div
+                            key={date}
+                            className={`${styles.day} ${
+                                transactionDays[date + 1] == true
+                                    ? `${styles.done}`
+                                    : ' '
+                            } ${
+                                new Date().toDateString() ==
+                                new Date(
+                                    dateState.year,
+                                    dateState.month,
+                                    dateState.date
+                                )
+                                    ? `${styles.today}`
+                                    : ' '
+                            }`}
+                        >
                             {date + 1}
                         </div>
                     );
