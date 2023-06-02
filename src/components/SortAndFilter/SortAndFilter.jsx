@@ -368,7 +368,7 @@ const SortAndFilter = (props) => {
 
     //* UI Rendering
     return (
-        <div className="">
+        <div className={styles['sort-and-filter']}>
             <div className={styles['sort-filter-tab']}>
                 {/* //* Sorting */}
                 <div className={styles.sort}>
@@ -743,7 +743,7 @@ const SortAndFilter = (props) => {
                         </Button>
                     </div>
                 )}
-                <div>
+                <div className={styles['submit-div']}>
                     <Button
                         className={'primary03'}
                         onClick={() =>

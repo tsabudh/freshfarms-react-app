@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Calender from '../Calender/Calender';
 
-import styles from "./CustomerPane.module.scss";
+import styles from './CustomerPane.module.scss';
+import TicketTable from '../TicketTable/TicketTable';
 let global;
 
-const fetchCustomers = () => {
+const fetchCustomers = (id) => {
     return new Promise((resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
@@ -15,8 +16,12 @@ const fetchCustomers = () => {
                     resolve(response.data);
                 }
             };
+            let apiRoute =
+                id == true
+                    ? `http://127.0.0.1:3000/customers/${id.toString()}`
+                    : 'http://127.0.0.1:3000/customers/';
 
-            xhttp.open('GET', `http://127.0.0.1:3000/customers/`);
+            xhttp.open('GET', apiRoute);
             xhttp.setRequestHeader(
                 'Authorization',
                 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6IjY0NjlhM2IxMzkwM2EwZmE1ZjUyMjMzYiIsImlzc3VlZEF0IjoxNjg0NjczMzAwMTk2LCJpYXQiOjE2ODQ2NzMzMDB9.26JLp_lg3UB862q3MUNgYIxIGyMwZtXW3uDhlyaTEBs'
@@ -30,7 +35,10 @@ const fetchCustomers = () => {
 
 const CustomerPane = () => {
     const [currentCustomer, setCurrentCustomer] = useState(null);
+    const [filterObject, setFilterObject] = useState({});
+    const [transactions, setTransactions] = useState([]);
 
+    console.log(transactions);
     let customers = useRef([]);
 
     let asyncWrapper = async () => {
@@ -58,7 +66,6 @@ const CustomerPane = () => {
             }
         }
     };
-    console.log(customers);
     return (
         <div className={styles['customer-pane']}>
             <div>
@@ -82,7 +89,18 @@ const CustomerPane = () => {
                     })}
                 </select>
             </div>
-            <Calender currentCustomer={currentCustomer} />
+
+            <Calender
+                currentCustomer={currentCustomer}
+                setFilterObject={setFilterObject}
+                transactions={transactions}
+            />
+            <div className={styles['ticket-table']}>
+                <TicketTable
+                    filterObject={filterObject}
+                    setTransactions={setTransactions}
+                />
+            </div>
         </div>
     );
 };

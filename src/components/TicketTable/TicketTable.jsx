@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Ticket from '../Ticket/Ticket';
 
-const transactionPromiseFunc = (filterObject) => {
+export const transactionPromiseFunc = (filterObject) => {
     return new Promise(function (resolve, reject) {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = () => {
@@ -29,14 +29,16 @@ const transactionPromiseFunc = (filterObject) => {
 };
 
 const TicketTable = (props) => {
-    const { filterObject } = props;
+    const { filterObject, setTransactions: liftTransactions } = props;
 
     const [transactions, setTransactions] = useState([]);
+
     let asyncWrapper = async () => {
         try {
             console.log('Fetching Transactions...');
             let result = await transactionPromiseFunc(filterObject);
             setTransactions(result);
+            liftTransactions(result);
             console.log(filterObject);
         } catch (error) {
             console.log(error);

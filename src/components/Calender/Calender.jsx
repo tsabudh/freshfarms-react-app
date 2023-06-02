@@ -1,26 +1,12 @@
 import { useReducer, useEffect } from 'react';
 import styles from './Calender.module.scss';
 
+import { transactionPromiseFunc } from '../TicketTable/TicketTable';
+
 import Button from '../UI/Button/Button';
 import { useTheme } from 'styled-components';
-const weekdays = [
-    'Sun',
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-];
-// const weekdays = [
-//     'Sunday',
-//     'Monday',
-//     'Tuesday',
-//     'Wednesday',
-//     'Thursday',
-//     'Friday',
-//     'Saturday',
-// ];
+const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 const monthNames = [
     'January',
     'February',
@@ -103,14 +89,50 @@ const Calender = (props) => {
         initialDateState
     );
 
-    const { currentCustomer } = props;
-    console.log(currentCustomer);
+    const { currentCustomer, setFilterObject , transactions} = props;
+
+
+    // Initialize dateState
     useEffect(() => {
         dispatchDateState({
             type: 'initialize',
         });
     }, []);
 
+    // Set filterObject according to dateState or currentCustomer
+    useEffect(() => {
+        let asyncFunction = async () => {
+            try {
+                if (currentCustomer) {
+                    let filterObject = {};
+
+                    //* setting current customer to filter
+                    filterObject.customerId = currentCustomer._id;
+
+                    //* setting current month to filter
+                    filterObject.issuedTime = {};
+                    filterObject.issuedTime.from = new Date(
+                        dateState.year,
+                        dateState.month,
+                        1
+                    );
+
+                    filterObject.issuedTime.to = new Date(
+                        dateState.year,
+                        dateState.month,
+                        dateState.numberOfDays
+                    );
+
+                    setFilterObject(filterObject);
+                }
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
+        asyncFunction();
+    }, [currentCustomer, dateState]);
+
+    // Dispatch when month is navigated
     const navigateMonth = (type, value) => {
         switch (type) {
             case 'navigate': {
@@ -129,7 +151,9 @@ const Calender = (props) => {
             }
         }
     };
-
+    
+    //apply classes to date squares when transactions are changed
+    
     return (
         <div className={styles['calender-container']}>
             <div className={styles.header}>

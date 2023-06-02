@@ -1,6 +1,8 @@
 .sidebar {
     max-width: 20rem;
-    
+    width: 20rem;
+    min-width: fit-content;
+
     background: #141e30; /* fallback for old browsers */
     background: -webkit-linear-gradient(
         to bottom,
