@@ -5,6 +5,7 @@ import { transactionPromiseFunc } from '../TicketTable/TicketTable';
 
 import Button from '../UI/Button/Button';
 import { useTheme } from 'styled-components';
+import DatePicker from '../UI/DatePicker/DatePicker';
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const monthNames = [
@@ -163,7 +164,9 @@ const Calender = (props) => {
 
     return (
         <div className={styles['calender-container']}>
-            <div className={styles.header}>
+            <DatePicker navigateMonth={navigateMonth} dateState={dateState} />
+
+            {/* <div className={styles.header}>
                 <Button onClick={() => navigateMonth('navigate', -1)}>
                     Previous
                 </Button>
@@ -192,7 +195,7 @@ const Calender = (props) => {
                 <Button onClick={() => navigateMonth('navigate', 1)}>
                     Next
                 </Button>
-            </div>
+            </div> */}
 
             {/* weekdays header  */}
             <div className={styles.calender}>

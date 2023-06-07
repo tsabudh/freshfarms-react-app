@@ -39,7 +39,7 @@ const TicketTable = (props) => {
             let result = await transactionPromiseFunc(filterObject);
             setTransactions(result);
             liftTransactions(result);
-            console.log(filterObject);
+       
         } catch (error) {
             console.log(error);
         }

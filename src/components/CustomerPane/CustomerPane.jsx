@@ -3,6 +3,7 @@ import Calender from '../Calender/Calender';
 
 import styles from './CustomerPane.module.scss';
 import TicketTable from '../TicketTable/TicketTable';
+import CustomerProfile from './CustomerProfile';
 let global;
 
 const fetchCustomers = (id) => {
@@ -38,7 +39,6 @@ const CustomerPane = () => {
     const [filterObject, setFilterObject] = useState({});
     const [transactions, setTransactions] = useState([]);
 
-    console.log(transactions);
     let customers = useRef([]);
 
     let asyncWrapper = async () => {
@@ -57,15 +57,18 @@ const CustomerPane = () => {
     const handleCustomer = (method, e) => {
         switch (method) {
             case 'selectCustomer': {
-                console.dir(e.target.value);
+                console.log(e.target.value);
                 let current = customers.current.find(
                     (customer) => customer._id == e.target.value
                 );
+                console.log(current);
                 setCurrentCustomer(current);
                 break;
             }
         }
     };
+    console.log(currentCustomer);
+
     return (
         <div className={styles['customer-pane']}>
             <div>
@@ -74,7 +77,6 @@ const CustomerPane = () => {
                     name="customer"
                     id="customer"
                     onChange={(e) => handleCustomer('selectCustomer', e)}
-                    // value={'currentCustomer'}
                 >
                     {customers.current.map((item, index) => {
                         return (
@@ -89,7 +91,7 @@ const CustomerPane = () => {
                     })}
                 </select>
             </div>
-
+            <CustomerProfile currentCustomer={currentCustomer} />
             <Calender
                 currentCustomer={currentCustomer}
                 setFilterObject={setFilterObject}
