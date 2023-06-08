@@ -1,5 +1,7 @@
 import { useState, useEffect, useReducer } from 'react';
 import DatePicker from '../UI/DatePicker/DatePicker';
+import { transactionPromiseFunc } from '../TicketTable/TicketTable';
+import StatementTable from '../StatementTable/StatementTable';
 
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -79,23 +81,26 @@ const dateStateReducer = (dateState, action) => {
 };
 
 const StatementPane = () => {
-    const [filterObject, setFilterObject] = useState();
-    console.log(initialDateState);
-
     const [dateState, dispatchDateState] = useReducer(
         dateStateReducer,
         initialDateState
     );
+    const [filterObject, setFilterObject] = useState();
+    const [monthlyTransactions, setMonthlyTransactions] = useState();
+    const [numberOfTransactions, setNumberOfTransactions] = useState();
+    const [totalAmount, setTotalAmount] = useState();
+    const [numberOfCustomers, setNumberOfCustomers] = useState({});
+
     useEffect(() => {
         dispatchDateState({
             type: 'initialize',
         });
     }, []);
-    
+
     useEffect(() => {
         let asyncFunction = async () => {
             try {
-                if (true) {
+                if (dateState) {
                     let filterObject = {};
 
                     //* setting current month to filter
@@ -113,6 +118,44 @@ const StatementPane = () => {
                     );
 
                     setFilterObject(filterObject);
+                    let results = await transactionPromiseFunc(filterObject);
+
+                    console.log('Transactions fetched at StatementPane');
+                    console.log(results);
+
+                    if (results) {
+                        setMonthlyTransactions(results);
+                        setNumberOfTransactions(results.length);
+
+                        let totalAmount = results.reduce(
+                            (accumulator, currentValue, currentIndex) => {
+                                return (
+                                    accumulator + currentValue.transactionAmount
+                                );
+                            },
+                            0
+                        );
+                        let unregisteredCustomers = 0;
+                        let customerSet = results.reduce(
+                            (accumulatorSet, currentItem, currentIndex) => {
+                                if (currentItem.customer?.customerId) {
+                                    accumulatorSet.add(
+                                        currentItem.customer.customerId
+                                    );
+                                } else {
+                                    unregisteredCustomers++;
+                                }
+                                return accumulatorSet;
+                            },
+                            new Set()
+                        );
+
+                        setTotalAmount(totalAmount);
+                        setNumberOfCustomers({
+                            registered: customerSet.size,
+                            unregistered: unregisteredCustomers,
+                        });
+                    } else throw new Error('Transactions not received.');
                 }
             } catch (error) {
                 console.log(error.message);
@@ -122,8 +165,6 @@ const StatementPane = () => {
     }, [dateState]);
 
     const navigateMonth = (type, value) => {
-        console.log(type);
-        console.log(value);
         switch (type) {
             case 'navigate': {
                 dispatchDateState({
@@ -141,9 +182,18 @@ const StatementPane = () => {
             }
         }
     };
-    console.log(dateState);
 
-    return <DatePicker navigateMonth={navigateMonth} dateState={dateState} />;
+    return (
+        <>
+            <DatePicker navigateMonth={navigateMonth} dateState={dateState} />
+            <StatementTable
+                numberOfTransactions={numberOfTransactions}
+                totalAmount={totalAmount}
+                numberOfCustomers={numberOfCustomers}
+                monthlyTransactions={monthlyTransactions}
+            />
+        </>
+    );
 };
 
 export default StatementPane;

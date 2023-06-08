@@ -3,7 +3,6 @@ import styles from './CustomerProfile.module.scss';
 
 
 const CustomerProfile = ({ currentCustomer }) => {
-    console.log(currentCustomer);
     return (
         <div>
             <table>

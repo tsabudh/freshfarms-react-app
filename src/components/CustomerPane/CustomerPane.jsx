@@ -57,17 +57,14 @@ const CustomerPane = () => {
     const handleCustomer = (method, e) => {
         switch (method) {
             case 'selectCustomer': {
-                console.log(e.target.value);
                 let current = customers.current.find(
                     (customer) => customer._id == e.target.value
                 );
-                console.log(current);
                 setCurrentCustomer(current);
                 break;
             }
         }
     };
-    console.log(currentCustomer);
 
     return (
         <div className={styles['customer-pane']}>
