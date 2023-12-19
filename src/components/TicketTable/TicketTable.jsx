@@ -17,7 +17,7 @@ export const transactionPromiseFunc = (filterObject) => {
         const filterParam = btoa(filterString);
         xhttp.open(
             'GET',
-            `http://127.0.0.1:3000/transactions/?filter=${filterParam}`
+            `http://127.0.0.1:3000/api/v1/transactions/?filter=${filterParam}`
         );
 
         //* Hard coded authorization for Sachin Paudel(admin)

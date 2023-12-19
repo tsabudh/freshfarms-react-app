@@ -1,0 +1,69 @@
+.sidebar-item {
+    cursor: pointer;
+    padding: 1rem;
+    margin: 1rem;
+    text-decoration: none;
+    display: block;
+    // color: rgb(189, 15, 15);
+
+    background: radial-gradient(circle, #fff, #aaa) no-repeat;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background-image ease 1s;
+
+    &:hover {
+        background-color: wheat;
+        // text-decoration: underline;
+        text-underline-position: under;
+        color: white;
+        -webkit-text-fill-color: rgba(255, 255, 255, 0.192);
+    }
+
+    & {
+        padding: 0.75em 1em;
+        display: block;
+        transition: background-color 0.15s;
+        border-radius: 5px;
+    }
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-title {
+        display: flex;
+        font-size: 1.2em;
+        justify-content: space-between;
+    }
+    .sidebar-title span i {
+        display: inline-block;
+        width: 1.5em;
+    }
+    .sidebar-title .toggle-btn {
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+    &.open > .sidebar-title .toggle-btn {
+        transform: rotate(180deg);
+    }
+    .sidebar-content {
+        padding-top: 0.25em;
+        height: 0;
+        overflow: hidden;
+    }
+    &.open > .sidebar-content {
+        height: auto;
+    }
+
+    &.plain {
+        display: block;
+        color: #fff;
+        text-decoration: none;
+    }
+    &.plain:hover {
+        text-decoration: underline;
+    }
+    &.plain i {
+        display: inline-block;
+        width: 1.7em;
+    }
+}
