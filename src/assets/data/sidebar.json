@@ -112,15 +112,6 @@
                 "path": "/history"
             }
         ]
-    },
-    {
-        "title": "Support",
-        "icon": "bi-question-circle-fill",
-        "path": "/support"
-    },
-    {
-        "title": "Report Bug",
-        "icon": "bi-bug",
-        "path": "/report-bug"
     }
+    
 ]

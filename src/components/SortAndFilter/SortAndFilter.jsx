@@ -1,5 +1,20 @@
 import { useReducer } from 'react';
 
+import {
+    AiOutlineSortAscending,
+    AiOutlineSortDescending,
+} from 'react-icons/ai';
+import {
+    BsSortAlphaDown,
+    BsSortAlphaDownAlt,
+    BsSortAlphaUpAlt,
+    BsSortNumericDown,
+    BsSortNumericDownAlt,
+    BsSortNumericUpAlt,
+} from 'react-icons/bs';
+
+import { RiSortAsc, RiSortDesc } from 'react-icons/ri';
+
 import styles from './SortAndFilter.module.scss';
 import Button from '../UI/Button/Button';
 import Tag from '../UI/Tag/Tag';
@@ -61,7 +76,6 @@ const filterReducer = (filterState, action) => {
         } else if (action.update === 'customersState') {
             newFilterState.customers.isSorted = action.state;
         } else if (action.update === 'customers') {
-            console.log('ss');
             newFilterState.customers.isSorted = true;
             newFilterState.customers.order = parseInt(action.order);
         } else if (action.update === 'productsState') {
@@ -166,7 +180,8 @@ const SortAndFilter = (props) => {
         filterReducer,
         initialFilterState
     );
-
+    console.log(filterState.issuedTime.order);
+    console.log(filterState.issuedTime.order == '1' ? 'ASC' : 'DSC');
     const handleSortBy = (method, e) => {
         if (method == 'issuedTime') {
             console.log(e.target.value);
@@ -371,16 +386,29 @@ const SortAndFilter = (props) => {
         <div className={styles['sort-and-filter']}>
             <div className={styles['sort-filter-tab']}>
                 {/* //* Sorting */}
+                <div className="wrapper">
+                <p>Sort:</p>
+
+                
                 <div className={styles.sort}>
-                    Sort by:
-                    <div>
+                    {/* Issued Time */}
+                    <div className={styles['sort-item']}>
                         <input
                             type="checkbox"
                             checked={filterState.issuedTime.isSorted}
                             id="issuedTimeSort"
                             onChange={(e) => handleSortBy('issuedTimeState', e)}
                         />
-                        <label htmlFor="issuedTimeSort">Date</label>
+                        <label
+                            htmlFor="issuedTimeSort"
+                            className={
+                                filterState.issuedTime.isSorted
+                                    ? styles['is-sorted']
+                                    : ''
+                            }
+                        >
+                            Date
+                        </label>
                         <ul>
                             <li>
                                 <input
@@ -392,8 +420,16 @@ const SortAndFilter = (props) => {
                                         handleSortBy('issuedTime', e)
                                     }
                                 />
-                                <label htmlFor="issuedTimeSortAsc">
-                                Asc
+                                <label
+                                    htmlFor="issuedTimeSortAsc"
+                                    className={
+                                        filterState.issuedTime.isSorted &&
+                                        filterState.issuedTime.order == '1'
+                                            ? styles.selected
+                                            : ''
+                                    }
+                                >
+                                    <RiSortDesc />
                                 </label>
                             </li>
                             <li>
@@ -406,20 +442,39 @@ const SortAndFilter = (props) => {
                                         handleSortBy('issuedTime', e)
                                     }
                                 />
-                                <label htmlFor="issuedTimeSortDesc">
-                                 Desc
+                                <label
+                                    htmlFor="issuedTimeSortDesc"
+                                    className={
+                                        filterState.issuedTime.isSorted &&
+                                        filterState.issuedTime.order == '-1'
+                                            ? styles.selected
+                                            : ''
+                                    }
+                                >
+                                    <RiSortAsc />
                                 </label>
                             </li>
                         </ul>
                     </div>
-                    <div>
+
+                    {/* Customers  */}
+                    <div className={styles['sort-item']}>
                         <input
                             type="checkbox"
                             id="customerSort"
                             checked={filterState.customers.isSorted}
                             onChange={(e) => handleSortBy('customersState', e)}
                         />
-                        <label htmlFor="customerSort">Customer</label>
+                        <label
+                            htmlFor="customerSort"
+                            className={
+                                filterState.customers.isSorted
+                                    ? styles['is-sorted']
+                                    : ''
+                            }
+                        >
+                            Customer
+                        </label>
                         <ul>
                             <li>
                                 <input
@@ -431,8 +486,16 @@ const SortAndFilter = (props) => {
                                         handleSortBy('customers', e)
                                     }
                                 />
-                                <label htmlFor="customerSortAsc">
-                                   Asc
+                                <label
+                                    htmlFor="customerSortAsc"
+                                    className={
+                                        filterState.customers.isSorted &&
+                                        filterState.customers.order == '1'
+                                            ? styles.selected
+                                            : ''
+                                    }
+                                >
+                                    <BsSortAlphaDown />
                                 </label>
                             </li>
                             <li>
@@ -442,16 +505,25 @@ const SortAndFilter = (props) => {
                                     name="customers"
                                     value={'-1'}
                                     onChange={(e) =>
-                                        handleSortBy('customer', e)
+                                        handleSortBy('customers', e)
                                     }
                                 />
-                                <label htmlFor="customerSortDesc">
-                                  Desc
+                                <label
+                                    htmlFor="customerSortDesc"
+                                    className={
+                                        filterState.customers.isSorted &&
+                                        filterState.customers.order == '-1'
+                                            ? styles.selected
+                                            : ''
+                                    }
+                                >
+                                    <BsSortAlphaUpAlt />
                                 </label>
                             </li>
                         </ul>
                     </div>
-                    <div>
+                    {/* Items Variety  */}
+                    <div className={styles['sort-item']}>
                         <input
                             type="checkbox"
                             id="itemsVarietySort"
@@ -460,7 +532,16 @@ const SortAndFilter = (props) => {
                                 handleSortBy('itemsVarietyState', e)
                             }
                         />
-                        <label htmlFor="itemsVarietySort">Variety</label>
+                        <label
+                            htmlFor="itemsVarietySort"
+                            className={
+                                filterState.itemsVariety.isSorted
+                                    ? styles['is-sorted']
+                                    : ''
+                            }
+                        >
+                            Variety
+                        </label>
                         <ul>
                             <li>
                                 <input
@@ -472,7 +553,17 @@ const SortAndFilter = (props) => {
                                         handleSortBy('itemsVariety', e)
                                     }
                                 />
-                                <label htmlFor="itemsVarietySortAsc">Asc</label>
+                                <label
+                                    htmlFor="itemsVarietySortAsc"
+                                    className={
+                                        filterState.itemsVariety.isSorted &&
+                                        filterState.itemsVariety.order == '1'
+                                            ? styles.selected
+                                            : ''
+                                    }
+                                >
+                                    <BsSortNumericDown />
+                                </label>
                             </li>
                             <li>
                                 <input
@@ -484,13 +575,22 @@ const SortAndFilter = (props) => {
                                         handleSortBy('itemsVariety', e)
                                     }
                                 />
-                                <label htmlFor="itemsVarietySortDesc">
-                                    Desc
+                                <label
+                                    htmlFor="itemsVarietySortDesc"
+                                    className={
+                                        filterState.itemsVariety.isSorted &&
+                                        filterState.itemsVariety.order == '-1'
+                                            ? styles.selected
+                                            : ''
+                                    }
+                                >
+                                    <BsSortNumericUpAlt />
                                 </label>
                             </li>
                         </ul>
                     </div>
-                    <div>
+                    {/* Total Quantity  */}
+                    <div className={styles['sort-item']}>
                         <input
                             type="checkbox"
                             id="totalQuantitySort"
@@ -499,7 +599,16 @@ const SortAndFilter = (props) => {
                                 handleSortBy('totalQuantityState', e)
                             }
                         />
-                        <label htmlFor="totalQuantitySort">Quantity</label>
+                        <label
+                            htmlFor="totalQuantitySort"
+                            className={
+                                filterState.totalQuantity.isSorted
+                                    ? styles['is-sorted']
+                                    : ''
+                            }
+                        >
+                            Quantity
+                        </label>
                         <ul>
                             <li>
                                 <input
@@ -511,8 +620,16 @@ const SortAndFilter = (props) => {
                                         handleSortBy('totalQuantity', e)
                                     }
                                 />
-                                <label htmlFor="totalQuantitySortAsc">
-                                  Asc
+                                <label
+                                    htmlFor="totalQuantitySortAsc"
+                                    className={
+                                        filterState.totalQuantity.isSorted &&
+                                        filterState.totalQuantity.order == '1'
+                                            ? styles.selected
+                                            : ''
+                                    }
+                                >
+                                    <BsSortNumericDown />
                                 </label>
                             </li>
                             <li>
@@ -525,32 +642,64 @@ const SortAndFilter = (props) => {
                                         handleSortBy('totalQuantity', e)
                                     }
                                 />
-                                <label htmlFor="totalQuantitySortDesc">
-                                  Desc
+                                <label
+                                    htmlFor="totalQuantitySortDesc"
+                                    className={
+                                        filterState.totalQuantity.isSorted &&
+                                        filterState.totalQuantity.order == '-1'
+                                            ? styles.selected
+                                            : ''
+                                    }
+                                >
+                                    <BsSortNumericUpAlt />
                                 </label>
                             </li>
                         </ul>
                     </div>
+                </div>
                 </div>
                 {/* //* Filtering */}
                 <div className={styles.filter}>
                     Filters:
                     <ul>
                         <li>
-                            <button onClick={handleIssuedTime}>Date</button>
+                            <button
+                                onClick={handleIssuedTime}
+                                className={styles['filter-btn']}
+                            >
+                                Date
+                            </button>
                         </li>
                         <li>
-                            <button onClick={handleProducts}>Products</button>
+                            <button
+                                onClick={handleProducts}
+                                className={styles['filter-btn']}
+                            >
+                                Products
+                            </button>
                         </li>
                         <li>
-                            <button onClick={handleCustomers}>Customers</button>
+                            <button
+                                onClick={handleCustomers}
+                                className={styles['filter-btn']}
+                            >
+                                Customers
+                            </button>
                         </li>
                         <li>
-                            <button onClick={handleQuantity}>Quantity</button>
+                            <button
+                                onClick={handleQuantity}
+                                className={styles['filter-btn']}
+                            >
+                                Quantity
+                            </button>
                         </li>
                         <li>
-                            <button onClick={handleItemsVariety}>
-                                itemsVariety
+                            <button
+                                onClick={handleItemsVariety}
+                                className={styles['filter-btn']}
+                            >
+                                Items Variety
                             </button>
                         </li>
                     </ul>
