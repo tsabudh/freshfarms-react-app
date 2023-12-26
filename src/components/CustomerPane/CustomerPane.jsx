@@ -10,17 +10,17 @@ const fetchCustomers = (id) => {
     return new Promise((resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
-
+            let apiRoute;
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
                     let response = JSON.parse(xhttp.responseText);
                     resolve(response.data);
                 }
             };
-            let apiRoute =
-                id == true
-                    ? `http://127.0.0.1:3000/customers/${id.toString()}`
-                    : 'http://127.0.0.1:3000/customers/';
+
+            if (id)
+                apiRoute = `http://127.0.0.1:3000/api/v1/customers/${id.toString()}`;
+            else apiRoute = 'http://127.0.0.1:3000/api/v1/customers/';
 
             xhttp.open('GET', apiRoute);
             xhttp.setRequestHeader(
@@ -36,8 +36,6 @@ const fetchCustomers = (id) => {
 
 const CustomerPane = () => {
     const [currentCustomer, setCurrentCustomer] = useState(null);
-    const [filterObject, setFilterObject] = useState({});
-    const [transactions, setTransactions] = useState([]);
 
     let customers = useRef([]);
 
@@ -45,6 +43,7 @@ const CustomerPane = () => {
         try {
             let results = await fetchCustomers();
             customers.current = results;
+            console.log(results);
             setCurrentCustomer(customers.current[0]);
         } catch (error) {
             console.log(error.message);
@@ -75,7 +74,7 @@ const CustomerPane = () => {
                     id="customer"
                     onChange={(e) => handleCustomer('selectCustomer', e)}
                 >
-                    {customers.current.map((item, index) => {
+                    {customers?.current.map((item, index) => {
                         return (
                             <option
                                 key={index}
@@ -89,17 +88,9 @@ const CustomerPane = () => {
                 </select>
             </div>
             <CustomerProfile currentCustomer={currentCustomer} />
-            <Calender
-                currentCustomer={currentCustomer}
-                setFilterObject={setFilterObject}
-                transactions={transactions}
-            />
-            <div className={styles['ticket-table']}>
-                <TicketTable
-                    filterObject={filterObject}
-                    setTransactions={setTransactions}
-                />
-            </div>
+            {customers.current.map((item) => {
+                return <p>{item.name}</p>;
+            })}
         </div>
     );
 };
