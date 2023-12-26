@@ -387,276 +387,285 @@ const SortAndFilter = (props) => {
             <div className={styles['sort-filter-tab']}>
                 {/* //* Sorting */}
                 <div className="wrapper">
-                <p>Sort:</p>
+                    <p>Sort:</p>
 
-                
-                <div className={styles.sort}>
-                    {/* Issued Time */}
-                    <div className={styles['sort-item']}>
-                        <input
-                            type="checkbox"
-                            checked={filterState.issuedTime.isSorted}
-                            id="issuedTimeSort"
-                            onChange={(e) => handleSortBy('issuedTimeState', e)}
-                        />
-                        <label
-                            htmlFor="issuedTimeSort"
-                            className={
-                                filterState.issuedTime.isSorted
-                                    ? styles['is-sorted']
-                                    : ''
-                            }
-                        >
-                            Date
-                        </label>
-                        <ul>
-                            <li>
-                                <input
-                                    type="radio"
-                                    id="issuedTimeSortAsc"
-                                    name="issuedTime"
-                                    value="1"
-                                    onChange={(e) =>
-                                        handleSortBy('issuedTime', e)
-                                    }
-                                />
-                                <label
-                                    htmlFor="issuedTimeSortAsc"
-                                    className={
-                                        filterState.issuedTime.isSorted &&
-                                        filterState.issuedTime.order == '1'
-                                            ? styles.selected
-                                            : ''
-                                    }
-                                >
-                                    <RiSortDesc />
-                                </label>
-                            </li>
-                            <li>
-                                <input
-                                    type="radio"
-                                    id="issuedTimeSortDesc"
-                                    value="-1"
-                                    name="issuedTime"
-                                    onChange={(e) =>
-                                        handleSortBy('issuedTime', e)
-                                    }
-                                />
-                                <label
-                                    htmlFor="issuedTimeSortDesc"
-                                    className={
-                                        filterState.issuedTime.isSorted &&
-                                        filterState.issuedTime.order == '-1'
-                                            ? styles.selected
-                                            : ''
-                                    }
-                                >
-                                    <RiSortAsc />
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
+                    <div className={styles.sort}>
+                        {/* Issued Time */}
+                        <div className={styles['sort-item']}>
+                            <input
+                                type="checkbox"
+                                checked={filterState.issuedTime.isSorted}
+                                id="issuedTimeSort"
+                                onChange={(e) =>
+                                    handleSortBy('issuedTimeState', e)
+                                }
+                            />
+                            <label
+                                htmlFor="issuedTimeSort"
+                                className={
+                                    filterState.issuedTime.isSorted
+                                        ? styles['is-sorted']
+                                        : ''
+                                }
+                            >
+                                Date
+                            </label>
+                            <ul>
+                                <li>
+                                    <input
+                                        type="radio"
+                                        id="issuedTimeSortAsc"
+                                        name="issuedTime"
+                                        value="1"
+                                        onChange={(e) =>
+                                            handleSortBy('issuedTime', e)
+                                        }
+                                    />
+                                    <label
+                                        htmlFor="issuedTimeSortAsc"
+                                        className={
+                                            filterState.issuedTime.isSorted &&
+                                            filterState.issuedTime.order == '1'
+                                                ? styles.selected
+                                                : ''
+                                        }
+                                    >
+                                        <RiSortDesc />
+                                    </label>
+                                </li>
+                                <li>
+                                    <input
+                                        type="radio"
+                                        id="issuedTimeSortDesc"
+                                        value="-1"
+                                        name="issuedTime"
+                                        onChange={(e) =>
+                                            handleSortBy('issuedTime', e)
+                                        }
+                                    />
+                                    <label
+                                        htmlFor="issuedTimeSortDesc"
+                                        className={
+                                            filterState.issuedTime.isSorted &&
+                                            filterState.issuedTime.order == '-1'
+                                                ? styles.selected
+                                                : ''
+                                        }
+                                    >
+                                        <RiSortAsc />
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
 
-                    {/* Customers  */}
-                    <div className={styles['sort-item']}>
-                        <input
-                            type="checkbox"
-                            id="customerSort"
-                            checked={filterState.customers.isSorted}
-                            onChange={(e) => handleSortBy('customersState', e)}
-                        />
-                        <label
-                            htmlFor="customerSort"
-                            className={
-                                filterState.customers.isSorted
-                                    ? styles['is-sorted']
-                                    : ''
-                            }
-                        >
-                            Customer
-                        </label>
-                        <ul>
-                            <li>
-                                <input
-                                    type="radio"
-                                    id="customerSortAsc"
-                                    name="customers"
-                                    value={'1'}
-                                    onChange={(e) =>
-                                        handleSortBy('customers', e)
-                                    }
-                                />
-                                <label
-                                    htmlFor="customerSortAsc"
-                                    className={
-                                        filterState.customers.isSorted &&
-                                        filterState.customers.order == '1'
-                                            ? styles.selected
-                                            : ''
-                                    }
-                                >
-                                    <BsSortAlphaDown />
-                                </label>
-                            </li>
-                            <li>
-                                <input
-                                    type="radio"
-                                    id="customerSortDesc"
-                                    name="customers"
-                                    value={'-1'}
-                                    onChange={(e) =>
-                                        handleSortBy('customers', e)
-                                    }
-                                />
-                                <label
-                                    htmlFor="customerSortDesc"
-                                    className={
-                                        filterState.customers.isSorted &&
-                                        filterState.customers.order == '-1'
-                                            ? styles.selected
-                                            : ''
-                                    }
-                                >
-                                    <BsSortAlphaUpAlt />
-                                </label>
-                            </li>
-                        </ul>
+                        {/* Customers  */}
+                        <div className={styles['sort-item']}>
+                            <input
+                                type="checkbox"
+                                id="customerSort"
+                                checked={filterState.customers.isSorted}
+                                onChange={(e) =>
+                                    handleSortBy('customersState', e)
+                                }
+                            />
+                            <label
+                                htmlFor="customerSort"
+                                className={
+                                    filterState.customers.isSorted
+                                        ? styles['is-sorted']
+                                        : ''
+                                }
+                            >
+                                Customer
+                            </label>
+                            <ul>
+                                <li>
+                                    <input
+                                        type="radio"
+                                        id="customerSortAsc"
+                                        name="customers"
+                                        value={'1'}
+                                        onChange={(e) =>
+                                            handleSortBy('customers', e)
+                                        }
+                                    />
+                                    <label
+                                        htmlFor="customerSortAsc"
+                                        className={
+                                            filterState.customers.isSorted &&
+                                            filterState.customers.order == '1'
+                                                ? styles.selected
+                                                : ''
+                                        }
+                                    >
+                                        <BsSortAlphaDown />
+                                    </label>
+                                </li>
+                                <li>
+                                    <input
+                                        type="radio"
+                                        id="customerSortDesc"
+                                        name="customers"
+                                        value={'-1'}
+                                        onChange={(e) =>
+                                            handleSortBy('customers', e)
+                                        }
+                                    />
+                                    <label
+                                        htmlFor="customerSortDesc"
+                                        className={
+                                            filterState.customers.isSorted &&
+                                            filterState.customers.order == '-1'
+                                                ? styles.selected
+                                                : ''
+                                        }
+                                    >
+                                        <BsSortAlphaUpAlt />
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        {/* Items Variety  */}
+                        <div className={styles['sort-item']}>
+                            <input
+                                type="checkbox"
+                                id="itemsVarietySort"
+                                checked={filterState.itemsVariety.isSorted}
+                                onChange={(e) =>
+                                    handleSortBy('itemsVarietyState', e)
+                                }
+                            />
+                            <label
+                                htmlFor="itemsVarietySort"
+                                className={
+                                    filterState.itemsVariety.isSorted
+                                        ? styles['is-sorted']
+                                        : ''
+                                }
+                            >
+                                Variety
+                            </label>
+                            <ul>
+                                <li>
+                                    <input
+                                        type="radio"
+                                        id="itemsVarietySortAsc"
+                                        name="itemsVariety"
+                                        value={'1'}
+                                        onChange={(e) =>
+                                            handleSortBy('itemsVariety', e)
+                                        }
+                                    />
+                                    <label
+                                        htmlFor="itemsVarietySortAsc"
+                                        className={
+                                            filterState.itemsVariety.isSorted &&
+                                            filterState.itemsVariety.order ==
+                                                '1'
+                                                ? styles.selected
+                                                : ''
+                                        }
+                                    >
+                                        <BsSortNumericDown />
+                                    </label>
+                                </li>
+                                <li>
+                                    <input
+                                        type="radio"
+                                        id="itemsVarietySortDesc"
+                                        name="itemsVariety"
+                                        value={'-1'}
+                                        onChange={(e) =>
+                                            handleSortBy('itemsVariety', e)
+                                        }
+                                    />
+                                    <label
+                                        htmlFor="itemsVarietySortDesc"
+                                        className={
+                                            filterState.itemsVariety.isSorted &&
+                                            filterState.itemsVariety.order ==
+                                                '-1'
+                                                ? styles.selected
+                                                : ''
+                                        }
+                                    >
+                                        <BsSortNumericUpAlt />
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        {/* Total Quantity  */}
+                        <div className={styles['sort-item']}>
+                            <input
+                                type="checkbox"
+                                id="totalQuantitySort"
+                                checked={filterState.totalQuantity.isSorted}
+                                onChange={(e) =>
+                                    handleSortBy('totalQuantityState', e)
+                                }
+                            />
+                            <label
+                                htmlFor="totalQuantitySort"
+                                className={
+                                    filterState.totalQuantity.isSorted
+                                        ? styles['is-sorted']
+                                        : ''
+                                }
+                            >
+                                Quantity
+                            </label>
+                            <ul>
+                                <li>
+                                    <input
+                                        type="radio"
+                                        id="totalQuantitySortAsc"
+                                        name="totalQuantity"
+                                        value={'1'}
+                                        onChange={(e) =>
+                                            handleSortBy('totalQuantity', e)
+                                        }
+                                    />
+                                    <label
+                                        htmlFor="totalQuantitySortAsc"
+                                        className={
+                                            filterState.totalQuantity
+                                                .isSorted &&
+                                            filterState.totalQuantity.order ==
+                                                '1'
+                                                ? styles.selected
+                                                : ''
+                                        }
+                                    >
+                                        <BsSortNumericDown />
+                                    </label>
+                                </li>
+                                <li>
+                                    <input
+                                        type="radio"
+                                        id="totalQuantitySortDesc"
+                                        name="totalQuantity"
+                                        value={'-1'}
+                                        onChange={(e) =>
+                                            handleSortBy('totalQuantity', e)
+                                        }
+                                    />
+                                    <label
+                                        htmlFor="totalQuantitySortDesc"
+                                        className={
+                                            filterState.totalQuantity
+                                                .isSorted &&
+                                            filterState.totalQuantity.order ==
+                                                '-1'
+                                                ? styles.selected
+                                                : ''
+                                        }
+                                    >
+                                        <BsSortNumericUpAlt />
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    {/* Items Variety  */}
-                    <div className={styles['sort-item']}>
-                        <input
-                            type="checkbox"
-                            id="itemsVarietySort"
-                            checked={filterState.itemsVariety.isSorted}
-                            onChange={(e) =>
-                                handleSortBy('itemsVarietyState', e)
-                            }
-                        />
-                        <label
-                            htmlFor="itemsVarietySort"
-                            className={
-                                filterState.itemsVariety.isSorted
-                                    ? styles['is-sorted']
-                                    : ''
-                            }
-                        >
-                            Variety
-                        </label>
-                        <ul>
-                            <li>
-                                <input
-                                    type="radio"
-                                    id="itemsVarietySortAsc"
-                                    name="itemsVariety"
-                                    value={'1'}
-                                    onChange={(e) =>
-                                        handleSortBy('itemsVariety', e)
-                                    }
-                                />
-                                <label
-                                    htmlFor="itemsVarietySortAsc"
-                                    className={
-                                        filterState.itemsVariety.isSorted &&
-                                        filterState.itemsVariety.order == '1'
-                                            ? styles.selected
-                                            : ''
-                                    }
-                                >
-                                    <BsSortNumericDown />
-                                </label>
-                            </li>
-                            <li>
-                                <input
-                                    type="radio"
-                                    id="itemsVarietySortDesc"
-                                    name="itemsVariety"
-                                    value={'-1'}
-                                    onChange={(e) =>
-                                        handleSortBy('itemsVariety', e)
-                                    }
-                                />
-                                <label
-                                    htmlFor="itemsVarietySortDesc"
-                                    className={
-                                        filterState.itemsVariety.isSorted &&
-                                        filterState.itemsVariety.order == '-1'
-                                            ? styles.selected
-                                            : ''
-                                    }
-                                >
-                                    <BsSortNumericUpAlt />
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                    {/* Total Quantity  */}
-                    <div className={styles['sort-item']}>
-                        <input
-                            type="checkbox"
-                            id="totalQuantitySort"
-                            checked={filterState.totalQuantity.isSorted}
-                            onChange={(e) =>
-                                handleSortBy('totalQuantityState', e)
-                            }
-                        />
-                        <label
-                            htmlFor="totalQuantitySort"
-                            className={
-                                filterState.totalQuantity.isSorted
-                                    ? styles['is-sorted']
-                                    : ''
-                            }
-                        >
-                            Quantity
-                        </label>
-                        <ul>
-                            <li>
-                                <input
-                                    type="radio"
-                                    id="totalQuantitySortAsc"
-                                    name="totalQuantity"
-                                    value={'1'}
-                                    onChange={(e) =>
-                                        handleSortBy('totalQuantity', e)
-                                    }
-                                />
-                                <label
-                                    htmlFor="totalQuantitySortAsc"
-                                    className={
-                                        filterState.totalQuantity.isSorted &&
-                                        filterState.totalQuantity.order == '1'
-                                            ? styles.selected
-                                            : ''
-                                    }
-                                >
-                                    <BsSortNumericDown />
-                                </label>
-                            </li>
-                            <li>
-                                <input
-                                    type="radio"
-                                    id="totalQuantitySortDesc"
-                                    name="totalQuantity"
-                                    value={'-1'}
-                                    onChange={(e) =>
-                                        handleSortBy('totalQuantity', e)
-                                    }
-                                />
-                                <label
-                                    htmlFor="totalQuantitySortDesc"
-                                    className={
-                                        filterState.totalQuantity.isSorted &&
-                                        filterState.totalQuantity.order == '-1'
-                                            ? styles.selected
-                                            : ''
-                                    }
-                                >
-                                    <BsSortNumericUpAlt />
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
                 </div>
                 {/* //* Filtering */}
                 <div className={styles.filter}>
@@ -705,11 +714,13 @@ const SortAndFilter = (props) => {
                     </ul>
                 </div>
             </div>
+            {/* //* ADDED FILTERS  */}
             <div className={styles['added-filters']}>
                 {filterState.issuedTime.isOpened && (
                     <div className={styles['filter-bar']}>
+                        <span>Date:</span>
                         <div className="">
-                            <label htmlFor="issuedTimeFrom">From</label>
+                            <label htmlFor="issuedTimeFrom">From:</label>
                             <input
                                 type="datetime-local"
                                 id="issuedTimeFrom"
@@ -721,7 +732,7 @@ const SortAndFilter = (props) => {
                         </div>
 
                         <div className="">
-                            <label htmlFor="issuedTimeTo">To</label>
+                            <label htmlFor="issuedTimeTo">To:</label>
                             <input
                                 type="datetime-local"
                                 id="issuedTimeTo"
@@ -743,7 +754,8 @@ const SortAndFilter = (props) => {
 
                 {filterState.products.isOpened && (
                     <div className={styles['filter-bar']}>
-                        Products:
+                        <span>Products:</span>
+
                         <div>
                             {Array.from(filterState.products.set).map(
                                 (product, index) => (
@@ -762,10 +774,12 @@ const SortAndFilter = (props) => {
                                 )
                             )}
                         </div>
-                        <label htmlFor="newProductFilter">
-                            Enter to add product:
-                        </label>
-                        <input type="text" id="newProductFilter" />
+                        <div className="">
+                            <label htmlFor="newProductFilter">
+                                Enter to add product:
+                            </label>
+                            <input type="text" id="newProductFilter" />
+                        </div>
                         <Button
                             className={'primary02'}
                             onClick={() =>
@@ -791,7 +805,7 @@ const SortAndFilter = (props) => {
 
                 {filterState.customers.isOpened && (
                     <div className={styles['filter-bar']}>
-                        customers:
+                        <span>Customers:</span>
                         <div>
                             {Array.from(filterState.customers.set).map(
                                 (customer, index) => (
@@ -809,10 +823,12 @@ const SortAndFilter = (props) => {
                                 )
                             )}
                         </div>
-                        <label htmlFor="newCustomerFilter">
-                            Enter to add customer:
-                        </label>
-                        <input type="text" id="newCustomerFilter" />
+                        <div className="">
+                            <label htmlFor="newCustomerFilter">
+                                Enter to add customer:
+                            </label>
+                            <input type="text" id="newCustomerFilter" />
+                        </div>
                         <Button
                             className={'primary02'}
                             onClick={() =>
@@ -836,25 +852,28 @@ const SortAndFilter = (props) => {
                 )}
                 {filterState.totalQuantity.isOpened && (
                     <div className={styles['filter-bar']}>
-                        Quantity
-                        <label htmlFor="quantityRangeFrom">From:</label>
-                        <input
-                            type="number"
-                            id="quantityRangeFrom"
-                            defaultValue={1}
-                            onChange={(e) =>
-                                handleQuantity('totalQuantityRangeFrom', e)
-                            }
-                        />
-                        <label htmlFor="quantityRangeTo">To:</label>
-                        <input
-                            type="number"
-                            id="quantityRangeTo"
-                            defaultValue={10}
-                            onChange={(e) =>
-                                handleQuantity('totalQuantityRangeTo', e)
-                            }
-                        />
+                        <span>Quantity:</span>
+                        <div className="">
+                            <label htmlFor="quantityRangeFrom">From:</label>
+                            <input
+                                type="number"
+                                id="quantityRangeFrom"
+                                defaultValue={1}
+                                onChange={(e) =>
+                                    handleQuantity('totalQuantityRangeFrom', e)
+                                }
+                            />
+                            <label htmlFor="quantityRangeTo">To:</label>
+                            <input
+                                type="number"
+                                id="quantityRangeTo"
+                                defaultValue={10}
+                                onChange={(e) =>
+                                    handleQuantity('totalQuantityRangeTo', e)
+                                }
+                            />
+                        </div>
+
                         <Button
                             className={'primary01'}
                             onClick={() => handleQuantity('remove')}
@@ -865,25 +884,30 @@ const SortAndFilter = (props) => {
                 )}
                 {filterState.itemsVariety.isOpened && (
                     <div className={styles['filter-bar']}>
-                        itemsVariety
-                        <label htmlFor="itemsVarietyRangeFrom">From</label>
-                        <input
-                            type="number"
-                            id="itemsVarietyRangeFrom"
-                            defaultValue={1}
-                            onChange={(e) =>
-                                handleItemsVariety('itemsVarietyRangeFrom', e)
-                            }
-                        />
-                        <label htmlFor="itemsVarietyRangeTo">To</label>
-                        <input
-                            type="number"
-                            id="itemsVarietyRangeTo"
-                            defaultValue={10}
-                            onChange={(e) =>
-                                handleItemsVariety('itemsVarietyRangeTo', e)
-                            }
-                        />
+                        <span>Items Variety:</span>
+                        <div className="">
+                            <label htmlFor="itemsVarietyRangeFrom">From:</label>
+                            <input
+                                type="number"
+                                id="itemsVarietyRangeFrom"
+                                defaultValue={1}
+                                onChange={(e) =>
+                                    handleItemsVariety(
+                                        'itemsVarietyRangeFrom',
+                                        e
+                                    )
+                                }
+                            />
+                            <label htmlFor="itemsVarietyRangeTo">To:</label>
+                            <input
+                                type="number"
+                                id="itemsVarietyRangeTo"
+                                defaultValue={10}
+                                onChange={(e) =>
+                                    handleItemsVariety('itemsVarietyRangeTo', e)
+                                }
+                            />
+                        </div>
                         <Button
                             className={'primary01'}
                             onClick={() => handleItemsVariety('remove')}

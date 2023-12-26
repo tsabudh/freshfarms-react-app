@@ -1,6 +1,8 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import Button from '../Button/Button';
 
+import styles from "./DatePicker.module.scss";
+
 const monthNames = [
     'January',
     'February',
@@ -20,11 +22,11 @@ const DatePicker = (props) => {
    
 
     return (
-        <div className="">
-            <Button onClick={() => navigateMonth('navigate', -1)}>
+        <div className={styles["picker-container"]}>
+            <Button onClick={() => navigateMonth('navigate', -1) } className='primary01'>
                 Previous
             </Button>
-            {monthNames[dateState.month]}
+          
             <select
                 className="form-select"
                 id="month"
@@ -44,7 +46,7 @@ const DatePicker = (props) => {
                 ))}
             </select>
             {dateState.year}
-            <Button onClick={() => navigateMonth('navigate', 1)}>Next</Button>
+            <Button onClick={() => navigateMonth('navigate', 1)} className='primary01'>Next</Button>
         </div>
     );
 };

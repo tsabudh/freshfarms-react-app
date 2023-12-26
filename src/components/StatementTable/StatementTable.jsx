@@ -1,4 +1,6 @@
-import React,{ useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import styles from './StatementTable.module.scss';
 
 const StatementTable = (props) => {
     let {
@@ -47,8 +49,9 @@ const StatementTable = (props) => {
     let totalBalance = totalAmount - totalPaid;
 
     return (
-        <div>
-            <table>
+        <div className={styles['statement-container']}>
+            <p>Monthly Overview</p>
+            <table className={styles['summary']}>
                 <thead>
                     <tr>
                         <th>Transactions</th>
@@ -72,6 +75,7 @@ const StatementTable = (props) => {
                 </tbody>
             </table>
 
+            <p>Balance sheet</p>
             <table>
                 <thead>
                     <tr>

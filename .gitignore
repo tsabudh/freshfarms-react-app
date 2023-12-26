@@ -27,5 +27,6 @@ dist-ssr
 *vite.config.js
 .prettierrc
 .eslintrc.cjs
+.env
 
 TODO

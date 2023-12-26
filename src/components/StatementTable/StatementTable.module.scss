@@ -1,0 +1,21 @@
+.statement-container {
+    padding: 2rem;
+    border-radius: 1rem;
+
+    background-color: rgba(240, 248, 255, 0.192);
+    color: black;
+
+    & table {
+        border-collapse: collapse;
+        margin-block: 2rem;
+        & th,
+        td {
+            padding: 0.5rem 1em;
+            border: 2px solid white;
+            text-transform: capitalize;
+        }
+
+        &.summary{
+        }
+    }
+}

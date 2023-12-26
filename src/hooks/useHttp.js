@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+
 const fetchCustomers = () => {
     return new Promise((resolve, reject) => {
         let xhttp = new XMLHttpRequest();

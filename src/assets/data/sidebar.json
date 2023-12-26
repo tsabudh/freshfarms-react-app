@@ -1,117 +1,87 @@
 [
     {
-        "title": "General",
+        "title": "Overview",
         "icon": "bi-gear-fill",
+        "identity": "menu",
+        "path": "/"
+    },
+    {
+        "title": "Transactions",
+        "icon": "bi-gear-fill",
+        "identity": "menu",
         "children": [
             {
                 "title": "Home",
-                "icon": "bi-house-fill",
-                "path": "/"
+                "path": "/transactions",
+                "identity": "sub-menu"
             },
             {
-                "title": "About",
-                "icon": "bi-info-circle-fill",
-                "path": "/about"
+                "title": "Statements",
+                "path": "/statements",
+                "identity": "sub-menu"
+            }
+        ]
+    },
+
+    {
+        "title": "Customers",
+        "icon": "bi-person-fill",
+        "identity": "menu",
+        "children": [
+            {
+                "title": "Home",
+                "path": "/customers",
+                "identity": "sub-menu"
             },
             {
-                "title": "Contact",
-                "icon": "bi-phone-fill",
-                "children": [
-                    {
-                        "title": "Facebook",
-                        "icon": "bi-facebook"
-                    },
-                    {
-                        "title": "Twitter",
-                        "icon": "bi-twitter"
-                    },
-                    {
-                        "title": "Instagram",
-                        "icon": "bi-instagram"
-                    }
-                ]
+                "title": "Account",
+                "path": "/customers/account",
+                "identity": "sub-menu"
+            }
+        ]
+    },
+    {
+        "title": "Invoice",
+        "icon": "bi-view-list",
+        "identity": "menu",
+        "children": [
+            {
+                "title": "Home",
+                "path": "/invoice",
+                "identity": "sub-menu"
             },
             {
-                "title": "FAQ",
-                "icon": "bi-question-circle-fill"
+                "title": "Billing",
+                "path": "/invoice/billing",
+                "identity": "sub-menu"
             }
         ]
     },
     {
         "title": "Account",
         "icon": "bi-info-circle-fill",
+        "identity": "menu",
         "children": [
             {
                 "title": "Login",
-                "path": "/login"
+                "path": "/login",
+                "identity": "sub-menu"
             },
             {
                 "title": "Register",
-                "path": "/register"
+                "path": "/register",
+                "identity": "sub-menu"
             },
             {
                 "title": "Forgot Password",
-                "path": "/forgot-password"
+                "path": "/forgot-password",
+                "identity": "sub-menu"
             },
             {
                 "title": "Reset Password",
-                "path": "/reset-password"
-            }
-        ]
-    },
-    {
-        "title": "Profile",
-        "icon": "bi-person-fill",
-        "children": [
-            {
-                "title": "Profile",
-                "path": "/profile"
-            },
-            {
-                "title": "Settings",
-                "children": [
-                    {
-                        "title": "Account",
-                        "path": "/settings/account"
-                    },
-                    {
-                        "title": "Billing",
-                        "children": [
-                            {
-                                "title": "Payment",
-                                "path": "/settings/billing/payment"
-                            },
-                            {
-                                "title": "Subscription",
-                                "path": "/settings/billing/subscription"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Notifications",
-                        "path": "/settings/notifications"
-                    }
-                ]
-            },
-            {
-                "title": "Logout",
-                "path": "/logout"
-            }
-        ]
-    },
-    {
-        "title": "Advance",
-        "icon": "bi-view-list",
-        "children": [
-            {
-                "title": "Search",
-                "path": "/search"
-            },
-            {
-                "title": "History",
-                "path": "/history"
+                "path": "/reset-password",
+                "identity": "sub-menu"
             }
         ]
     }
-    
 ]

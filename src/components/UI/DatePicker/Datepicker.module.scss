@@ -1,0 +1,17 @@
+.picker-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-block: 2rem;
+
+    & > * {
+        margin-inline: 2rem;
+    }
+
+    & select {
+        padding-block: 0.5rem;
+        border-radius: 0.5rem;
+    }
+}

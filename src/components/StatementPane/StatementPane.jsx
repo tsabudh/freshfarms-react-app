@@ -1,4 +1,4 @@
-import React,{ useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import DatePicker from '../UI/DatePicker/DatePicker';
 import { transactionPromiseFunc } from '../TicketTable/TicketTable';
 import StatementTable from '../StatementTable/StatementTable';
@@ -185,6 +185,7 @@ const StatementPane = () => {
 
     return (
         <>
+            <h2>Monthly Statements</h2>
             <DatePicker navigateMonth={navigateMonth} dateState={dateState} />
             <StatementTable
                 numberOfTransactions={numberOfTransactions}
