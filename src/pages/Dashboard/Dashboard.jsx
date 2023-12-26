@@ -1,3 +1,4 @@
+import React from 'react';
 import TicketPane from '../../components/TicketPane/TicketPane';
 import Sidebar from '../../components/Sidebar/Sidebar';
 
