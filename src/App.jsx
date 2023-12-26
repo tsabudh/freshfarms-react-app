@@ -1,13 +1,13 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import Dashboard from './pages/Dashboard/Dashboard';
 import RegisterPane from './components/RegisterPane/RegisterPane';
-
-import './App.css';
 import TicketPane from './components/TicketPane/TicketPane';
 import CustomerPane from './components/CustomerPane/CustomerPane';
 import StatementPane from './components/StatementPane/StatementPane';
 import InventoryPane from './components/InventoryPane/InventoryPane';
+import './App.css';
 
 function App() {
     return (

@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useState } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import Button from '../Button/Button';
 
 const monthNames = [

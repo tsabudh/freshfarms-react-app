@@ -1,8 +1,8 @@
+import React,{ useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './SidebarItem.module.scss';
 import { SlArrowDown } from 'react-icons/sl';
 
-import { useState } from 'react';
 
 function SidebarItem({ item }) {
     const [open, setOpen] = useState(false);

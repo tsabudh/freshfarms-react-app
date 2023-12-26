@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from 'react';
+import React,{ useState, useEffect, useReducer } from 'react';
 import DatePicker from '../UI/DatePicker/DatePicker';
 import { transactionPromiseFunc } from '../TicketTable/TicketTable';
 import StatementTable from '../StatementTable/StatementTable';
