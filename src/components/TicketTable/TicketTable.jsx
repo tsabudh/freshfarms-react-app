@@ -12,7 +12,7 @@ export const transactionPromiseFunc = (filterObject) => {
         };
 
         const filterString = JSON.stringify(filterObject);
-
+        console.log(filterObject);
         const filterParam = btoa(filterString);
         xhttp.open(
             'GET',
@@ -27,7 +27,6 @@ export const transactionPromiseFunc = (filterObject) => {
         xhttp.send();
     });
 };
-
 
 const TicketTable = (props) => {
     const { filterObject } = props;

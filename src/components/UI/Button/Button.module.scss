@@ -29,4 +29,35 @@ button {
         color: white;
         background: linear-gradient(to right, #0c332e, #0b2d29);
     }
+
+    &.stylish01 {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 1rem;
+        &.loading{
+            pointer-events: none;
+            background: rgb(255, 230, 0);
+        }
+        &:active {
+        }
+    }
+    &.stylish02 {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 1rem;
+        color: white;
+        background: #eb2852;
+        &:active {
+            background: #b60407;
+        }
+    }
+    &.stylish03 {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 1rem;
+        background: #a2f0a2;
+        &:active {
+            background: #33f801;
+        }
+    }
 }

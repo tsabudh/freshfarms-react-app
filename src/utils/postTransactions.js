@@ -8,7 +8,7 @@ export async function postTransaction(transactionObject) {
                 if (xhttp.readyState == 4) {
                     console.log('Request COmpleted')
                     let response = JSON.parse(xhttp.responseText);
-                    resolve(response.data);
+                    resolve(response);
                 }
                 if(xhttp.readyState == 0 ){
                     console.log('Open not called')

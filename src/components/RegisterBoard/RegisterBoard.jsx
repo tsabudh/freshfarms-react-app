@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { MdOutlineDeleteForever } from 'react-icons/md';
+
+import Button from '../UI/Button/Button';
 import styles from './RegisterBoard.module.scss';
 import fetchCustomers from '../../utils/fetchCostumers';
 import fetchProducts from '../../utils/fetchProducts';
 import { postTransaction } from '../../utils/postTransactions';
+import classNames from 'classnames';
 
 const RegisterBoard = () => {
+    const [posting, setPosting] = useState('idle'); // sending idle success failure
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
     const [quantity, setQuantity] = useState(1);
@@ -58,8 +63,9 @@ const RegisterBoard = () => {
         newCart.splice(found, 1);
         setCart(newCart);
     };
-
+    
     const addTransaction = async () => {
+        setPosting('sending');
         let newTransaction = {};
         const selectCustomerEl = document.getElementById('customers');
         const selectedCustomer =
@@ -75,6 +81,8 @@ const RegisterBoard = () => {
 
         let result = await postTransaction(newTransaction);
         console.log(result);
+        if (result.status=='success') setPosting('success');
+        else setPosting('failure');
     };
 
     return (
@@ -108,9 +116,65 @@ const RegisterBoard = () => {
                             onChange={(e) => setQuantity(e.target.value)}
                             min={1}
                         />
-                        <button onClick={addToCart}>add</button>
+                        <Button className="stylish03" onClick={addToCart}>
+                            add
+                        </Button>
                     </div>
-                    <div>
+                    <div className={styles['cart']}>
+                        {/* //* HEAD */}
+                        {cart.length > 0 ? (
+                            <div
+                                className={`${styles['cart-item']} ${styles['cart-item--head']}`}
+                            >
+                                <div
+                                    className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--id']}`}
+                                >
+                                    <span
+                                        className={
+                                            styles['cart-item-piece-label']
+                                        }
+                                    >
+                                        PID
+                                    </span>
+                                </div>
+                                <div
+                                    className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--name']}`}
+                                >
+                                    <span
+                                        className={
+                                            styles['cart-item-piece-label']
+                                        }
+                                    >
+                                        Item
+                                    </span>
+                                </div>
+                                <div
+                                    className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--price']}`}
+                                >
+                                    <span
+                                        className={
+                                            styles['cart-item-piece-label']
+                                        }
+                                    >
+                                        Price
+                                    </span>
+                                </div>
+                                <div
+                                    className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--quantity']}`}
+                                >
+                                    <span
+                                        className={
+                                            styles['cart-item-piece-label']
+                                        }
+                                    >
+                                        Quantity
+                                    </span>
+                                </div>
+                            </div>
+                        ) : (
+                            ''
+                        )}
+
                         {cart.map((item) => {
                             return (
                                 <div
@@ -118,24 +182,83 @@ const RegisterBoard = () => {
                                     key={item._id}
                                     data-_id={item._id}
                                 >
-                                    ID: <span>{item._id}</span>
-                                    Item:<span>{item.name}</span>
-                                    Price:<span>{item.price}</span>
-                                    Quantity:<span>{item.quantity}</span>
-                                    <button
-                                        onClick={(e) => {
-                                            removeFromCart(e);
-                                        }}
+                                    <div
+                                        className={`${styles['cart-item-piece']} ${styles['cart-item-piece--id']}`}
                                     >
-                                        remove
-                                    </button>
+                                        <span
+                                            className={
+                                                styles['cart-item-piece-value']
+                                            }
+                                        >
+                                            {item._id}
+                                        </span>
+                                    </div>
+                                    <div
+                                        className={`${styles['cart-item-piece']} ${styles['cart-item-piece--name']}`}
+                                    >
+                                        <span
+                                            className={
+                                                styles['cart-item-piece-value']
+                                            }
+                                        >
+                                            {item.name}
+                                        </span>
+                                    </div>
+                                    <div
+                                        className={`${styles['cart-item-piece']} ${styles['cart-item-piece--price']}`}
+                                    >
+                                        <span
+                                            className={
+                                                styles['cart-item-piece-value']
+                                            }
+                                        >
+                                            {item.price}
+                                        </span>
+                                    </div>
+                                    <div
+                                        className={`${styles['cart-item-piece']} ${styles['cart-item-piece--quantity']}`}
+                                    >
+                                        <span
+                                            className={
+                                                styles['cart-item-piece-value']
+                                            }
+                                        >
+                                            {item.quantity}
+                                        </span>
+                                        <span
+                                            className={
+                                                styles['cart-item-piece-delete']
+                                            }
+                                            onClick={(e) => {
+                                                removeFromCart(e);
+                                            }}
+                                        >
+                                            <MdOutlineDeleteForever />
+                                        </span>
+                                    </div>
                                 </div>
                             );
                         })}
                     </div>
                 </form>
                 <div>
-                    <button onClick={addTransaction}>ADD TRANSACTION</button>
+                    <Button
+                        className={classNames(`stylish01`, {
+                            loading: posting == 'sending',
+                        })}
+                        onClick={addTransaction}
+                    >
+                        {posting == 'sending'
+                            ? 'ADDING TRANSACTION'
+                            : 'ADD TRANSACTION'}
+                    </Button>
+                    {posting == 'success'
+                        ? 'success'
+                        : posting == 'sending'
+                        ? 'CREATING'
+                        : posting == 'failure'
+                        ? 'FAILED'
+                        : 'IDLE'}
                 </div>
             </div>
         </>
