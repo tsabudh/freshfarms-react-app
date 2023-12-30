@@ -1,9 +1,6 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 
-import {
-    AiOutlineSortAscending,
-    AiOutlineSortDescending,
-} from 'react-icons/ai';
+
 import {
     BsSortAlphaDown,
     BsSortAlphaDownAlt,
@@ -33,8 +30,8 @@ const initialFilterState = {
         isOpened: false,
         from: '',
         to: Date.now(),
-        isSorted: false,
-        order: undefined,
+        isSorted: true,
+        order: -1,
     },
     products: {
         isOpened: false,
@@ -158,7 +155,6 @@ const filterReducer = (filterState, action) => {
     }
     if (action.type === 'itemsVariety') {
         newFilterState.itemsVariety.isOpened = true;
-        console.log(action.to);
         if (action.update === 'itemsVarietyRangeFrom') {
             newFilterState.itemsVariety.from = action.from;
         }
@@ -170,7 +166,6 @@ const filterReducer = (filterState, action) => {
         }
         return newFilterState;
     }
-    console.log(newFilterState);
 };
 
 const SortAndFilter = (props) => {
@@ -180,74 +175,66 @@ const SortAndFilter = (props) => {
         filterReducer,
         initialFilterState
     );
-    console.log(filterState.issuedTime.order);
-    console.log(filterState.issuedTime.order == '1' ? 'ASC' : 'DSC');
+
+    // useEffect(() => {
+    //     applyFilter(filterState, setFilterObject);
+    // }, []);
     const handleSortBy = (method, e) => {
         if (method == 'issuedTime') {
-            console.log(e.target.value);
             dispatchFilter({
                 type: 'sortBy',
                 update: 'issuedTime',
                 order: e.target.value,
             });
         } else if (method === 'issuedTimeState') {
-            console.log(e.target.checked);
             dispatchFilter({
                 type: 'sortBy',
                 update: 'issuedTimeState',
                 state: e.target.checked,
             });
         } else if (method == 'customers') {
-            console.log(e.target.value);
             dispatchFilter({
                 type: 'sortBy',
                 update: 'customers',
                 order: e.target.value,
             });
         } else if (method === 'customersState') {
-            console.log(e.target.checked);
             dispatchFilter({
                 type: 'sortBy',
                 update: 'customersState',
                 state: e.target.checked,
             });
         } else if (method == 'products') {
-            console.log(e.target.value);
             dispatchFilter({
                 type: 'sortBy',
                 update: 'products',
                 order: e.target.value,
             });
         } else if (method === 'productsState') {
-            console.log(e.target.checked);
             dispatchFilter({
                 type: 'sortBy',
                 update: 'productsState',
                 state: e.target.checked,
             });
         } else if (method == 'totalQuantity') {
-            console.log(e.target.value);
             dispatchFilter({
                 type: 'sortBy',
                 update: 'totalQuantity',
                 order: e.target.value,
             });
         } else if (method === 'totalQuantityState') {
-            console.log(e.target.checked);
             dispatchFilter({
                 type: 'sortBy',
                 update: 'totalQuantityState',
                 state: e.target.checked,
             });
         } else if (method == 'itemsVariety') {
-            console.log(e.target.value);
             dispatchFilter({
                 type: 'sortBy',
                 update: 'itemsVariety',
                 order: e.target.value,
             });
         } else if (method === 'itemsVarietyState') {
-            console.log(e.target.checked);
             dispatchFilter({
                 type: 'sortBy',
                 update: 'itemsVarietyState',
@@ -270,7 +257,6 @@ const SortAndFilter = (props) => {
                 to: e.target.value,
             });
         } else if (method === 'remove') {
-            console.log('handle remove');
             dispatchFilter({
                 type: 'issuedTime',
                 update: 'remove',
@@ -947,13 +933,11 @@ const applyFilter = (filterState, setFilterObject) => {
         filterObject.issuedTime = {};
         filterObject.issuedTime.from = new Date(filterState.issuedTime.from);
 
-        console.log(filterState.issuedTime.to);
         filterObject.issuedTime.to = new Date(filterState.issuedTime.to);
 
         if (filterObject.issuedTime.to == 'Invalid Date') {
             filterObject.issuedTime.to = new Date();
         }
-        console.log(filterState.issuedTime.to);
     }
 
     if (filterState.products.isOpened && filterState.products.set.size != 0) {
@@ -971,7 +955,6 @@ const applyFilter = (filterState, setFilterObject) => {
         };
     }
     if (filterState.itemsVariety.isOpened) {
-        console.log(filterState.itemsVariety.to);
         filterObject.itemsVariety = {
             from: parseInt(filterState.itemsVariety.from),
             to: parseInt(filterState.itemsVariety.to),

@@ -1,8 +1,7 @@
-import React,{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Ticket from '../Ticket/Ticket';
 
 export const transactionPromiseFunc = (filterObject) => {
-    
     return new Promise(function (resolve, reject) {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = () => {
@@ -29,8 +28,9 @@ export const transactionPromiseFunc = (filterObject) => {
     });
 };
 
+
 const TicketTable = (props) => {
-    const { filterObject, } = props;
+    const { filterObject } = props;
 
     const [transactions, setTransactions] = useState([]);
 
@@ -40,7 +40,6 @@ const TicketTable = (props) => {
             let result = await transactionPromiseFunc(filterObject);
             setTransactions(result);
             // liftTransactions(result);
-       
         } catch (error) {
             console.log(error);
         }

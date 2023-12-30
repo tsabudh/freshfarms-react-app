@@ -3,8 +3,13 @@ import React, { useState, useEffect } from 'react';
 import TicketTable from '../TicketTable/TicketTable';
 import SortAndFilter from '../SortAndFilter/SortAndFilter';
 
-const TicketPane = () => {
-    const [filterObject, setFilterObject] = useState({});
+const TransactionPane = () => {
+    const [filterObject, setFilterObject] = useState({
+        "sortBy": {
+            "issuedTime": -1
+        }
+    });
+    
     return (
         <div className="">
             <SortAndFilter setFilterObject={setFilterObject} />
@@ -13,4 +18,4 @@ const TicketPane = () => {
     );
 };
 
-export default TicketPane;
+export default TransactionPane;
