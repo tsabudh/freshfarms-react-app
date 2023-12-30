@@ -63,7 +63,7 @@ const RegisterBoard = () => {
         newCart.splice(found, 1);
         setCart(newCart);
     };
-    
+
     const addTransaction = async () => {
         setPosting('sending');
         let newTransaction = {};
@@ -75,13 +75,13 @@ const RegisterBoard = () => {
             customerId: selectedCustomer,
         };
         let items = cart.map((item) => {
-            return { productId: item._id };
+            return { productId: item._id, quantity: item.quantity };
         });
         newTransaction.items = items;
 
+        console.log(cart);
         let result = await postTransaction(newTransaction);
-        console.log(result);
-        if (result.status=='success') setPosting('success');
+        if (result.status == 'success') setPosting('success');
         else setPosting('failure');
     };
 

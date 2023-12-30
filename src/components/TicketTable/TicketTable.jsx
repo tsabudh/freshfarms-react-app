@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Ticket from '../Ticket/Ticket';
 
 export const transactionPromiseFunc = (filterObject) => {
-    return new Promise(function (resolve, reject) {
+    return new Promise(async function (resolve, reject) {
         let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = () => {
+        xhttp.onreadystatechange = async() => {
             if (xhttp.readyState === XMLHttpRequest.DONE) {
-                let responseReceived = JSON.parse(xhttp.responseText);
+                let responseReceived =await  JSON.parse(xhttp.responseText);
                 resolve(responseReceived.data);
             }
         };
