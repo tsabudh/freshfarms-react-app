@@ -9,11 +9,12 @@ import { postTransaction } from '../../utils/postTransactions';
 import classNames from 'classnames';
 
 const RegisterBoard = (props) => {
-    const [posting, setPosting] = useState('idle'); // sending idle success failure
+    const [posting, setPosting] = useState(''); // sending idle success failure
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [cart, setCart] = useState([]);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     useEffect(() => {
         let asyncFunc = async () => {
@@ -27,6 +28,7 @@ const RegisterBoard = (props) => {
 
     const addToCart = function (e) {
         e.preventDefault();
+        setErrorMessage(null);
         const selected = document.getElementById('products');
         const selectedValue = selected.options[selected.selectedIndex].value;
 
@@ -66,6 +68,7 @@ const RegisterBoard = (props) => {
 
     const addTransaction = async () => {
         setPosting('sending');
+        setErrorMessage(null);
         let newTransaction = {};
         const selectCustomerEl = document.getElementById('customers');
         const selectedCustomer =
@@ -83,20 +86,23 @@ const RegisterBoard = (props) => {
         console.log(result);
         if (result.status == 'success') {
             setPosting('success');
+            setErrorMessage(null);
             props.setFilterObject({
                 sortBy: {
                     issuedTime: -1,
                 },
                 limit: 5,
             });
-        } else setPosting('failure');
+        } else {
+            setPosting('failure');
+            setErrorMessage(result.message);
+        }
     };
 
     return (
         <>
-            <h3>Register Transaction</h3>
             <div className={styles['form-container']}>
-                Enter Transaction Details
+                Register new transaction
                 <form action="">
                     <div className={styles['form-group']}>
                         <label htmlFor="customers">Customer :</label>
@@ -248,24 +254,33 @@ const RegisterBoard = (props) => {
                         })}
                     </div>
                 </form>
-                <div>
+                <div className={styles['form-footer']}>
                     <Button
                         className={classNames(`stylish01`, {
                             loading: posting == 'sending',
                         })}
                         onClick={addTransaction}
                     >
-                        {posting == 'sending'
-                            ? 'ADDING TRANSACTION'
-                            : 'ADD TRANSACTION'}
+                        ADD TRANSACTION
                     </Button>
-                    {posting == 'success'
-                        ? 'success'
-                        : posting == 'sending'
-                        ? 'CREATING'
-                        : posting == 'failure'
-                        ? 'FAILED'
-                        : 'IDLE'}
+                    {posting != '' ? (
+                        <span
+                            className={`${styles['status']} ${styles[posting]}`}
+                        >
+                            {posting == 'success'
+                                ? 'SUCCESS'
+                                : posting == 'sending'
+                                ? 'CREATING'
+                                : posting == 'failure'
+                                ? 'FAILED'
+                                : ''}
+                        </span>
+                    ) : null}
+                    {errorMessage && (
+                        <span className={`${styles['error']}`}>
+                            {errorMessage}
+                        </span>
+                    )}{' '}
                 </div>
             </div>
         </>

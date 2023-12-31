@@ -8,6 +8,13 @@ import items from '../../assets/data/sidebar.json';
 export default function Sidebar() {
     return (
         <div className={styles.sidebar}>
+            <figure className={styles['logo']}>
+                <img
+                    src="img/shree-krishna-dairy-trans.png"
+                    alt="Shree Krishna Dairy Logo"
+                />
+            </figure>
+
             {items.map((item, index) => (
                 <SidebarItem key={index} item={item} />
             ))}

@@ -11,7 +11,7 @@
         align-items: center;
         margin: 2rem 1rem;
         padding-bottom: 1rem;
-        border-bottom: 1px solid blue;
+        border-bottom: 1px solid whitesmoke;
         & select {
             text-transform: capitalize;
             margin-inline: 1rem;
@@ -45,7 +45,7 @@
             min-height: 1rem;
 
             &--head {
-                background: rgba(165, 42, 42, 0.479);
+                background: rgba(13, 108, 196, 0.925);
                 color: white;
             }
             &-piece {
@@ -99,6 +99,48 @@
                     }
                 }
             }
+        }
+    }
+}
+.form-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    & .status {
+        background: rgba(13, 44, 221, 0.678);
+        padding: 0.2rem 1rem;
+        border-radius: 1rem;
+        margin-inline: 1rem;
+        font-size: 1rem;
+        &.success {
+            background: rgb(49, 207, 49);
+        }
+        &.failure {
+            background: red;
+        }
+    }
+    & .error {
+        border: 1px solid red;
+        padding: 0.5rem;
+        font-size: 1.4rem;
+        max-width: 50rem;
+        overflow-x: auto;
+        max-height: 3em;
+        cursor: url('img/cursor-touch.png') 8 8,grab;
+        &::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            background-color: #f5f5f5;
+        }
+
+        &::-webkit-scrollbar {
+            width: 5px;
+            background-color: #f5f5f5;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #000000;
         }
     }
 }
