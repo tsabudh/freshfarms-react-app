@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import DatePicker from '../UI/DatePicker/DatePicker';
-import { transactionPromiseFunc } from '../TicketTable/TicketTable';
+// import { transactionPromiseFunc } from '../TicketTable/TicketTable';
+import { fetchTransactions } from '../../utils/fetchTransactions';
 import StatementTable from '../StatementTable/StatementTable';
 
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -118,8 +119,8 @@ const StatementPane = () => {
                     );
 
                     setFilterObject(filterObject);
-                    let results = await transactionPromiseFunc(filterObject);
-
+                    // let results = await transactionPromiseFunc(filterObject);
+                    let results = await fetchTransactions(filterObject);
                     console.log('Transactions fetched at StatementPane');
                     console.log(results);
 
