@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Children, useEffect, useState } from 'react';
 import { MdOutlineDeleteForever } from 'react-icons/md';
 
 import Button from '../UI/Button/Button';
@@ -8,7 +8,7 @@ import fetchProducts from '../../utils/fetchProducts';
 import { postTransaction } from '../../utils/postTransactions';
 import classNames from 'classnames';
 
-const RegisterBoard = () => {
+const RegisterBoard = (props) => {
     const [posting, setPosting] = useState('idle'); // sending idle success failure
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
@@ -79,10 +79,17 @@ const RegisterBoard = () => {
         });
         newTransaction.items = items;
 
-        console.log(cart);
         let result = await postTransaction(newTransaction);
-        if (result.status == 'success') setPosting('success');
-        else setPosting('failure');
+        console.log(result);
+        if (result.status == 'success') {
+            setPosting('success');
+            props.setFilterObject({
+                sortBy: {
+                    issuedTime: -1,
+                },
+                limit: 5,
+            });
+        } else setPosting('failure');
     };
 
     return (
