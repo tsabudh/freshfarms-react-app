@@ -1,32 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Ticket from '../Ticket/Ticket';
 
-export const transactionPromiseFunc = (filterObject) => {
-    return new Promise(async function (resolve, reject) {
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = async() => {
-            if (xhttp.readyState === XMLHttpRequest.DONE) {
-                let responseReceived =await  JSON.parse(xhttp.responseText);
-                resolve(responseReceived.data);
-            }
-        };
+import { fetchTransactions } from '../../utils/fetchTransactions';
 
-        const filterString = JSON.stringify(filterObject);
-        console.log(filterObject);
-        const filterParam = btoa(filterString);
-        xhttp.open(
-            'GET',
-            `http://127.0.0.1:3000/api/v1/transactions/?filter=${filterParam}`
-        );
-
-        //* Hard coded authorization for Sachin Paudel(admin)
-        xhttp.setRequestHeader(
-            'Authorization',
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6IjY0NjlhM2IxMzkwM2EwZmE1ZjUyMjMzYiIsImlzc3VlZEF0IjoxNjg0NjczMzAwMTk2LCJpYXQiOjE2ODQ2NzMzMDB9.26JLp_lg3UB862q3MUNgYIxIGyMwZtXW3uDhlyaTEBs'
-        );
-        xhttp.send();
-    });
-};
 
 const TicketTable = (props) => {
     const { filterObject } = props;
@@ -36,7 +12,7 @@ const TicketTable = (props) => {
     let asyncWrapper = async () => {
         try {
             console.log('Fetching Transactions...');
-            let result = await transactionPromiseFunc(filterObject);
+            let result = await fetchTransactions(filterObject);
             setTransactions(result);
             // liftTransactions(result);
         } catch (error) {

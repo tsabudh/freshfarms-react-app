@@ -2,8 +2,7 @@ import React from 'react';
 import { useReducer, useEffect, useState } from 'react';
 import styles from './Calender.module.scss';
 
-import { transactionPromiseFunc } from '../TicketTable/TicketTable';
-
+import { fetchTransactions } from '../../utils/fetchTransactions';
 import Button from '../UI/Button/Button';
 import { useTheme } from 'styled-components';
 import DatePicker from '../UI/DatePicker/DatePicker';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -9,6 +9,7 @@ import InventoryPane from './components/InventoryPane/InventoryPane';
 import OverviewPane from './components/OverviewPane/OverviewPane';
 import './App.css';
 
+export const transactionContext = createContext([]);
 function App() {
     return (
         <BrowserRouter>

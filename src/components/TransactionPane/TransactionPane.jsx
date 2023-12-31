@@ -5,11 +5,11 @@ import SortAndFilter from '../SortAndFilter/SortAndFilter';
 
 const TransactionPane = () => {
     const [filterObject, setFilterObject] = useState({
-        "sortBy": {
-            "issuedTime": -1
-        }
+        sortBy: {
+            issuedTime: -1,
+        },
     });
-    
+
     return (
         <div className="">
             <SortAndFilter setFilterObject={setFilterObject} />
