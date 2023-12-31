@@ -5,7 +5,6 @@ const Button = (props) => {
 
 let classArray = props.className.split(' ');
 let classNames = classArray.map(item=>styles[item]).join(' ')
-console.log(classNames)
     return (
         <button
             className={classNames}
