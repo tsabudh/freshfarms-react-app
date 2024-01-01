@@ -49,14 +49,11 @@
                 color: white;
             }
             &-piece {
-                // margin-inline: 1rem;
-                // width: 25%;
-                // flex-basis: 25%;
+                
                 border-radius: 1rem;
                 flex: 1;
                 &--head {
                     flex: 1;
-                    // background-color: rgb(206, 156, 115);
                     padding: 0.5rem;
                     text-transform: uppercase;
                 }
