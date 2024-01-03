@@ -280,7 +280,7 @@ const RegisterBoard = (props) => {
                         <span className={`${styles['error']}`}>
                             {errorMessage}
                         </span>
-                    )}{' '}
+                    )}
                 </div>
             </div>
         </>
