@@ -13,14 +13,20 @@ function OverviewPane() {
         limit: 5,
     };
     const [filterObject, setFilterObject] = useState(initialFilterObject);
+    const [products, setProducts] = useState([]);
+    const [customers, setCustomers] = useState([]);
 
-
-   
     return (
         <div>
             <h1>Overview</h1>
-            <BarChart />
-            <RegisterBoard setFilterObject={setFilterObject} />
+            <BarChart products={products} setProducts={setProducts} />
+            <RegisterBoard
+                setFilterObject={setFilterObject}
+                products={products}
+                setProducts={setProducts}
+                customers={customers}
+                setCustomers={setCustomers}
+            />
 
             <div className={styles['ticket-table-container']}>
                 <h3>Latest Transactions</h3>

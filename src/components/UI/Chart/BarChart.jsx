@@ -17,14 +17,14 @@ let chartData = {
             label: 'Sold',
             data: [100, 100, 100, 100, 102, 102],
             borderWidth: 1,
-            backgroundColor: 'rgb(166, 238, 124)',
-            hoverBorderColor: 'rgba(255,99,132,1)',
+            backgroundColor: 'rgba(120, 235, 54, 0.88)',
+            // hoverBorderColor: 'rgba(255,99,132,1)',
         },
         {
             label: 'Stock',
-            backgroundColor: 'rgb(186, 230, 227)',
-            hoverBorderColor: 'rgba(255,99,132,1)',
             data: [214, 198, 200, 200, 198, 198],
+            backgroundColor: 'rgb(186, 230, 227)',
+            // hoverBorderColor: 'rgba(255,99,132,1)',
         },
     ],
 };
@@ -73,28 +73,28 @@ let chartOptions = {
     },
 };
 
-function BarChart() {
-    const [products, setProducts] = useState([]);
+function BarChart(props) {
+    const { products, setProducts } = props;
+    // const [products, setProducts] = useState([]);
     useEffect(() => {
         const wrapperFunc = async function () {
-            let responseData = await fetchProducts();
-            console.log(responseData);
-
-            if (responseData) {
-                setProducts(responseData);
-            }
-
             //- Modifying chartData after fetching products
-            chartData.labels = responseData.map((product) => product.name);
+            chartData.labels = products.map((product) => {
+                let words = product.name.split(' ');
+                words = words.map(
+                    (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                );
+                return words.join(' ');
+            });
             console.log(chartData.datasets[0].data);
-            chartData.datasets[0].data = responseData.map((item) => {
+            chartData.datasets[0].data = products.map((item) => {
                 if (item.sales) return item.sales;
                 else return 0;
             });
             console.log(chartData.datasets);
         };
         wrapperFunc();
-    }, []);
+    }, [products]);
 
     useEffect(() => {
         const ctx = document.getElementById('myChart');
