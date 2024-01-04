@@ -51,17 +51,19 @@ const dateStateReducer = (dateState, action) => {
     switch (action.type) {
         case 'initialize': {
             newDateState.dateObject = new Date();
-
+            console.log('first step');
             break;
         }
         case 'navigate': {
             if (action.step == -1) {
+                console.log('navigate step');
                 newDateState.dateObject = new Date(
                     dateState.year,
                     dateState.month - 1,
                     1
                 );
             } else if (action.step == 1) {
+                console.log('navigate step');
                 newDateState.dateObject = new Date(
                     dateState.year,
                     dateState.month + 1,
@@ -71,11 +73,13 @@ const dateStateReducer = (dateState, action) => {
             break;
         }
         case 'selectMonth': {
+            console.log('month select');
             newDateState.dateObject = new Date(
                 dateState.year,
                 action.selected,
                 1
             );
+            break;
         }
     }
     return newDateState;
@@ -101,28 +105,26 @@ const StatementPane = () => {
     useEffect(() => {
         let asyncFunction = async () => {
             try {
+                console.log('????????????');
                 if (dateState) {
-                    let filterObject = {};
+                    let filterObjectTemp = {};
 
                     //* setting current month to filter
-                    filterObject.issuedTime = {};
-                    filterObject.issuedTime.from = new Date(
+                    filterObjectTemp.issuedTime = {};
+                    filterObjectTemp.issuedTime.from = new Date(
                         dateState.year,
                         dateState.month,
                         1
                     );
 
-                    filterObject.issuedTime.to = new Date(
+                    filterObjectTemp.issuedTime.to = new Date(
                         dateState.year,
                         dateState.month,
                         dateState.numberOfDays
                     );
+                    setFilterObject(filterObjectTemp);
 
-                    setFilterObject(filterObject);
-                    // let results = await transactionPromiseFunc(filterObject);
-                    let results = await fetchTransactions(filterObject);
-                    console.log('Transactions fetched at StatementPane');
-                    console.log(results);
+                    let results = await fetchTransactions(filterObjectTemp);
 
                     if (results) {
                         setMonthlyTransactions(results);
@@ -157,6 +159,8 @@ const StatementPane = () => {
                             unregistered: unregisteredCustomers,
                         });
                     } else throw new Error('Transactions not received.');
+                } else {
+                    console.log('DATE STATE NOT DEFINED💥💥🤯');
                 }
             } catch (error) {
                 console.log(error.message);
@@ -166,6 +170,7 @@ const StatementPane = () => {
     }, [dateState]);
 
     const navigateMonth = (type, value) => {
+        console.log('navigate');
         switch (type) {
             case 'navigate': {
                 dispatchDateState({
@@ -177,7 +182,7 @@ const StatementPane = () => {
             case 'selectMonth': {
                 dispatchDateState({
                     type: 'selectMonth',
-                    selected: value.target.value, //* find better name for parameter
+                    selected: value.target.value, //todo find better name for parameter
                 });
                 break;
             }

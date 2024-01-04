@@ -4,13 +4,13 @@ export const fetchTransactions = (filterObject) => {
         xhttp.onreadystatechange = async() => {
             if (xhttp.readyState === XMLHttpRequest.DONE) {
                 let responseReceived =await  JSON.parse(xhttp.responseText);
+                console.log('Fetching transactions....')
                 resolve(responseReceived.data);
             }
         };
 
         const filterString = JSON.stringify(filterObject);
         const filterParam = btoa(filterString);
-        console.log(filterParam);
         xhttp.open(
             'GET',
             `http://127.0.0.1:3000/api/v1/transactions/?filter=${filterParam}`
