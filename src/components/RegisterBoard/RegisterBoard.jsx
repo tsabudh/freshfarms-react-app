@@ -10,8 +10,7 @@ import classNames from 'classnames';
 
 const RegisterBoard = (props) => {
     const [posting, setPosting] = useState(''); // sending '' success failure
-    const [customers, setCustomers] = useState([]);
-    const [products, setProducts] = useState([]);
+    const { customers, setCustomers, products, setProducts } = props;
     const [quantity, setQuantity] = useState(1);
     const [cart, setCart] = useState([]);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -87,6 +86,8 @@ const RegisterBoard = (props) => {
         if (result.status == 'success') {
             setPosting('success');
             setErrorMessage(null);
+            let updatedProducts = await fetchProducts();
+            setProducts(updatedProducts);
             props.setFilterObject({
                 sortBy: {
                     issuedTime: -1,
