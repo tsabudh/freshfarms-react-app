@@ -9,7 +9,7 @@ import { postTransaction } from '../../utils/postTransactions';
 import classNames from 'classnames';
 
 const RegisterBoard = (props) => {
-    const [posting, setPosting] = useState(''); // sending idle success failure
+    const [posting, setPosting] = useState(''); // sending '' success failure
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
     const [quantity, setQuantity] = useState(1);
@@ -108,7 +108,7 @@ const RegisterBoard = (props) => {
                         <label htmlFor="customers">Customer :</label>
                         <select name="" id="customers">
                             {customers.map((item) => (
-                                <option value={item._id} key={customers._id}>
+                                <option key={customers._id} value={item._id}>
                                     {item.name}
                                 </option>
                             ))}
