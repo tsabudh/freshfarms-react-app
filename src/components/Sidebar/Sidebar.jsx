@@ -10,7 +10,7 @@ export default function Sidebar() {
         <div className={styles.sidebar}>
             <figure className={styles['logo']}>
                 <img
-                    src="img/shree-krishna-dairy-trans.png"
+                    src="/img/shree-krishna-dairy-trans.png"
                     alt="Shree Krishna Dairy Logo"
                 />
             </figure>

@@ -1,33 +1,42 @@
 import React from 'react';
 import styles from './CustomerProfile.module.scss';
 
-
-
-const CustomerProfile = ({ currentCustomer }) => {
+const CustomerProfile = ({ customer }) => {
+    console.log(customer);
     return (
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name:</th>
-                        <th>{currentCustomer?.name || 'NA'}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Phone:</td>
-                        <td>{currentCustomer?.phone[0] || 'NA'}</td>
-                    </tr>
-                    <tr>
-                        <td>Address</td>
-                        <td>{currentCustomer?.address || 'NA'}</td>
-                    </tr>
-                    <tr>
-                        <td>Dues</td>
-                        <td>{currentCustomer?.duePayments || 'NA'}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div className={`${styles['card']}`}>
+            <div className={`${styles['card-left']}`}>
+                <div className={`${styles['card-left-picture']}`}>
+                    <figure>
+                        <img
+                            src="/img/profile-picture.jpg"
+                            alt="Customer"
+                        />
+                    </figure>
+                </div>
+            </div>
+            <div className={`${styles['card-right']}`}>
+                <div className={styles['name']}>{customer.name}</div>
+                <div className={styles['tab']}>
+                    <div className={styles['purchase']}>
+                        <p>Purchase</p>
+
+                        {customer.tab.purchase}
+                    </div>
+                    <div className={styles['paid']}>
+                        <p>Paid</p>
+                        {customer.tab.paid}
+                    </div>
+                    <div className={styles['due']}>
+                        <p>Due</p>
+                        {customer.tab.due}
+                    </div>
+                </div>
+                <div className={styles['phone']}>
+                    {customer.phone.map((item) => item)}
+                </div>
+                <div className={styles['address']}>{customer.address}</div>
+            </div>
         </div>
     );
 };

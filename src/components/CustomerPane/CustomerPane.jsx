@@ -7,8 +7,7 @@ import CustomerProfile from './CustomerProfile';
 import fetchCustomers from '../../utils/fetchCostumers';
 let global;
 
-
-const CustomerPane = () => {
+const CustomerPane1 = () => {
     const [currentCustomer, setCurrentCustomer] = useState(null);
 
     let customers = useRef([]);
@@ -66,6 +65,27 @@ const CustomerPane = () => {
                 return <p>{item.name}</p>;
             })}
         </div>
+    );
+};
+
+const CustomerPane = () => {
+    const [customers, setCustomers] = useState([]);
+
+    useEffect(() => {
+        let asyncWrapper = async function () {
+            let customerResults = await fetchCustomers();
+            if (customerResults) setCustomers(customerResults);
+        };
+        asyncWrapper();
+    }, []);
+    return (
+        <>
+            <div className={`${styles['card-container']}`}>
+                {customers.map((item, index, array) => {
+                    return <CustomerProfile customer={item} />;
+                })}
+            </div>
+        </>
     );
 };
 
