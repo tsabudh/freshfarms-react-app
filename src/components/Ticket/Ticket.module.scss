@@ -9,7 +9,10 @@
     margin: 1rem;
     border-radius: 1rem;
     color: #050505;
+    &.payment {
 
+background: rgb(154, 247, 154);
+    }
     & .date-and-time {
         max-width: 13.5rem;
         flex-basis: 13.5rem;
@@ -41,5 +44,12 @@
     & .cost {
         font-weight: 700;
         margin-inline: 0.3rem;
+
+        &.paid {
+            color: green;
+        }
+        &.unpaid {
+            color: orange;
+        }
     }
 }

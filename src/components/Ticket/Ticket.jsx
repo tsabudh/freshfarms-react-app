@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React, { useState } from 'react';
 
 import SalesTable from './SalesTable/SalesTable';
 
@@ -29,7 +29,12 @@ const Ticket = (props) => {
     );
 
     return (
-        <div className={styles.ticket} onClick={ticketClickHandler}>
+        <div
+            className={`${styles.ticket} ${
+                props.type == 'payment' ? styles['payment'] : ''
+            }`}
+            onClick={ticketClickHandler}
+        >
             <div className={styles['date-and-time']}>
                 <div className={styles.time}>
                     {transactionTime.split(' ')[0]}{' '}
@@ -45,13 +50,29 @@ const Ticket = (props) => {
                 <SalesTable
                     items={props.items}
                     isExpanded={isExpanded}
-                    transactionAmount={props.transactionAmount}
+                    purchaseAmount={props.purchaseAmount}
                     // transactionItemsQuantity={props.transactionItemsQuantity}
                 />
             </div>
-            {isExpanded ? null : (
-                <div className={styles.cost}>Rs. {props.transactionAmount}</div>
+            {!props.paidInFull && props.paidAmount != 0 && (
+                <div className={`${styles['cost']} ${styles['paid']}`}>
+                    Rs. {props.paidAmount}
+                    {!isExpanded && props.type == 'purchase' && ' |'}
+                </div>
             )}
+            {isExpanded
+                ? null
+                : props.type == 'purchase' && (
+                      <div
+                          className={`${styles.cost} ${
+                              props.paidInFull
+                                  ? styles['paid']
+                                  : styles['unpaid']
+                          }`}
+                      >
+                          Rs. {props.purchaseAmount}
+                      </div>
+                  )}
 
             {/* <div className="edit">Edit</div> */}
         </div>

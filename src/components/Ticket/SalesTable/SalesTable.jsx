@@ -39,7 +39,7 @@ const SalesTable = (props) => {
                     <thead>
                         <tr>
                             <th>S.N</th>
-                            <th >Product</th>
+                            <th>Product</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Amount</th>
@@ -64,7 +64,7 @@ const SalesTable = (props) => {
                             <td></td>
                             <td>Total</td>
                             <td>{items.length}</td>
-                            <td>{props.transactionAmount}</td>
+                            <td>{props.purchaseAmount}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -96,6 +96,10 @@ function BarChart(props) {
                 if (item.sales) return item.sales;
                 else return 0;
             });
+            chartData.datasets[1].data = products.map((item) => {
+                if (item.stock) return item.stock;
+                else return 0;
+            });
             console.log(chartData.datasets);
         };
         wrapperFunc();

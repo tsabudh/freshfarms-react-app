@@ -133,7 +133,7 @@ const StatementPane = () => {
                         let totalAmount = results.reduce(
                             (accumulator, currentValue, currentIndex) => {
                                 return (
-                                    accumulator + currentValue.transactionAmount
+                                    accumulator + currentValue.purchaseAmount
                                 );
                             },
                             0

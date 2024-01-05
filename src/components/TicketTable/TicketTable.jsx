@@ -3,7 +3,6 @@ import Ticket from '../Ticket/Ticket';
 
 import { fetchTransactions } from '../../utils/fetchTransactions';
 
-
 const TicketTable = (props) => {
     const { filterObject } = props;
 
@@ -34,7 +33,10 @@ const TicketTable = (props) => {
                         items={transaction.items}
                         timeStamp={transaction.issuedTime}
                         customer={customer}
-                        transactionAmount={transaction.transactionAmount}
+                        purchaseAmount={transaction.purchaseAmount}
+                        paidAmount={transaction.paid}
+                        type={transaction.type}
+                        paidInFull={transaction.paidInFull}
                         // transactionItemsQuantity={transaction.transactionItemsQuantity}
                     />
                 );

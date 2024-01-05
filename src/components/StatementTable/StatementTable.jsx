@@ -13,7 +13,6 @@ const StatementTable = (props) => {
     const [cumulative, setCumulative] = useState([{}]);
 
     useEffect(() => {
-       
         if (monthlyTransactions) {
             let tempCumulative = [{}];
             monthlyTransactions.map((transaction, transactionIndex) => {
@@ -22,7 +21,7 @@ const StatementTable = (props) => {
                 if (transactionIndex != 0) {
                     tempCumulative[transactionIndex].amount =
                         tempCumulative[transactionIndex - 1].amount +
-                        transaction.transactionAmount;
+                        transaction.purchaseAmount;
 
                     tempCumulative[transactionIndex].paid =
                         tempCumulative[transactionIndex - 1].paid +
@@ -32,7 +31,7 @@ const StatementTable = (props) => {
                         tempCumulative[transactionIndex].amount -
                         tempCumulative[transactionIndex].paid;
                 } else {
-                    tempCumulative[0].amount = transaction.transactionAmount;
+                    tempCumulative[0].amount = transaction.purchaseAmount;
 
                     tempCumulative[0].paid = transaction?.paid ?? 0;
 
@@ -100,10 +99,10 @@ const StatementTable = (props) => {
                                         ).toDateString()}
                                     </td>
                                     <td>{transaction.customer.name}</td>
-                                    <td>{transaction.transactionAmount}</td>
+                                    <td>{transaction.purchaseAmount}</td>
                                     <td>{transaction?.paid ?? 0}</td>
                                     <td>
-                                        {transaction.transactionAmount -
+                                        {transaction.purchaseAmount -
                                             (transaction?.paid ?? 0)}
                                     </td>
                                     <td>{cumulative[index]?.amount}</td>
