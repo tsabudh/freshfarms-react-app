@@ -12,6 +12,7 @@ const Tag = (props) => {
     }
     return (
         <div
+            title={props.title}
             className={classNames}
             // className={`${styles[`tag`]} ${styles[`${props.className}`]} `}
             onClick={props.onClick}

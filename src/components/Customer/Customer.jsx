@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IoIosArrowRoundBack } from 'react-icons/io';
+import { toast } from 'react-toastify';
 
+import { IoIosArrowRoundBack } from 'react-icons/io';
 import { useParams, useNavigate } from 'react-router-dom';
 import fetchCustomers from '../../utils/fetchCustomers';
 import updateCustomer from '../../utils/updateCustomer';
@@ -10,6 +11,15 @@ import Button from '../UI/Button/Button';
 import TicketTable from '../TicketTable/TicketTable';
 import SortAndFilter from '../SortAndFilter/SortAndFilter';
 import Tag from '../UI/Tag/Tag';
+
+const copyText = (e) => {
+    navigator.clipboard.writeText(e.target.innerText.substring(0, 500));
+    toast('Copied', {
+        position: 'top-right',
+        theme: 'colored',
+        toastId:'copyId'
+    });
+};
 
 function Customer() {
     const { id } = useParams();
@@ -28,6 +38,7 @@ function Customer() {
     const [transactions, setTransactions] = useState([]);
     const [filterObject, setFilterObject] = useState(initialFilterObject);
 
+    const [customerName, setCustomerName] = useState(null);
     const [customerAddress, setCustomerAddress] = useState(null);
     const [customerPhoneArray, setCustomerPhoneArray] = useState([]);
     const [customerPhone, setCustomerPhone] = useState('');
@@ -52,14 +63,43 @@ function Customer() {
         if (customer) {
             setCustomerAddress(customer.address);
             setCustomerPhoneArray(customer.phone);
+            setCustomerName(customer.name);
         }
     }, [customer]);
 
+    const handleCustomerName = (e) => {
+        setCustomerName(e.target.value);
+    };
     const handleCustomerAddress = (e) => {
         setCustomerAddress(e.target.value);
     };
     const handleCustomerPhone = (e) => {
         setCustomerPhone(e.target.value);
+    };
+    const deleteStoredPhoneTag = (e) => {
+        //- Return if not editing
+        if (!editingStatus) return;
+
+        let tempCustomerPhoneArray = [...customerPhoneArray];
+        let matchedIndex = tempCustomerPhoneArray.findIndex(
+            (elem) => elem == e.target.innerText.toLowerCase()
+        );
+        if (matchedIndex >= 0) tempCustomerPhoneArray.splice(matchedIndex, 1);
+        setCustomerPhoneArray(tempCustomerPhoneArray);
+    };
+    const deleteAddedPhoneTag = (e) => {
+        //- Return if not editing
+        if (!editingStatus) return;
+
+        let tempAddedPhones = [...addedPhones];
+        let matchedIndex = tempAddedPhones.findIndex(
+            (elem) => elem == e.target.innerText.toLowerCase()
+        );
+        console.log(e.target.innerText);
+        console.log(matchedIndex);
+        if (matchedIndex >= 0) tempAddedPhones.splice(matchedIndex, 1);
+        setAddedPhones(tempAddedPhones);
+        console.log(tempAddedPhones);
     };
 
     const addCustomerPhone = (e) => {
@@ -67,7 +107,7 @@ function Customer() {
         let newPhoneArray = [...addedPhones];
 
         // let newNumber = document.getElementById('phoneToAdd').value;
-        let newNumber = customerPhone;
+        let newNumber = customerPhone.toLowerCase().trim();
 
         //- adding new number to added phone state variable
         let newSet = new Set(newPhoneArray);
@@ -83,20 +123,20 @@ function Customer() {
     const cancelEdits = () => {
         setCustomerAddress(customer.address);
         setCustomerPhoneArray(customer.phone);
+        setCustomerName(customer.name);
 
         setAddedPhones([]);
         setEditingStatus(false);
     };
     const saveEdits = async (id) => {
-        return;
-        console.log(id);
         let customerDetails = {};
-        console.log(customerAddress);
+        customerDetails.name = customerName;
         customerDetails.address = customerAddress;
+        customerDetails.phone = [...addedPhones, ...customerPhoneArray];
         let result = await updateCustomer(id, customerDetails);
-        console.log('updated?');
         setCustomer(result);
         setEditingStatus(false);
+        console.log('update successful ====================================');
     };
 
     return (
@@ -146,7 +186,33 @@ function Customer() {
                                     Customer ID
                                 </div>
                                 <div className={styles['detail_value']}>
-                                    {customer._id}
+                                    <Tag
+                                        className="orange01"
+                                        onClick={copyText}
+                                        title="Copy ID"
+                                    >
+                                        {customer._id}
+                                    </Tag>
+                                    
+                                </div>
+                            </div>
+                            <div className={styles['detail']}>
+                                <div className={styles['detail_name']}>
+                                    Name
+                                </div>
+                                <div className={styles['detail_value']}>
+                                    {customer.name}
+                                    {editingStatus && (
+                                        <div
+                                            className={styles['input-wrapper']}
+                                        >
+                                            <input
+                                                type="text"
+                                                value={customerName}
+                                                onChange={handleCustomerName}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className={styles['detail']}>
@@ -162,6 +228,7 @@ function Customer() {
                                                     ? ''
                                                     : 'inherit-text'
                                             }`}
+                                            onClick={deleteStoredPhoneTag}
                                         >
                                             {item}
                                         </Tag>
@@ -175,6 +242,7 @@ function Customer() {
                                                         ? 'green01'
                                                         : 'inherit-text'
                                                 }`}
+                                                onClick={deleteAddedPhoneTag}
                                             >
                                                 {item}
                                             </Tag>
@@ -189,7 +257,7 @@ function Customer() {
                                                 onChange={handleCustomerPhone}
                                                 id="phoneToAdd"
                                             />
-                                            <Button onClick={addCustomerPhone}>
+                                            <Button onClick={addCustomerPhone} className="sharp01">
                                                 ADD
                                             </Button>
                                         </div>
@@ -217,13 +285,26 @@ function Customer() {
                                 </div>
                             </div>
                         </div>
-                        <div className="">
-                            <Button onClick={() => setEditingStatus(true)}>
-                                EDIT
+                        <div className={styles['actions']}>
+                            <Button
+                                className="action01 wait"
+                                onClick={() => setEditingStatus(true)}
+                            >
+                                Edit
                             </Button>
-                            <Button onClick={() => saveEdits(id)}>SAVE</Button>
-                            <Button onClick={() => cancelEdits(id)}>
-                                CANCEL
+                            {editingStatus && (
+                                <Button
+                                    className="action01 stop"
+                                    onClick={() => cancelEdits(id)}
+                                >
+                                    Cancel
+                                </Button>
+                            )}
+                            <Button
+                                className="action01 go"
+                                onClick={() => saveEdits(id)}
+                            >
+                                Save
                             </Button>
                         </div>
                     </div>
