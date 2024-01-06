@@ -9,6 +9,7 @@ import InventoryPane from './components/InventoryPane/InventoryPane';
 import OverviewPane from './components/OverviewPane/OverviewPane';
 import './App.css';
 import CustomerAccount from './components/CustomerAccount/CustomerAccount';
+import Customer from './components/Customer/Customer';
 
 export const transactionContext = createContext([]);
 function App() {
@@ -19,7 +20,9 @@ function App() {
                     <Route path="" element={<OverviewPane />} />
 
                     <Route path="customers">
+
                         <Route path="" element={<CustomerPane />} />
+                        <Route path=":id" element={<Customer/>} />
                         <Route path="account" element={<CustomerAccount />} />
                     </Route>
 

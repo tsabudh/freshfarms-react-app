@@ -3,7 +3,7 @@ import { MdOutlineDeleteForever } from 'react-icons/md';
 
 import Button from '../UI/Button/Button';
 import styles from './RegisterBoard.module.scss';
-import fetchCustomers from '../../utils/fetchCostumers';
+import fetchCustomers from '../../utils/fetchCustomers';
 import fetchProducts from '../../utils/fetchProducts';
 import { postTransaction } from '../../utils/postTransactions';
 import classNames from 'classnames';

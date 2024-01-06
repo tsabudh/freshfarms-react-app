@@ -1,7 +1,7 @@
-.tag{
+.tag {
     display: inline;
     cursor: pointer;
-    background: #ECF8F9;
+    background: #ecf8f9;
     // text-underline-position: below;
     color: black;
     border-radius: 1rem;
@@ -12,7 +12,19 @@
     font-size: 1rem;
     border: 1px solid rgba(179, 131, 223, 0.767);
 
-    &.primary01{
+    &.inherit-text{
+        font-size: inherit;
+    }
+    &.primary01 {
         background: rgb(49, 167, 94);
+    }
+    
+    &.secondary01 {
+        // font-size: inherit;
+        background: rgb(49, 167, 94);
+    }
+    &.green01{
+        background: rgb(159, 245, 185);
+
     }
 }

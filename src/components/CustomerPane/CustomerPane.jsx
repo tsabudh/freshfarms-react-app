@@ -4,7 +4,7 @@ import Calender from '../Calender/Calender';
 import styles from './CustomerPane.module.scss';
 import TicketTable from '../TicketTable/TicketTable';
 import CustomerProfile from './CustomerProfile';
-import fetchCustomers from '../../utils/fetchCostumers';
+import fetchCustomers from '../../utils/fetchCustomers';
 let global;
 
 const CustomerPane1 = () => {

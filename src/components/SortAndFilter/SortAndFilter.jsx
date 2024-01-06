@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
 
-
 import {
     BsSortAlphaDown,
     BsSortAlphaDownAlt,
@@ -15,15 +14,6 @@ import { RiSortAsc, RiSortDesc } from 'react-icons/ri';
 import styles from './SortAndFilter.module.scss';
 import Button from '../UI/Button/Button';
 import Tag from '../UI/Tag/Tag';
-
-//* referencing function with parameters
-function partial(func /*, 0..n args */) {
-    var args = Array.prototype.slice.call(arguments).splice(1);
-    return function () {
-        var allArguments = args.concat(Array.prototype.slice.call(arguments));
-        return func.apply(this, allArguments);
-    };
-}
 
 const initialFilterState = {
     issuedTime: {
@@ -169,7 +159,7 @@ const filterReducer = (filterState, action) => {
 };
 
 const SortAndFilter = (props) => {
-    const { setFilterObject } = props;
+    const { setFilterObject, customerId } = props;
 
     const [filterState, dispatchFilter] = useReducer(
         filterReducer,
@@ -242,7 +232,6 @@ const SortAndFilter = (props) => {
             });
         }
     };
-
     const handleIssuedTime = (method, e) => {
         if (method == 'issuedTimeFrom') {
             dispatchFilter({
@@ -268,7 +257,6 @@ const SortAndFilter = (props) => {
             });
         }
     };
-
     const handleProducts = (method, value) => {
         if (method == 'products') {
             dispatchFilter({
@@ -445,72 +433,78 @@ const SortAndFilter = (props) => {
                         </div>
 
                         {/* Customers  */}
-                        <div className={styles['sort-item']}>
-                            <input
-                                type="checkbox"
-                                id="customerSort"
-                                checked={filterState.customers.isSorted}
-                                onChange={(e) =>
-                                    handleSortBy('customersState', e)
-                                }
-                            />
-                            <label
-                                htmlFor="customerSort"
-                                className={
-                                    filterState.customers.isSorted
-                                        ? styles['is-sorted']
-                                        : ''
-                                }
-                            >
-                                Customer
-                            </label>
-                            <ul>
-                                <li>
-                                    <input
-                                        type="radio"
-                                        id="customerSortAsc"
-                                        name="customers"
-                                        value={'1'}
-                                        onChange={(e) =>
-                                            handleSortBy('customers', e)
-                                        }
-                                    />
-                                    <label
-                                        htmlFor="customerSortAsc"
-                                        className={
-                                            filterState.customers.isSorted &&
-                                            filterState.customers.order == '1'
-                                                ? styles.selected
-                                                : ''
-                                        }
-                                    >
-                                        <BsSortAlphaDown />
-                                    </label>
-                                </li>
-                                <li>
-                                    <input
-                                        type="radio"
-                                        id="customerSortDesc"
-                                        name="customers"
-                                        value={'-1'}
-                                        onChange={(e) =>
-                                            handleSortBy('customers', e)
-                                        }
-                                    />
-                                    <label
-                                        htmlFor="customerSortDesc"
-                                        className={
-                                            filterState.customers.isSorted &&
-                                            filterState.customers.order == '-1'
-                                                ? styles.selected
-                                                : ''
-                                        }
-                                    >
-                                        <BsSortAlphaUpAlt />
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
+                        {!customerId && (
+                            <div className={styles['sort-item']}>
+                                <input
+                                    type="checkbox"
+                                    id="customerSort"
+                                    checked={filterState.customers.isSorted}
+                                    onChange={(e) =>
+                                        handleSortBy('customersState', e)
+                                    }
+                                />
+                                <label
+                                    htmlFor="customerSort"
+                                    className={
+                                        filterState.customers.isSorted
+                                            ? styles['is-sorted']
+                                            : ''
+                                    }
+                                >
+                                    Customer
+                                </label>
+                                <ul>
+                                    <li>
+                                        <input
+                                            type="radio"
+                                            id="customerSortAsc"
+                                            name="customers"
+                                            value={'1'}
+                                            onChange={(e) =>
+                                                handleSortBy('customers', e)
+                                            }
+                                        />
+                                        <label
+                                            htmlFor="customerSortAsc"
+                                            className={
+                                                filterState.customers
+                                                    .isSorted &&
+                                                filterState.customers.order ==
+                                                    '1'
+                                                    ? styles.selected
+                                                    : ''
+                                            }
+                                        >
+                                            <BsSortAlphaDown />
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <input
+                                            type="radio"
+                                            id="customerSortDesc"
+                                            name="customers"
+                                            value={'-1'}
+                                            onChange={(e) =>
+                                                handleSortBy('customers', e)
+                                            }
+                                        />
+                                        <label
+                                            htmlFor="customerSortDesc"
+                                            className={
+                                                filterState.customers
+                                                    .isSorted &&
+                                                filterState.customers.order ==
+                                                    '-1'
+                                                    ? styles.selected
+                                                    : ''
+                                            }
+                                        >
+                                            <BsSortAlphaUpAlt />
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
                         {/* Items Variety  */}
                         <div className={styles['sort-item']}>
                             <input
@@ -657,6 +651,7 @@ const SortAndFilter = (props) => {
                 <div className={styles.filter}>
                     Filters:
                     <ul>
+                        {/* Date  */}
                         <li>
                             <button
                                 onClick={handleIssuedTime}
@@ -665,6 +660,7 @@ const SortAndFilter = (props) => {
                                 Date
                             </button>
                         </li>
+                        {/* Products  */}
                         <li>
                             <button
                                 onClick={handleProducts}
@@ -673,14 +669,17 @@ const SortAndFilter = (props) => {
                                 Products
                             </button>
                         </li>
-                        <li>
-                            <button
-                                onClick={handleCustomers}
-                                className={styles['filter-btn']}
-                            >
-                                Customers
-                            </button>
-                        </li>
+                        {/* Customers  */}
+                        {!customerId && (
+                            <li>
+                                <button
+                                    onClick={handleCustomers}
+                                    className={styles['filter-btn']}
+                                >
+                                    Customers
+                                </button>
+                            </li>
+                        )}
                         <li>
                             <button
                                 onClick={handleQuantity}
@@ -906,7 +905,11 @@ const SortAndFilter = (props) => {
                     <Button
                         className={'primary03'}
                         onClick={() =>
-                            applyFilter(filterState, setFilterObject)
+                            applyFilter(
+                                filterState,
+                                setFilterObject,
+                                customerId
+                            )
                         }
                     >
                         APPLY FILTER
@@ -919,7 +922,7 @@ const SortAndFilter = (props) => {
 
 export default SortAndFilter;
 
-const applyFilter = (filterState, setFilterObject) => {
+const applyFilter = (filterState, setFilterObject, customerId) => {
     let filterObject = {};
     filterObject.sortBy = {
         issuedTime: undefined,
@@ -929,6 +932,7 @@ const applyFilter = (filterState, setFilterObject) => {
     };
 
     //* FILTERING
+    //- DATE FILTER
     if (filterState.issuedTime.isOpened && filterState.issuedTime.from) {
         filterObject.issuedTime = {};
         filterObject.issuedTime.from = new Date(filterState.issuedTime.from);
@@ -940,20 +944,34 @@ const applyFilter = (filterState, setFilterObject) => {
         }
     }
 
+    //- PRODUCT FILTER
     if (filterState.products.isOpened && filterState.products.set.size != 0) {
         filterObject.productArray = Array.from(filterState.products.set);
     }
 
-    if (filterState.customers.isOpened && filterState.customers.set.size != 0) {
-        filterObject.customerArray = Array.from(filterState.customers.set);
+    //- CUSTOMER FILTER
+    if (customerId) {
+        //- If customer Id is provided, attach customer Id to filter object and move on to next filter
+        filterObject.customerId = customerId;
+    } else {
+        //- If customer Id is not provided, provide customer filter function to take array of names
+        if (
+            filterState.customers.isOpened &&
+            filterState.customers.set.size != 0
+        ) {
+            filterObject.customerArray = Array.from(filterState.customers.set);
+        }
     }
 
+    //- TOTAL QUANTITY FILTER
     if (filterState.totalQuantity.isOpened) {
         filterObject.totalQuantity = {
             from: parseInt(filterState.totalQuantity.from),
             to: parseInt(filterState.totalQuantity.to),
         };
     }
+
+    //- ITEMS VARIETY FILTER
     if (filterState.itemsVariety.isOpened) {
         filterObject.itemsVariety = {
             from: parseInt(filterState.itemsVariety.from),
@@ -962,15 +980,23 @@ const applyFilter = (filterState, setFilterObject) => {
     }
 
     //* SORTING
+    //- ISSUED TIME SORT
     if (filterState.issuedTime.isSorted) {
         filterObject.sortBy.issuedTime = filterState.issuedTime.order;
     }
-    if (filterState.customers.isSorted) {
-        filterObject.sortBy.customer = filterState.customers.order;
+    //- CUSTOMER SORT
+    if (!customerId) {
+        //- If customer Id is not provided, no need to sort by customer names
+        if (filterState.customers.isSorted) {
+            filterObject.sortBy.customer = filterState.customers.order;
+        }
     }
+
+    //- TOTAL QUANTITY SORT
     if (filterState.totalQuantity.isSorted) {
         filterObject.sortBy.totalQuantity = filterState.totalQuantity.order;
     }
+    //- ITEMS VARIETY SORT
     if (filterState.itemsVariety.isSorted) {
         filterObject.sortBy.itemsVariety = filterState.itemsVariety.order;
     }

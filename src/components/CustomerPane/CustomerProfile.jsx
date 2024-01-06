@@ -1,17 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './CustomerProfile.module.scss';
 
 const CustomerProfile = ({ customer }) => {
+    const navigate = useNavigate();
     console.log(customer);
     return (
-        <div className={`${styles['card']}`}>
+        <div
+            className={`${styles['card']}`}
+            onClick={() => navigate(`${customer._id}`,{relative:'path'})}
+        >
             <div className={`${styles['card-left']}`}>
                 <div className={`${styles['card-left-picture']}`}>
                     <figure>
-                        <img
-                            src="/img/profile-picture.jpg"
-                            alt="Customer"
-                        />
+                        <img src="/img/profile-picture.jpg" alt="Customer" />
                     </figure>
                 </div>
             </div>
