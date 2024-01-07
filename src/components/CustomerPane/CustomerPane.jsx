@@ -3,7 +3,7 @@ import Calender from '../Calender/Calender';
 
 import styles from './CustomerPane.module.scss';
 import TicketTable from '../TicketTable/TicketTable';
-import CustomerProfile from './CustomerProfile';
+import CustomerProfile from '../CustomerProfile/CustomerProfile';
 import fetchCustomers from '../../utils/fetchCustomers';
 let global;
 

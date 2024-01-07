@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './CustomerProfile.module.scss';
+import Tag from '../UI/Tag/Tag';
 
 const CustomerProfile = ({ customer }) => {
     const navigate = useNavigate();
@@ -8,7 +9,7 @@ const CustomerProfile = ({ customer }) => {
     return (
         <div
             className={`${styles['card']}`}
-            onClick={() => navigate(`${customer._id}`,{relative:'path'})}
+            onClick={() => navigate(`${customer._id}`, { relative: 'path' })}
         >
             <div className={`${styles['card-left']}`}>
                 <div className={`${styles['card-left-picture']}`}>
@@ -35,7 +36,9 @@ const CustomerProfile = ({ customer }) => {
                     </div>
                 </div>
                 <div className={styles['phone']}>
-                    {customer.phone.map((item) => item)}
+                    {customer.phone.map((item) => (
+                        <Tag>{item}</Tag>
+                    ))}
                 </div>
                 <div className={styles['address']}>{customer.address}</div>
             </div>
