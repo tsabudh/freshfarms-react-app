@@ -17,7 +17,7 @@ const copyText = (e) => {
     toast('Copied', {
         position: 'top-right',
         theme: 'colored',
-        toastId:'copyId'
+        toastId: 'copyId',
     });
 };
 
@@ -111,7 +111,12 @@ function Customer() {
 
         //- adding new number to added phone state variable
         let newSet = new Set(newPhoneArray);
-        newSet.add(newNumber);
+        if (newNumber.includes(',')) {
+            let numArr = newNumber.split(',');
+            numArr.forEach((num) => newSet.add(num));
+        } else {
+            newSet.add(newNumber);
+        }
         console.log(newSet);
         setAddedPhones(Array.from(newSet));
 
@@ -134,9 +139,17 @@ function Customer() {
         customerDetails.address = customerAddress;
         customerDetails.phone = [...addedPhones, ...customerPhoneArray];
         let result = await updateCustomer(id, customerDetails);
-        setCustomer(result);
-        setEditingStatus(false);
-        console.log('update successful ====================================');
+        console.log(result);
+        if (result.status == 'success') {
+            setCustomer(result.data);
+            setEditingStatus(false);
+            console.log('update successful !! ');
+        } else {
+            console.log(result);
+            if (result.message) toast(result.message);
+            if (result.errors)
+                toast(result.errors[0].msg, { toastId: 'updateCustomer' });
+        }
     };
 
     return (
@@ -193,7 +206,6 @@ function Customer() {
                                     >
                                         {customer._id}
                                     </Tag>
-                                    
                                 </div>
                             </div>
                             <div className={styles['detail']}>
@@ -257,7 +269,10 @@ function Customer() {
                                                 onChange={handleCustomerPhone}
                                                 id="phoneToAdd"
                                             />
-                                            <Button onClick={addCustomerPhone} className="sharp01">
+                                            <Button
+                                                onClick={addCustomerPhone}
+                                                className="sharp01"
+                                            >
                                                 ADD
                                             </Button>
                                         </div>
@@ -300,9 +315,11 @@ function Customer() {
                                     Cancel
                                 </Button>
                             )}
+
                             <Button
                                 className="action01 go"
                                 onClick={() => saveEdits(id)}
+                                disabled={!editingStatus}
                             >
                                 Save
                             </Button>

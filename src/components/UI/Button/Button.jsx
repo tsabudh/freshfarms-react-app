@@ -7,9 +7,13 @@ const Button = (props) => {
         classArray = props.className.split(' ');
         classNames = classArray.map((item) => styles[item]).join(' ');
     }
-    
+
     return (
-        <button className={classNames} onClick={props.onClick}>
+        <button
+            className={classNames}
+            onClick={props.onClick}
+            disabled={props.disabled}
+        >
             {props.children}
         </button>
     );

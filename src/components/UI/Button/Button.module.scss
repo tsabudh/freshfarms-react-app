@@ -78,6 +78,7 @@ button {
         border-radius: 0.8rem;
         color: white;
 
+        
         &.wait {
             background: orangered;
         }
@@ -86,6 +87,10 @@ button {
         }
         &.go {
             background: green;
+            &:disabled{
+            background: rgba(156, 247, 156, 0.473);
+            cursor: default;
+        }
         }
     }
 
