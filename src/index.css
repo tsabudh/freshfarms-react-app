@@ -18,18 +18,8 @@
 body {
     font-size: 1.6rem;
     font-family: 'Roboto';
-    background: #ff512f; /* fallback for old browsers */
-    background: -webkit-linear-gradient(
-        to left,
-        #f09819,
-        #ff512f
-    ); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(
-        to left,
-        #f09819,
-        #ff512f
-    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    color: white;
+    background: #dfeeef; /* fallback for old browsers */
+    color: rgb(37, 36, 36);
 
     &::-webkit-scrollbar-track
     {

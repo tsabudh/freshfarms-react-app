@@ -20,7 +20,6 @@ let chartData = {
             backgroundColor: 'rgba(54, 235, 211, 0.88)',
             // hoverBorderColor: 'rgba(255,99,132,1)',
             border:null,
-            borderWidth:1,
         },
         {
             label: 'Stock',
@@ -40,28 +39,28 @@ let chartOptions = {
             // stacked: true,
             beginAtZero: true,
             border: {
-                color: 'white',
+                color: 'brown',
             },
             grid: {
                 color: null,
             },
             ticks: {
-                color: 'white',
+                color: 'brown',
                 border: {
-                    color: 'white',
+                    color: 'brown',
                 },
             },
         },
         x: {
             stacked: true,
             border: {
-                color: 'white',
+                color: 'brown',
             },
             grid: {
                 color: null,
             },
             ticks: {
-                color: 'white',
+                color: 'brown',
             },
         },
     },
@@ -69,7 +68,7 @@ let chartOptions = {
         legend: {
             display: true,
             labels: {
-                color: 'white',
+                color: 'brown',
             },
         },
         tooltip: {
