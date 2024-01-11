@@ -12,16 +12,17 @@ import './App.css';
 import CustomerAccount from './components/CustomerAccount/CustomerAccount';
 import Customer from './components/Customer/Customer';
 import Notifier from './components/Notifier/Notifier';
+import Login from './pages/Login/Login';
 
 export const transactionContext = createContext([]);
 function App() {
     return (
         <BrowserRouter>
-            <Notifier/>
+            <Notifier />
             <Routes>
+                <Route path="/login" element={<Login />} />
                 <Route path="/" element={<Dashboard />}>
                     <Route path="" element={<OverviewPane />} />
-
                     <Route path="customers">
                         <Route path="" element={<CustomerPane />} />
                         <Route path=":id" element={<Customer />} />
