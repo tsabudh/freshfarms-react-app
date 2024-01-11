@@ -5,8 +5,8 @@ import SidebarItem from './SidebarItem';
 
 import items from '../../assets/data/sidebar.json';
 
-export default function Sidebar() {
-    return (
+export default function Sidebar(props) {
+    return ( !props.sidebarHidden && 
         <div className={styles.sidebar}>
             <figure className={styles['logo']}>
                 <img
