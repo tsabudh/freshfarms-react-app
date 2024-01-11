@@ -1,0 +1,90 @@
+.signup-container {
+    width: 50%;
+    // min-height: 40rem;
+    flex-basis: 40rem;
+    flex-shrink: 0;
+    // border: 1px solid blue;
+    transition: height 1s ease;
+
+    & .form-container {
+        // height: 100%;
+        max-width: 80rem;
+        margin: 0 auto;
+        background: rgb(217, 231, 204);
+        color: black;
+        padding: 1rem 1.5rem;
+        transition: transform 0.5s ease;
+
+        &--sign-in {
+            transform: translateX(100%);
+        }
+        &--sign-up {
+            transform: translateX(0%);
+        }
+        & .advanced-group {
+            display: flex;
+            justify-content: space-evenly;
+        }
+        & .input-group {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            gap: 1rem;
+            border-bottom: 1px solid gray;
+            margin-block: 2rem;
+
+            &--check {
+                display: block;
+                margin-bottom: 0;
+                padding-bottom: 0.5rem;
+            }
+            &--tab {
+                flex-direction: column;
+                & .input-field {
+                    flex-basis: 15rem;
+                }
+            }
+            & .input-label {
+                flex: 1;
+
+                &--check {
+                    font-size: 1.4rem;
+                    cursor: pointer;
+                }
+            }
+
+            & .input-field {
+                flex: 1;
+                padding: 0.5rem 1rem;
+                font-size: 1.5rem;
+                border: 1px solid gray;
+                color: rgb(99, 98, 98);
+                border-radius: 0;
+                &::placeholder {
+                    font-size: 1.3rem;
+                }
+                &:disabled {
+                    outline: none;
+                    border: 1px solid rgba(233, 101, 101, 0.884);
+                }
+
+                &--check {
+                    margin-inline: 0.5rem;
+                    font-size: 1.4rem;
+                    width: 1rem;
+                    cursor: pointer;
+                }
+                &--due {
+                    border: 1px solid rgba(233, 101, 101, 0.884);
+                    cursor: not-allowed;
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+        }
+        & button {
+            margin-top: 2rem;
+        }
+    }
+}
