@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import SigninForm from './SigninForm';
-import SignupForm from './SignupForm';
-import OverlayContainer from './OverlayContainer';
+import LoginForm from '../../components/LoginForm/LoginForm';
+import OverlayContainer from '../../components/Overlay/OverlayContainer'
 import styles from './Login.module.scss';
 
 export default function Login() {
@@ -9,8 +8,7 @@ export default function Login() {
 
     return (
         <div className={styles['container']}>
-            <SigninForm toggle={setIsNewUser} />
-            <SignupForm toggle={setIsNewUser} isNewUser={isNewUser}/>
+            <LoginForm toggle={setIsNewUser} isNewUser={isNewUser}/>
 
             <OverlayContainer isNewUser={isNewUser} toggle={setIsNewUser} />
         </div>

@@ -1,40 +1,41 @@
-import { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import styles from './SignupForm.module.scss';
-import Button from '../../components/UI/Button/Button';
+import styles from './LoginForm.module.scss';
+import Button from '../UI/Button/Button';
+import loginAdmin from '../../utils/loginAdmin';
 
-async function requestAdminSignup(event) {
-    event.preventDefault();
-    const data = new FormData(event.target);
-    const value = Object.fromEntries(data.entries());
+import { AuthContext } from '../../context/AuthContext';
 
-    const requestURL = `http://localhost:3000/api/v1/admins/signup`;
-
-    let fetchOptions = {
-        method: 'POST',
-        body: JSON.stringify(value),
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-    };
-    const response = await fetch(requestURL, fetchOptions);
-    let temp = await response.json();
-    if (response) return temp;
-    return new Error('Signup Request Failed');
-}
-
-const SignupForm = ({ isNewUser, toggle }) => {
+const LoginForm = ({ isNewUser, toggle }) => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
+    const { token, setToken } = useContext(AuthContext);
+    useEffect(() => {
+        if (token) navigate('/');
+    });
     async function handleSubmit(e) {
-
-      
-        navigate('/home');
+        e.preventDefault();
+        let form = document.getElementById('loginForm');
+        let loginDetails = {};
+        let formData = new FormData(form);
+        formData.forEach((value, key) => (loginDetails[key] = value));
+        if (isNewUser) {
+            return;
+        } else {
+            console.log(loginDetails);
+            let response = await loginAdmin(loginDetails);
+            console.log(response);
+            if (response.status == 'success') {
+                setToken(response.token);
+                localStorage.setItem('token', response.token);
+            }
+            navigate('/');
+        }
         return;
     }
 
@@ -119,14 +120,12 @@ const SignupForm = ({ isNewUser, toggle }) => {
                         />
                     </div>
                 </form>
-                <Button className="stylish01" onClick={handleSubmit}>{isNewUser ? 'Signup' : 'Login'}</Button>
+                <Button className="stylish01" onClick={handleSubmit}>
+                    {isNewUser ? 'Signup' : 'Login'}
+                </Button>
             </div>
         </div>
     );
 };
 
-SignupForm.propTypes = {
-    toggle: PropTypes.func,
-};
-
-export default SignupForm;
+export default LoginForm;

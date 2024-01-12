@@ -1,4 +1,4 @@
-export const fetchCustomers = (id) => {
+export const fetchCustomers = (id,token) => {
     return new Promise((resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
@@ -15,10 +15,8 @@ export const fetchCustomers = (id) => {
             else apiRoute = 'http://127.0.0.1:3000/api/v1/customers/';
 
             xhttp.open('GET', apiRoute);
-            xhttp.setRequestHeader(
-                'Authorization',
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6IjY0NjlhM2IxMzkwM2EwZmE1ZjUyMjMzYiIsImlzc3VlZEF0IjoxNjg0NjczMzAwMTk2LCJpYXQiOjE2ODQ2NzMzMDB9.26JLp_lg3UB862q3MUNgYIxIGyMwZtXW3uDhlyaTEBs'
-            );
+            xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
+
             xhttp.send();
         } catch (error) {
             console.log(error.message);

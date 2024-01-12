@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Ticket from '../Ticket/Ticket';
 
 import { fetchTransactions } from '../../utils/fetchTransactions';
+import { AuthContext } from '../../context/AuthContext';
 
 const TicketTable = (props) => {
     const { filterObject } = props;
 
+    const { token } = useContext(AuthContext);
     const [transactions, setTransactions] = useState([]);
 
     let asyncWrapper = async () => {
         try {
             console.log('Fetching Transactions...');
-            let result = await fetchTransactions(filterObject);
+            let result = await fetchTransactions(filterObject, token);
             setTransactions(result);
             // liftTransactions(result);
         } catch (error) {

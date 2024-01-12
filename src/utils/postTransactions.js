@@ -1,4 +1,4 @@
-export async function postTransaction(transactionObject) {
+export async function postTransaction(transactionObject,token) {
     return new Promise(async (resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
@@ -23,10 +23,8 @@ export async function postTransaction(transactionObject) {
 
             xhttp.open('POST', apiRoute, true);
             xhttp.setRequestHeader('Content-Type', 'application/json');
-            xhttp.setRequestHeader(
-                'Authorization',
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6IjY0NjlhM2IxMzkwM2EwZmE1ZjUyMjMzYiIsImlzc3VlZEF0IjoxNjg0NjczMzAwMTk2LCJpYXQiOjE2ODQ2NzMzMDB9.26JLp_lg3UB862q3MUNgYIxIGyMwZtXW3uDhlyaTEBs'
-            );
+            xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
+
 
             console.log(JSON.stringify(transactionObject));
             let requestBody = JSON.stringify(transactionObject);

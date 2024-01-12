@@ -1,4 +1,4 @@
-import React, { Children, useEffect, useState } from 'react';
+import React, { Children, useContext, useEffect, useState } from 'react';
 import { MdOutlineDeleteForever } from 'react-icons/md';
 
 import Button from '../UI/Button/Button';
@@ -7,8 +7,10 @@ import fetchCustomers from '../../utils/fetchCustomers';
 import fetchProducts from '../../utils/fetchProducts';
 import { postTransaction } from '../../utils/postTransactions';
 import classNames from 'classnames';
+import { AuthContext } from '../../context/AuthContext';
 
 const RegisterBoard = (props) => {
+    const { token } = useContext(AuthContext);
     const [posting, setPosting] = useState(''); // sending '' success failure
     const { customers, setCustomers, products, setProducts } = props;
     const [quantity, setQuantity] = useState(1);
@@ -17,8 +19,8 @@ const RegisterBoard = (props) => {
 
     useEffect(() => {
         let asyncFunc = async () => {
-            let customerResults = await fetchCustomers();
-            let productResults = await fetchProducts();
+            let customerResults = await fetchCustomers(null, token);
+            let productResults = await fetchProducts(null, token);
             setCustomers(customerResults);
             setProducts(productResults);
         };
@@ -81,7 +83,7 @@ const RegisterBoard = (props) => {
         });
         newTransaction.items = items;
 
-        let result = await postTransaction(newTransaction);
+        let result = await postTransaction(newTransaction, token);
         console.log(result);
         if (result.status == 'success') {
             setPosting('success');
@@ -119,7 +121,7 @@ const RegisterBoard = (props) => {
                         <label htmlFor="">Items:</label>
                         <select name="products" id="products">
                             {products.map((item) => (
-                                <option value={item._id} key={item._id}>
+                                <option key={item._id} value={item._id}>
                                     {item.name}
                                 </option>
                             ))}

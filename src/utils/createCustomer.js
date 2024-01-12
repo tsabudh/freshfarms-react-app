@@ -1,4 +1,4 @@
-export const createCustomer = (customerDetails) => {
+export const createCustomer = (customerDetails, token) => {
     return new Promise((resolve, reject) => {
         try {
             const xhttp = new XMLHttpRequest();
@@ -15,10 +15,7 @@ export const createCustomer = (customerDetails) => {
             xhttp.setRequestHeader('Content-Type', 'application/json');
 
             //todo MAKE BEARER TOKEN STORED AND WITHDRAW FROM COOKIES
-            xhttp.setRequestHeader(
-                'Authorization',
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6IjY0NjlhM2IxMzkwM2EwZmE1ZjUyMjMzYiIsImlzc3VlZEF0IjoxNjg0NjczMzAwMTk2LCJpYXQiOjE2ODQ2NzMzMDB9.26JLp_lg3UB862q3MUNgYIxIGyMwZtXW3uDhlyaTEBs'
-            );
+            xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
             console.log(JSON.stringify(customerDetails));
             let requestBody = JSON.stringify(customerDetails);
             xhttp.send(requestBody);

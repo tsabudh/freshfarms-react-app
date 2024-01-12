@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { IoIosArrowRoundBack } from 'react-icons/io';
@@ -11,6 +11,7 @@ import Button from '../UI/Button/Button';
 import TicketTable from '../TicketTable/TicketTable';
 import SortAndFilter from '../SortAndFilter/SortAndFilter';
 import Tag from '../UI/Tag/Tag';
+import { AuthContext } from '../../context/AuthContext';
 
 const copyText = (e) => {
     navigator.clipboard.writeText(e.target.innerText.substring(0, 500));
@@ -32,6 +33,8 @@ function Customer() {
         customerId: id,
     };
 
+    const { token } = useContext(AuthContext);
+
     const [customer, setCustomer] = useState(null);
     const [editingStatus, setEditingStatus] = useState(false);
 
@@ -47,9 +50,10 @@ function Customer() {
     //- INITIALIZING CUSTOMER AND TRANSACTIONS
     useEffect(() => {
         const asyncWrapper = async () => {
-            let customerResult = await fetchCustomers(id);
+            let customerResult = await fetchCustomers(id, token);
             let transactionResults = await fetchTransactions(
-                initialFilterObject
+                initialFilterObject,
+                token
             );
             console.log(customerResult);
             setCustomer(customerResult);
@@ -138,7 +142,7 @@ function Customer() {
         customerDetails.name = customerName;
         customerDetails.address = customerAddress;
         customerDetails.phone = [...addedPhones, ...customerPhoneArray];
-        let result = await updateCustomer(id, customerDetails);
+        let result = await updateCustomer(id, customerDetails, token);
         console.log(result);
         if (result.status == 'success') {
             setCustomer(result.data);

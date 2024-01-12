@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import RegisterBoard from '../RegisterBoard/RegisterBoard';
 import TicketTable from '../TicketTable/TicketTable';
-import styles from './OverviewPane.module.scss';
+import styles from './OverviewPanel.module.scss';
 import Chart from 'chart.js/auto';
 import BarChart from '../UI/Chart/BarChart';
 
-function OverviewPane() {
+function OverviewPanel() {
     const initialFilterObject = {
         sortBy: {
             issuedTime: -1,
@@ -36,4 +36,4 @@ function OverviewPane() {
     );
 }
 
-export default OverviewPane;
+export default OverviewPanel;

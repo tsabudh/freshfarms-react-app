@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js/auto';
-import fetchProducts from '../../../utils/fetchProducts';
 
 import styles from './BarChart.module.scss';
 let chartData = {
     labels: [
-        'Paneer',
+        'Paneler',
         'Yogurt',
         'Cow Milk',
         'Buffalo Milk',
@@ -90,7 +89,6 @@ function BarChart(props) {
                 );
                 return words.join(' ');
             });
-            console.log(chartData.datasets[0].data);
             chartData.datasets[0].data = products.map((item) => {
                 if (item.sales) return item.sales;
                 else return 0;
@@ -99,7 +97,6 @@ function BarChart(props) {
                 if (item.stock) return item.stock;
                 else return 0;
             });
-            console.log(chartData.datasets);
         };
         wrapperFunc();
     }, [products]);

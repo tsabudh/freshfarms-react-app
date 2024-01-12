@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useContext } from 'react';
 import DatePicker from '../UI/DatePicker/DatePicker';
 // import { transactionPromiseFunc } from '../TicketTable/TicketTable';
 import { fetchTransactions } from '../../utils/fetchTransactions';
 import StatementTable from '../StatementTable/StatementTable';
+import { AuthContext } from '../../context/AuthContext';
 
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -85,11 +86,12 @@ const dateStateReducer = (dateState, action) => {
     return newDateState;
 };
 
-const StatementPane = () => {
+const StatementPanel = () => {
     const [dateState, dispatchDateState] = useReducer(
         dateStateReducer,
         initialDateState
     );
+    const { token } = useContext(AuthContext);
     const [filterObject, setFilterObject] = useState();
     const [monthlyTransactions, setMonthlyTransactions] = useState();
     const [numberOfTransactions, setNumberOfTransactions] = useState();
@@ -124,7 +126,10 @@ const StatementPane = () => {
                     );
                     setFilterObject(filterObjectTemp);
 
-                    let results = await fetchTransactions(filterObjectTemp);
+                    let results = await fetchTransactions(
+                        filterObjectTemp,
+                        token
+                    );
 
                     if (results) {
                         setMonthlyTransactions(results);
@@ -203,4 +208,4 @@ const StatementPane = () => {
     );
 };
 
-export default StatementPane;
+export default StatementPanel;

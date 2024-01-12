@@ -1,4 +1,4 @@
-export const updateCustomer = (id, customerDetails) => {
+export const updateCustomer = (id, customerDetails,token) => {
     return new Promise((resolve, reject) => {
         try {
             const xhttp = new XMLHttpRequest();
@@ -14,10 +14,8 @@ export const updateCustomer = (id, customerDetails) => {
             xhttp.open('PATCH', apiRoute);
             xhttp.setRequestHeader('Content-Type', 'application/json');
 
-            xhttp.setRequestHeader(
-                'Authorization',
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6IjY0NjlhM2IxMzkwM2EwZmE1ZjUyMjMzYiIsImlzc3VlZEF0IjoxNjg0NjczMzAwMTk2LCJpYXQiOjE2ODQ2NzMzMDB9.26JLp_lg3UB862q3MUNgYIxIGyMwZtXW3uDhlyaTEBs'
-            );
+            xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
+
             console.log(JSON.stringify(customerDetails));
             let requestBody = JSON.stringify(customerDetails);
             xhttp.send(requestBody);
