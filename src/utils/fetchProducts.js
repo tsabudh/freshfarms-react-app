@@ -1,3 +1,4 @@
+import baseRoute from "../assets/globals/baseRoute";
 export const fetchProducts = (id,token) => {
     return new Promise((resolve, reject) => {
         try {
@@ -11,8 +12,8 @@ export const fetchProducts = (id,token) => {
             };
 
             if (id)
-                apiRoute = `http://127.0.0.1:3000/api/v1/products/${id.toString()}`;
-            else apiRoute = 'http://127.0.0.1:3000/api/v1/products/';
+                apiRoute = `${baseRoute}/api/v1/products/${id.toString()}`;
+            else apiRoute = `${baseRoute}/api/v1/products/`;
 
             xhttp.open('GET', apiRoute);
             xhttp.setRequestHeader('Authorization', `Bearer ${token}`);

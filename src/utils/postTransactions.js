@@ -1,8 +1,9 @@
+import baseRoute from "../assets/globals/baseRoute";
 export async function postTransaction(transactionObject,token) {
     return new Promise(async (resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
-            let apiRoute = `http://127.0.0.1:3000/api/v1/transactions/`;
+            let apiRoute = `${baseRoute}/api/v1/transactions/`;
             
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {

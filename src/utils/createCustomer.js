@@ -1,8 +1,9 @@
+import baseRoute from "../assets/globals/baseRoute";
 export const createCustomer = (customerDetails, token) => {
     return new Promise((resolve, reject) => {
         try {
             const xhttp = new XMLHttpRequest();
-            const apiRoute = `http://127.0.0.1:3000/api/v1/customers/`;
+            const apiRoute = `${baseRoute}/api/v1/customers/`;
 
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {

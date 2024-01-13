@@ -1,8 +1,9 @@
+import baseRoute from "../assets/globals/baseRoute";
 export async function loginAdmin(loginDetails) {
     return new Promise(async (resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
-            let apiRoute = `http://127.0.0.1:3000/api/v1/admins/login`;
+            let apiRoute = `${baseRoute}/api/v1/admins/login`;
 
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {

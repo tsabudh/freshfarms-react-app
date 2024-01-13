@@ -1,4 +1,5 @@
-export const fetchCustomers = (id,token) => {
+import baseRoute from '../assets/globals/baseRoute';
+export const fetchCustomers = (id, token) => {
     return new Promise((resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
@@ -10,9 +11,8 @@ export const fetchCustomers = (id,token) => {
                 }
             };
 
-            if (id)
-                apiRoute = `http://127.0.0.1:3000/api/v1/customers/${id.toString()}`;
-            else apiRoute = 'http://127.0.0.1:3000/api/v1/customers/';
+            if (id) apiRoute = `${baseRoute}/api/v1/customers/${id.toString()}`;
+            else apiRoute = `${baseRoute}/api/v1/customers/`;
 
             xhttp.open('GET', apiRoute);
             xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
@@ -23,7 +23,5 @@ export const fetchCustomers = (id,token) => {
         }
     });
 };
-
-
 
 export default fetchCustomers;
