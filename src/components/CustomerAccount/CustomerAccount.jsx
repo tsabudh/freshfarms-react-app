@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './CustomerAccount.module.scss';
 import Button from '../UI/Button/Button';
 import createCustomer from '../../utils/createCustomer';
+import {AuthContext} from '../../context/AuthContext';
 
 const failuresObject = {
     name: false,
@@ -16,6 +17,7 @@ const failuresObject = {
 };
 
 function CustomerAccount() {
+    const { token } = useContext(AuthContext);
     const [dueAmount, setDueAmount] = useState('');
     const [tabOptions, setTabOptions] = useState(false);
     const [failures, setFailures] = useState(failuresObject);
@@ -38,16 +40,16 @@ function CustomerAccount() {
         let details = {};
         formData.forEach((value, key) => (details[key] = value));
         let json = JSON.stringify(details);
-        
+
         console.log(Object.entries(failures).find((item) => item[1] == true));
 
         for (const [key, value] of Object.entries(failures)) {
             // console.log(key, value);
         }
         // console.log(Object.entries(failures));
-        return;
-        let result = await createCustomer(details);
+        let result = await createCustomer(details, token);
         console.log(result);
+        return;
     };
 
     return (
