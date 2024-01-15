@@ -41,6 +41,23 @@
         ]
     },
     {
+        "title": "Products",
+        "icon": "bi-person-fill",
+        "identity": "menu",
+        "children": [
+            {
+                "title": "Home",
+                "path": "/products",
+                "identity": "sub-menu"
+            },
+            {
+                "title": "Account",
+                "path": "/products/account",
+                "identity": "sub-menu"
+            }
+        ]
+    },
+    {
         "title": "Invoice",
         "icon": "bi-view-list",
         "identity": "menu",

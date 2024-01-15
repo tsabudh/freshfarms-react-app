@@ -7,7 +7,7 @@ export const fetchProducts = (id,token) => {
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
                     let response = JSON.parse(xhttp.responseText);
-                    resolve(response.data);
+                    resolve(response);
                 }
             };
 

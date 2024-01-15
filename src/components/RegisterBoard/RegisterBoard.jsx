@@ -22,7 +22,7 @@ const RegisterBoard = (props) => {
             let customerResults = await fetchCustomers(null, token);
             let productResults = await fetchProducts(null, token);
             setCustomers(customerResults);
-            setProducts(productResults);
+            setProducts(productResults.data);
         };
         asyncFunc();
     }, []);

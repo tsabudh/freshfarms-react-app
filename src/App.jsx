@@ -14,6 +14,8 @@ import Customer from './components/Customer/Customer';
 import Notifier from './components/Notifier/Notifier';
 import Login from './pages/Login/Login';
 import { AuthContext } from './context/AuthContext';
+import ProductPanel from './components/ProductPanel/ProductPanel';
+import ProductAccount from './components/ProductAccount/ProductAccount';
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token'));
 
@@ -40,7 +42,12 @@ function App() {
                                 element={<CustomerAccount />}
                             />
                         </Route>
-
+                        <Route path="products" element={<ProductPanel />}>
+                            <Route
+                                path="account"
+                                element={<ProductAccount />}
+                            />
+                        </Route>
                         <Route
                             path="transactions"
                             element={<TransactionPanel />}
