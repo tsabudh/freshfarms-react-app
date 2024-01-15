@@ -6,6 +6,7 @@ import Button from '../UI/Button/Button';
 import loginAdmin from '../../utils/loginAdmin';
 
 import { AuthContext } from '../../context/AuthContext';
+import signupAdmin from '../../utils/signupAdmin';
 
 const LoginForm = ({ isNewUser, toggle }) => {
     const [name, setName] = useState('');
@@ -25,6 +26,11 @@ const LoginForm = ({ isNewUser, toggle }) => {
         let formData = new FormData(form);
         formData.forEach((value, key) => (loginDetails[key] = value));
         if (isNewUser) {
+            let response = await signupAdmin(loginDetails);
+            console.log(response);
+            if(response.status == 'success'){
+                console.log('SUCCESSFULLY CREATED ADMIN')
+            }
             return;
         } else {
             console.log(loginDetails);
@@ -34,6 +40,7 @@ const LoginForm = ({ isNewUser, toggle }) => {
                 setToken(response.token);
                 localStorage.setItem('token', response.token);
             }
+
             navigate('/');
         }
         return;
@@ -66,7 +73,7 @@ const LoginForm = ({ isNewUser, toggle }) => {
                                     name="name"
                                     type="text"
                                     value={name}
-                                    onChange={(e) => setPhone(e.target.value)}
+                                    onChange={(e) => setName(e.target.value)}
                                 />
                             </div>
                             <div className={styles['input-group']}>
