@@ -29,5 +29,6 @@ dist-ssr
 .env
 TODO
 
+src/assets/globals/baseRoute.js
 # SKIPPING BASE ROUTE SINCE IT IS ALREADY FIXED IN DEPLOYMENT
 src/assets/globals/baseRoute.js
