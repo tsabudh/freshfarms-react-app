@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Product.module.scss';
 
+
 function Product(props) {
     const { product } = props;
     return (
