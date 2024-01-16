@@ -1,5 +1,4 @@
 .sidebar-item {
-    cursor: pointer;
     padding: 1rem;
     margin: 1rem;
     text-decoration: none;
@@ -30,12 +29,14 @@
     }
 
     .sidebar-title {
+        cursor: pointer;
         display: flex;
         font-size: 1.2em;
         justify-content: space-between;
-        & span{
+        & span {
             font-weight: 600;
             color: white;
+            cursor: pointer;
         }
     }
     .sidebar-title span i {
@@ -60,16 +61,18 @@
         height: auto;
     }
 
-    &.plain {
+    & .plain {
+        cursor: pointer;
         display: block;
         color: #fff;
         text-decoration: none;
-    }
-    &.plain:hover {
-        text-decoration: underline;
-    }
-    &.plain i {
-        display: inline-block;
-        width: 1.7em;
+
+        &hover {
+            text-decoration: underline;
+        }
+        & i {
+            display: inline-block;
+            width: 1.7em;
+        }
     }
 }

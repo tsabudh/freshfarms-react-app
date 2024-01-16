@@ -46,7 +46,7 @@ function SidebarItem({ item }) {
                     className={`${
                         item.identity === 'menu'
                             ? styles['sidebar-title']
-                            : 'plain'
+                            : styles['plain']
                     }`}
                 >
                     <span>{item.title}</span>

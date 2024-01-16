@@ -1,26 +1,29 @@
 .signup-container {
     width: 50%;
-    // min-height: 40rem;
-    flex-basis: 40rem;
     flex-shrink: 0;
-    // border: 1px solid blue;
-    transition: height 1s ease;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    transition: transform 0.5s ease;
+
+    &--sign-in {
+        transform: translateX(100%);
+    }
+    &--sign-up {
+        transform: translateX(0%);
+    }
 
     & .form-container {
-        // height: 100%;
+        flex-basis: 50rem;
         max-width: 80rem;
         margin: 0 auto;
-        background: rgb(217, 231, 204);
+        background: rgb(255, 255, 255);
+        border: 2px solid rgb(205, 216, 235);
+        border-radius: 1rem;
         color: black;
         padding: 1rem 1.5rem;
         transition: transform 0.5s ease;
 
-        &--sign-in {
-            transform: translateX(100%);
-        }
-        &--sign-up {
-            transform: translateX(0%);
-        }
         & .advanced-group {
             display: flex;
             justify-content: space-evenly;
@@ -83,19 +86,16 @@
                 }
             }
         }
-        & .action{
-
+        & .action {
             & button {
                 margin-top: 2rem;
-
-                
             }
-            & svg{
+            & svg {
                 vertical-align: bottom;
                 color: rgb(115 164 161);
             }
         }
-        & .error-message{
+        & .error-message {
             margin-block: 1rem;
             font-size: 1.4rem;
             word-break: break-word;

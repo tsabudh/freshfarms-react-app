@@ -9,6 +9,11 @@ function OverlayContainer({ isNewUser, toggle }) {
                 isNewUser ? styles['overlay--left'] : styles['overlay--right']
             }`}
         >
+           <div className={styles["headings"]}>
+             <h2>Welcome</h2>
+             <p>to</p>
+             <h1>Shree Krishna Dairy</h1>
+            </div>
             {isNewUser ? (
                 <p>If you are a registered user, log in instead.</p>
             ) : (

@@ -5,20 +5,19 @@ import { AuthContext } from '../../context/AuthContext';
 import styles from './Dashboard.module.scss';
 import { Outlet } from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
+import NavBar from '../../components/NavBar/NavBar';
 
-const Dashboard = () => {
+const Dashboard = (props) => {
     const [sidebarHidden, setSidebarHidden] = useState(false);
     const navigate = useNavigate();
     const { token, setToken } = useContext(AuthContext);
 
     useEffect(() => {
-        console.log('From dashboard');
         if (!token) {
             console.log('token not available');
             navigate('/login');
         }
     }, [token]);
-    console.log(location.pathname);
     return (
         <div className={styles.dashboard}>
             <Sidebar
@@ -26,30 +25,7 @@ const Dashboard = () => {
                 setSidebarHidden={setSidebarHidden}
             />
             <div className={styles.window}>
-                <div className={styles['navigation-bar']}>
-                    {location.pathname != '/' && (
-                        <div className={styles['go-back']}>
-                            <Button
-                                className="stylish06"
-                                onClick={() => navigate(-1)}
-                            >
-                                Go back
-                            </Button>
-                        </div>
-                    )}
-
-                    <div className={styles['logo']}>
-                        <Button
-                            className="stylish02"
-                            onClick={() => {
-                                setToken(null);
-                                localStorage.removeItem('token');
-                            }}
-                        >
-                            Logout
-                        </Button>
-                    </div>
-                </div>
+                <NavBar />
                 <Outlet />
             </div>
         </div>

@@ -111,7 +111,7 @@ const RegisterBoard = (props) => {
                         <label htmlFor="customers">Customer :</label>
                         <select name="" id="customers">
                             {customers.map((item) => (
-                                <option key={customers._id} value={item._id}>
+                                <option key={item._id} value={item._id}>
                                     {item.name}
                                 </option>
                             ))}

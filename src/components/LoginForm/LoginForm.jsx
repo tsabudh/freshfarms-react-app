@@ -9,7 +9,7 @@ import { AuthContext } from '../../context/AuthContext';
 import signupAdmin from '../../utils/signupAdmin';
 import BouncingCircles from '../UI/Vectors/BouncingCircles';
 
-const LoginForm = ({ isNewUser, toggle }) => {
+const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [name, setName] = useState('');
@@ -34,17 +34,25 @@ const LoginForm = ({ isNewUser, toggle }) => {
             setIsLoading(true);
             let response = await signupAdmin(loginDetails);
             console.log(response);
+            if (response) setIsLoading(false);
             if (response.status == 'success') {
                 console.log('SUCCESSFULLY SIGNED UP ADMIN');
                 setIsLoading(false);
                 setToken(response.token);
                 localStorage.setItem('token', response.token);
                 navigate('/');
+            } else if (response.status == 'failure') {
+                if (response.message) {
+                    setErrorMessage(response.message);
+                } else if (response.errors) {
+                    setErrorMessage(response.errors[0].msg);
+                }
+            } else {
+                setErrorMessage('Something went wrong on our side.😞');
             }
             return;
         } else {
             //- Logging in user
-            console.log(loginDetails);
             setIsLoading(true);
             let response = await loginAdmin(loginDetails);
             console.log(response);
@@ -54,7 +62,6 @@ const LoginForm = ({ isNewUser, toggle }) => {
                 localStorage.setItem('token', response.token);
                 navigate('/');
             } else if (response.status == 'failure') {
-                setIsLoading(false);
                 if (response.message) {
                     setErrorMessage(response.message);
                 } else if (response.errors) {
@@ -68,14 +75,14 @@ const LoginForm = ({ isNewUser, toggle }) => {
     }
 
     return (
-        <div className={styles['signup-container']}>
-            <div
-                className={`${styles['form-container']} ${
-                    isNewUser
-                        ? styles['form-container--sign-in']
-                        : styles['form-container--sign-up']
-                }`}
-            >
+        <div
+            className={`${styles['signup-container']}  ${
+                isNewUser
+                    ? styles['signup-container--sign-in']
+                    : styles['signup-container--sign-up']
+            }`}
+        >
+            <div className={`${styles['form-container']}`}>
                 <form id="loginForm" className="form">
                     <h3>{!isNewUser ? 'Login' : 'SignUp'}</h3>
 

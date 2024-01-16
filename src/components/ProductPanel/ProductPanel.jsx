@@ -23,7 +23,7 @@ function ProductPanel() {
     return (
         <div className={styles['container']}>
             {products.map((item) => {
-                return <Product product={item}/>
+                return <Product key={item._id} product={item} />;
             })}
         </div>
     );

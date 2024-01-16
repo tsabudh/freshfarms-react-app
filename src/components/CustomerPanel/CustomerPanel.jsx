@@ -22,7 +22,7 @@ const CustomerPanel = () => {
         <>
             <div className={`${styles['card-container']}`}>
                 {customers.map((item, index, array) => {
-                    return <CustomerProfile customer={item} />;
+                    return <CustomerProfile  key = {item._id} customer={item} />;
                 })}
             </div>
         </>

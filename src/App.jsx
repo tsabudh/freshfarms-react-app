@@ -16,15 +16,22 @@ import Login from './pages/Login/Login';
 import { AuthContext } from './context/AuthContext';
 import ProductPanel from './components/ProductPanel/ProductPanel';
 import ProductAccount from './components/ProductAccount/ProductAccount';
+import fetchMyDetails from './utils/fetchMyDetails';
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token'));
+    // console.log(admin);
 
     useEffect(() => {
-        let storedToken = localStorage.getItem('token');
-        if (storedToken) {
-            setToken(storedToken);
+        async function asyncWrapper() {
+            let storedToken = localStorage.getItem('token');
+            if (storedToken) {
+                setToken(storedToken);
+                console.log(storedToken);
+                
+            }
+            // console.log('STORED TOKEN:', storedToken);
         }
-        console.log('STORED TOKEN:', storedToken);
+        asyncWrapper();
     }, []);
     return (
         <AuthContext.Provider value={{ token, setToken }}>

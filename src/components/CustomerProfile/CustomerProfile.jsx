@@ -5,7 +5,6 @@ import Tag from '../UI/Tag/Tag';
 
 const CustomerProfile = ({ customer }) => {
     const navigate = useNavigate();
-    console.log(customer);
     return (
         <div
             className={`${styles['card']}`}
@@ -37,7 +36,7 @@ const CustomerProfile = ({ customer }) => {
                 </div>
                 <div className={styles['phone']}>
                     {customer.phone.map((item) => (
-                        <Tag>{item}</Tag>
+                        <Tag key={item}>{item}</Tag>
                     ))}
                 </div>
                 <div className={styles['address']}>{customer.address}</div>
