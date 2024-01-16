@@ -84,7 +84,7 @@ const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
         >
             <div className={`${styles['form-container']}`}>
                 <form id="loginForm" className="form">
-                    <h3>{!isNewUser ? 'Login' : 'SignUp'}</h3>
+                    <h3>{!isNewUser ? 'Log in' : 'Sign up'}</h3>
 
                     {isNewUser && (
                         <div>
