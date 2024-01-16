@@ -9,7 +9,7 @@ export const signupAdmin = (customerDetails) => {
                 if (xhttp.readyState == 4) {
                     let response = JSON.parse(xhttp.responseText);
                     console.log(response);
-                    resolve(response.data);
+                    resolve(response);
                 }
             };
             xhttp.open('POST', apiRoute);
