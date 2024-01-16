@@ -83,8 +83,25 @@
                 }
             }
         }
-        & button {
-            margin-top: 2rem;
+        & .action{
+
+            & button {
+                margin-top: 2rem;
+
+                
+            }
+            & svg{
+                vertical-align: bottom;
+                color: rgb(115 164 161);
+            }
+        }
+        & .error-message{
+            margin-block: 1rem;
+            font-size: 1.4rem;
+            word-break: break-word;
+            text-overflow: ellipsis;
+            max-height: 5em;
+            overflow: auto;
         }
     }
 }
