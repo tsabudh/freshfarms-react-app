@@ -1,2 +1,19 @@
-@import  './utilities/utils.scss';
+@import './abstract/mixins.scss';
+@import './abstract/variables.scss';
+@import './abstract/functions.scss';
+
+@import './base/animations.scss';
+@import './base/base.scss';
+@import './base/typography.scss';
+@import './base/utilities.scss';
+
+@import './components/bg-video.scss';
+@import './components/buttons.scss';
+@import './components/card01.scss';
+@import './components/clock.scss';
+@import './components/expanding-cards.scss';
+@import './components/slides.scss';
+@import './components/strips.scss';
+
+@import './utilities/utils.scss';
 @import './utilities/scrollbar.scss';

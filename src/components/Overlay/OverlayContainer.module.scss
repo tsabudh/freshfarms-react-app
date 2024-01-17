@@ -1,3 +1,5 @@
+@import '/src/scss/abstract/mixins.scss';
+
 .overlay {
     width: 50%;
     flex-shrink: 0;
@@ -5,30 +7,44 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding-block: 2rem;
 
     background-color: rgb(71, 68, 68);
     transition: transform 0.5s ease, height 0.5s ease, max-height 0.5s ease;
 
+@include respond('tab-port'){
+
+    order: 1;
+}
+
     &--right {
+        @include respond('tab-port') {
+            transform: translateX(0%);
+            transform: translateY(0%);
+            width: 100%;
+        }
     }
 
     &--left {
         transform: translateX(-100%);
+        @include respond('tab-port') {
+            transform: translateX(0%);
+            width: 100%;
+        }
     }
 
-    & .headings{
+    & .headings {
         text-align: center;
-        & h1{
+        & h1 {
             font-size: 4rem;
             color: aliceblue;
             margin-bottom: 4rem;
         }
-        & h2{
-            color:rgb(180, 233, 228);
+        & h2 {
+            color: rgb(180, 233, 228);
             font-weight: 200;
-
         }
-        & p{
+        & p {
             font-weight: 200;
             font-style: italic;
         }

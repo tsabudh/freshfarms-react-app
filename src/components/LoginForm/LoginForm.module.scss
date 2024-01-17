@@ -1,16 +1,29 @@
+@import '/src/scss/abstract/mixins.scss';
+
 .signup-container {
+    position: relative;
     width: 50%;
     flex-shrink: 0;
     flex-grow: 1;
     display: flex;
     align-items: center;
     transition: transform 0.5s ease;
-
+    @include respond('tab-port') {
+        justify-content: center;
+        width: 100%;
+        order: 2;
+    }
     &--sign-in {
         transform: translateX(100%);
+        @include respond('tab-port') {
+            transform: translateY(0%);
+        }
     }
     &--sign-up {
         transform: translateX(0%);
+        @include respond('tab-port') {
+            transform: translateY(0%);
+        }
     }
 
     & .form-container {
