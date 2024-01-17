@@ -1,0 +1,53 @@
+.container {
+    & .profile {
+        &-picture {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            font-size: 3rem;
+            & svg {
+                cursor: pointer;
+                color: pink;
+                border: 3px solid white;
+                border-radius: 2.5rem;
+                background: white;
+                // position: absolute;
+                top: 1rem;
+                right: 5rem;
+                transform: translate(-150%,-50%);
+            }
+            & .figure {
+                position: relative;
+                border-radius: 100%;
+                overflow: hidden;
+                max-width: 20rem;
+            }
+        }
+
+        &-field {
+            border: 1px solid white;
+            border-radius: 2rem;
+            margin: 2rem 3rem;
+            padding: 1rem 2rem;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            max-width: 80rem;
+            overflow: auto;
+            & .key {
+                flex-basis: 20rem;
+                margin-inline: 1rem;
+                // border: 1px solid blue;
+            }
+
+            & .value {
+                flex-basis: 60rem;
+
+                // border: 1px solid red;
+                font-size: 1.8rem;
+                font-weight: 600;
+            }
+        }
+    }
+}

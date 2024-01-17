@@ -51,8 +51,8 @@
                 "identity": "sub-menu"
             },
             {
-                "title": "Account",
-                "path": "/products/account",
+                "title": "Details",
+                "path": "/products/details",
                 "identity": "sub-menu"
             }
         ]
@@ -80,23 +80,8 @@
         "identity": "menu",
         "children": [
             {
-                "title": "Login",
-                "path": "/login",
-                "identity": "sub-menu"
-            },
-            {
-                "title": "Register",
-                "path": "/register",
-                "identity": "sub-menu"
-            },
-            {
-                "title": "Forgot Password",
-                "path": "/forgot-password",
-                "identity": "sub-menu"
-            },
-            {
-                "title": "Reset Password",
-                "path": "/reset-password",
+                "title": "Profile",
+                "path": "/profile",
                 "identity": "sub-menu"
             }
         ]

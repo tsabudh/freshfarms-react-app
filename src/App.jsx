@@ -15,7 +15,8 @@ import Notifier from './components/Notifier/Notifier';
 import Login from './pages/Login/Login';
 import { AuthContext } from './context/AuthContext';
 import ProductPanel from './components/ProductPanel/ProductPanel';
-import ProductAccount from './components/ProductAccount/ProductAccount';
+import ProductDetails from './components/ProductDetails/ProductDetails';
+import AdminProfile from './components/AdminProfile/AdminProfile';
 import fetchMyDetails from './utils/fetchMyDetails';
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token'));
@@ -27,7 +28,6 @@ function App() {
             if (storedToken) {
                 setToken(storedToken);
                 console.log(storedToken);
-                
             }
             // console.log('STORED TOKEN:', storedToken);
         }
@@ -51,8 +51,8 @@ function App() {
                         </Route>
                         <Route path="products" element={<ProductPanel />}>
                             <Route
-                                path="account"
-                                element={<ProductAccount />}
+                                path="details"
+                                element={<ProductDetails />}
                             />
                         </Route>
                         <Route
@@ -61,6 +61,7 @@ function App() {
                         />
                         <Route path="statements" element={<StatementPanel />} />
                         <Route path="inventory" element={<InventoryPanel />} />
+                        <Route path="profile" element={<AdminProfile />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

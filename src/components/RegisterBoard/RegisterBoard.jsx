@@ -21,6 +21,7 @@ const RegisterBoard = (props) => {
         let asyncFunc = async () => {
             let customerResults = await fetchCustomers(null, token);
             let productResults = await fetchProducts(null, token);
+            console.log(productResults);
             setCustomers(customerResults);
             setProducts(productResults.data);
         };
@@ -84,12 +85,14 @@ const RegisterBoard = (props) => {
         newTransaction.items = items;
 
         let result = await postTransaction(newTransaction, token);
-        console.log(result);
+        console.log(result); //OKAY
         if (result.status == 'success') {
             setPosting('success');
             setErrorMessage(null);
-            let updatedProducts = await fetchProducts();
-            setProducts(updatedProducts);
+            console.log(token);
+            let productResponse = await fetchProducts(null,token);
+            console.log(productResponse); //!    JWT MALFORMED
+            setProducts(productResponse.data);
             props.setFilterObject({
                 sortBy: {
                     issuedTime: -1,
