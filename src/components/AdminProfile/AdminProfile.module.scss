@@ -1,5 +1,12 @@
 .container {
+
+    margin-block: 2rem;
     & .profile {
+        font-size: inherit;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
         &-picture {
             display: flex;
             justify-content: center;
@@ -14,22 +21,37 @@
                 // position: absolute;
                 top: 1rem;
                 right: 5rem;
-                transform: translate(-150%,-50%);
+                transform: translate(-150%, -50%);
             }
             & .figure {
+                padding: 0.5rem; //* PADDING
                 position: relative;
                 border-radius: 100%;
                 overflow: hidden;
                 max-width: 20rem;
+                min-width: 20rem;
+                height: 20rem;
+                border: 0.2rem solid rgb(62, 133, 106);
+                &--load {
+                    border: none;
+                    padding: 0.5rem;
+                    
+                }
+                & img {
+                    border-radius: 100%;
+                }
             }
         }
 
+        
         &-field {
+            width: 100%;
             border: 1px solid white;
             border-radius: 2rem;
             margin: 2rem 3rem;
             padding: 1rem 2rem;
 
+            // flex-basis: 80rem;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
