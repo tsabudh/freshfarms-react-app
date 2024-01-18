@@ -57,13 +57,15 @@ const RegisterBoard = (props) => {
 
     const removeFromCart = (e) => {
         e.preventDefault();
-
-        let elementItem = e.target.parentNode;
+        let elementItem = e.target.parentNode.parentNode.parentNode.parentNode;
 
         let newCart = [...cart];
-        let found = newCart.findIndex(
-            (item) => item._id == elementItem.dataset._id
-        );
+        let found = newCart.findIndex((item) => {
+            console.log(item._id);
+            console.log(elementItem);
+            return item._id == elementItem.dataset._id;
+        });
+        console.log('removing index', found);
         newCart.splice(found, 1);
         setCart(newCart);
     };
@@ -90,7 +92,7 @@ const RegisterBoard = (props) => {
             setPosting('success');
             setErrorMessage(null);
             console.log(token);
-            let productResponse = await fetchProducts(null,token);
+            let productResponse = await fetchProducts(null, token);
             console.log(productResponse); //!    JWT MALFORMED
             setProducts(productResponse.data);
             props.setFilterObject({
@@ -196,66 +198,11 @@ const RegisterBoard = (props) => {
 
                         {cart.map((item) => {
                             return (
-                                <div
-                                    className={styles['cart-item']}
+                                <CartItem
+                                    item={item}
                                     key={item._id}
-                                    data-_id={item._id}
-                                >
-                                    <div
-                                        className={`${styles['cart-item-piece']} ${styles['cart-item-piece--id']}`}
-                                    >
-                                        <span
-                                            className={
-                                                styles['cart-item-piece-value']
-                                            }
-                                        >
-                                            {item._id}
-                                        </span>
-                                    </div>
-                                    <div
-                                        className={`${styles['cart-item-piece']} ${styles['cart-item-piece--name']}`}
-                                    >
-                                        <span
-                                            className={
-                                                styles['cart-item-piece-value']
-                                            }
-                                        >
-                                            {item.name}
-                                        </span>
-                                    </div>
-                                    <div
-                                        className={`${styles['cart-item-piece']} ${styles['cart-item-piece--price']}`}
-                                    >
-                                        <span
-                                            className={
-                                                styles['cart-item-piece-value']
-                                            }
-                                        >
-                                            {item.price}
-                                        </span>
-                                    </div>
-                                    <div
-                                        className={`${styles['cart-item-piece']} ${styles['cart-item-piece--quantity']}`}
-                                    >
-                                        <span
-                                            className={
-                                                styles['cart-item-piece-value']
-                                            }
-                                        >
-                                            {item.quantity}
-                                        </span>
-                                        <span
-                                            className={
-                                                styles['cart-item-piece-delete']
-                                            }
-                                            onClick={(e) => {
-                                                removeFromCart(e);
-                                            }}
-                                        >
-                                            <MdOutlineDeleteForever />
-                                        </span>
-                                    </div>
-                                </div>
+                                    removeFromCart={removeFromCart}
+                                />
                             );
                         })}
                     </div>
@@ -294,3 +241,47 @@ const RegisterBoard = (props) => {
 };
 
 export default RegisterBoard;
+
+function CartItem(props) {
+    const { item, removeFromCart } = props;
+    return (
+        <div className={styles['cart-item']} key={item._id} data-_id={item._id}>
+            <div
+                className={`${styles['cart-item-piece']} ${styles['cart-item-piece--id']}`}
+            >
+                <span className={styles['cart-item-piece-value']}>
+                    {item._id}
+                </span>
+            </div>
+            <div
+                className={`${styles['cart-item-piece']} ${styles['cart-item-piece--name']}`}
+            >
+                <span className={styles['cart-item-piece-value']}>
+                    {item.name}
+                </span>
+            </div>
+            <div
+                className={`${styles['cart-item-piece']} ${styles['cart-item-piece--price']}`}
+            >
+                <span className={styles['cart-item-piece-value']}>
+                    {item.price}
+                </span>
+            </div>
+            <div
+                className={`${styles['cart-item-piece']} ${styles['cart-item-piece--quantity']}`}
+            >
+                <span className={styles['cart-item-piece-value']}>
+                    {item.quantity}
+                </span>
+                <span
+                    className={styles['cart-item-piece-delete']}
+                    onClick={(e) => {
+                        removeFromCart(e);
+                    }}
+                >
+                    <MdOutlineDeleteForever />
+                </span>
+            </div>
+        </div>
+    );
+}
