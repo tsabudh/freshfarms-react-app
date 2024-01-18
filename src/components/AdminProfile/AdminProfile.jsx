@@ -13,18 +13,21 @@ function AdminProfile() {
 
     //- cache busting
     let uniqueParam = `?${new Date().getTime()}`;
-
-    useEffect(() => {
-        async function asyncWrapper() {
-            const response = await fetchMyDetails(token);
-            if (response.status == 'success') {
-                uniqueParam = `?${new Date().getTime()}`;
-                setProfile(response.data);
-            } else {
-                console.log('Error fetching account details!');
-            }
+    async function asyncWrapper() {
+        const response = await fetchMyDetails(token);
+        if (response.status == 'success') {
+            uniqueParam = `?${new Date().getTime()}`;
+            setProfile(response.data);
+        } else {
+            console.log('Error fetching account details!');
         }
+    }
+    useEffect(() => {
         asyncWrapper();
+        return ()=>{
+            //- some cleanup
+            console.log('kjskdf');
+        }
     }, []);
 
     const handleUpload = async (e) => {
@@ -40,11 +43,12 @@ function AdminProfile() {
 
             file = input.files[0];
             let result = await uploadProfilePhoto(file, token);
+            asyncWrapper();
             setLoadingProfilePic(false);
         };
         input.click();
     };
-
+    console.log(loadingProfilePic);
     return (
         profile && (
             <div className={styles['container']}>
@@ -58,11 +62,13 @@ function AdminProfile() {
                                     : ''
                             } `}
                         >
+                           { !loadingProfilePic ?
                             <img
                                 src={`https://tsabudh-shreekrishnadairy1.s3.ap-south-1.amazonaws.com/admins/profilePicture/${profile._id}-profile-picture.webp${uniqueParam}`}
                                 alt=""
                                 className=""
                             />
+                            : null}
                         </figure>
                         <MdPhotoCamera
                             onClick={handleUpload}
