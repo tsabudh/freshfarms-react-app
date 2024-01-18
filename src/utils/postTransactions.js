@@ -11,15 +11,7 @@ export async function postTransaction(transactionObject,token) {
                     let response = JSON.parse(xhttp.responseText);
                     resolve(response);
                 }
-                if(xhttp.readyState == 0 ){
-                    console.log('Open not called')
-                }
-                if(xhttp.readyState == 2 ){
-                    console.log('Headers received')
-                }
-                if(xhttp.readyState == 3 ){
-                    console.log('Loading ResponseText')
-                }
+               
             };
 
             xhttp.open('POST', apiRoute, true);
