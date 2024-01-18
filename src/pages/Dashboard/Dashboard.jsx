@@ -10,7 +10,7 @@ import NavBar from '../../components/NavBar/NavBar';
 const Dashboard = (props) => {
     const [sidebarHidden, setSidebarHidden] = useState(false);
     const navigate = useNavigate();
-    const { token, setToken } = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
 
     useEffect(() => {
         if (!token) {
