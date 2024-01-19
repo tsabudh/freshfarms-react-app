@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Button.module.scss';
+import classNames from 'classnames';
 
 const Button = (props) => {
     let classArray, classNames;
@@ -8,12 +9,10 @@ const Button = (props) => {
         classNames = classArray.map((item) => styles[item]).join(' ');
     }
 
+    let { className = null, ...dynamicProps } = { ...props };
+
     return (
-        <button
-            className={classNames}
-            onClick={props.onClick}
-            disabled={props.disabled}
-        >
+        <button className={classNames} {...dynamicProps}>
             {props.children}
         </button>
     );
