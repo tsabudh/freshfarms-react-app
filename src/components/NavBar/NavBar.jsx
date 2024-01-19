@@ -15,7 +15,6 @@ function NavBar(pros) {
         async function asyncWrapper() {
             let responseObject = await fetchMyDetails(token);
             setAdmin(Object.assign({}, responseObject.data));
-            console.log(responseObject);
         }
         asyncWrapper();
     },[]);

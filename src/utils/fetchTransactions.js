@@ -5,7 +5,7 @@ export const fetchTransactions = (filterObject,token) => {
         xhttp.onreadystatechange = async () => {
             if (xhttp.readyState === XMLHttpRequest.DONE) {
                 let responseReceived = await JSON.parse(xhttp.responseText);
-                console.log('Fetching transactions....');
+                // console.log('Fetching transactions....');
                 resolve(responseReceived.data);
             }
         };

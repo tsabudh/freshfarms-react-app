@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { IoIosArrowRoundBack } from 'react-icons/io';
@@ -12,6 +12,7 @@ import TicketTable from '../TicketTable/TicketTable';
 import SortAndFilter from '../SortAndFilter/SortAndFilter';
 import Tag from '../UI/Tag/Tag';
 import { AuthContext } from '../../context/AuthContext';
+import MapBox from '../UI/MapBox/MapBox';
 
 const copyText = (e) => {
     navigator.clipboard.writeText(e.target.innerText.substring(0, 500));
@@ -47,6 +48,16 @@ function Customer() {
     const [customerPhone, setCustomerPhone] = useState('');
     const [addedPhones, setAddedPhones] = useState([]);
 
+    const [coordinates, setCoordinates] = useState(null);
+
+    // const coordinates = useMemo(
+    //     () =>
+    //         customer?.location
+    //             ? customer.location.coordinates
+    //             : [83.60018489346729, 28.27182621011652],
+    //     [customer]
+    // );
+
     //- INITIALIZING CUSTOMER AND TRANSACTIONS
     useEffect(() => {
         const asyncWrapper = async () => {
@@ -57,6 +68,19 @@ function Customer() {
             );
             console.log(customerResult);
             setCustomer(customerResult);
+            setCoordinates((prevCoordinates) => {
+                if (
+                    customerResult.location &&
+                    customerResult.location.coordinates.length != 0
+                ) {
+                    console.log('Customer Location is Set');
+                    console.log(customerResult.location.coordinates);
+                    return customerResult.location.coordinates;
+                } else {
+                    console.log('customer location is NOT set');
+                    return [28.27182621011652, 83.60018489346729];
+                }
+            });
             setTransactions(transactionResults);
         };
         asyncWrapper();
@@ -332,6 +356,10 @@ function Customer() {
                 </div>
 
                 <div className={styles['second-row']}>
+                    {coordinates ? <MapBox coordinates={coordinates} /> : null}
+                </div>
+
+                <div className={styles['third-row']}>
                     <div className={styles['transactions']}>
                         <SortAndFilter
                             setFilterObject={setFilterObject}

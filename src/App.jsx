@@ -17,7 +17,7 @@ import { AuthContext } from './context/AuthContext';
 import ProductPanel from './components/ProductPanel/ProductPanel';
 import ProductDetails from './components/ProductDetails/ProductDetails';
 import AdminProfile from './components/AdminProfile/AdminProfile';
-import fetchMyDetails from './utils/fetchMyDetails';
+
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token'));
     // console.log(admin);
@@ -27,12 +27,12 @@ function App() {
             let storedToken = localStorage.getItem('token');
             if (storedToken) {
                 setToken(storedToken);
-                console.log(storedToken);
             }
             // console.log('STORED TOKEN:', storedToken);
         }
         asyncWrapper();
     }, []);
+
     return (
         <AuthContext.Provider value={{ token, setToken }}>
             <BrowserRouter>
