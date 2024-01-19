@@ -24,7 +24,7 @@ function MapBox(props) {
 
     useEffect(() => {
         let map = L.map('map');
-        map.setView(coordinates, 17);
+        map.setView(coordinates, 16);
         map.setMaxZoom(19);
         map.setMinZoom(15);
 
