@@ -17,7 +17,7 @@
             },
             {
                 "title": "Statements",
-                "path": "/statements",
+                "path": "/transactions/statements",
                 "identity": "sub-menu"
             }
         ]
@@ -34,8 +34,8 @@
                 "identity": "sub-menu"
             },
             {
-                "title": "Account",
-                "path": "/customers/account",
+                "title": "Manage",
+                "path": "/customers/manage",
                 "identity": "sub-menu"
             }
         ]
@@ -54,22 +54,10 @@
                 "title": "Details",
                 "path": "/products/details",
                 "identity": "sub-menu"
-            }
-        ]
-    },
-    {
-        "title": "Invoice",
-        "icon": "bi-view-list",
-        "identity": "menu",
-        "children": [
-            {
-                "title": "Home",
-                "path": "/invoice",
-                "identity": "sub-menu"
             },
             {
-                "title": "Billing",
-                "path": "/invoice/billing",
+                "title": "Inventory",
+                "path": "/products/inventory",
                 "identity": "sub-menu"
             }
         ]

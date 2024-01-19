@@ -45,22 +45,29 @@ function App() {
                             <Route path="" element={<CustomerPanel />} />
                             <Route path=":id" element={<Customer />} />
                             <Route
-                                path="account"
+                                path="manage"
                                 element={<CustomerAccount />}
                             />
                         </Route>
-                        <Route path="products" element={<ProductPanel />}>
+                        <Route path="products">
+                            <Route path="" element={<ProductPanel />}/>
                             <Route
                                 path="details"
                                 element={<ProductDetails />}
                             />
+                            <Route
+                                path="inventory"
+                                element={<InventoryPanel />}
+                            />
                         </Route>
-                        <Route
-                            path="transactions"
-                            element={<TransactionPanel />}
-                        />
-                        <Route path="statements" element={<StatementPanel />} />
-                        <Route path="inventory" element={<InventoryPanel />} />
+                        <Route path="transactions">
+                            <Route path="" element={<TransactionPanel />} />
+
+                            <Route
+                                path="statements"
+                                element={<StatementPanel />}
+                            />
+                        </Route>
                         <Route path="profile" element={<AdminProfile />} />
                     </Route>
                 </Routes>
