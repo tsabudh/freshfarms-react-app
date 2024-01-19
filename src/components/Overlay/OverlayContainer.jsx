@@ -53,7 +53,7 @@ function OverlayContainer({ isNewUser, toggle }) {
                 <p>Too much hassle?</p>
                 <p>
                   
-                    <span className={styles['highlighted']} onClick={dummyLogin}>Log in </span> with dummy account
+                    <span className={styles['highlighted']} onClick={dummyLogin}>Log in </span> with a dummy account
                     instead.
                 </p>
             </div>
