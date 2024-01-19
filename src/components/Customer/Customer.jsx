@@ -50,13 +50,7 @@ function Customer() {
 
     const [coordinates, setCoordinates] = useState(null);
 
-    // const coordinates = useMemo(
-    //     () =>
-    //         customer?.location
-    //             ? customer.location.coordinates
-    //             : [83.60018489346729, 28.27182621011652],
-    //     [customer]
-    // );
+
 
     //- INITIALIZING CUSTOMER AND TRANSACTIONS
     useEffect(() => {
@@ -69,15 +63,14 @@ function Customer() {
             console.log(customerResult);
             setCustomer(customerResult);
             setCoordinates((prevCoordinates) => {
+                //- If customer do not have any coordinates set, return default coordinates of shop
                 if (
                     customerResult.location &&
                     customerResult.location.coordinates.length != 0
                 ) {
-                    console.log('Customer Location is Set');
-                    console.log(customerResult.location.coordinates);
                     return customerResult.location.coordinates;
                 } else {
-                    console.log('customer location is NOT set');
+                    // Default coordinates of shop
                     return [28.27182621011652, 83.60018489346729];
                 }
             });
@@ -134,7 +127,6 @@ function Customer() {
         console.log('trigger');
         let newPhoneArray = [...addedPhones];
 
-        // let newNumber = document.getElementById('phoneToAdd').value;
         let newNumber = customerPhone.toLowerCase().trim();
 
         //- adding new number to added phone state variable
@@ -356,7 +348,12 @@ function Customer() {
                 </div>
 
                 <div className={styles['second-row']}>
-                    {coordinates ? <MapBox coordinates={coordinates} /> : null}
+                    {coordinates ? (
+                        <MapBox
+                            coordinates={coordinates}
+                            setCoordinates={setCoordinates}
+                        />
+                    ) : null}
                 </div>
 
                 <div className={styles['third-row']}>
