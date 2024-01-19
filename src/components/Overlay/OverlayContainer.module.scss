@@ -12,10 +12,9 @@
     background-color: rgb(71, 68, 68);
     transition: transform 0.5s ease, height 0.5s ease, max-height 0.5s ease;
 
-@include respond('tab-port'){
-
-    order: 1;
-}
+    @include respond('tab-port') {
+        order: 1;
+    }
 
     &--right {
         @include respond('tab-port') {
@@ -52,5 +51,22 @@
     & p {
         margin-block: 2rem;
         color: white;
+    }
+    & .dummy {
+        display: flex;
+        flex-direction: row;
+        & p {
+            font-size: 1.2rem;
+            & .highlighted {
+                color: antiquewhite;
+                font-weight: 600;
+                text-decoration: underline;
+                margin-inline: 0.5rem;
+                cursor: pointer;
+                -webkit-text-underline-position: under;
+                -ms-text-underline-position: below;
+                text-underline-position: under;
+            }
+        }
     }
 }
