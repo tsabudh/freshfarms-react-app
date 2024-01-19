@@ -1,0 +1,22 @@
+.container {
+    & .button-list {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 2rem;
+        margin-inline: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    & .map-container {
+        border: 2px solid rgb(64, 70, 70);
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+    & .marker-red {
+        aspect-ratio: 25/41;
+        width: 25px;
+        height: 40px;
+        object-fit: none;
+    }
+}
