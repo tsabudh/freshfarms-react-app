@@ -30,4 +30,4 @@ dist-ssr
 TODO
 
 # SKIPPING BASE ROUTE SINCE IT IS ALREADY FIXED IN DEPLOYMENT
-src/assets/globals/baseRoute.js
+src/assets/globals/
