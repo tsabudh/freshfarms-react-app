@@ -7,6 +7,8 @@ const Modal = ({ isOpen, onClose, children }) => {
     if (!isOpen) {
         return null;
     }
+
+    // Stop event propagation from modal to overlay
     const handleModalClick = (e) => {
         e.stopPropagation();
     };
@@ -16,9 +18,8 @@ const Modal = ({ isOpen, onClose, children }) => {
             <div className={styles['modal-wrapper']}>
                 <div className={styles['modal']} onClick={handleModalClick}>
                     <div className={styles['modal-header']}>
-                        <div className={styles["close-button"]}>
-
-                        <IoMdCloseCircle onClick={onClose} />
+                        <div className={styles['close-button']}>
+                            <IoMdCloseCircle onClick={onClose} />
                         </div>
                     </div>
 
