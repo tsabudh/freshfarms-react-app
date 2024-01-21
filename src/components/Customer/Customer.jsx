@@ -7,7 +7,7 @@ import updateCustomer from '../../utils/updateCustomer';
 import styles from './Customer.module.scss';
 import { fetchTransactions } from '../../utils/fetchTransactions';
 import Button from '../UI/Button/Button';
-import TicketTable from '../TicketTable/TicketTable';
+import TransactionTable from '../TransactionTable/TransactionTable';
 import SortAndFilter from '../SortAndFilter/SortAndFilter';
 import Tag from '../UI/Tag/Tag';
 import { AuthContext } from '../../context/AuthContext';
@@ -351,7 +351,7 @@ function Customer() {
                             setFilterObject={setFilterObject}
                             customerId={customer._id}
                         />
-                        <TicketTable filterObject={filterObject} />
+                        <TransactionTable filterObject={filterObject} />
                     </div>
                 </div>
             </div>
