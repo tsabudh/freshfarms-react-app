@@ -15,8 +15,6 @@ const TransactionTable = (props) => {
             console.log('Fetching Transactions...');
             let result = await fetchTransactions(filterObject, token);
             setTransactions(result);
-            console.log(result);
-            // liftTransactions(result);
         } catch (error) {
             console.log(error);
         }

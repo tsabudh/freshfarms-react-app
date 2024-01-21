@@ -21,16 +21,13 @@ import AdminProfile from './components/AdminProfile/AdminProfile';
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [admin, setAdmin] = useState(null);
-    // console.log(admin);
 
     useEffect(() => {
         async function asyncWrapper() {
             let storedToken = localStorage.getItem('token');
             if (storedToken) {
                 setToken(storedToken);
-                console.log(storedToken);
             }
-            // console.log('STORED TOKEN:', storedToken);
         }
         asyncWrapper();
     }, []);
