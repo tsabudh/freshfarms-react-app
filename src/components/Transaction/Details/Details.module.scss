@@ -1,0 +1,87 @@
+@import '../../../scss//abstract//mixins';
+
+.container {
+    padding-inline: 1rem;
+    .section {
+        border-bottom: 2px solid rgb(9, 131, 74);
+        margin-bottom: 1rem;
+        .field {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+
+            margin: 1.5rem 1rem;
+
+            .title {
+                flex-grow: 2;
+                flex-basis: 15rem;
+            }
+
+            .values {
+                flex-grow: 3;
+                flex-basis: 20rem;
+
+                // font-weight: 600;
+                // font-size: 2rem;
+                text-transform: capitalize;
+
+                & .item {
+                    padding: 1rem 0.5rem;
+                    margin-block: 1rem;
+
+                    border: 1px solid rgb(72, 104, 85);
+                    border-radius: 1rem;
+
+                    &-property {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-around;
+                    }
+                    &-key {
+                        flex-grow: 2;
+                        flex-basis: 10rem;
+                    }
+                    &-value {
+                        flex-grow: 3;
+                        flex-basis: 10rem;
+                    }
+                }
+                & .spacer {
+                    height: 1rem;
+                    width: 100%;
+                }
+            }
+        }
+    }
+    .summary {
+        .summary-table {
+            // flex-grow: 2;
+            flex-basis: 30rem;
+            width: 100%;
+            margin-block: 1rem;
+
+            &,
+            & tr,
+            td,
+            th {
+                border: 2px solid gray;
+                border-collapse: collapse;
+                text-align: center;
+            }
+
+            & th {
+                font-weight: 500;
+            }
+            & td,
+            th {
+                padding-block: 0.5rem;
+                padding-inline: 0.7rem;
+                @include fluid('padding-inline', 0.1rem, 0.7rem);
+            }
+            & .product {
+                text-transform: capitalize;
+                text-align: left;
+            }
+        }
+    }
+}
