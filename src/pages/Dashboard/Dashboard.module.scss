@@ -1,13 +1,24 @@
 .dashboard {
     display: flex;
+    overflow: hidden;
+
+    & .sidebar-container{
+display: block;
+    }
 }
 
 
 .window {
-    display: block;
+    max-height: 100vh;
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
-    margin-left: 20rem;
+    // margin-left: 20rem;
     padding: 0.5rem;
+
+
 
     & .navigation-bar{
         background-color: #94b3ae52;

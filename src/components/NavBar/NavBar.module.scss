@@ -5,9 +5,24 @@
     padding: 0.5rem 1.5rem;
     margin-bottom: 1rem;
 
+    & .toggle-sidebar {
+        cursor: pointer;
+        overflow: hidden;
+        transition: width 0.2s ease;
+        font-size: 2.5rem;
+        width: 3rem;
+        color: rgb(179, 36, 36);
+        &--open {
+            width: 0;
+        }
+    }
     & .go-back {
         // border: 1px solid red;
         height: 100%;
+        transition: margin 0.5s ease;
+        &--pushed {
+            margin-left: 2rem;
+        }
     }
     & .details {
         display: flex;
@@ -19,7 +34,7 @@
         text-align: right;
         margin-inline: 2rem;
 
-        & .name{
+        & .name {
             margin-inline: 1rem;
         }
     }

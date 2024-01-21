@@ -1,23 +1,42 @@
+.main-button {
+    margin-inline: 1rem;
+}
+
 .sort-and-filter {
     padding: 1rem;
 
     .sort-filter-tab {
         display: flex;
-        justify-content: space-around;
+        flex-direction: column;
         margin-bottom: 1rem;
+
         & .sort {
+            flex-basis: 60rem;
+
             display: flex;
             align-items: center;
+            justify-content: space-around;
+
+            margin-block: 2rem;
             & span {
                 margin-right: 1rem;
             }
         }
         & .sort ul,
         & .filter ul {
-            display: flex;
             list-style-type: none;
+
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+
             & li {
                 margin-inline: 0.2rem;
+
+                &--selected {
+                    border: 1px solid rgb(54, 178, 228);
+                }
+
                 & input {
                     height: 0;
                     width: 0;
@@ -34,6 +53,7 @@
 
                 & .filter-btn {
                     display: inline-block;
+                    white-space: nowrap;
                     padding: 0.5rem 0.8rem;
                     background: #f9f5f6;
                     border: none;
@@ -44,13 +64,16 @@
 
         & .sort .sort-item {
             display: flex;
-            flex-wrap: wrap;
+            align-items: center;
+
             text-align: left;
+
             margin: 0.1rem;
+            padding: 0.5rem;
+
             background-color: #f9f5f6;
             color: #000;
             border-radius: 0.3rem;
-            padding: 0.1rem;
             margin-right: 0.3rem;
 
             & label {
@@ -78,6 +101,7 @@
 
         & .filter-bar {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-around;
             align-items: center;
 
@@ -87,20 +111,11 @@
 
             color: black;
 
-            background: #f9f5f6; /* fallback for old browsers */
-            background: -webkit-linear-gradient(
-                to bottom,
-                #f7bdd0,
-                #f9f5f6
-            ); /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(
-                to bottom,
-                #f7bdd0,
-                #f9f5f6
-            ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: #f9f5f6;
 
             & span {
                 flex-grow: 1;
+                white-space: nowrap;
             }
             & label {
                 flex-grow: 1;
@@ -108,7 +123,12 @@
                 padding-inline: 0.5rem;
                 cursor: pointer;
             }
-            & button{
+            & input {
+                &[type='number'] {
+                    max-width: 5rem;
+                }
+            }
+            & button {
                 margin-inline: 2rem;
             }
         }

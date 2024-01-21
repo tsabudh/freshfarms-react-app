@@ -1,3 +1,5 @@
+@import '../../scss/abstract/mixins';
+
 .container {
     & > button {
         color: white;
@@ -10,14 +12,22 @@
         gap: 1rem;
         margin-bottom: 2rem;
 
+        @include respond('phone') {
+            flex-direction: column;
+
+        }
+
         &_left {
             background: white;
-            width: 30%;
+            // width: 30%;
             flex-basis: 30rem;
             padding-block: 1rem;
             color: black;
             border-radius: 1rem;
-
+            flex-grow: 2;
+            @include respond('phone'){
+                flex-basis: 20rem;
+            }
             & .profile {
                 display: flex;
                 flex-direction: column;
@@ -57,12 +67,15 @@
         }
         &_right {
             background: white;
-            width: 60%;
+            // width: 60%;
             flex-basis: 60rem;
-            flex-grow: 1;
+            flex-grow: 3;
             color: black;
             border-radius: 1rem;
-
+            
+            @include respond('phone'){
+                flex-basis: 20rem;
+            }
             // padding-block: 1rem;
             & .detail {
                 display: flex;

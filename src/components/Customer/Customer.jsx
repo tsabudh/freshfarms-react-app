@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { IoIosArrowRoundBack } from 'react-icons/io';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import fetchCustomers from '../../utils/fetchCustomers';
 import updateCustomer from '../../utils/updateCustomer';
 import styles from './Customer.module.scss';
@@ -25,7 +24,6 @@ const copyText = (e) => {
 
 function Customer() {
     const { id } = useParams();
-    const navigate = useNavigate();
 
     const initialFilterObject = {
         sortBy: {
@@ -49,8 +47,6 @@ function Customer() {
     const [addedPhones, setAddedPhones] = useState([]);
 
     const [coordinates, setCoordinates] = useState(null);
-
-
 
     //- INITIALIZING CUSTOMER AND TRANSACTIONS
     useEffect(() => {
@@ -175,13 +171,6 @@ function Customer() {
     return (
         customer && (
             <div className={styles['container']}>
-                <Button
-                    className="stylish04 large-text"
-                    onClick={() => navigate(-1)}
-                >
-                    <IoIosArrowRoundBack />
-                </Button>
-
                 <div className={styles['first-row']}>
                     <div className={styles['first-row_left']}>
                         <div className={styles['profile']}>

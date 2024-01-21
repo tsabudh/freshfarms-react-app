@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { CgMoveLeft } from 'react-icons/cg';
+import { GoSidebarExpand } from 'react-icons/go';
+import { GoSidebarCollapse } from 'react-icons/go';
+
 import styles from './Sidebar.module.scss';
 
 import SidebarItem from './SidebarItem';
 
 import items from '../../assets/data/sidebar.json';
+import Button from '../UI/Button/Button';
 
 export default function Sidebar(props) {
-    return ( !props.sidebarHidden && 
-        <div className={styles.sidebar}>
+    const { sidebarIsOpen, setSidebarIsOpen } = props;
+    const handleToggle = (e) => {
+        setSidebarIsOpen((prev) => !prev);
+    };
+    return (
+        <div
+            className={`${styles.sidebar} ${
+                sidebarIsOpen
+                    ? styles['sidebar--opened']
+                    : styles['sidebar--closed']
+            }`}
+        >
+            <div className={styles['hamburger']} onClick={handleToggle}>
+                <GoSidebarExpand />
+            </div>
             <figure className={styles['logo']}>
                 <img
                     src="/img/shree-krishna-dairy-trans.png"
@@ -22,16 +40,10 @@ export default function Sidebar(props) {
     );
 }
 
-// const Sidebar = () => {
-//     return (
-//         <div className={styles.sidebar}>
-//             <ul>
-//                 <Sidebar text="Home" to="/home"/>
-//                 <Sidebar text="Transactions" to="/transactions"/>
-//                 <Sidebar text="Monthly Statement" to="/statements"/>
-//                 <Sidebar text="Customers" to="/customers"/>
-//                 <Sidebar text="Inventory" to="/inventory" />
-//             </ul>
-//         </div>
-//     );
-// };
+// sidebarIsOpen ? (
+//     <div className={styles['hamburger']}>
+//         <Button onClick={handleToggle}>TOGGLE</Button>
+//     </div>
+// ) : (
+//     ''
+// );

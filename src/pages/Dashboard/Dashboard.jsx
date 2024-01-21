@@ -8,7 +8,7 @@ import Button from '../../components/UI/Button/Button';
 import NavBar from '../../components/NavBar/NavBar';
 
 const Dashboard = (props) => {
-    const [sidebarHidden, setSidebarHidden] = useState(false);
+    const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
     const navigate = useNavigate();
     const { token } = useContext(AuthContext);
 
@@ -18,17 +18,26 @@ const Dashboard = (props) => {
             navigate('/login');
         }
     }, [token]);
+
     return (
-        <div className={styles.dashboard}>
-            <Sidebar
-                sidebarHidden={sidebarHidden}
-                setSidebarHidden={setSidebarHidden}
-            />
-            <div className={styles.window}>
-                <NavBar />
-                <Outlet />
+        token && (
+            <div className={styles.dashboard}>
+                <div className={styles['sidebar-container']}>
+                    <Sidebar
+                        sidebarIsOpen={sidebarIsOpen}
+                        setSidebarIsOpen={setSidebarIsOpen}
+                    />
+                </div>
+
+                <div className={styles.window}>
+                    <NavBar
+                        sidebarIsOpen={sidebarIsOpen}
+                        setSidebarIsOpen={setSidebarIsOpen}
+                    />
+                    <Outlet />
+                </div>
             </div>
-        </div>
+        )
     );
 };
 export default Dashboard;

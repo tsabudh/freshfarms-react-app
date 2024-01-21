@@ -1,43 +1,43 @@
+@import '../../scss//utilities/scrollbar.scss';
+
 .sidebar {
     // min-width: fit-content;
+    position: relative;
+    top: 0;
     max-width: 20rem;
-    width: 20rem;
+    /*//* CHANGE WIDTH  */
+    // width: 20rem;
     flex-shrink: 0;
     flex-basis: 20rem;
 
     overflow: auto;
+    align-self: stretch;
+    min-height: 20rem;
+    height: 100vh;
 
-    &::-webkit-scrollbar-track {
-        // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-        background-color: #fb632900;
-    }
-
-    &::-webkit-scrollbar {
-        width: 0.5rem;
-        background-color: #fb632900;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: #f8c5b1;
-        // border: 2px solid #555555;
-    }
-
-    background: #0b2d29; /* fallback for old browsers */
-    background: -webkit-linear-gradient(
-        to bottom right,
-        #0c332e,
-        #0b2d29
-    ); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(
-        to bottom right,
-        #0c332e,
-        #0b2d29
-    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    // background: #0b2d29;
-    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
+
+    @extend .scrollbar-17;
+
+    background: linear-gradient(to bottom right, #0c332e, #0b2d29);
+
+    transition: width 0.5s ease;
+    &--opened {
+        width: 20rem;
+    }
+    &--closed {
+        width: 0rem;
+    }
+    .hamburger {
+        position: absolute;
+        top: 1rem;
+        right: 0.3rem;
+        color: #b0fce4;
+        font-size: 2.5rem;
+        cursor: pointer;
+    }
 
     & .logo {
         max-width: 20rem;
