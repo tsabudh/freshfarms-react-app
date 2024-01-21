@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import RegisterBoard from '../RegisterBoard/RegisterBoard';
-import TicketTable from '../TicketTable/TicketTable';
+import TransactionTable from '../TransactionTable/TransactionTable';
 import styles from './OverviewPanel.module.scss';
 import Chart from 'chart.js/auto';
 import BarChart from '../UI/Chart/BarChart';
@@ -28,9 +28,9 @@ function OverviewPanel() {
                 setCustomers={setCustomers}
             />
 
-            <div className={styles['ticket-table-container']}>
+            <div className={styles['Transaction-table-container']}>
                 <h3>Latest Transactions</h3>
-                <TicketTable filterObject={filterObject} />
+                <TransactionTable filterObject={filterObject} />
             </div>
         </div>
     );
