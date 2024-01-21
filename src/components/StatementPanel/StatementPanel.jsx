@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer, useContext } from 'react';
 import DatePicker from '../UI/DatePicker/DatePicker';
-// import { transactionPromiseFunc } from '../TicketTable/TicketTable';
+// import { transactionPromiseFunc } from '../TransactionTable/TransactionTable';
 import { fetchTransactions } from '../../utils/fetchTransactions';
 import StatementTable from '../StatementTable/StatementTable';
 import { AuthContext } from '../../context/AuthContext';

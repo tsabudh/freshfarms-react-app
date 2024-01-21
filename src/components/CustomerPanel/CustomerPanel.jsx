@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import Calender from '../Calender/Calender';
 
 import styles from './CustomerPanel.module.scss';
-import TicketTable from '../TicketTable/TicketTable';
+import TransactionTable from '../TransactionTable/TransactionTable';
 import CustomerProfile from '../CustomerProfile/CustomerProfile';
 import fetchCustomers from '../../utils/fetchCustomers';
 import { AuthContext } from '../../context/AuthContext';
@@ -22,7 +22,7 @@ const CustomerPanel = () => {
         <>
             <div className={`${styles['card-container']}`}>
                 {customers.map((item, index, array) => {
-                    return <CustomerProfile  key = {item._id} customer={item} />;
+                    return <CustomerProfile key={item._id} customer={item} />;
                 })}
             </div>
         </>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import TicketTable from '../TicketTable/TicketTable';
+import TransactionTable from '../TransactionTable/TransactionTable';
 import SortAndFilter from '../SortAndFilter/SortAndFilter';
 import Button from '../UI/Button/Button';
 import Modal from '../UI/Modal/Modal';
@@ -14,10 +14,9 @@ const TransactionPanel = () => {
 
     return (
         <div className="">
-            
             <SortAndFilter setFilterObject={setFilterObject} />
 
-            <TicketTable filterObject={filterObject} />
+            <TransactionTable filterObject={filterObject} />
         </div>
     );
 };

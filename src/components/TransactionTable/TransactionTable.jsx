@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Ticket from '../Ticket/Ticket';
+import Transaction from '../Transaction/Transaction';
 
 import { fetchTransactions } from '../../utils/fetchTransactions';
 import { AuthContext } from '../../context/AuthContext';
 
-const TicketTable = (props) => {
+const TransactionTable = (props) => {
     const { filterObject } = props;
 
     const { token } = useContext(AuthContext);
@@ -15,6 +15,7 @@ const TicketTable = (props) => {
             console.log('Fetching Transactions...');
             let result = await fetchTransactions(filterObject, token);
             setTransactions(result);
+            console.log(result);
             // liftTransactions(result);
         } catch (error) {
             console.log(error);
@@ -27,10 +28,14 @@ const TicketTable = (props) => {
     return (
         <div>
             {transactions.map((transaction, index, transactionArray) => {
-                let customer = [transaction.customer];
+                // let customer = [transaction.customer];
+                let customer = transaction.customer;
+
                 return (
-                    <Ticket
+                    <Transaction
                         key={transaction._id}
+                        transaction={transaction}
+                        id={transaction._id}
                         serialNumber={index}
                         items={transaction.items}
                         timeStamp={transaction.issuedTime}
@@ -47,4 +52,4 @@ const TicketTable = (props) => {
     );
 };
 
-export default TicketTable;
+export default TransactionTable;
