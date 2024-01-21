@@ -20,6 +20,7 @@ import AdminProfile from './components/AdminProfile/AdminProfile';
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token'));
+    const [admin, setAdmin] = useState(null);
     // console.log(admin);
 
     useEffect(() => {
@@ -27,6 +28,7 @@ function App() {
             let storedToken = localStorage.getItem('token');
             if (storedToken) {
                 setToken(storedToken);
+                console.log(storedToken);
             }
             // console.log('STORED TOKEN:', storedToken);
         }
@@ -50,7 +52,7 @@ function App() {
                             />
                         </Route>
                         <Route path="products">
-                            <Route path="" element={<ProductPanel />}/>
+                            <Route path="" element={<ProductPanel />} />
                             <Route
                                 path="details"
                                 element={<ProductDetails />}
