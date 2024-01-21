@@ -16,14 +16,14 @@ let chartData = {
             label: 'Sold',
             data: [100, 100, 100, 100, 102, 102],
             borderWidth: 1,
-            backgroundColor: 'rgba(54, 235, 211, 0.88)',
+            backgroundColor: 'rgba(53, 107, 99, 0.91)',
             // hoverBorderColor: 'rgba(255,99,132,1)',
             border:null,
         },
         {
             label: 'Stock',
             data: [214, 198, 200, 200, 198, 198],
-            backgroundColor: 'rgb(192, 236, 233)',
+            backgroundColor: 'rgb(210, 230, 228)',
             border:null,
             borderWidth:1,
             // borderColor: [null],
@@ -38,28 +38,28 @@ let chartOptions = {
             // stacked: true,
             beginAtZero: true,
             border: {
-                color: 'brown',
+                color: 'black',
             },
             grid: {
                 color: null,
             },
             ticks: {
-                color: 'brown',
+                color: 'black',
                 border: {
-                    color: 'brown',
+                    color: 'black',
                 },
             },
         },
         x: {
             stacked: true,
             border: {
-                color: 'brown',
+                color: 'black',
             },
             grid: {
                 color: null,
             },
             ticks: {
-                color: 'brown',
+                color: 'black',
             },
         },
     },
@@ -67,7 +67,7 @@ let chartOptions = {
         legend: {
             display: true,
             labels: {
-                color: 'brown',
+                color: 'black',
             },
         },
         tooltip: {

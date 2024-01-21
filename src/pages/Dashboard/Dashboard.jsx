@@ -8,7 +8,7 @@ import Button from '../../components/UI/Button/Button';
 import NavBar from '../../components/NavBar/NavBar';
 
 const Dashboard = (props) => {
-    const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+    const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
     const navigate = useNavigate();
     const { token } = useContext(AuthContext);
 

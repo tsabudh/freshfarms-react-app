@@ -16,8 +16,7 @@
     &-left {
         width: 25%;
         position: relative;
-        background: url('/img/card-background-blue.svg'),
-            greenyellow;
+        background: url('/img/card-background-blue.svg'), #189ef3;
         background-position: 100% 100%;
         background-size: cover;
 
@@ -46,7 +45,6 @@
     &-right {
         background: white;
         flex-grow: 1;
-        
 
         padding: 1rem 1.5rem;
         text-align: right;
@@ -55,7 +53,7 @@
             text-transform: capitalize;
             font-size: 2rem;
             font-weight: 600;
-            // margin: 3rem 0.2rem; 
+            // margin: 3rem 0.2rem;
             margin-top: 2rem;
             padding-left: 2rem;
             min-height: 4rem;
@@ -80,11 +78,11 @@
                 color: orangered;
             }
         }
-        & .phone{
+        & .phone {
             margin-top: 1rem;
             font-size: 1.2rem;
         }
-        & .address{
+        & .address {
             margin-top: 1rem;
             font-size: 1.2rem;
             text-transform: capitalize;
