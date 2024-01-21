@@ -1,8 +1,11 @@
+@import '../../scss/abstract/mixins';
+
 .navigation-bar {
     background-color: #94b3ae52;
     display: flex;
     // height: 3rem;
-    padding: 0.5rem 1.5rem;
+    padding-block: 0.5rem 1.5rem;
+
     margin-bottom: 1rem;
 
     & .toggle-sidebar {
@@ -20,8 +23,16 @@
         // border: 1px solid red;
         height: 100%;
         transition: margin 0.5s ease;
+
+        & span {
+            @include respond('tab-port') {
+                display: none;
+            }
+        }
+
         &--pushed {
             margin-left: 2rem;
+            @include fluid('margin-left', 0.8rem, 2rem);
         }
     }
     & .details {
@@ -33,6 +44,7 @@
         flex-grow: 1;
         text-align: right;
         margin-inline: 2rem;
+        @include fluid('margin-inline', 0.8rem, 1.5rem);
 
         & .name {
             margin-inline: 1rem;

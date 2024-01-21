@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { GoSidebarCollapse } from 'react-icons/go';
-import { GoSidebarExpand } from 'react-icons/go';
+import { RiArrowGoBackFill } from 'react-icons/ri';
 
 import styles from './NavBar.module.scss';
 import { useNavigate } from 'react-router-dom';
@@ -48,7 +48,8 @@ function NavBar(props) {
                     ${sidebarIsOpen ? '' : styles['go-back--pushed']}`}
                 >
                     <Button className="stylish06" onClick={() => navigate(-1)}>
-                        Go back
+                        <span>Go back</span>
+                        <RiArrowGoBackFill />
                     </Button>
                 </div>
             )}
