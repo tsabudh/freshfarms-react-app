@@ -1,27 +1,34 @@
 .container {
-
     margin-block: 2rem;
     & .profile {
         font-size: inherit;
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
+
+        &-edit {
+            position: absolute;
+            top: 0;
+            right: 2rem;
+        }
 
         &-picture {
             display: flex;
             justify-content: center;
             align-items: flex-end;
             font-size: 3rem;
+            position: relative;
             & svg {
+                position: absolute;
+                top: 80%;
+                right: 15%;
+
                 cursor: pointer;
                 color: pink;
                 border: 3px solid white;
                 border-radius: 2.5rem;
                 background: white;
-                // position: absolute;
-                top: 1rem;
-                right: 5rem;
-                transform: translate(-150%, -50%);
             }
             & .figure {
                 padding: 0.5rem; //* PADDING
@@ -35,7 +42,6 @@
                 &--load {
                     border: none;
                     padding: 0.5rem;
-                    
                 }
                 & img {
                     border-radius: 100%;
@@ -43,7 +49,6 @@
             }
         }
 
-        
         &-field {
             width: 100%;
             border: 1px solid white;
@@ -55,12 +60,28 @@
             display: flex;
             flex-direction: row;
             justify-content: space-around;
+            align-items: center;
             max-width: 80rem;
             overflow: auto;
+
+            &--edits {
+                border: 1px solid rgb(129, 153, 150);
+                padding-block: 0.5rem;
+
+                &:focus-within {
+                    border: 1px solid rgb(92, 104, 124);
+                }
+                & .input-wrapper {
+                    margin-block: 1rem;
+                }
+            }
             & .key {
                 flex-basis: 20rem;
                 margin-inline: 1rem;
                 // border: 1px solid blue;
+                &--edits {
+                    color: rgb(48, 11, 105);
+                }
             }
 
             & .value {
@@ -69,7 +90,23 @@
                 // border: 1px solid red;
                 font-size: 1.8rem;
                 font-weight: 600;
+                &--edits {
+                    font-weight: 200;
+                    padding: 0.5rem 1rem;
+                    border-radius: 2rem;
+                    font-size: 1.6rem;
+
+                    &:focus-visible {
+                        border: 1px solid rgb(69, 70, 77);
+                        outline: none;
+                    }
+                }
             }
         }
+    }
+
+    & .hidden-form {
+        visibility: visible;
+        text-align: right;
     }
 }
