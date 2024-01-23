@@ -1,23 +1,21 @@
-import baseRoute from "../assets/globals/baseRoute";
-export async function postTransaction(transactionObject,token) {
+import API_ROUTE from '../assets/globals/baseRoute';
+export async function postTransaction(transactionObject, token) {
     return new Promise(async (resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
-            let apiRoute = `${baseRoute}/api/v1/transactions/`;
-            
+            let apiRoute = `${API_ROUTE}/api/v1/transactions/`;
+
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
-                    console.log('Request COmpleted')
+                    console.log('Request COmpleted');
                     let response = JSON.parse(xhttp.responseText);
                     resolve(response);
                 }
-               
             };
 
             xhttp.open('POST', apiRoute, true);
             xhttp.setRequestHeader('Content-Type', 'application/json');
             xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
-
 
             console.log(JSON.stringify(transactionObject));
             let requestBody = JSON.stringify(transactionObject);

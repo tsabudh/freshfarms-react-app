@@ -1,5 +1,5 @@
-import baseRoute from "../assets/globals/baseRoute";
-export const fetchTransactions = (filterObject,token) => {
+import API_ROUTE from '../assets/globals/baseRoute';
+export const fetchTransactions = (filterObject, token) => {
     return new Promise(async function (resolve, reject) {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = async () => {
@@ -14,7 +14,7 @@ export const fetchTransactions = (filterObject,token) => {
         const filterParam = btoa(filterString);
         xhttp.open(
             'GET',
-            `${baseRoute}/api/v1/transactions/?filter=${filterParam}`
+            `${API_ROUTE}/api/v1/transactions/?filter=${filterParam}`
         );
 
         //* Hard coded authorization for Sachin Paudel(admin)

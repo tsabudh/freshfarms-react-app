@@ -1,4 +1,4 @@
-import baseRoute from '../assets/globals/baseRoute';
+import API_ROUTE from '../assets/globals/baseRoute';
 export const fetchMyDetails = (token) => {
     return new Promise((resolve, reject) => {
         try {
@@ -11,7 +11,7 @@ export const fetchMyDetails = (token) => {
                 }
             };
 
-           apiRoute = `${baseRoute}/api/v1/admins/getMyDetails`;
+            apiRoute = `${API_ROUTE}/api/v1/admins/getMyDetails`;
 
             xhttp.open('GET', apiRoute);
             xhttp.setRequestHeader('Authorization', `Bearer ${token}`);

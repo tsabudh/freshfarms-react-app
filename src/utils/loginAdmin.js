@@ -1,9 +1,9 @@
-import baseRoute from '../assets/globals/baseRoute';
+import API_ROUTE from '../assets/globals/baseRoute';
 export async function loginAdmin(loginDetails) {
     return new Promise(async (resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
-            let apiRoute = `${baseRoute}/api/v1/admins/login`;
+            let apiRoute = `${API_ROUTE}/api/v1/admins/login`;
 
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
@@ -14,7 +14,8 @@ export async function loginAdmin(loginDetails) {
                         console.error('No response from the server.');
                         resolve({
                             status: 'failure',
-                            message: 'No response from the server. net::ERR_CONNECTION_REFUSED',
+                            message:
+                                'No response from the server. net::ERR_CONNECTION_REFUSED',
                         });
                     }
                 }

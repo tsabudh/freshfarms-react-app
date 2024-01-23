@@ -1,8 +1,8 @@
-import baseRoute from '../assets/globals/baseRoute';
+import API_ROUTE from '../assets/globals/baseRoute';
 export async function uploadProfilePhoto(file, token) {
     return new Promise(async (resolve, reject) => {
         try {
-            const apiRoute = `${baseRoute}/api/v1/admins/uploadProfilePicture`;
+            const apiRoute = `${API_ROUTE}/api/v1/admins/uploadProfilePicture`;
 
             const xhr = new XMLHttpRequest();
 

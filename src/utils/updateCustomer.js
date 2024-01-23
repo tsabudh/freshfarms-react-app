@@ -1,9 +1,9 @@
-import baseRoute from '../assets/globals/baseRoute';
+import API_ROUTE from '../assets/globals/baseRoute';
 export const updateCustomer = (id, customerDetails, token) => {
     return new Promise((resolve, reject) => {
         try {
             const xhttp = new XMLHttpRequest();
-            const apiRoute = `${baseRoute}/api/v1/customers/${id.toString()}`;
+            const apiRoute = `${API_ROUTE}/api/v1/customers/${id.toString()}`;
 
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
