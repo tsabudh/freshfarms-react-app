@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { FiLoader } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+
 import styles from './LoginForm.module.scss';
 import Button from '../UI/Button/Button';
 import loginAdmin from '../../utils/loginAdmin';
@@ -9,9 +9,15 @@ import { AuthContext } from '../../context/AuthContext';
 import signupAdmin from '../../utils/signupAdmin';
 import BouncingCircles from '../UI/Vectors/BouncingCircles';
 
-const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
-    const [isLoading, setIsLoading] = useState(false);
+const LoginForm = ({
+    isNewUser,
+    toggle,
+    setAdmin,
+   
+}) => {
     const [errorMessage, setErrorMessage] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [username, setUsername] = useState('');
@@ -50,6 +56,7 @@ const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
             } else {
                 setErrorMessage('Something went wrong on our side.😞');
             }
+
             return;
         } else {
             //- Logging in user
@@ -69,6 +76,9 @@ const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
                 }
             } else {
                 setErrorMessage('Something went wrong on our side.😞');
+            }
+            if (!response) {
+                console.log('server error');
             }
         }
         return;
@@ -160,10 +170,14 @@ const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
                         {isNewUser ? 'Signup' : 'Login'}
                     </Button>
                     {isLoading && (
-                        <BouncingCircles height="3.5rem" width="5rem" />
+                        <BouncingCircles height="2.5rem" width="5rem" />
                     )}
                 </div>
-                <div className={styles['error-message']}>{errorMessage}</div>
+                {errorMessage && (
+                    <div className={styles['error-message']}>
+                        {errorMessage}
+                    </div>
+                )}
             </div>
         </div>
     );

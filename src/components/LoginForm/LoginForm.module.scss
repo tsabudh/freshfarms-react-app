@@ -2,19 +2,25 @@
 
 .signup-container {
     position: relative;
-    width: 50%;
-    flex-shrink: 0;
+    // width: 45%;
+    flex-basis: 45%;
+    // flex-shrink: 0;
+    margin-inline: 0.5rem;
+
     flex-grow: 1;
     display: flex;
     align-items: center;
+    justify-content: center;
     transition: transform 0.5s ease;
     @include respond('tab-port') {
         justify-content: center;
+        margin: 1rem 0;
+
         width: 100%;
         order: 2;
     }
     &--sign-in {
-        transform: translateX(100%);
+        transform: translateX(102%);
         @include respond('tab-port') {
             transform: translateY(0%);
         }
@@ -32,7 +38,7 @@
         margin: 0 auto;
         background: rgb(255, 255, 255);
         border: 2px solid rgb(205, 216, 235);
-        border-radius: 1rem;
+        border-radius: 1.5rem;
         color: black;
         padding: 1rem 1.5rem;
         transition: transform 0.5s ease;
@@ -45,9 +51,10 @@
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
+            align-items: center;
             gap: 1rem;
             border-bottom: 1px solid gray;
-            margin-block: 2rem;
+            margin: 2rem 2rem;
 
             &--check {
                 display: block;
@@ -75,7 +82,8 @@
                 font-size: 1.5rem;
                 border: 1px solid gray;
                 color: rgb(99, 98, 98);
-                border-radius: 0;
+                border-radius: 1rem;
+                margin-bottom: 0.4rem;
                 &::placeholder {
                     font-size: 1.3rem;
                 }
@@ -100,12 +108,15 @@
             }
         }
         & .action {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
             & button {
-                margin-top: 2rem;
+                // margin-top: 2rem;
             }
             & svg {
-                vertical-align: bottom;
-                color: rgb(115 164 161);
+                // vertical-align: bottom;
+                color: rgb(52, 221, 137);
             }
         }
         & .error-message {
@@ -115,6 +126,9 @@
             text-overflow: ellipsis;
             max-height: 5em;
             overflow: auto;
+            border: 1px solid red;
+            border-radius: 1rem;
+            padding: 0.5rem;
         }
     }
 }

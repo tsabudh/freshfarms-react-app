@@ -28,7 +28,7 @@ function OverviewPanel() {
                 setCustomers={setCustomers}
             />
 
-            <div className={styles['Transaction-table-container']}>
+            <div className={styles['transaction-table-container']}>
                 <h3>Latest Transactions</h3>
                 <TransactionTable filterObject={filterObject} />
             </div>
