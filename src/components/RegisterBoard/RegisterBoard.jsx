@@ -1,5 +1,6 @@
 import React, { Children, useContext, useEffect, useState } from 'react';
 import { MdOutlineDeleteForever } from 'react-icons/md';
+import { FaCheck } from 'react-icons/fa6';
 
 import Button from '../UI/Button/Button';
 import styles from './RegisterBoard.module.scss';
@@ -16,6 +17,10 @@ const RegisterBoard = (props) => {
     const [quantity, setQuantity] = useState(1);
     const [cart, setCart] = useState([]);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [transactionType, setTransactionType] = useState('purchase');
+    const [transactionAmount, setTransactionAmount] = useState(0);
+    const [paidInFull, setPaidInFull] = useState(true);
+    const [paidAmount, setPaidAmount] = useState(0);
 
     useEffect(() => {
         let asyncFunc = async () => {
@@ -27,6 +32,10 @@ const RegisterBoard = (props) => {
         };
         asyncFunc();
     }, []);
+
+    useEffect(() => {
+        handleTransactionAmount();
+    }, [cart, paidInFull]);
 
     const addToCart = function (e) {
         e.preventDefault();
@@ -61,11 +70,8 @@ const RegisterBoard = (props) => {
 
         let newCart = [...cart];
         let found = newCart.findIndex((item) => {
-            console.log(item._id);
-            console.log(elementItem);
             return item._id == elementItem.dataset._id;
         });
-        console.log('removing index', found);
         newCart.splice(found, 1);
         setCart(newCart);
     };
@@ -108,10 +114,33 @@ const RegisterBoard = (props) => {
         }
     };
 
+    const handlePaidAmount = (e) => {
+        console.log(e.target.value);
+        setPaidAmount(e.target.value);
+    };
+    const handleTransactionAmount = () => {
+        let totalAmount = cart.reduce((accumulator, currentItem) => {
+            return accumulator + currentItem.price * currentItem.quantity;
+        }, 0);
+
+        // If paidInFull is true, set paidAmount as totalAmount
+        setTransactionAmount(totalAmount);
+        // console.log(paidInFull);
+        // console.log(transactionAmount);
+        // console.log(paidAmount);
+    };
+    const handlePaidInFull = (e) => {
+        console.log(e.target.value);
+        // setPaidInFull((prev) => e.target.value);
+        setPaidInFull((prev) => !prev);
+
+        // console.log(cart);
+        // handleTransactionAmount();
+    };
     return (
         <>
             <div className={styles['form-container']}>
-                <h3>Register new transaction</h3>
+                <h3>Register new transaction {paidInFull}</h3>
                 <form action="">
                     <div className={styles['form-group']}>
                         <label htmlFor="customers">Customer :</label>
@@ -142,6 +171,7 @@ const RegisterBoard = (props) => {
                             add
                         </Button>
                     </div>
+
                     <div className={styles['cart']}>
                         {/* //* HEAD */}
                         {cart.length > 0 ? (
@@ -193,9 +223,7 @@ const RegisterBoard = (props) => {
                                     </span>
                                 </div>
                             </div>
-                        ) : (
-                            ''
-                        )}
+                        ) : null}
 
                         {cart.map((item) => {
                             return (
@@ -207,6 +235,62 @@ const RegisterBoard = (props) => {
                             );
                         })}
                     </div>
+
+                    <div className={styles['form-group']}>
+                        <div className={styles['payment']}>
+                            <div className={styles['type']}>
+                                Paid in full?
+                                <div className={styles['grouped']}>
+                                    <input
+                                        name="paidInFull"
+                                        type="radio"
+                                        id="paidInFullYes"
+                                        onChange={() => setPaidInFull(true)}
+                                        value={true}
+                                        // checked={paidInFull}
+                                    />
+
+                                    <label htmlFor="paidInFullYes">
+                                        <span
+                                            className={`${styles['custom-radio']} ${styles.yes}`}
+                                        ></span>
+                                        <span>Yes</span>
+                                    </label>
+                                </div>
+                                <div className={styles['grouped']}>
+                                    <input
+                                        name="paidInFull"
+                                        type="radio"
+                                        id="paidInFullNo"
+                                        onChange={() => setPaidInFull(false)}
+                                        value={false}
+                                        // checked={paidInFull}
+                                    />
+
+                                    <label htmlFor="paidInFullNo">
+                                        <span
+                                            className={`${styles['custom-radio']} ${styles.no}`}
+                                        ></span>
+                                        <span>No</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div className={styles['amount']}>
+                                Paid :
+                                {paidInFull ? (
+                                    transactionAmount
+                                ) : (
+                                    <input
+                                        type="number"
+                                        value={paidAmount}
+                                        onChange={handlePaidAmount}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
                     <Button
                         className={classNames(`stylish01`, {
                             loading: posting == 'sending',

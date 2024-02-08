@@ -21,7 +21,9 @@
         align-items: center;
         margin: 2rem 0;
         padding-bottom: 1rem;
-        border-bottom: 1px solid whitesmoke;
+        &:not(:nth-of-type(2)) {
+            border-bottom: 1px solid whitesmoke;
+        }
         & select {
             text-transform: capitalize;
             margin-inline: 1rem;
@@ -112,6 +114,64 @@
                     &:active {
                         color: red;
                     }
+                }
+            }
+        }
+    }
+
+    & .payment {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        & .type {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            margin-inline-end: 3rem;
+        }
+        & .amount {
+        }
+        & .grouped {
+            border: 1px solid red;
+            & label {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 1rem;
+                cursor: pointer;
+            }
+
+            & input[type='radio'] {
+                display: none;
+
+                & + label .custom-radio {
+                    display: inline-block;
+                    width: 1em;
+                    height: 1em;
+                    margin: 0.1rem;
+
+                    vertical-align: middle;
+                    cursor: pointer;
+                    border-radius: 50%;
+
+                    border: 2px solid #ffffff;
+                    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+                    background-repeat: no-repeat;
+                    background-position: center;
+
+                    // &.yes {
+                    //     background-color: #2ecc71;
+                    // }
+                    // &.no {
+                    //     background-color: #e74c3c;
+                    // }
+                }
+
+                &:checked + label .custom-radio.yes {
+                    background-color: #2ecc71;
+                }
+                &:checked + label .custom-radio.no {
+                    background-color: #e74c3c;
                 }
             }
         }
