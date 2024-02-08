@@ -83,7 +83,7 @@ function HeroHome() {
                 </div>
             </section>
 
-            <section className={styles.try}>
+            <section className={styles.cta}>
                 <a onClick={dummyLogin}>Live Demo</a>
             </section>
 

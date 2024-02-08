@@ -10,7 +10,6 @@
         max-width: 25rem;
     }
     &_title {
-
         & h1 {
             font-weight: 600;
             font-size: 6.4rem;
@@ -60,9 +59,27 @@
     }
 }
 
-.try{
+.cta {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    min-height: 10rem;
+
+    & a {
+        color: white;
+        letter-spacing: 0.5px;
+        // border: 1px solid red;
+        border-radius: 2rem;
+        padding: 0.5rem 1rem;
+        box-shadow: inset 2px 2px 4px var(--surface3-light),
+            inset -2px -2px 4px var(--surface1-light);
+
+        cursor: pointer;
+
+        &:active {
+            box-shadow: 2px 2px 4px var(--surface3-light),
+                -2px -2px 4px var(--surface2-light);
+        }
+    }
 }
