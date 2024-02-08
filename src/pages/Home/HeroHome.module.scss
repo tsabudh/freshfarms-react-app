@@ -1,0 +1,68 @@
+.intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    min-height: 100vh;
+    max-height: 76rem;
+
+    &_logo {
+        max-width: 25rem;
+    }
+    &_title {
+
+        & h1 {
+            font-weight: 600;
+            font-size: 6.4rem;
+            // line-height: 6.8rem;
+            letter-spacing: 0.5rem;
+            text-align: center;
+
+            text-transform: uppercase;
+            color: black;
+
+            & span:hover {
+                color: rgb(97, 88, 88);
+            }
+        }
+    }
+
+    &_subtitle {
+        margin-block: 1rem;
+        text-align: center;
+        font-weight: 500;
+    }
+}
+
+.features {
+    background-color: #c5d0d1;
+    padding-block: 1rem;
+    padding-inline: 0.5rem;
+
+    & h2 {
+        margin-block: 2rem;
+        margin-inline: 0.5rem;
+
+        font-size: 3.5rem;
+        color: black;
+        font-family: inherit;
+        letter-spacing: 0.5px;
+        font-weight: normal;
+        text-align: justify;
+    }
+
+    & .card_container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: stretch;
+        flex-wrap: wrap;
+    }
+}
+
+.try{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}

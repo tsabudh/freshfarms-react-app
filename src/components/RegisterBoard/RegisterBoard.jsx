@@ -70,7 +70,8 @@ const RegisterBoard = (props) => {
         setCart(newCart);
     };
 
-    const addTransaction = async () => {
+    const addTransaction = async (e) => {
+        e.preventDefault();
         setPosting('sending');
         setErrorMessage(null);
         let newTransaction = {};
@@ -110,7 +111,7 @@ const RegisterBoard = (props) => {
     return (
         <>
             <div className={styles['form-container']}>
-                Register new transaction
+                <h3>Register new transaction</h3>
                 <form action="">
                     <div className={styles['form-group']}>
                         <label htmlFor="customers">Customer :</label>
@@ -123,7 +124,7 @@ const RegisterBoard = (props) => {
                         </select>
                     </div>
                     <div className={styles['form-group']}>
-                        <label htmlFor="">Items:</label>
+                        <label htmlFor="">Add Items:</label>
                         <select name="products" id="products">
                             {products.map((item) => (
                                 <option key={item._id} value={item._id}>
@@ -206,8 +207,6 @@ const RegisterBoard = (props) => {
                             );
                         })}
                     </div>
-                </form>
-                <div className={styles['form-footer']}>
                     <Button
                         className={classNames(`stylish01`, {
                             loading: posting == 'sending',
@@ -216,6 +215,8 @@ const RegisterBoard = (props) => {
                     >
                         ADD TRANSACTION
                     </Button>
+                </form>
+                <div className={styles['form-footer']}>
                     {posting != '' ? (
                         <span
                             className={`${styles['status']} ${styles[posting]}`}

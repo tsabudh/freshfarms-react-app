@@ -2,20 +2,26 @@
 
 .navigation-bar {
     background-color: #94b3ae52;
+    background-color: #0b2f2b;
+    background: var(--surface5-light);
     display: flex;
     // height: 3rem;
     padding-block: 0.5rem 1.5rem;
 
+    border-radius: 1rem;
     margin-bottom: 1rem;
 
     & .toggle-sidebar {
         cursor: pointer;
         overflow: hidden;
-        transition: width 0.2s ease;
+        transition: width 0.2s ease, padding-inline 0.2s ease;
         font-size: 2.5rem;
-        width: 3rem;
-        color: rgb(179, 36, 36);
+        color: #ff0044;
+
+        padding-inline: 1.5rem;
+
         &--open {
+            padding-inline: 0;
             width: 0;
         }
     }
@@ -23,6 +29,7 @@
         // border: 1px solid red;
         height: 100%;
         transition: margin 0.5s ease;
+        margin-inline: 1rem;
 
         & span {
             @include respond('tab-port') {

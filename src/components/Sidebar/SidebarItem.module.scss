@@ -5,17 +5,14 @@
     display: block;
     // color: rgb(189, 15, 15);
 
-    background: radial-gradient(circle, #fff, #aaa) no-repeat;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: background-image ease 1s;
+    // background: var(--surface6-light);
 
     &:hover {
-        background-color: wheat;
-        // text-decoration: underline;
+        background: var(--surface2-light);
+
+        text-decoration: underline;
         text-underline-position: under;
         color: white;
-        -webkit-text-fill-color: rgba(255, 255, 255, 0.192);
     }
 
     & {
@@ -24,9 +21,7 @@
         transition: background-color 0.15s;
         border-radius: 5px;
     }
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
+   
 
     .sidebar-title {
         cursor: pointer;

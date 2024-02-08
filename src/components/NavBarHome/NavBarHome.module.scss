@@ -1,0 +1,23 @@
+@use '../../scss/abstract/mixins' as mixins;
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    min-height: 2em;
+
+    &_menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+
+        & a {
+            flex-basis: 15rem;
+
+            @include mixins.fluid('margin-inline', 2rem, 7rem);
+        }
+    }
+}

@@ -14,7 +14,6 @@
 
         @include respond('phone') {
             flex-direction: column;
-
         }
 
         &_left {
@@ -25,7 +24,7 @@
             color: black;
             border-radius: 1rem;
             flex-grow: 2;
-            @include respond('phone'){
+            @include respond('phone') {
                 flex-basis: 20rem;
             }
             & .profile {
@@ -72,8 +71,8 @@
             flex-grow: 3;
             color: black;
             border-radius: 1rem;
-            
-            @include respond('phone'){
+
+            @include respond('phone') {
                 flex-basis: 20rem;
             }
             // padding-block: 1rem;

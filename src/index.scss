@@ -1,5 +1,9 @@
+@use './scss/utilities/scrollbar.scss' as *;
+@use './scss/abstract' as *;
+// @use './scss/main.scss';
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500&display=swap');
-@import './scss/main.scss';
+// @import './scss/main.scss';
 
 //- Required for customer maps
 #map {
@@ -18,6 +22,7 @@
 
     @extend .scrollbar-17;
 }
+
 *:link,
 :visited {
     text-decoration: none;
@@ -26,7 +31,9 @@
 body {
     font-size: 1.6rem;
     font-family: 'Roboto';
-    background: #dfeeef; /* fallback for old browsers */
+    // background: #dfeeef; /* fallback for old browsers */
+    background: #f3f3f4;
+    background: var(--surface2-light);
     color: rgb(37, 36, 36);
 
     &::-webkit-scrollbar-track {
@@ -56,3 +63,17 @@ img {
     object-fit: cover;
     width: 100%;
 }
+
+
+:root {
+    --surface8-light: #ffffff;
+    --surface7-light: #f5f5f5;
+    --surface6-light: #e5e5e5;
+    --surface5-light: #d5d5d5;
+    --surface4-light: #b5b5b5;
+    --surface3-light: #9e9e9e;
+    --surface2-light: #5e5e5e;
+    --surface1-light: #1e1e1e;
+}
+
+

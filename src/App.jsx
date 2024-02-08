@@ -8,7 +8,7 @@ import CustomerPanel from './components/CustomerPanel/CustomerPanel';
 import StatementPanel from './components/StatementPanel/StatementPanel';
 import InventoryPanel from './components/InventoryPanel/InventoryPanel';
 import OverviewPanel from './components/OverviewPanel/OverviewPanel';
-import './App.css';
+import './App.scss';
 import CustomerAccount from './components/CustomerAccount/CustomerAccount';
 import Customer from './components/Customer/Customer';
 import Notifier from './components/Notifier/Notifier';
@@ -17,6 +17,7 @@ import { AuthContext } from './context/AuthContext';
 import ProductPanel from './components/ProductPanel/ProductPanel';
 import ProductDetails from './components/ProductDetails/ProductDetails';
 import AdminProfile from './components/AdminProfile/AdminProfile';
+import Home from './pages/Home/Home';
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token'));
@@ -37,8 +38,9 @@ function App() {
             <BrowserRouter>
                 <Notifier />
                 <Routes>
+                    <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/" element={<Dashboard />}>
+                    <Route path="/dashboard" element={<Dashboard />}>
                         <Route path="" element={<OverviewPanel />} />
                         <Route path="customers">
                             <Route path="" element={<CustomerPanel />} />

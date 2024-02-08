@@ -35,9 +35,16 @@ button {
         padding: 0.5rem 1rem;
         border: none;
         border-radius: 1rem;
+        background-color: rgb(240, 240, 240);
+
+        filter: drop-shadow(0px 0px 2px #6c7c7a);
+
         &.loading {
             pointer-events: none;
             background: rgb(255, 255, 255);
+        }
+        &:hover {
+            background-color: rgb(221, 252, 232);
         }
         &:active {
             background: #6c7c7a;
@@ -84,6 +91,30 @@ button {
             background: #b60404;
         }
     }
+    &.stylish06 {
+        background-color: #fff;
+        border: 1px solid #d5d9d9;
+        border-radius: 8px;
+        box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
+        color: #0f1111;
+        cursor: pointer;
+        display: inline-block;
+        font-family: sans-serif;
+        font-size: 1.3rem;
+        padding: 0.5rem 1rem;
+        text-align: center;
+
+        &:hover {
+            background-color: #f7fafa;
+        }
+
+        &:focus {
+            border-color: #008296;
+            box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
+            outline: 0;
+        }
+    }
+
     //- ACTIONS HAVE MODIFIERS BASED ON TRAFFIC SIGNALS {STOP,WAIT,GO}
     &.action01 {
         border: none;
@@ -136,29 +167,6 @@ button {
     }
 
     /* CSS */
-    &.stylish06 {
-        background-color: #fff;
-        border: 1px solid #d5d9d9;
-        border-radius: 8px;
-        box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
-        color: #0f1111;
-        cursor: pointer;
-        display: inline-block;
-        font-family: sans-serif;
-        font-size: 1.3rem;
-        padding: 0.5rem 1rem;
-        text-align: center;
-
-        &:hover {
-            background-color: #f7fafa;
-        }
-
-        &:focus {
-            border-color: #008296;
-            box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
-            outline: 0;
-        }
-    }
 
     //- FOR ICONS
     &.icon01 {

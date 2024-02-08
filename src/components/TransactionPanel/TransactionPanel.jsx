@@ -4,6 +4,7 @@ import TransactionTable from '../TransactionTable/TransactionTable';
 import SortAndFilter from '../SortAndFilter/SortAndFilter';
 import Button from '../UI/Button/Button';
 import Modal from '../UI/Modal/Modal';
+import styles from './TransactionPanel.module.scss';
 
 const TransactionPanel = () => {
     const [filterObject, setFilterObject] = useState({
@@ -13,7 +14,7 @@ const TransactionPanel = () => {
     });
 
     return (
-        <div className="">
+        <div className={styles.container}>
             <SortAndFilter setFilterObject={setFilterObject} />
 
             <TransactionTable filterObject={filterObject} />

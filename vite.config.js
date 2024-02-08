@@ -1,15 +1,23 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-
-const API_URI = process.env.NODE_ENV === 'production' ? 'https://skdapi.tsabudh.com.np' : 'http://localhost:3000';
-
+const API_URI =
+    process.env.NODE_ENV === 'production'
+        ? 'https://skdapi.tsabudh.com.np'
+        : 'http://localhost:3000';
 
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
     if (command === 'serve') {
         return {
             // dev specific config
             plugins: [react()],
+            css: {
+                preprocessorOptions: {
+                    scss: {
+                        // additionalData: `@use "/src/scss/abstract" as *;`,
+                    },
+                },
+            },
             server: {
                 host: true,
             },

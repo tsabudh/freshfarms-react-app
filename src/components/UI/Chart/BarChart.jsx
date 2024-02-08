@@ -4,7 +4,7 @@ import Chart from 'chart.js/auto';
 import styles from './BarChart.module.scss';
 let chartData = {
     labels: [
-        'Paneler',
+        'Paneer',
         'Yogurt',
         'Cow Milk',
         'Buffalo Milk',

@@ -3,7 +3,7 @@
         "title": "Overview",
         "icon": "bi-gear-fill",
         "identity": "menu",
-        "path": "/"
+        "path": "/dashboard"
     },
     {
         "title": "Transactions",
@@ -12,12 +12,12 @@
         "children": [
             {
                 "title": "Home",
-                "path": "/transactions",
+                "path": "/dashboard/transactions",
                 "identity": "sub-menu"
             },
             {
                 "title": "Statements",
-                "path": "/transactions/statements",
+                "path": "/dashboard/transactions/statements",
                 "identity": "sub-menu"
             }
         ]
@@ -30,12 +30,12 @@
         "children": [
             {
                 "title": "Home",
-                "path": "/customers",
+                "path": "/dashboard/customers",
                 "identity": "sub-menu"
             },
             {
                 "title": "Manage",
-                "path": "/customers/manage",
+                "path": "/dashboard/customers/manage",
                 "identity": "sub-menu"
             }
         ]
@@ -47,17 +47,17 @@
         "children": [
             {
                 "title": "Home",
-                "path": "/products",
+                "path": "/dashboard/products",
                 "identity": "sub-menu"
             },
             {
                 "title": "Details",
-                "path": "/products/details",
+                "path": "/dashboard/products/details",
                 "identity": "sub-menu"
             },
             {
                 "title": "Inventory",
-                "path": "/products/inventory",
+                "path": "/dashboard/products/inventory",
                 "identity": "sub-menu"
             }
         ]
@@ -69,7 +69,7 @@
         "children": [
             {
                 "title": "Profile",
-                "path": "/profile",
+                "path": "/dashboard/profile",
                 "identity": "sub-menu"
             }
         ]

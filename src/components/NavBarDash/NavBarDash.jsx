@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { GoSidebarCollapse } from 'react-icons/go';
 import { RiArrowGoBackFill } from 'react-icons/ri';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
-import styles from './NavBar.module.scss';
+import styles from './NavBarDash.module.scss';
 import { useNavigate } from 'react-router-dom';
 import Button from '../UI/Button/Button';
 import { AuthContext } from '../../context/AuthContext';
 import fetchMyDetails from '../../utils/fetchMyDetails';
 
-function NavBar(props) {
+function NavBarDash(props) {
     const { sidebarIsOpen, setSidebarIsOpen } = props;
     const [admin, setAdmin] = useState({});
     const { token, setToken } = useContext(AuthContext);
@@ -18,6 +18,7 @@ function NavBar(props) {
     useEffect(() => {
         async function asyncWrapper() {
             let responseObject = await fetchMyDetails(token);
+            console.log(responseObject);
             setAdmin(Object.assign({}, responseObject.data));
         }
         asyncWrapper();
@@ -39,16 +40,16 @@ function NavBar(props) {
                 className={`${styles['toggle-sidebar']} 
                 ${sidebarIsOpen ? styles['toggle-sidebar--open'] : ''}`}
             >
-                <GoSidebarCollapse />
+                <GiHamburgerMenu />
             </div>
 
-            {location.pathname != '/' && (
+            {location.pathname != '/dashboard' && (
                 <div
                     className={`${styles['go-back']} 
                     ${sidebarIsOpen ? '' : styles['go-back--pushed']}`}
                 >
                     <Button className="stylish06" onClick={() => navigate(-1)}>
-                        <span>Go back</span>
+                        <span>Go back </span>
                         <RiArrowGoBackFill />
                     </Button>
                 </div>
@@ -64,4 +65,4 @@ function NavBar(props) {
     );
 }
 
-export default NavBar;
+export default NavBarDash;

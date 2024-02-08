@@ -27,7 +27,7 @@ function OverlayContainer({ isNewUser, toggle }) {
         if (response.status == 'success') {
             setToken(response.token);
             localStorage.setItem('token', response.token);
-            navigate('/');
+            navigate('/dashboard');
         } else if (response.status == 'failure') {
             // setErrorMessage(response.message);
             toast(response.message, { toastId: 'overlayToast' });

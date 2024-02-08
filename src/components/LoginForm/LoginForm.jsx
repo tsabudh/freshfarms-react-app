@@ -26,7 +26,7 @@ const LoginForm = ({
 
     const { token, setToken } = useContext(AuthContext);
     useEffect(() => {
-        if (token) navigate('/');
+        if (token) navigate('/dashboard');
     });
     async function handleSubmit(e) {
         e.preventDefault();
@@ -46,7 +46,7 @@ const LoginForm = ({
                 setIsLoading(false);
                 setToken(response.token);
                 localStorage.setItem('token', response.token);
-                navigate('/');
+                navigate('/dashboard');
             } else if (response.status == 'failure') {
                 if (response.message) {
                     setErrorMessage(response.message);
@@ -67,7 +67,7 @@ const LoginForm = ({
             if (response.status == 'success') {
                 setToken(response.token);
                 localStorage.setItem('token', response.token);
-                navigate('/');
+                navigate('/dashboard');
             } else if (response.status == 'failure') {
                 if (response.message) {
                     setErrorMessage(response.message);

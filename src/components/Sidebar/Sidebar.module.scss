@@ -1,5 +1,3 @@
-@import '../../scss//utilities/scrollbar.scss';
-
 .sidebar {
     // min-width: fit-content;
     position: relative;
@@ -19,10 +17,8 @@
     left: 0;
     bottom: 0;
 
-    @extend .scrollbar-17;
-
     background: linear-gradient(to bottom right, #0c332e, #0b2d29);
-
+    background: var(--surface2-light);
     transition: width 0.5s ease;
     &--opened {
         width: 20rem;
@@ -34,7 +30,7 @@
         position: absolute;
         top: 1rem;
         right: 0.3rem;
-        color: #b0fce4;
+        color: white;
         font-size: 2.5rem;
         cursor: pointer;
     }

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { CgMoveLeft } from 'react-icons/cg';
 import { GoSidebarExpand } from 'react-icons/go';
+import { GiHamburgerMenu } from 'react-icons/gi';
+
 import { GoSidebarCollapse } from 'react-icons/go';
 
 import styles from './Sidebar.module.scss';
@@ -17,14 +19,14 @@ export default function Sidebar(props) {
     };
     return (
         <div
-            className={`${styles.sidebar} ${
+            className={`${styles.sidebar}  ${
                 sidebarIsOpen
                     ? styles['sidebar--opened']
                     : styles['sidebar--closed']
             }`}
         >
             <div className={styles['hamburger']} onClick={handleToggle}>
-                <GoSidebarExpand />
+                <GiHamburgerMenu  />
             </div>
             <figure className={styles['logo']}>
                 <img

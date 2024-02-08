@@ -5,7 +5,7 @@ import { AuthContext } from '../../context/AuthContext';
 import styles from './Dashboard.module.scss';
 import { Outlet } from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
-import NavBar from '../../components/NavBar/NavBar';
+import NavBarDash from '../../components/NavBarDash/NavBarDash';
 
 const Dashboard = (props) => {
     const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
@@ -30,7 +30,7 @@ const Dashboard = (props) => {
                 </div>
 
                 <div className={styles.window}>
-                    <NavBar
+                    <NavBarDash
                         sidebarIsOpen={sidebarIsOpen}
                         setSidebarIsOpen={setSidebarIsOpen}
                     />
