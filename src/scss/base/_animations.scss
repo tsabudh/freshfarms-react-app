@@ -1,4 +1,5 @@
 @use 'sass:math';
+@use './../abstract/variables' as *;
 
 //- BACKGROUND FILTER BLUR
 .a-blur-background {
@@ -210,7 +211,7 @@
     align-items: center;
     font-family: sans-serif;
     font-weight: bold;
-// border-radius: 10rem;
+    // border-radius: 10rem;
 
     &::before {
         content: '';
@@ -256,7 +257,7 @@
     align-items: center;
     font-family: sans-serif;
     font-weight: bold;
-// border-radius: 10rem;
+    // border-radius: 10rem;
 
     &::before {
         content: '';
@@ -271,7 +272,8 @@
         background-repeat: no-repeat;
         background-size: 50% 50%;
         background-position: 0 0, 100% 0, 100% 100%, 0 100%;
-        background-image: linear-gradient(#2ef3c29c, #2ef3c29c),linear-gradient(#2ef3c29c, #2ef3c29c);
+        background-image: linear-gradient(#2ef3c29c, #2ef3c29c),
+            linear-gradient(#2ef3c29c, #2ef3c29c);
         animation: rotate 4s linear infinite;
     }
 

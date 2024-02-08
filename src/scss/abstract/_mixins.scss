@@ -1,5 +1,6 @@
-@import './functions';
-@import './variables';
+@use 'sass:math';
+@use '../abstract/variables' as *;
+@use '../abstract/functions' as *;
 
 @mixin clearfix {
     &::after {
@@ -52,10 +53,10 @@ Breakpoint argument choices
 
 */
 
-$phone-size: 37.5em;
-$tab-port-size: 56.25em;
-$tab-land-size: 75em;
-$big-screen-size: 112.5em;
+$phone-size: 37.5em; // sm
+$tab-port-size: 56.25em; // md
+$tab-land-size: 75em; // lg
+$big-screen-size: 112.5em; // xl
 
 @mixin respond($breakpoint) {
     // 1em =16px
@@ -94,15 +95,11 @@ $big-screen-size: 112.5em;
                     ) / (#{strip-unit($tab-land-size + $phone-size)}))
     );
 }
-
-/* 
-Using fluid: 
-
-*/
 @mixin fluid($property, $min-size, $max-size) {
     #{$property}: $max-size;
+
     #{$property}: calc(
-        #{$min-size} + (#{strip-unit($max-size - $min-size)}) * ((
+        #{$min-size} + (strip-unit($max-size - $min-size)) * ((
                         100vw - #{$phone-size}
                     ) / (#{strip-unit($tab-land-size + $phone-size)}))
     );
@@ -123,4 +120,57 @@ Using fluid:
                         (#{strip-unit($tab-land-size + $phone-size)})))
     );
     max-#{$property}: $max-percentage;
+}
+
+//- BOOTSTRAP ROW COL GENERATOR
+@mixin generate-columns-all($columns) {
+    @for $i from 1 through $columns {
+        .col-#{$i} {
+            flex: 0 0 percentage($i / $columns);
+            max-width: percentage($i / $columns);
+            padding: 0 15px;
+        }
+    }
+}
+@mixin generate-columns($columns, $screen-size) {
+    @for $i from 1 through $columns {
+        .col-#{$screen-size}-#{$i} {
+            flex: 0 0 percentage($i / $columns);
+            max-width: percentage($i / $columns);
+            padding: 0 15px;
+        }
+
+        // @if $screen-size == xl {
+        //   .col-xl-#{$i} {
+        //     @include respond("big-screen") {
+        //       flex: 0 0 percentage($i / $columns);
+        //       max-width: percentage($i / $columns);
+        //     }
+        //   }
+        // }
+        // @if $screen-size == lg {
+        //   .col-lg-#{$i} {
+        //     @include respond("tab-land") {
+        //       flex: 0 0 percentage($i / $columns);
+        //       max-width: percentage($i / $columns);
+        //     }
+        //   }
+        // }
+        // @if $screen-size == md {
+        //   .col-md-#{$i} {
+        //     @include respond("tab-port") {
+        //       flex: 0 0 percentage($i / $columns);
+        //       max-width: percentage($i / $columns);
+        //     }
+        //   }
+        // }
+        // @if $screen-size == sm {
+        //   .col-sm-#{$i} {
+        //     @include respond("phone") {
+        //       flex: 0 0 percentage($i / $columns);
+        //       max-width: percentage($i / $columns);
+        //     }
+        //   }
+        // }
+    }
 }
