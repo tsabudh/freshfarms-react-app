@@ -17,9 +17,9 @@ function OverviewPanel() {
     const [customers, setCustomers] = useState([]);
 
     return (
-        <div>
+        <div className={styles['overview-panel']}>
             <h1>Overview</h1>
-            <BarChart products={products} setProducts={setProducts} />
+            {/* <BarChart products={products} setProducts={setProducts} /> */}
             <RegisterBoard
                 setFilterObject={setFilterObject}
                 products={products}

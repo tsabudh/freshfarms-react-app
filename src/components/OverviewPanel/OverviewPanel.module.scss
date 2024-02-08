@@ -1,5 +1,27 @@
-.Transaction-table-container {
-    padding: 1rem;
-    border: 1px solid white;
+.overview-panel {
+    background: var(--surface2-light);
+
     border-radius: 1rem;
+    padding-inline: 1rem;
+
+    & h1,
+    & h3 {
+        letter-spacing: 1px;
+        font-weight: 400;
+        text-transform: capitalize;
+    }
+    & h1 {
+        color: white;
+    }
+    & h3 {
+        color: #0f0081;
+    }
+}
+
+.transaction-table-container {
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-block: 1rem;
+
+    background: var(--surface5-light);
 }
