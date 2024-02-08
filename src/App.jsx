@@ -18,16 +18,32 @@ import ProductPanel from './components/ProductPanel/ProductPanel';
 import ProductDetails from './components/ProductDetails/ProductDetails';
 import AdminProfile from './components/AdminProfile/AdminProfile';
 import Home from './pages/Home/Home';
+import refreshToken from './utils/refreshToken';
+import { toast } from 'react-toastify';
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [admin, setAdmin] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function asyncWrapper() {
             let storedToken = localStorage.getItem('token');
             if (storedToken) {
-                setToken(storedToken);
+                let response = await refreshToken(storedToken);
+                if (response.status == 'success') {
+                    setToken(response.token);
+                } else {
+                    localStorage.removeItem('token');
+                    toast('JWT Error', {
+                        position: 'top-right',
+                        theme: 'colored',
+                        toastId: 'jwt',
+                    });
+                    navigate('/login');
+                }
+
+                console.log(response);
             }
         }
         asyncWrapper();
@@ -35,44 +51,32 @@ function App() {
 
     return (
         <AuthContext.Provider value={{ token, setToken }}>
-            <BrowserRouter>
-                <Notifier />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/dashboard" element={<Dashboard />}>
-                        <Route path="" element={<OverviewPanel />} />
-                        <Route path="customers">
-                            <Route path="" element={<CustomerPanel />} />
-                            <Route path=":id" element={<Customer />} />
-                            <Route
-                                path="manage"
-                                element={<CustomerAccount />}
-                            />
-                        </Route>
-                        <Route path="products">
-                            <Route path="" element={<ProductPanel />} />
-                            <Route
-                                path="details"
-                                element={<ProductDetails />}
-                            />
-                            <Route
-                                path="inventory"
-                                element={<InventoryPanel />}
-                            />
-                        </Route>
-                        <Route path="transactions">
-                            <Route path="" element={<TransactionPanel />} />
-
-                            <Route
-                                path="statements"
-                                element={<StatementPanel />}
-                            />
-                        </Route>
-                        <Route path="profile" element={<AdminProfile />} />
+            {/* <BrowserRouter> */}
+            <Notifier />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/dashboard" element={<Dashboard />}>
+                    <Route path="" element={<OverviewPanel />} />
+                    <Route path="customers">
+                        <Route path="" element={<CustomerPanel />} />
+                        <Route path=":id" element={<Customer />} />
+                        <Route path="manage" element={<CustomerAccount />} />
                     </Route>
-                </Routes>
-            </BrowserRouter>
+                    <Route path="products">
+                        <Route path="" element={<ProductPanel />} />
+                        <Route path="details" element={<ProductDetails />} />
+                        <Route path="inventory" element={<InventoryPanel />} />
+                    </Route>
+                    <Route path="transactions">
+                        <Route path="" element={<TransactionPanel />} />
+
+                        <Route path="statements" element={<StatementPanel />} />
+                    </Route>
+                    <Route path="profile" element={<AdminProfile />} />
+                </Route>
+            </Routes>
+            {/* </BrowserRouter> */}
         </AuthContext.Provider>
     );
 }
