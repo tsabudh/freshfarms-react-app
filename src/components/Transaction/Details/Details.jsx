@@ -3,7 +3,6 @@ import styles from './Details.module.scss';
 
 const Details = (props) => {
     const { items, purchaseAmount } = props;
-    console.log(props);
     return (
         <React.Fragment>
             <div className={styles['container']}>
@@ -59,7 +58,7 @@ const Details = (props) => {
                             <div className={styles["spacer"]}></div>
                             {props.transaction.items.map((item, index) => {
                                 return (
-                                    <div className={styles['item']}>
+                                    <div className={styles['item']} key={index}>
                                         <div
                                             className={styles['item-property']}
                                         >
