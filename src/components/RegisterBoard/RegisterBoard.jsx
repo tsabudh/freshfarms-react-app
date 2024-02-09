@@ -35,7 +35,7 @@ const RegisterBoard = (props) => {
 
     useEffect(() => {
         handleTransactionAmount();
-    }, [cart, paidInFull]);
+    }, [cart]);
 
     const addToCart = function (e) {
         e.preventDefault();
@@ -81,6 +81,8 @@ const RegisterBoard = (props) => {
         setPosting('sending');
         setErrorMessage(null);
         let newTransaction = {};
+
+        // Adding customer to transaction
         const selectCustomerEl = document.getElementById('customers');
         const selectedCustomer =
             selectCustomerEl.options[selectCustomerEl.selectedIndex].value;
@@ -88,17 +90,30 @@ const RegisterBoard = (props) => {
         newTransaction.customer = {
             customerId: selectedCustomer,
         };
+
+        // Adding items to transaction
         let items = cart.map((item) => {
             return { productId: item._id, quantity: item.quantity };
         });
         newTransaction.items = items;
 
+        // Adding paidInFull to transaction
+        newTransaction.paidInFull = paidInFull;
+
+        // Adding transaction amount if paid in full
+        if (paidInFull) {
+            newTransaction.paid = transactionAmount;
+        } else {
+            newTransaction.paid = paidAmount;
+        }
+
+        // If not paid in full is selected 'No' but transaction amount equals paid in full
+        if (paidAmount == transactionAmount) newTransaction.paidInFull = true;
+
         let result = await postTransaction(newTransaction, token);
-        console.log(result); //OKAY
         if (result.status == 'success') {
             setPosting('success');
             setErrorMessage(null);
-            console.log(token);
             let productResponse = await fetchProducts(null, token);
             console.log(productResponse); //!    JWT MALFORMED
             setProducts(productResponse.data);
@@ -129,14 +144,7 @@ const RegisterBoard = (props) => {
         // console.log(transactionAmount);
         // console.log(paidAmount);
     };
-    const handlePaidInFull = (e) => {
-        console.log(e.target.value);
-        // setPaidInFull((prev) => e.target.value);
-        setPaidInFull((prev) => !prev);
 
-        // console.log(cart);
-        // handleTransactionAmount();
-    };
     return (
         <>
             <div className={styles['form-container']}>
@@ -247,12 +255,16 @@ const RegisterBoard = (props) => {
                                         id="paidInFullYes"
                                         onChange={() => setPaidInFull(true)}
                                         value={true}
-                                        // checked={paidInFull}
+                                        checked={paidInFull}
                                     />
 
                                     <label htmlFor="paidInFullYes">
                                         <span
                                             className={`${styles['custom-radio']} ${styles.yes}`}
+                                            tabIndex={0}
+                                            onKeyDown={(e) => {
+                                                setPaidInFull(true);
+                                            }}
                                         ></span>
                                         <span>Yes</span>
                                     </label>
@@ -264,12 +276,16 @@ const RegisterBoard = (props) => {
                                         id="paidInFullNo"
                                         onChange={() => setPaidInFull(false)}
                                         value={false}
-                                        // checked={paidInFull}
+                                        checked={!paidInFull}
                                     />
 
                                     <label htmlFor="paidInFullNo">
                                         <span
                                             className={`${styles['custom-radio']} ${styles.no}`}
+                                            tabIndex={0}
+                                            onKeyDown={(e) => {
+                                                setPaidInFull(false);
+                                            }}
                                         ></span>
                                         <span>No</span>
                                     </label>
@@ -277,9 +293,13 @@ const RegisterBoard = (props) => {
                             </div>
 
                             <div className={styles['amount']}>
-                                Paid :
+                                <span>Paid :</span>
                                 {paidInFull ? (
-                                    transactionAmount
+                                    <input
+                                        type="number"
+                                        value={transactionAmount}
+                                        readOnly={true}
+                                    />
                                 ) : (
                                     <input
                                         type="number"

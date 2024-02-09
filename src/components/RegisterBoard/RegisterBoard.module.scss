@@ -31,6 +31,10 @@
             border: 0.5px solid gray;
             border-radius: 1rem;
             outline: none;
+
+            &:focus{
+                border: 0.5px solid #178645;
+            }
         }
         & input {
             padding: 0.5rem 1rem;
@@ -39,6 +43,12 @@
             border: 0.5px solid gray;
             border-radius: 1rem;
             outline: none;
+            letter-spacing: 0.5px;
+            font-family: Roboto;
+
+            &:focus{
+                border: 0.5px solid #178645;
+            }
         }
         & label {
             margin-inline: 1rem;
@@ -50,6 +60,8 @@
 
     & .cart {
         overflow-x: auto;
+        border-bottom: 1px solid whitesmoke;
+
         &-item {
             background: rgb(100, 238, 162);
 
@@ -123,6 +135,8 @@
         display: flex;
         flex-direction: row;
         justify-content: space-around;
+        align-items: flex-start;
+
         & .type {
             display: flex;
             flex-direction: row;
@@ -130,9 +144,20 @@
             margin-inline-end: 3rem;
         }
         & .amount {
+            & input {
+                border: 1px solid #ffa500;
+            }
+            & input:read-only {
+                border: 1px solid #2ecc71;
+                background-color: #2ecc71;
+                font-weight: 600;
+                color: white;
+            }
         }
         & .grouped {
-            border: 1px solid red;
+            &:nth-of-type(1) {
+                margin-right: 2rem;
+            }
             & label {
                 display: flex;
                 flex-direction: row;
