@@ -63,7 +63,7 @@ const Transaction = (props) => {
                 </ul>
             </div>
             {!props.paidInFull && props.paidAmount != 0 && (
-                <div className={`${styles['cost']} ${styles['paid']}`}>
+                <div className={`${styles['cost']} ${styles['paid']}`} title='Paid amount'>
                     Rs. {props.paidAmount}
                     {!isExpanded && props.type == 'purchase' && ' |'}
                 </div>
@@ -73,6 +73,7 @@ const Transaction = (props) => {
                     className={`${styles.cost} ${
                         props.paidInFull ? styles['paid'] : styles['unpaid']
                     }`}
+                    title='Total Amount'
                 >
                     Rs. {props.purchaseAmount}
                 </div>
