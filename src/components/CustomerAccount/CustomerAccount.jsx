@@ -1,8 +1,11 @@
 import React, { useContext, useState } from 'react';
 import styles from './CustomerAccount.module.scss';
 import Button from '../UI/Button/Button';
-import createCustomer from '../../utils/createCustomer';
-import {AuthContext} from '../../context/AuthContext';
+
+import CustomerProfile from '../CustomerProfile/CustomerProfile';
+import { AuthContext } from '../../context/AuthContext';
+import ErrorFormFooter from '../UI/Error/ErrorFormFooter';
+import useAPI from '../../hooks/useAPI';
 
 const failuresObject = {
     name: false,
@@ -21,6 +24,20 @@ function CustomerAccount() {
     const [dueAmount, setDueAmount] = useState('');
     const [tabOptions, setTabOptions] = useState(false);
     const [failures, setFailures] = useState(failuresObject);
+
+    const [posting, setPosting] = useState(''); // sending '' success failure
+    // const [errorMessage, setErrorMessage] = useState(null);
+    let requestBody;
+    //- Custom Hook
+    const [pendingStatus, data, errorMessage, sendRequest, setRequestBody] =
+        useAPI({
+            url: '/customers',
+            method: 'POST',
+            token: token,
+            body: requestBody,
+        });
+    // console.log(pendingStatus);
+    // console.log(data);
 
     const handleDueAmount = (e) => {
         let purchaseAmount = Number(document.getElementById('purchase').value);
@@ -41,14 +58,17 @@ function CustomerAccount() {
         formData.forEach((value, key) => (details[key] = value));
         let json = JSON.stringify(details);
 
-        console.log(Object.entries(failures).find((item) => item[1] == true));
+        // console.log(Object.entries(failures).find((item) => item[1] == true));
 
         for (const [key, value] of Object.entries(failures)) {
             // console.log(key, value);
         }
         // console.log(Object.entries(failures));
-        let result = await createCustomer(details, token);
-        console.log(result);
+        // let result = await createCustomer(details, token);
+        // console.log(result);
+
+        // console.log(requestBody);
+        sendRequest(details);
         return;
     };
 
@@ -188,6 +208,13 @@ function CustomerAccount() {
                         Add customer
                     </Button>
                 </form>
+                <ErrorFormFooter
+                    pendingStatus={pendingStatus}
+                    errorMessage={errorMessage}
+                />
+            </div>
+            <div className={styles["profile-container"]} >
+                {data && <CustomerProfile customer={data} />}
             </div>
         </div>
     );
