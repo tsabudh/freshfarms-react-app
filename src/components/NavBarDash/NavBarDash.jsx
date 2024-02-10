@@ -18,8 +18,9 @@ function NavBarDash(props) {
     useEffect(() => {
         async function asyncWrapper() {
             let responseObject = await fetchMyDetails(token);
-            console.log(responseObject);
-            setAdmin(Object.assign({}, responseObject.data));
+            if (responseObject.status == 'success') {
+                setAdmin(Object.assign({}, responseObject.data));
+            }
         }
         asyncWrapper();
     }, []);
