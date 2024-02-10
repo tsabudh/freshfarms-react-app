@@ -91,25 +91,30 @@ const RegisterBoard = (props) => {
             customerId: selectedCustomer,
         };
 
-        // Adding items to transaction
-        let items = cart.map((item) => {
-            return { productId: item._id, quantity: item.quantity };
-        });
-        newTransaction.items = items;
+        if (transactionType == 'purchase') {
+            // Adding items to transaction
+            let items = cart.map((item) => {
+                return { productId: item._id, quantity: item.quantity };
+            });
+            newTransaction.items = items;
 
-        // Adding paidInFull to transaction
-        newTransaction.paidInFull = paidInFull;
+            // Adding paidInFull to transaction
+            newTransaction.paidInFull = paidInFull;
 
-        // Adding transaction amount if paid in full
-        if (paidInFull) {
-            newTransaction.paid = transactionAmount;
-        } else {
+            // Adding transaction amount if paid in full
+            if (paidInFull) {
+                newTransaction.paid = transactionAmount;
+            } else {
+                newTransaction.paid = paidAmount;
+            }
+
+            // If not paid in full is selected 'No' but transaction amount equals paid in full
+            if (paidAmount == transactionAmount)
+                newTransaction.paidInFull = true;
+        } else if (transactionType == 'payment') {
+            newTransaction.type = 'payment';
             newTransaction.paid = paidAmount;
         }
-
-        // If not paid in full is selected 'No' but transaction amount equals paid in full
-        if (paidAmount == transactionAmount) newTransaction.paidInFull = true;
-
         let result = await postTransaction(newTransaction, token);
         if (result.status == 'success') {
             setPosting('success');
@@ -143,182 +148,260 @@ const RegisterBoard = (props) => {
         // console.log(paidInFull);
         // console.log(transactionAmount);
         // console.log(paidAmount);
+
+        // document.getElementById('transactionRegistrationForm').style.setProperty('--')
     };
 
     return (
         <>
             <div className={styles['form-container']}>
                 <h3>Register new transaction {paidInFull}</h3>
-                <form action="">
-                    <div className={styles['form-group']}>
-                        <label htmlFor="customers">Customer :</label>
-                        <select name="" id="customers">
-                            {customers.map((item) => (
-                                <option key={item._id} value={item._id}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className={styles['form-group']}>
-                        <label htmlFor="">Add Items:</label>
-                        <select name="products" id="products">
-                            {products.map((item) => (
-                                <option key={item._id} value={item._id}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </select>
-                        <input
-                            type="number"
-                            value={quantity}
-                            onChange={(e) => setQuantity(e.target.value)}
-                            min={1}
-                        />
-                        <Button className="stylish03" onClick={addToCart}>
-                            add
-                        </Button>
-                    </div>
-
-                    <div className={styles['cart']}>
-                        {/* //* HEAD */}
-                        {cart.length > 0 ? (
-                            <div
-                                className={`${styles['cart-item']} ${styles['cart-item--head']}`}
-                            >
-                                <div
-                                    className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--id']}`}
-                                >
-                                    <span
-                                        className={
-                                            styles['cart-item-piece-label']
-                                        }
-                                    >
-                                        PID
-                                    </span>
-                                </div>
-                                <div
-                                    className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--name']}`}
-                                >
-                                    <span
-                                        className={
-                                            styles['cart-item-piece-label']
-                                        }
-                                    >
-                                        Item
-                                    </span>
-                                </div>
-                                <div
-                                    className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--price']}`}
-                                >
-                                    <span
-                                        className={
-                                            styles['cart-item-piece-label']
-                                        }
-                                    >
-                                        Price
-                                    </span>
-                                </div>
-                                <div
-                                    className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--quantity']}`}
-                                >
-                                    <span
-                                        className={
-                                            styles['cart-item-piece-label']
-                                        }
-                                    >
-                                        Quantity
-                                    </span>
-                                </div>
-                            </div>
-                        ) : null}
-
-                        {cart.map((item) => {
-                            return (
-                                <CartItem
-                                    item={item}
-                                    key={item._id}
-                                    removeFromCart={removeFromCart}
-                                />
-                            );
-                        })}
-                    </div>
-
-                    <div className={styles['form-group']}>
-                        <div className={styles['payment']}>
-                            <div className={styles['type']}>
-                                Paid in full?
-                                <div className={styles['grouped']}>
-                                    <input
-                                        name="paidInFull"
-                                        type="radio"
-                                        id="paidInFullYes"
-                                        onChange={() => setPaidInFull(true)}
-                                        value={true}
-                                        checked={paidInFull}
-                                    />
-
-                                    <label htmlFor="paidInFullYes">
-                                        <span
-                                            className={`${styles['custom-radio']} ${styles.yes}`}
-                                            tabIndex={0}
-                                            onKeyDown={(e) => {
-                                                setPaidInFull(true);
-                                            }}
-                                        ></span>
-                                        <span>Yes</span>
-                                    </label>
-                                </div>
-                                <div className={styles['grouped']}>
-                                    <input
-                                        name="paidInFull"
-                                        type="radio"
-                                        id="paidInFullNo"
-                                        onChange={() => setPaidInFull(false)}
-                                        value={false}
-                                        checked={!paidInFull}
-                                    />
-
-                                    <label htmlFor="paidInFullNo">
-                                        <span
-                                            className={`${styles['custom-radio']} ${styles.no}`}
-                                            tabIndex={0}
-                                            onKeyDown={(e) => {
-                                                setPaidInFull(false);
-                                            }}
-                                        ></span>
-                                        <span>No</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div className={styles['amount']}>
-                                <span>Paid :</span>
-                                {paidInFull ? (
-                                    <input
-                                        type="number"
-                                        value={transactionAmount}
-                                        readOnly={true}
-                                    />
-                                ) : (
-                                    <input
-                                        type="number"
-                                        value={paidAmount}
-                                        onChange={handlePaidAmount}
-                                    />
-                                )}
-                            </div>
+                <form action="" id="transactionRegistrationForm">
+                    <div className={styles['tab-container']}>
+                        <div
+                            className={`${styles['tab']} ${
+                                transactionType == 'purchase'
+                                    ? styles.active
+                                    : ''
+                            }`}
+                            onClick={() => setTransactionType('purchase')}
+                        >
+                            Purchase
+                        </div>
+                        <div
+                            className={`${styles['tab']} ${
+                                transactionType == 'payment'
+                                    ? styles.active
+                                    : ''
+                            }`}
+                            onClick={() => setTransactionType('payment')}
+                        >
+                            Payment
                         </div>
                     </div>
+                    {transactionType == 'purchase' ? (
+                        <div className={styles['purchase']}>
+                            <div className={styles['form-group']}>
+                                <label htmlFor="customers">Customer :</label>
+                                <select name="" id="customers">
+                                    {customers.map((item) => (
+                                        <option key={item._id} value={item._id}>
+                                            {item.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className={styles['form-group']}>
+                                <label htmlFor="">Add Items:</label>
+                                <select name="products" id="products">
+                                    {products.map((item) => (
+                                        <option key={item._id} value={item._id}>
+                                            {item.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <input
+                                    type="number"
+                                    value={quantity}
+                                    onChange={(e) =>
+                                        setQuantity(e.target.value)
+                                    }
+                                    min={1}
+                                />
+                                <Button
+                                    className="stylish03"
+                                    onClick={addToCart}
+                                >
+                                    add
+                                </Button>
+                            </div>
 
-                    <Button
-                        className={classNames(`stylish01`, {
-                            loading: posting == 'sending',
-                        })}
-                        onClick={addTransaction}
-                    >
-                        ADD TRANSACTION
-                    </Button>
+                            <div className={styles['cart']}>
+                                {/* //* HEAD */}
+                                {cart.length > 0 ? (
+                                    <div
+                                        className={`${styles['cart-item']} ${styles['cart-item--head']}`}
+                                    >
+                                        <div
+                                            className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--id']}`}
+                                        >
+                                            <span
+                                                className={
+                                                    styles[
+                                                        'cart-item-piece-label'
+                                                    ]
+                                                }
+                                            >
+                                                PID
+                                            </span>
+                                        </div>
+                                        <div
+                                            className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--name']}`}
+                                        >
+                                            <span
+                                                className={
+                                                    styles[
+                                                        'cart-item-piece-label'
+                                                    ]
+                                                }
+                                            >
+                                                Item
+                                            </span>
+                                        </div>
+                                        <div
+                                            className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--price']}`}
+                                        >
+                                            <span
+                                                className={
+                                                    styles[
+                                                        'cart-item-piece-label'
+                                                    ]
+                                                }
+                                            >
+                                                Price
+                                            </span>
+                                        </div>
+                                        <div
+                                            className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--quantity']}`}
+                                        >
+                                            <span
+                                                className={
+                                                    styles[
+                                                        'cart-item-piece-label'
+                                                    ]
+                                                }
+                                            >
+                                                Quantity
+                                            </span>
+                                        </div>
+                                    </div>
+                                ) : null}
+
+                                {cart.map((item) => {
+                                    return (
+                                        <CartItem
+                                            item={item}
+                                            key={item._id}
+                                            removeFromCart={removeFromCart}
+                                        />
+                                    );
+                                })}
+                            </div>
+
+                            <div className={styles['form-group']}>
+                                <div className={styles['pay']}>
+                                    <div className={styles['type']}>
+                                        Paid in full?
+                                        <div className={styles['grouped']}>
+                                            <input
+                                                name="paidInFull"
+                                                type="radio"
+                                                id="paidInFullYes"
+                                                onChange={() =>
+                                                    setPaidInFull(true)
+                                                }
+                                                value={true}
+                                                checked={paidInFull}
+                                            />
+
+                                            <label htmlFor="paidInFullYes">
+                                                <span
+                                                    className={`${styles['custom-radio']} ${styles.yes}`}
+                                                    tabIndex={0}
+                                                    onKeyDown={(e) => {
+                                                        setPaidInFull(true);
+                                                    }}
+                                                ></span>
+                                                <span>Yes</span>
+                                            </label>
+                                        </div>
+                                        <div className={styles['grouped']}>
+                                            <input
+                                                name="paidInFull"
+                                                type="radio"
+                                                id="paidInFullNo"
+                                                onChange={() =>
+                                                    setPaidInFull(false)
+                                                }
+                                                value={false}
+                                                checked={!paidInFull}
+                                            />
+
+                                            <label htmlFor="paidInFullNo">
+                                                <span
+                                                    className={`${styles['custom-radio']} ${styles.no}`}
+                                                    tabIndex={0}
+                                                    onKeyDown={(e) => {
+                                                        setPaidInFull(false);
+                                                    }}
+                                                ></span>
+                                                <span>No</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles['amount']}>
+                                        <span>Paid :</span>
+                                        {paidInFull ? (
+                                            <input
+                                                type="number"
+                                                value={transactionAmount}
+                                                readOnly={true}
+                                                width={`${
+                                                    transactionAmount.toString()
+                                                        .length
+                                                }ch`}
+                                            />
+                                        ) : (
+                                            <input
+                                                type="number"
+                                                value={paidAmount}
+                                                onChange={handlePaidAmount}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <Button
+                                className={classNames(`stylish01`, {
+                                    loading: posting == 'sending',
+                                })}
+                                onClick={addTransaction}
+                            >
+                                ADD TRANSACTION
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className={styles["payment"]}>
+                            <div className={styles['form-group']}>
+                                <label htmlFor="customers">Customer :</label>
+                                <select name="" id="customers">
+                                    {customers.map((item) => (
+                                        <option key={item._id} value={item._id}>
+                                            {item.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className={styles['form-group']}>
+                                <label htmlFor="">Paid :</label>
+                                <input
+                                    type="number"
+                                    value={paidAmount}
+                                    onChange={handlePaidAmount}
+                                />
+                            </div>
+                            <Button
+                                className={classNames(`stylish01`, {
+                                    loading: posting == 'sending',
+                                })}
+                                onClick={addTransaction}
+                            >
+                                ADD TRANSACTION
+                            </Button>
+                        </div>
+                    )}
                 </form>
                 <div className={styles['form-footer']}>
                     {posting != '' ? (

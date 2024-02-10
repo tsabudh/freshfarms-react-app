@@ -1,4 +1,5 @@
 .form-container {
+    --color-purchase: #2ecc71;
     margin-block: 1rem;
     padding: 1rem;
 
@@ -7,11 +8,13 @@
     background: var(--surface5-light);
 
     & form {
-        background: var(--surface8-light);
-        padding-block: 1rem;
+        background: var(--surface5-light);
+
+        // padding:1rem;
         border-radius: 1rem;
         margin-block: 0.5rem;
-        padding-inline: 1rem;
+        // padding-inline: 1rem;
+        // padding-bottom: 1rem;
     }
 
     & .form-group {
@@ -21,6 +24,7 @@
         align-items: center;
         margin: 2rem 0;
         padding-bottom: 1rem;
+
         &:not(:nth-of-type(2)) {
             border-bottom: 1px solid whitesmoke;
         }
@@ -32,7 +36,7 @@
             border-radius: 1rem;
             outline: none;
 
-            &:focus{
+            &:focus {
                 border: 0.5px solid #178645;
             }
         }
@@ -46,7 +50,7 @@
             letter-spacing: 0.5px;
             font-family: Roboto;
 
-            &:focus{
+            &:focus {
                 border: 0.5px solid #178645;
             }
         }
@@ -131,11 +135,12 @@
         }
     }
 
-    & .payment {
+    & .pay {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
         align-items: flex-start;
+        margin-inline: 1rem;
 
         & .type {
             display: flex;
@@ -201,6 +206,9 @@
             }
         }
     }
+    & button {
+        margin-inline: 1rem;
+    }
 }
 .form-footer {
     display: flex;
@@ -250,5 +258,45 @@
         &::-webkit-scrollbar-thumb {
             background-color: #000000;
         }
+    }
+}
+
+.form-container {
+    .tab-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        // margin-inline: -1rem;
+        // border-top-left-radius: 1rem;
+        // border-top-right-radius: 1rem;
+        background-color: var(--surface5-light);
+
+        & .tab {
+            flex-basis: 60%;
+            text-align: center;
+            padding-block: 0.5rem;
+            cursor: pointer;
+
+            &.active {
+                color: white;
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
+                background-color: var(--color-purchase);
+            }
+        }
+    }
+    .purchase {
+        background: var(--surface8-light);
+        border: 2px solid var(--color-purchase);
+        padding-block: 1rem;
+        border-radius: 1rem;
+        border-top-left-radius: 0;
+    }
+    .payment {
+        background: var(--surface8-light);
+        border: 2px solid var(--color-purchase);
+        padding-block: 1rem;
+        border-radius: 1rem;
+        border-top-right-radius: 0;
     }
 }
