@@ -8,7 +8,7 @@ const CustomerProfile = ({ customer }) => {
     return (
         <div
             className={`${styles['card']}`}
-            onClick={() => navigate(`${customer._id}`, { relative: 'path' })}
+            onClick={() => navigate(`/dashboard/customers/${customer._id}`)}
         >
             <div className={`${styles['card-left']}`}>
                 <div className={`${styles['card-left-picture']}`}>
