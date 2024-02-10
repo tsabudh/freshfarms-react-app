@@ -8,7 +8,6 @@ export async function refreshToken(token) {
 
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
-                    console.log('Request COmpleted');
                     let response = JSON.parse(xhttp.responseText);
                     resolve(response);
                 }
