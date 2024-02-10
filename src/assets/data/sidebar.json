@@ -14,12 +14,8 @@
                 "title": "Home",
                 "path": "/dashboard/transactions",
                 "identity": "sub-menu"
-            },
-            {
-                "title": "Statements",
-                "path": "/dashboard/transactions/statements",
-                "identity": "sub-menu"
             }
+           
         ]
     },
 
