@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { CgMoveLeft } from 'react-icons/cg';
-import { GoSidebarExpand } from 'react-icons/go';
-import { GiHamburgerMenu } from 'react-icons/gi';
+
+import { IoMenuSharp } from 'react-icons/io5';
 
 import { GoSidebarCollapse } from 'react-icons/go';
 
@@ -25,15 +24,17 @@ export default function Sidebar(props) {
                     : styles['sidebar--closed']
             }`}
         >
-            <div className={styles['hamburger']} onClick={handleToggle}>
-                <GiHamburgerMenu  />
+            <div className={styles['header']}>
+                <div className={styles['hamburger']} onClick={handleToggle}>
+                    <IoMenuSharp />
+                </div>
+                <figure className={styles['logo']}>
+                    <img
+                        src="/img/shree-krishna-dairy-white.svg"
+                        alt="Shree Krishna Dairy Logo"
+                    />
+                </figure>
             </div>
-            <figure className={styles['logo']}>
-                <img
-                    src="/img/shree-krishna-dairy-trans.png"
-                    alt="Shree Krishna Dairy Logo"
-                />
-            </figure>
 
             {items.map((item, index) => (
                 <SidebarItem key={index} item={item} />

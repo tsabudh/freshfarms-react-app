@@ -1,49 +1,51 @@
 .sidebar-item {
-    padding: 1rem;
-    margin: 1rem;
+    // padding: 1rem;
+    // margin: 1rem;
     text-decoration: none;
     display: block;
-    // color: rgb(189, 15, 15);
+    padding: 0.75rem 1rem;
+    transition: background-color 0.15s;
 
-    // background: var(--surface6-light);
-
-    & span:hover {
-        background: var(--surface2-light);
-
-        text-decoration: underline;
-        text-underline-position: under;
-        color: white;
+    & span {
+        border-left: 2px solid transparent;
+        padding-inline: 2px;
+        &:hover {
+            display: inline-block;
+            // text-decoration: underline;
+            border-left: 2px solid rgb(219 111 18);
+            text-underline-position: under;
+            color: white;
+        }
     }
-
-    & {
-        padding: 0.75em 1em;
-        display: block;
-        transition: background-color 0.15s;
-        border-radius: 5px;
-    }
-   
 
     .sidebar-title {
         cursor: pointer;
         display: flex;
-        font-size: 1.2em;
+        font-size: 1em;
         justify-content: space-between;
         & span {
-            font-weight: 600;
+            font-weight: 300;
             color: white;
             cursor: pointer;
         }
     }
     .sidebar-title span i {
         display: inline-block;
-        width: 1.5em;
+        width: 1.5rem;
     }
     .sidebar-title .toggle-btn {
         cursor: pointer;
         transition: transform 0.3s;
         background: none;
+        color: white;
         border: none;
+
+        & svg {
+            color: inherit;
+            width: 1rem;
+        }
     }
+
     &.open > .sidebar-title .toggle-btn {
         transform: rotate(180deg);
     }
@@ -61,8 +63,8 @@
         display: block;
         color: #fff;
         text-decoration: none;
+        font-weight: 300;
 
-      
         & i {
             display: inline-block;
             width: 1.7em;

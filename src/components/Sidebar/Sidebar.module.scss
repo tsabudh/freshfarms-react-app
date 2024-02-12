@@ -26,6 +26,10 @@
     &--closed {
         width: 0rem;
     }
+
+    & .header{
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.432);
+    }
     .hamburger {
         position: absolute;
         top: 1rem;
@@ -38,9 +42,11 @@
     & .logo {
         max-width: 20rem;
         // max-height: 3rem;
-        width: 60%;
-        margin: 0 auto;
-        margin-top: 1rem;
+        width: 80%;
+        // height: 2rem;
+        // margin: 0 auto;
+        margin-top: 0.1rem;
+        margin-inline: 0.5rem;
         & img {
             // aspect-ratio: 1;
             width: 100%;
