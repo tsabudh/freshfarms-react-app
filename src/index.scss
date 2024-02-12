@@ -1,6 +1,7 @@
 @use './scss/utilities/scrollbar.scss' as *;
 @use './scss/abstract' as *;
 // @use './scss/main.scss';
+@use './scss/base/fonts';
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500&display=swap');
 // @import './scss/main.scss';
@@ -34,6 +35,7 @@ body {
     // background: #dfeeef; /* fallback for old browsers */
     background: #f3f3f4;
     background: var(--surface2-light);
+    background: var(--surface5-light);
     color: rgb(37, 36, 36);
 
     &::-webkit-scrollbar-track {
