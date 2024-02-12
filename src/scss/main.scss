@@ -1,7 +1,7 @@
 // @use './abstract/' as *;
-@use './abstract/variables.scss';
-@use './abstract/mixins.scss';
-@use './abstract/functions.scss';
+// @use './abstract/variables.scss';
+// @use './abstract/mixins.scss';
+// @use './abstract/functions.scss';
 
 @use './base/animations.scss';
 @use './base/base.scss';
@@ -15,6 +15,7 @@
 @use './components/expanding-cards.scss';
 @use './components/slides.scss';
 @use './components/strips.scss';
+@use './components/tooltip.scss';
 
 @use './utilities/utils.scss';
 @use './utilities/scrollbar.scss';
