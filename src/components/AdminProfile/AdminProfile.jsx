@@ -151,6 +151,7 @@ function AdminProfile() {
     return (
         profile && (
             <div className={styles['container']}>
+                <h3>Profile</h3>
                 <div className={styles['profile']}>
                     <div className={styles['profile-edit']}>
                         {editing ? (
@@ -194,141 +195,166 @@ function AdminProfile() {
                             />
                         ) : null}
                     </div>
-                    <div className={styles['profile-field']}>
-                        <span className={styles['key']}>Name</span>
-                        <span className={styles['value']}>{profile.name}</span>
-                    </div>
-                    {/* //- Camera icon when editing */}
-                    {editing && (
-                        <div
-                            className={`${styles['profile-field']} ${styles['profile-field--edits']}`}
-                        >
-                            <span
-                                className={`${styles['key']} ${styles['key--edits']}`}
-                            >
-                                Change name
+
+                    {/* //- Name */}
+                    <div className={styles['field-wrapper']}>
+                        <div className={styles['profile-field']}>
+                            <span className={styles['key']}>Name</span>
+                            <span className={styles['value']}>
+                                {profile.name}
                             </span>
-                            <input
-                                type="text"
-                                form="form-admin-edits"
-                                className={`${styles['value']} ${styles['value--edits']}`}
-                                name="name"
-                                value={newName}
-                                onChange={(e) => setNewName(e.target.value)}
-                            />
                         </div>
-                    )}
 
-                    <div className={styles['profile-field']}>
-                        <span className={styles['key']}>Phone</span>
-                        <div className={styles['value']}>
-                            {adminPhoneArray.map((item) => (
-                                <Tag
-                                    key={item}
-                                    className={`${
-                                        editing
-                                            ? 'inherit-text'
-                                            : 'inherit-text'
-                                    }`}
-                                    onClick={deleteStoredPhoneTag}
+                        {/* //- Editing name */}
+                        {editing && (
+                            <div
+                                className={`${styles['profile-field']} ${styles['profile-field--edits']}`}
+                            >
+                                <span
+                                    className={`${styles['key']} ${styles['key--edits']}`}
                                 >
-                                    {item}
-                                </Tag>
-                            ))}
-                        </div>
+                                    Change name
+                                </span>
+                                <input
+                                    type="text"
+                                    form="form-admin-edits"
+                                    className={`${styles['value']} ${styles['value--edits']}`}
+                                    name="name"
+                                    value={newName}
+                                    onChange={(e) => setNewName(e.target.value)}
+                                />
+                            </div>
+                        )}
                     </div>
 
-                    {/*  //- Add phone numbers while ediding */}
-                    {editing && (
-                        <div
-                            className={`${styles['profile-field']} ${styles['profile-field--edits']}`}
-                        >
-                            <div className={styles['key']}>
-                                {' '}
-                                Add phone number
-                            </div>
-                            <div className={`${styles['value']} `}>
-                                {editing &&
-                                    addedPhones.map((item) => (
-                                        <Tag
-                                            key={item}
-                                            className={`${
-                                                editing
-                                                    ? 'green01 inherit-text'
-                                                    : 'inherit-text'
-                                            }`}
-                                            onClick={deleteAddedPhoneTag}
-                                        >
-                                            {item}
-                                        </Tag>
-                                    ))}
-                                {editing && (
-                                    <div className={styles['input-wrapper']}>
-                                        <input
-                                            type="text"
-                                            value={adminPhone}
-                                            onChange={handleAdminPhone}
-                                            id="phoneToAdd"
-                                            className={styles['value--edits']}
-                                        />
-                                        <Button
-                                            onClick={addAdminPhone}
-                                            className="sharp01"
-                                        >
-                                            ADD
-                                        </Button>
-                                    </div>
-                                )}
+                    {/* //- Phone  */}
+                    <div className={styles['field-wrapper']}>
+                        <div className={styles['profile-field']}>
+                            <span className={styles['key']}>Phone</span>
+                            <div className={styles['value']}>
+                                {adminPhoneArray.map((item) => (
+                                    <Tag
+                                        key={item}
+                                        className={`${
+                                            editing
+                                                ? 'inherit-text'
+                                                : 'inherit-text'
+                                        }`}
+                                        onClick={deleteStoredPhoneTag}
+                                        title='Remove Phone'
+                                    >
+                                        {item}
+                                    </Tag>
+                                ))}
                             </div>
                         </div>
-                    )}
+
+                        {/*  //- Add phone numbers while ediding */}
+                        {editing && (
+                            <div
+                                className={`${styles['profile-field']} ${styles['profile-field--edits']}`}
+                            >
+                                <div className={styles['key']}>
+                                    {' '}
+                                    Add phone number
+                                </div>
+                                <div className={`${styles['value']} `}>
+                                    {editing &&
+                                        addedPhones.map((item) => (
+                                            <Tag
+                                                key={item}
+                                                className={`${
+                                                    editing
+                                                        ? 'green01 inherit-text'
+                                                        : 'inherit-text'
+                                                }`}
+                                                onClick={deleteAddedPhoneTag}
+                                            >
+                                                {item}
+                                            </Tag>
+                                        ))}
+                                    {editing && (
+                                        <div
+                                            className={styles['input-wrapper']}
+                                        >
+                                            <input
+                                                type="text"
+                                                value={adminPhone}
+                                                onChange={handleAdminPhone}
+                                                id="phoneToAdd"
+                                                className={
+                                                    styles['value--edits']
+                                                }
+                                            />
+                                            <Button
+                                                onClick={addAdminPhone}
+                                                className="stylish02"
+                                            >
+                                                ADD
+                                            </Button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
 
                     {/* //- Username */}
-                    <div className={styles['profile-field']}>
-                        <span className={styles['key']}>Username</span>
-                        <span className={styles['value']}>
-                            {profile.username}
-                        </span>
-                    </div>
-
-                    {/*  //- Field to edit username */}
-                    {editing && (
-                        <div
-                            className={`${styles['profile-field']} ${styles['profile-field--edits']}`}
-                        >
-                            <span
-                                className={`${styles['key']} ${styles['key--edits']}`}
-                            >
-                                Change Username
+                    <div className={styles['field-wrapper']}>
+                        <div className={styles['profile-field']}>
+                            <span className={styles['key']}>Username</span>
+                            <span className={styles['value']}>
+                                {profile.username}
                             </span>
-                            <input
-                                type="text"
-                                form="form-admin-edits"
-                                className={`${styles['value']} ${styles['value--edits']}`}
-                                name="username"
-                                value={newUsername}
-                                onChange={(e) => setNewUsername(e.target.value)}
-                            />
                         </div>
-                    )}
 
-                    {/* //- Id  */}
-                    <div className={styles['profile-field']}>
-                        <span className={styles['key']}>ID</span>
-                        <span className={styles['value']}>{profile._id}</span>
+                        {/*  //- Field to edit username */}
+                        {editing && (
+                            <div
+                                className={`${styles['profile-field']} ${styles['profile-field--edits']}`}
+                            >
+                                <span
+                                    className={`${styles['key']} ${styles['key--edits']}`}
+                                >
+                                    Change Username
+                                </span>
+                                <input
+                                    type="text"
+                                    form="form-admin-edits"
+                                    className={`${styles['value']} ${styles['value--edits']}`}
+                                    name="username"
+                                    value={newUsername}
+                                    onChange={(e) =>
+                                        setNewUsername(e.target.value)
+                                    }
+                                />
+                            </div>
+                        )}
                     </div>
-                </div>
+                    {/* //- Id  */}
+                    <div className={styles['field-wrapper']}>
+                        <div className={styles['profile-field']}>
+                            <span className={styles['key']}>ID</span>
+                            <span className={styles['value']}>
+                                {profile._id}
+                            </span>
+                        </div>
+                    </div>
 
-                <div className={styles['hidden-form']}>
-                    {/* //- Invisible form to get formData */}
-                    <form id="form-admin-edits" />
+                    <div className={styles['hidden-form']}>
+                        {/* //- Invisible form to get formData */}
+                        <form id="form-admin-edits" />
 
-                    {/* //- Save button if editing. */}
-                    {editing ? (
-                        <Button className="action01 go" onClick={uploadChanges}>
-                            Save
-                        </Button>
-                    ) : null}
+                        {/* //- Save button if editing. */}
+                        {editing ? (
+                            <Button
+                                className="action01 go"
+                                onClick={uploadChanges}
+                            >
+                                Save
+                            </Button>
+                        ) : null}
+                    </div>
                 </div>
             </div>
         )

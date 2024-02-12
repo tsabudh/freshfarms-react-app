@@ -1,16 +1,25 @@
 .container {
-    margin-block: 2rem;
+    & h3 {
+        margin-inline: 1rem;
+        color: white;
+        font-weight: 400;
+    }
     & .profile {
         font-size: inherit;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
         position: relative;
+        background-color: var(--surface8-light);
+        border-radius: 1rem;
+        padding: 1rem;
+        margin: 1rem;
 
         &-edit {
             position: absolute;
-            top: 0;
+            top: 1rem;
             right: 2rem;
+            z-index: 2;
         }
 
         &-picture {
@@ -22,7 +31,9 @@
             & svg {
                 position: absolute;
                 top: 80%;
-                right: 15%;
+                // right: 15%;
+                left: 50%;
+                translate: 150% 0;
 
                 cursor: pointer;
                 color: pink;
@@ -51,28 +62,29 @@
 
         &-field {
             width: 100%;
-            border: 1px solid white;
-            border-radius: 2rem;
-            margin: 2rem 3rem;
-            padding: 1rem 2rem;
+            // border-bottom: 1px solid gray;
+            // border-radius: 2rem;
+            margin: 0.5rem;
+            // padding: 0.5rem 1rem;
 
             // flex-basis: 80rem;
             display: flex;
             flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
+            justify-content: flex-start;
+            align-items: flex-start;
             max-width: 80rem;
             overflow: auto;
 
             &--edits {
-                border: 1px solid rgb(129, 153, 150);
-                padding-block: 0.5rem;
+                // border: 1px solid rgb(129, 153, 150);
+                // padding-block: 0.5rem;
 
-                &:focus-within {
-                    border: 1px solid rgb(92, 104, 124);
-                }
                 & .input-wrapper {
                     margin-block: 1rem;
+
+                    & button {
+                        margin-inline: 1rem;
+                    }
                 }
             }
             & .key {
@@ -85,27 +97,36 @@
             }
 
             & .value {
-                flex-basis: 60rem;
-
+                flex-basis: 30rem;
+                padding: 1px;
                 // border: 1px solid red;
                 font-size: 1.8rem;
-                font-weight: 600;
+                font-weight: 400;
                 &--edits {
                     font-weight: 200;
                     padding: 0.5rem 1rem;
                     border-radius: 2rem;
                     font-size: 1.6rem;
+                    outline: none;
+                    border: 0.5px solid gray;
+                    max-width: 30rem;
 
                     &:focus-visible {
-                        border: 1px solid rgb(69, 70, 77);
+                        // border: 1px solid rgb(69, 70, 77);
                         outline: none;
                     }
                 }
             }
         }
+
+        & .field-wrapper {
+            padding-block: 1rem;
+            border-bottom: 1px solid rgb(154, 163, 156);
+        }
     }
 
     & .hidden-form {
+        margin-block: 1rem;
         visibility: visible;
         text-align: right;
     }
