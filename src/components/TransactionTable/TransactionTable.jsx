@@ -3,7 +3,8 @@ import Transaction from '../Transaction/Transaction';
 
 import { fetchTransactions } from '../../utils/fetchTransactions';
 import { AuthContext } from '../../context/AuthContext';
-
+import Button from '../UI/Button/Button';
+import { convertToPDF } from '../../utils/pdf';
 const TransactionTable = (props) => {
     const { filterObject } = props;
 
@@ -25,6 +26,7 @@ const TransactionTable = (props) => {
 
     return (
         <div>
+         
             {transactions.map((transaction, index, transactionArray) => {
                 // let customer = [transaction.customer];
                 let customer = transaction.customer;

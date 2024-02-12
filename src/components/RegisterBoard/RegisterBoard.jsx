@@ -119,6 +119,7 @@ const RegisterBoard = (props) => {
         if (result.status == 'success') {
             setPosting('success');
             setErrorMessage(null);
+            setPaidAmount(0);
             let productResponse = await fetchProducts(null, token);
             console.log(productResponse); //!    JWT MALFORMED
             setProducts(productResponse.data);
@@ -373,7 +374,7 @@ const RegisterBoard = (props) => {
                             </Button>
                         </div>
                     ) : (
-                        <div className={styles["payment"]}>
+                        <div className={styles['payment']}>
                             <div className={styles['form-group']}>
                                 <label htmlFor="customers">Customer :</label>
                                 <select name="" id="customers">

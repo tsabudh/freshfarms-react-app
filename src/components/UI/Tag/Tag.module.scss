@@ -1,5 +1,5 @@
 .tag {
-    display: inline;
+    display: inline-block;
     cursor: pointer;
     background: #ecf8f9;
     // text-underline-position: below;
@@ -12,22 +12,21 @@
     font-size: 1rem;
     border: 1px solid rgba(179, 131, 223, 0.767);
 
-    &.inherit-text{
+    &.inherit-text {
         font-size: inherit;
     }
     &.primary01 {
         background: rgb(49, 167, 94);
     }
-    
+
     &.secondary01 {
         // font-size: inherit;
         background: rgb(49, 167, 94);
     }
-    &.green01{
+    &.green01 {
         background: rgb(159, 245, 185);
-
     }
-    &.orange01{
+    &.orange01 {
         background: rgba(245, 71, 7, 0.863);
         color: white;
     }

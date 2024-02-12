@@ -21,9 +21,16 @@
                 flex-grow: 3;
                 flex-basis: 20rem;
 
+                display: flex;
+                flex-direction: row;
+
                 // font-weight: 600;
                 // font-size: 2rem;
                 text-transform: capitalize;
+                
+                &--col {
+                    flex-direction: column;
+                }
 
                 & .item {
                     padding: 1rem 0.5rem;

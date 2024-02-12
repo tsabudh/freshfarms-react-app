@@ -11,6 +11,7 @@
         align-items: stretch;
         gap: 1rem;
         margin-bottom: 2rem;
+        margin-inline: 1rem;
 
         @include respond('phone') {
             flex-direction: column;
@@ -117,18 +118,24 @@
     }
 
     & .second-row {
-        margin-block: 2rem;
+        margin: 2rem 1rem;
         // border: 2px solid rgb(64, 70, 70);
         // border-radius: 1rem;
         // overflow: hidden;
     }
 
     & .third-row {
+        & h3 {
+            margin: 1rem;
+            font-size: 1.8rem;
+            color: rgb(79, 102, 104);
+            font-weight: 400;
+        }
         & .transactions {
             // border: 1px solid white;
-            padding-block: 1rem;
-            border-radius: 1rem;
-            background: rgba(34, 238, 211, 0.568);
+            // padding-block: 1rem;
+            // border-radius: 1rem;
+            // background: rgba(34, 238, 211, 0.568);
         }
     }
 }

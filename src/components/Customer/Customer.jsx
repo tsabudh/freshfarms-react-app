@@ -346,6 +346,7 @@ function Customer() {
                 </div>
 
                 <div className={styles['third-row']}>
+                    <h3>Transactions</h3>
                     <div className={styles['transactions']}>
                         <SortAndFilter
                             setFilterObject={setFilterObject}

@@ -63,7 +63,10 @@ const Transaction = (props) => {
                 </ul>
             </div>
             {!props.paidInFull && props.paidAmount != 0 && (
-                <div className={`${styles['cost']} ${styles['paid']}`} title='Paid amount'>
+                <div
+                    className={`${styles['cost']} ${styles['paid']}`}
+                    title="Paid amount"
+                >
                     Rs. {props.paidAmount}
                     {!isExpanded && props.type == 'purchase' && ' |'}
                 </div>
@@ -73,11 +76,20 @@ const Transaction = (props) => {
                     className={`${styles.cost} ${
                         props.paidInFull ? styles['paid'] : styles['unpaid']
                     }`}
-                    title='Total Amount'
+                    title="Total Amount"
                 >
                     Rs. {props.purchaseAmount}
                 </div>
-            ) : null}
+            ) : (
+                <div
+                    className={`${styles.cost} ${
+                        props.paidInFull ? styles['paid'] : styles['unpaid']
+                    }`}
+                    title="Total Amount"
+                >
+                    Rs. {props.paidAmount}
+                </div>
+            )}
 
             <Modal isOpen={isExpanded} onClose={() => setIsExpanded(false)}>
                 <Details

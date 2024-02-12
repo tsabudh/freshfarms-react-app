@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Details.module.scss';
+import Tag from '../../UI/Tag/Tag';
 
 const Details = (props) => {
     const { items, purchaseAmount } = props;
@@ -29,6 +30,13 @@ const Details = (props) => {
                         <div className={styles['values']}>{props.id}</div>
                     </div>
                     <div className={styles['field']}>
+                        <div className={styles['title']}>Issued By</div>
+                        <div className={styles['values']}>
+                            <span>{props.transaction.issuedBy.name}</span>
+                            <Tag>{props.transaction.createdBy}</Tag>
+                        </div>
+                    </div>
+                    <div className={styles['field']}>
                         <div className={styles['title']}>Type</div>
                         <div className={styles['values']}>
                             {props.transaction.type}
@@ -54,8 +62,9 @@ const Details = (props) => {
                     </div>
                     <div className={styles['field']}>
                         <div className={styles['title']}>Items</div>
-                        <div className={styles['values']}>
-                            <div className={styles["spacer"]}></div>
+                        <div
+                            className={`${styles['values']} ${styles['values--col']}`}
+                        >
                             {props.transaction.items.map((item, index) => {
                                 return (
                                     <div className={styles['item']} key={index}>

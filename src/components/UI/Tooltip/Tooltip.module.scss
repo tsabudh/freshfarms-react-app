@@ -1,0 +1,41 @@
+// Requires parent element to have position:relative;
+.tooltip {
+    display: none;
+    position: absolute;
+
+    --background-color: rgb(63, 59, 59);
+    background-color: var(--background-color);
+
+    color: white;
+
+    // top: 5px;
+
+    & span {
+        display: inline-block;
+        padding: 0.5em 0.5rem;
+        font-size: 1.2rem;
+        font-weight: 300;
+    }
+    // & .<position relative to parent>-<position relative to tooltip>
+    &.bottom-left {
+       
+        top: calc(100% + 10px);
+        right: 0;
+        border-radius: 0.5rem;
+
+        &::after {
+            --border-size: -6px;
+
+            content: '';
+
+            position: absolute;
+            top: calc(2 * var(--border-size));
+            right: 6px;
+
+            border-style: solid;
+            border-width: 6px;
+            border-color: transparent transparent var(--background-color)
+                transparent;
+        }
+    }
+}
