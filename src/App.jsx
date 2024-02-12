@@ -43,7 +43,6 @@ function App() {
                     navigate('/login');
                 }
 
-                console.log(response);
             }
         }
         asyncWrapper();
