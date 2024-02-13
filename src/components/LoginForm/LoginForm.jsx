@@ -9,12 +9,7 @@ import { AuthContext } from '../../context/AuthContext';
 import signupAdmin from '../../utils/signupAdmin';
 import BouncingCircles from '../UI/Vectors/BouncingCircles';
 
-const LoginForm = ({
-    isNewUser,
-    toggle,
-    setAdmin,
-   
-}) => {
+const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -38,6 +33,8 @@ const LoginForm = ({
         if (isNewUser) {
             //- Signing up new user
             setIsLoading(true);
+            loginDetails.username = loginDetails.username.toLocaleLowerCase();
+            
             let response = await signupAdmin(loginDetails);
             console.log(response);
             if (response) setIsLoading(false);
