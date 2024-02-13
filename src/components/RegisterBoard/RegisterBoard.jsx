@@ -120,6 +120,7 @@ const RegisterBoard = (props) => {
             setPosting('success');
             setErrorMessage(null);
             setPaidAmount(0);
+            setCart([]);
             let productResponse = await fetchProducts(null, token);
             console.log(productResponse); //!    JWT MALFORMED
             setProducts(productResponse.data);
