@@ -8,7 +8,9 @@ function NavBarHome() {
             <div className=""></div>
             <div className={styles['navbar_menu']}>
                 <a href="#">About</a>
-                <a href="/login">Login</a>
+                <a href="/login" target="_blank">
+                    Login
+                </a>
             </div>
         </div>
     );
