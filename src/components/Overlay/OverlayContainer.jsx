@@ -57,15 +57,13 @@ function OverlayContainer({ isNewUser, toggle }) {
 
             <div className={styles['dummy']}>
                 <p>Too much hassle?</p>
-                <p>
-                    <span
-                        className={styles['highlighted']}
-                        onClick={dummyLogin}
-                    >
-                        Log in
-                    </span>
-                    with a dummy account instead.
-                </p>
+
+                <div className={styles['highlighted']} onClick={dummyLogin}>
+                    <div className={styles['rainbow']}></div>
+                    <span>Log in</span>
+                </div>
+                <p>with a dummy account instead.</p>
+
                 <div className={styles['placeholder-loader']}>
                     {isLoading && <BouncingCircles height="1em" />}
                 </div>
