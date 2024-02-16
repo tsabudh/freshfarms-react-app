@@ -5,16 +5,32 @@
     display: block;
     padding: 0.75rem 1rem;
     transition: background-color 0.15s;
+    text-transform: capitalize;
+    color: white;
+
+    &.active {
+        color: green;
+        background-color: green;
+    }
+    &.inactive {
+        color: red;
+        background-color: red;
+    }
 
     & span {
         border-left: 2px solid transparent;
         padding-inline: 2px;
+
         &:hover {
             display: inline-block;
             // text-decoration: underline;
             border-left: 2px solid rgb(219 111 18);
             text-underline-position: under;
             color: white;
+        }
+
+        &.active {
+            border-left: 1px solid greenyellow;
         }
     }
 
@@ -25,7 +41,6 @@
         justify-content: space-between;
         & span {
             font-weight: 300;
-            color: white;
             cursor: pointer;
         }
     }
@@ -61,7 +76,7 @@
     & .plain {
         cursor: pointer;
         display: block;
-        color: #fff;
+        // color: #fff;
         text-decoration: none;
         font-weight: 300;
 

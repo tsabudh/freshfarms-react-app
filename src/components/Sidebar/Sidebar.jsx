@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { IoMenuSharp } from 'react-icons/io5';
 
@@ -14,6 +15,7 @@ import Button from '../UI/Button/Button';
 export default function Sidebar(props) {
     const { sidebarIsOpen, setSidebarIsOpen } = props;
     const [expanded, setExpanded] = useState(null);
+
 
     const handleToggle = (e) => {
         setSidebarIsOpen((prev) => !prev);
@@ -55,6 +57,8 @@ export default function Sidebar(props) {
                     setExpanded={setExpanded}
                     handleExpand={handleExpand}
                     expanded={expanded}
+                    // active={active}
+                    // setActive={setActive}
                 />
             ))}
         </div>
