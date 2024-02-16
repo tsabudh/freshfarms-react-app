@@ -42,7 +42,6 @@ function App() {
                     });
                     navigate('/login');
                 }
-
             }
         }
         asyncWrapper();
@@ -56,7 +55,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />}>
-                    <Route path="" element={<OverviewPanel />} />
+                    <Route index element={<OverviewPanel />} />
                     <Route path="customers">
                         <Route path="" element={<CustomerPanel />} />
                         <Route path=":id" element={<Customer />} />
