@@ -1,24 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './SidebarItem.module.scss';
 import { SlArrowDown } from 'react-icons/sl';
 
-function SidebarItem({ item }) {
+function SidebarItem({ item, id, expanded, handleExpand }) {
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false);
-
+   
     if (item.children) {
         return (
             <div
                 className={`${styles['sidebar-item']} ${
-                    open ? styles['open'] : ''
+                    expanded == id ? styles['open'] : ''
                 }`}
             >
                 {/* <div className={open ? "sidebar-item open" : "sidebar-item"}> */}
-                <div
-                    className={styles['sidebar-title']}
-                    onClick={() => setOpen(!open)}
-                >
+                <div className={styles['sidebar-title']} onClick={()=>handleExpand(id)}>
                     <span>
                         {/* ITEM ICON  */}
 
