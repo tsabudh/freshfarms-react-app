@@ -193,7 +193,7 @@ const RegisterBoard = (props) => {
                                 </select>
                             </div>
                             <div className={styles['form-group']}>
-                                <label htmlFor="">Add Items:</label>
+                                <label htmlFor="products">Add Items:</label>
                                 <select name="products" id="products">
                                     {products.map((item) => (
                                         <option key={item._id} value={item._id}>
@@ -203,6 +203,7 @@ const RegisterBoard = (props) => {
                                 </select>
                                 <input
                                     type="number"
+                                    id="productQuantity"
                                     value={quantity}
                                     onChange={(e) =>
                                         setQuantity(e.target.value)
@@ -347,6 +348,7 @@ const RegisterBoard = (props) => {
                                             <input
                                                 type="number"
                                                 value={transactionAmount}
+                                                id="paidAmount"
                                                 readOnly={true}
                                                 width={`${
                                                     transactionAmount.toString()
@@ -356,6 +358,7 @@ const RegisterBoard = (props) => {
                                         ) : (
                                             <input
                                                 type="number"
+                                                id="paidAmount"
                                                 value={paidAmount}
                                                 onChange={handlePaidAmount}
                                             />
@@ -377,7 +380,7 @@ const RegisterBoard = (props) => {
                         <div className={styles['payment']}>
                             <div className={styles['form-group']}>
                                 <label htmlFor="customers">Customer :</label>
-                                <select name="" id="customers">
+                                <select id="customers">
                                     {customers.map((item) => (
                                         <option key={item._id} value={item._id}>
                                             {item.name}
@@ -386,10 +389,11 @@ const RegisterBoard = (props) => {
                                 </select>
                             </div>
                             <div className={styles['form-group']}>
-                                <label htmlFor="">Paid :</label>
+                                <label htmlFor="paid">Paid :</label>
                                 <input
                                     type="number"
                                     value={paidAmount}
+                                    id="paid"
                                     onChange={handlePaidAmount}
                                 />
                             </div>
