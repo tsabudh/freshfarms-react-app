@@ -1,73 +1,66 @@
 [
     {
-        "title": "Overview",
+        "title": "overview",
         "icon": "bi-gear-fill",
         "identity": "menu",
         "path": "/dashboard"
     },
     {
-        "title": "Transactions",
+        "title": "transactions",
         "icon": "bi-gear-fill",
         "identity": "menu",
         "children": [
             {
-                "title": "Home",
+                "title": "overview",
                 "path": "/dashboard/transactions",
                 "identity": "sub-menu"
             }
-           
         ]
     },
 
     {
-        "title": "Customers",
+        "title": "customers",
         "icon": "bi-person-fill",
         "identity": "menu",
         "children": [
             {
-                "title": "Home",
+                "title": "overview",
                 "path": "/dashboard/customers",
                 "identity": "sub-menu"
             },
             {
-                "title": "Manage",
+                "title": "manage",
                 "path": "/dashboard/customers/manage",
                 "identity": "sub-menu"
             }
         ]
     },
     {
-        "title": "Products",
+        "title": "products",
         "icon": "bi-person-fill",
         "identity": "menu",
         "children": [
             {
-                "title": "Home",
+                "title": "overview",
                 "path": "/dashboard/products",
                 "identity": "sub-menu"
             },
             {
-                "title": "Details",
+                "title": "details",
                 "path": "/dashboard/products/details",
                 "identity": "sub-menu"
             },
             {
-                "title": "Inventory",
+                "title": "inventory",
                 "path": "/dashboard/products/inventory",
                 "identity": "sub-menu"
             }
         ]
     },
     {
-        "title": "Account",
+        "title": "profile",
         "icon": "bi-info-circle-fill",
         "identity": "menu",
-        "children": [
-            {
-                "title": "Profile",
-                "path": "/dashboard/profile",
-                "identity": "sub-menu"
-            }
-        ]
+        "path": "/dashboard/profile"
     }
 ]
