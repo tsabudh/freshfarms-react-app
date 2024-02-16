@@ -26,7 +26,6 @@ const RegisterBoard = (props) => {
         let asyncFunc = async () => {
             let customerResults = await fetchCustomers(null, token);
             let productResults = await fetchProducts(null, token);
-            console.log(productResults);
             setCustomers(customerResults);
             setProducts(productResults.data);
         };
