@@ -13,9 +13,20 @@ import Button from '../UI/Button/Button';
 
 export default function Sidebar(props) {
     const { sidebarIsOpen, setSidebarIsOpen } = props;
+    const [expanded, setExpanded] = useState(null);
+
     const handleToggle = (e) => {
         setSidebarIsOpen((prev) => !prev);
     };
+
+    const handleExpand = (id) => {
+        if (id === expanded) {
+            setExpanded('nothing');
+        } else {
+            setExpanded(id);
+        }
+    };
+
     return (
         <div
             className={`${styles.sidebar}  ${
@@ -37,7 +48,14 @@ export default function Sidebar(props) {
             </div>
 
             {items.map((item, index) => (
-                <SidebarItem key={index} item={item} />
+                <SidebarItem
+                    key={index}
+                    item={item}
+                    id={index}
+                    setExpanded={setExpanded}
+                    handleExpand={handleExpand}
+                    expanded={expanded}
+                />
             ))}
         </div>
     );
