@@ -55,12 +55,12 @@
         font-size: 1.4rem;
         & span {
             display: inline-block;
-            border-bottom: 2px solid green;
+            border-bottom: 2px solid rgb(42, 151, 118);
             margin-inline: 1ch;
             cursor: pointer;
 
             &:hover {
-                border-bottom: 2px solid rgb(128, 4, 0);
+                border-bottom: 2px solid rgb(25, 238, 174);
             }
         }
     }
