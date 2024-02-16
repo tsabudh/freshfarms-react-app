@@ -34,23 +34,35 @@
 
     & .headings {
         text-align: center;
+        margin-bottom: 10vh;
+
         & h1 {
             font-size: 4rem;
             color: aliceblue;
-            margin-bottom: 4rem;
         }
         & h2 {
             color: rgb(180, 233, 228);
             font-weight: 200;
         }
-        & p {
+        & h3 {
+            color: rgb(180, 233, 228);
             font-weight: 200;
-            font-style: italic;
         }
     }
     & p {
-        margin-block: 2rem;
+        margin-block: 1rem;
         color: white;
+        font-size: 1.4rem;
+        & span {
+            display: inline-block;
+            border-bottom: 2px solid green;
+            margin-inline: 1ch;
+            cursor: pointer;
+
+            &:hover {
+                border-bottom: 2px solid rgb(128, 4, 0);
+            }
+        }
     }
     & .dummy {
         display: flex;
@@ -58,7 +70,7 @@
         align-items: center;
         // overflow: hidden;
         & p {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
         }
 
         & .highlighted {
@@ -72,9 +84,11 @@
 
             & .rainbow {
                 position: absolute;
-                left: -10%;
-                right: -10%;
-                top: -50%;
+                left: 0;
+                top: 50%;
+                width: 100%;
+
+                translate: 0 -50%;
                 color: antiquewhite;
 
                 cursor: pointer;

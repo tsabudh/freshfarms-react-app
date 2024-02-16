@@ -41,28 +41,41 @@ function OverlayContainer({ isNewUser, toggle }) {
             }`}
         >
             <div className={styles['headings']}>
-                <h2>Welcome</h2>
-                <p>to</p>
                 <h1>Shree Krishna Dairy</h1>
+                <h3>Admin Dashboard</h3>
             </div>
             {isNewUser ? (
-                <p>If you are a registered user, log in instead.</p>
+                <p>
+                    If you are a registered user,
+                    <span
+                        
+                        onClick={() => toggle(!isNewUser)}
+                    >
+                        Log in
+                    </span>
+                    instead.
+                </p>
             ) : (
-                <p>If this is your first time, sign up instead.</p>
+                <p>
+                    If this is your first time,
+                    <span
+                        
+                        onClick={() => toggle(!isNewUser)}
+                    >
+                        Sign up
+                    </span>
+                    instead.
+                </p>
             )}
-
-            <Button className="stylish02" onClick={() => toggle(!isNewUser)}>
-                {isNewUser ? 'Login' : 'Sign Up'}
-            </Button>
 
             <div className={styles['dummy']}>
                 <p>Too much hassle?</p>
 
                 <div className={styles['highlighted']} onClick={dummyLogin}>
                     <div className={styles['rainbow']}></div>
-                    <span>Log in</span>
+                    <span>Log in with a dummy account instead.</span>
                 </div>
-                <p>with a dummy account instead.</p>
+              
 
                 <div className={styles['placeholder-loader']}>
                     {isLoading && <BouncingCircles height="1em" />}
