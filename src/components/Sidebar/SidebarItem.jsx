@@ -8,6 +8,13 @@ function SidebarItem({ item, id, expanded, handleExpand }) {
     const location = useLocation();
     const [active, setActive] = useState();
 
+    const handleNavigate = (e) => {
+        if (item.identity == 'menu') {
+            handleExpand(expanded);
+        }
+        navigate(item.path);
+    };
+
     useEffect(() => {
         if (location.pathname == item.path) {
             setActive(true);
@@ -46,6 +53,7 @@ function SidebarItem({ item, id, expanded, handleExpand }) {
                         <SidebarItem
                             key={index}
                             item={child}
+                            handleExpand={handleExpand}
                             // setActive={setActive}
                         />
                     ))}
@@ -55,7 +63,7 @@ function SidebarItem({ item, id, expanded, handleExpand }) {
     } else {
         return (
             <div
-                onClick={() => navigate(item.path)}
+                onClick={handleNavigate}
                 className={`${styles['sidebar-item']} `}
             >
                 {item.icon && <i className={item.icon}></i>}
