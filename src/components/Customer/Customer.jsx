@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { TiUserDeleteOutline } from 'react-icons/ti';
 
 import { useParams } from 'react-router-dom';
 import fetchCustomers from '../../utils/fetchCustomers';
@@ -12,6 +14,8 @@ import SortAndFilter from '../SortAndFilter/SortAndFilter';
 import Tag from '../UI/Tag/Tag';
 import { AuthContext } from '../../context/AuthContext';
 import MapBox from '../UI/MapBox/MapBox';
+import Tooltip from '../UI/Tooltip/Tooltip';
+import deleteCustomer from '../../utils/deleteCustomer';
 
 const copyText = (e) => {
     navigator.clipboard.writeText(e.target.innerText.substring(0, 500));
@@ -31,6 +35,7 @@ function Customer() {
         },
         customerId: id,
     };
+    const navigate = useNavigate();
 
     const { token } = useContext(AuthContext);
 
@@ -56,7 +61,6 @@ function Customer() {
                 initialFilterObject,
                 token
             );
-            console.log(customerResult);
             setCustomer(customerResult);
             setCoordinates((prevCoordinates) => {
                 //- If customer do not have any coordinates set, return default coordinates of shop
@@ -112,15 +116,11 @@ function Customer() {
         let matchedIndex = tempAddedPhones.findIndex(
             (elem) => elem == e.target.innerText.toLowerCase()
         );
-        console.log(e.target.innerText);
-        console.log(matchedIndex);
         if (matchedIndex >= 0) tempAddedPhones.splice(matchedIndex, 1);
         setAddedPhones(tempAddedPhones);
-        console.log(tempAddedPhones);
     };
 
     const addCustomerPhone = (e) => {
-        console.log('trigger');
         let newPhoneArray = [...addedPhones];
 
         let newNumber = customerPhone.toLowerCase().trim();
@@ -133,7 +133,6 @@ function Customer() {
         } else {
             newSet.add(newNumber);
         }
-        console.log(newSet);
         setAddedPhones(Array.from(newSet));
 
         //- clearing input field after addition
@@ -155,17 +154,18 @@ function Customer() {
         customerDetails.address = customerAddress;
         customerDetails.phone = [...addedPhones, ...customerPhoneArray];
         let result = await updateCustomer(id, customerDetails, token);
-        console.log(result);
         if (result.status == 'success') {
             setCustomer(result.data);
             setEditingStatus(false);
-            console.log('update successful !! ');
         } else {
-            console.log(result);
             if (result.message) toast(result.message);
             if (result.errors)
                 toast(result.errors[0].msg, { toastId: 'updateCustomer' });
         }
+    };
+    const handleDeleteCustomer = async () => {
+        let results = await deleteCustomer(id, token);
+        navigate('/dashboard/customers');
     };
 
     return (
@@ -215,6 +215,18 @@ function Customer() {
                                     >
                                         {customer._id}
                                     </Tag>
+                                    {editingStatus && (
+                                        <div
+                                            className={styles['delete']}
+                                            onClick={handleDeleteCustomer}
+                                        >
+                                            <TiUserDeleteOutline />
+                                            <Tooltip
+                                                className={'bottom-left'}
+                                                text={'Delete Customer'}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className={styles['detail']}>
