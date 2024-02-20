@@ -15,7 +15,6 @@ function ProductPanel() {
             if (response.status == 'success') {
                 setProducts(response.data);
             }
-            console.log(response);
         };
         asyncWrapper();
     }, []);

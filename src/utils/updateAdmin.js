@@ -16,7 +16,6 @@ export const updateAdmin = (id, adminDetails, token) => {
 
             xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
 
-            console.log(JSON.stringify(adminDetails));
             let requestBody = JSON.stringify(adminDetails);
             xhttp.send(requestBody);
         } catch (error) {

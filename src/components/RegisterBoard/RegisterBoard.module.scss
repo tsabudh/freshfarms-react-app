@@ -60,6 +60,12 @@
         & button {
             text-transform: capitalize;
         }
+
+        & .unit {
+            display: inline-block;
+            font-size: 1.4rem;
+            min-width: 3rem;
+        }
     }
 
     & .cart {

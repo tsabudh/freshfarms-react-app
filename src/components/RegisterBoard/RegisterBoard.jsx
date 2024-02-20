@@ -21,6 +21,7 @@ const RegisterBoard = (props) => {
     const [transactionAmount, setTransactionAmount] = useState(0);
     const [paidInFull, setPaidInFull] = useState(true);
     const [paidAmount, setPaidAmount] = useState(0);
+    const [selectedProductUnit, setSelectedProductUnit] = useState(null);
 
     useEffect(() => {
         let asyncFunc = async () => {
@@ -121,7 +122,7 @@ const RegisterBoard = (props) => {
             setPaidAmount(0);
             setCart([]);
             let productResponse = await fetchProducts(null, token);
-            console.log(productResponse); //!    JWT MALFORMED
+            // console.log(productResponse); //!    JWT MALFORMED
             setProducts(productResponse.data);
             props.setFilterObject({
                 sortBy: {
@@ -136,7 +137,6 @@ const RegisterBoard = (props) => {
     };
 
     const handlePaidAmount = (e) => {
-        console.log(e.target.value);
         setPaidAmount(e.target.value);
     };
     const handleTransactionAmount = () => {
@@ -146,11 +146,7 @@ const RegisterBoard = (props) => {
 
         // If paidInFull is true, set paidAmount as totalAmount
         setTransactionAmount(totalAmount);
-        // console.log(paidInFull);
-        // console.log(transactionAmount);
-        // console.log(paidAmount);
-
-        // document.getElementById('transactionRegistrationForm').style.setProperty('--')
+       // document.getElementById('transactionRegistrationForm').style.setProperty('--')
     };
 
     return (
@@ -194,7 +190,16 @@ const RegisterBoard = (props) => {
                             </div>
                             <div className={styles['form-group']}>
                                 <label htmlFor="products">Add Items:</label>
-                                <select name="products" id="products">
+                                <select
+                                    name="products"
+                                    id="products"
+                                    onChange={(e) => {
+                                        setSelectedProductUnit(
+                                            products[e.target.selectedIndex]
+                                                .unit
+                                        );
+                                    }}
+                                >
                                     {products.map((item) => (
                                         <option key={item._id} value={item._id}>
                                             {item.name}
@@ -210,6 +215,7 @@ const RegisterBoard = (props) => {
                                     }
                                     min={1}
                                 />
+                                <span className={styles['unit']}>{selectedProductUnit}</span>
                                 <Button
                                     className="stylish03"
                                     onClick={addToCart}

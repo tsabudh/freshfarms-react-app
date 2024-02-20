@@ -7,7 +7,6 @@ export async function postTransaction(transactionObject, token) {
 
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
-                    console.log('Request COmpleted');
                     let response = JSON.parse(xhttp.responseText);
                     resolve(response);
                 }
@@ -17,7 +16,6 @@ export async function postTransaction(transactionObject, token) {
             xhttp.setRequestHeader('Content-Type', 'application/json');
             xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
 
-            console.log(JSON.stringify(transactionObject));
             let requestBody = JSON.stringify(transactionObject);
             xhttp.send(requestBody);
         } catch (error) {

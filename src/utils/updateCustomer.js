@@ -8,7 +8,6 @@ export const updateCustomer = (id, customerDetails, token) => {
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
                     let response = JSON.parse(xhttp.responseText);
-                    console.log(response);
                     resolve(response);
                 }
             };
@@ -17,7 +16,6 @@ export const updateCustomer = (id, customerDetails, token) => {
 
             xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
 
-            console.log(JSON.stringify(customerDetails));
             let requestBody = JSON.stringify(customerDetails);
             xhttp.send(requestBody);
         } catch (error) {

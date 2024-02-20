@@ -4,6 +4,7 @@ import Tag from '../../UI/Tag/Tag';
 
 const Details = (props) => {
     const { items, purchaseAmount } = props;
+    console.log(props);
     return (
         <React.Fragment>
             <div className={styles['container']}>
@@ -89,7 +90,7 @@ const Details = (props) => {
                                             <div
                                                 className={styles['item-value']}
                                             >
-                                                {item.quantity}
+                                                {item.quantity} {item.unit}
                                             </div>
                                         </div>
                                         <div

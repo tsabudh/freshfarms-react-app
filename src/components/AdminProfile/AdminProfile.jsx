@@ -23,7 +23,6 @@ function AdminProfile() {
     const [adminPhoneArray, setAdminPhoneArray] = useState([]);
 
     const deleteStoredPhoneTag = (e) => {
-        console.log('tag');
         //- Return if not editing
         if (!editing) return;
 
@@ -42,11 +41,8 @@ function AdminProfile() {
         let matchedIndex = tempAddedPhones.findIndex(
             (elem) => elem == e.target.innerText.toLowerCase()
         );
-        console.log(e.target.innerText);
-        console.log(matchedIndex);
-        if (matchedIndex >= 0) tempAddedPhones.splice(matchedIndex, 1);
+         if (matchedIndex >= 0) tempAddedPhones.splice(matchedIndex, 1);
         setAddedPhones(tempAddedPhones);
-        console.log(tempAddedPhones);
     };
 
     const addAdminPhone = (e) => {
@@ -65,7 +61,6 @@ function AdminProfile() {
         } else {
             newSet.add(newNumber);
         }
-        console.log(newSet);
         setAddedPhones(Array.from(newSet));
 
         //- clearing input field after addition
@@ -137,10 +132,7 @@ function AdminProfile() {
         for (const [key, value] of formData) {
             if (value.trim().length != 0) adminDetails[key] = value;
         }
-        console.log(...formData);
-        console.log(formData.entries);
-        console.log(adminDetails);
-
+      
         const responseTxt = await updateAdmin(profile._id, adminDetails, token);
         if (responseTxt.status == 'success') {
             setProfile(responseTxt.data);

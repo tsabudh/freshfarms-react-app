@@ -36,10 +36,8 @@ const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
             loginDetails.username = loginDetails.username.toLocaleLowerCase();
             
             let response = await signupAdmin(loginDetails);
-            console.log(response);
             if (response) setIsLoading(false);
             if (response.status == 'success') {
-                console.log('SUCCESSFULLY SIGNED UP ADMIN');
                 setIsLoading(false);
                 setToken(response.token);
                 localStorage.setItem('token', response.token);
@@ -59,7 +57,6 @@ const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
             //- Logging in user
             setIsLoading(true);
             let response = await loginAdmin(loginDetails);
-            console.log(response);
             if (response) setIsLoading(false);
             if (response.status == 'success') {
                 setToken(response.token);

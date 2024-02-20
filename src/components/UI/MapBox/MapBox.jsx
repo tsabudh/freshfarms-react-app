@@ -117,7 +117,6 @@ function MapBox(props) {
                         coordinates: [latlng.lat, latlng.lng],
                     },
                 };
-                console.log(newCustomerDetails);
 
                 let responseTxt = await updateCustomer(
                     id,
