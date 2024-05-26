@@ -72,6 +72,7 @@ function App() {
                         <Route index element={<TransactionPanel />} />
                         <Route path="statements" element={<StatementPanel />} />
                     </Route>
+                    <Route path="chat" element={<ChatPanel />} />
                     <Route path="profile" element={<AdminProfile />} />
                 </Route>
             </Routes>
