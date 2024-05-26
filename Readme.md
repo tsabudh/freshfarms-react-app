@@ -4,17 +4,16 @@ Shreekrishna Dairy is a digital logging system designed to manage and streamline
 
 ## Features
 
--   **Digital Logging**: Easy and accurate logging of daily milk production, sales, and inventory.
+-   **Digital Logging**: Easy and accurate logging of daily product purchases, sales, and inventory.
 -   **User Authentication**: Secure login system for staff and administrators.
 -   **Data Analytics**: Visualize data through charts and graphs to monitor trends and performance.
 -   **Inventory Management**: Track inventory levels, manage stock, and reduce waste.
--   **Notifications**: Automated alerts for low inventory and other important updates.
 
 ## Technologies Used
 
--   **Frontend**: React, Redux, Material-UI
--   **Backend**: Node.js, Express
--   **Database**: MongoDB
+-   **Frontend**: React, Context API, SCSS Modules, Leaflet.js
+-   **Backend**: Node.js, Express, Mongoose
+-   **Database**: MongoDB,
 -   **Authentication**: JWT (JSON Web Tokens)
 -   **Charting**: Chart.js
 -   **Styling**: CSS, SCSS
