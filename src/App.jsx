@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from './context/AuthContext';
 
 import Dashboard from './pages/Dashboard/Dashboard';
-import Login from './pages/Login/Login';
+import LoginPage from './pages/Login/LoginPage';
 import Home from './pages/Home/Home';
 
 import TransactionPanel from './components/TransactionPanel/TransactionPanel';
@@ -55,7 +55,7 @@ function App() {
             <Notifier />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/dashboard" element={<Dashboard />}>
                     <Route index element={<OverviewPanel />} />
                     <Route path="customers">

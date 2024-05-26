@@ -1,27 +1,27 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-
-export async function refreshToken(jwtToken) {
-    return new Promise(async (resolve, reject) => {
+export const fetchAdmins = (jwtToken) => {
+    return new Promise((resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
-            let apiRoute = `${API_ROUTE}/api/v1/admins/refreshToken`;
-
+            let apiRoute;
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
                     let response = JSON.parse(xhttp.responseText);
                     resolve(response);
+                    console.log('message');
                 }
             };
 
-            xhttp.open('GET', apiRoute, true);
-            xhttp.setRequestHeader('Content-Type', 'application/json');
+            apiRoute = `${API_ROUTE}/api/v1/admins/getAllAdmins`;
+
+            xhttp.open('GET', apiRoute);
             xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
 
             xhttp.send();
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
         }
     });
-}
+};
 
-export default refreshToken;
+export default fetchAdmins;

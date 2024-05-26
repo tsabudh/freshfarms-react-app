@@ -20,7 +20,7 @@ const failuresObject = {
 };
 
 function CustomerAccount() {
-    const { token } = useContext(AuthContext);
+    const { jwtToken } = useContext(AuthContext);
     const [dueAmount, setDueAmount] = useState('');
     const [tabOptions, setTabOptions] = useState(false);
     const [failures, setFailures] = useState(failuresObject);
@@ -33,7 +33,7 @@ function CustomerAccount() {
         useAPI({
             url: '/customers',
             method: 'POST',
-            token: token,
+            jwtToken: jwtToken,
             body: requestBody,
         });
     // console.log(pendingStatus);
@@ -64,7 +64,7 @@ function CustomerAccount() {
             // console.log(key, value);
         }
         // console.log(Object.entries(failures));
-        // let result = await createCustomer(details, token);
+        // let result = await createCustomer(details, jwtToken);
         // console.log(result);
 
         // console.log(requestBody);
@@ -213,7 +213,7 @@ function CustomerAccount() {
                     errorMessage={errorMessage}
                 />
             </div>
-            <div className={styles["profile-container"]} >
+            <div className={styles['profile-container']}>
                 {data && <CustomerProfile customer={data} />}
             </div>
         </div>

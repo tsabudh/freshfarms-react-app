@@ -11,7 +11,7 @@ import classNames from 'classnames';
 import { AuthContext } from '../../context/AuthContext';
 
 const RegisterBoard = (props) => {
-    const { token } = useContext(AuthContext);
+    const { jwtToken } = useContext(AuthContext);
     const [posting, setPosting] = useState(''); // sending '' success failure
     const { customers, setCustomers, products, setProducts } = props;
     const [quantity, setQuantity] = useState(1);
@@ -25,8 +25,8 @@ const RegisterBoard = (props) => {
 
     useEffect(() => {
         let asyncFunc = async () => {
-            let customerResults = await fetchCustomers(null, token);
-            let productResults = await fetchProducts(null, token);
+            let customerResults = await fetchCustomers(null, jwtToken);
+            let productResults = await fetchProducts(null, jwtToken);
             setCustomers(customerResults);
             setProducts(productResults.data);
         };
@@ -115,13 +115,13 @@ const RegisterBoard = (props) => {
             newTransaction.type = 'payment';
             newTransaction.paid = paidAmount;
         }
-        let result = await postTransaction(newTransaction, token);
+        let result = await postTransaction(newTransaction, jwtToken);
         if (result.status == 'success') {
             setPosting('success');
             setErrorMessage(null);
             setPaidAmount(0);
             setCart([]);
-            let productResponse = await fetchProducts(null, token);
+            let productResponse = await fetchProducts(null, jwtToken);
             // console.log(productResponse); //!    JWT MALFORMED
             setProducts(productResponse.data);
             props.setFilterObject({
@@ -146,7 +146,7 @@ const RegisterBoard = (props) => {
 
         // If paidInFull is true, set paidAmount as totalAmount
         setTransactionAmount(totalAmount);
-       // document.getElementById('transactionRegistrationForm').style.setProperty('--')
+        // document.getElementById('transactionRegistrationForm').style.setProperty('--')
     };
 
     return (
@@ -181,7 +181,7 @@ const RegisterBoard = (props) => {
                             <div className={styles['form-group']}>
                                 <label htmlFor="customers">Customer :</label>
                                 <select name="" id="customers">
-                                    {customers.map((item) => (
+                                    {customers?.map((item) => (
                                         <option key={item._id} value={item._id}>
                                             {item.name}
                                         </option>
@@ -200,7 +200,7 @@ const RegisterBoard = (props) => {
                                         );
                                     }}
                                 >
-                                    {products.map((item) => (
+                                    {products?.map((item) => (
                                         <option key={item._id} value={item._id}>
                                             {item.name}
                                         </option>
@@ -215,7 +215,9 @@ const RegisterBoard = (props) => {
                                     }
                                     min={1}
                                 />
-                                <span className={styles['unit']}>{selectedProductUnit}</span>
+                                <span className={styles['unit']}>
+                                    {selectedProductUnit}
+                                </span>
                                 <Button
                                     className="stylish03"
                                     onClick={addToCart}

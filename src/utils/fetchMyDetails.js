@@ -1,5 +1,5 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export const fetchMyDetails = (token) => {
+export const fetchMyDetails = (jwtToken) => {
     return new Promise((resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
@@ -14,7 +14,7 @@ export const fetchMyDetails = (token) => {
             apiRoute = `${API_ROUTE}/api/v1/admins/getMyDetails`;
 
             xhttp.open('GET', apiRoute);
-            xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
+            xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
 
             xhttp.send();
         } catch (error) {

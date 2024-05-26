@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { IoMenuSharp } from "react-icons/io5";
+import { IoMenuSharp } from 'react-icons/io5';
 import { GrLogout } from 'react-icons/gr';
 
 import styles from './NavBarDash.module.scss';
@@ -14,13 +14,13 @@ import Tooltip from '../UI/Tooltip/Tooltip';
 function NavBarDash(props) {
     const { sidebarIsOpen, setSidebarIsOpen } = props;
     const [admin, setAdmin] = useState({});
-    const { token, setToken } = useContext(AuthContext);
+    const { jwtToken, setJwtToken } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         async function asyncWrapper() {
-            let responseObject = await fetchMyDetails(token);
+            let responseObject = await fetchMyDetails(jwtToken);
             if (responseObject.status == 'success') {
                 setAdmin(Object.assign({}, responseObject.data));
             }
@@ -29,8 +29,8 @@ function NavBarDash(props) {
     }, []);
 
     const handleLogout = (e) => {
-        setToken(null);
-        localStorage.removeItem('token');
+        setJwtToken(null);
+        localStorage.removeItem('jwtToken');
         setAdmin({});
     };
 

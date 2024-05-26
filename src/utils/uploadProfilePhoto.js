@@ -1,5 +1,5 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export async function uploadProfilePhoto(file, token) {
+export async function uploadProfilePhoto(file, jwtToken) {
     return new Promise(async (resolve, reject) => {
         try {
             const apiRoute = `${API_ROUTE}/api/v1/admins/uploadProfilePicture`;
@@ -12,7 +12,7 @@ export async function uploadProfilePhoto(file, token) {
 
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', apiRoute, true);
-                xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                xhr.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
 
                 xhr.onload = function () {
                     if (xhr.status === 200) {

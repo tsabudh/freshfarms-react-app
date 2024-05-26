@@ -1,36 +1,11 @@
-// css variables
-:root {
-  --clip-size: 2rem;
-  --clip-position-t: 0% 0%;
-  --clip-position-sabudh: 0% 0%;
-  --mask-position: 50% 50%;
-}
+$color-red: rgb(160, 0, 0);
+$color-blue: rgb(3, 188, 201);
+$color-blue-fb:#0080ff;
+$color-ash: rgb(208, 208, 212);
+$color-green: #2ecc71;
+$color-green-100: #56cc87;
+$color-green-50: #6fcf97d7;
+$color-green-20: hsl(146, 38%, 72%);
+$color-dark:#2c2c2c;
 
-
-//GRID
-$grid-width: 114rem;
-
-//GUTTER
-$gutter-vertical: 8rem;
-$gutter-vertical-small: 6rem;
-$gutter-horizontal: 6rem;
-
-//SECTION MEMORY
-
-$slides-max-width: 90rem; // 90rem
-$slide-min-width: 7rem; // 7rem
-$slide-min-height: calc(($slides-max-width) / 2); //90 divided by 2 = 45rem
-$slide-label-height: 4rem; // 4rem
-
-//TYPOGRAPHY VARIABLES TYPOGRAPHY VARIABLES TYPOGRAPHY VARIABLES TYPOGRAPHY VARIABLES TYPOGRAPHY VARIABLES TYPOGRAPHY VARIABLES
-
-//FONT
-$font-size-default: 1.6rem;
-
-//GLITCH TEXT
-$text-glitch-height: 10rem;
-$text-glitch-max-width: 88rem;
-$text-glitch-height-number-only: 10;
-
-//CONTAINER LAYOUTS
-$margin-container-inline: 3rem;
+$color-gray:rgb(240,240,240);

@@ -1,21 +1,29 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { TiUserDeleteOutline } from 'react-icons/ti';
+import classNames from 'classnames/bind';
 
-import { useParams } from 'react-router-dom';
+import styles from './Customer.module.scss';
+import { AuthContext } from '../../context/AuthContext';
+
 import fetchCustomers from '../../utils/fetchCustomers';
 import updateCustomer from '../../utils/updateCustomer';
-import styles from './Customer.module.scss';
 import { fetchTransactions } from '../../utils/fetchTransactions';
 import Button from '../UI/Button/Button';
 import TransactionTable from '../TransactionTable/TransactionTable';
 import SortAndFilter from '../SortAndFilter/SortAndFilter';
 import Tag from '../UI/Tag/Tag';
-import { AuthContext } from '../../context/AuthContext';
 import MapBox from '../UI/MapBox/MapBox';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import deleteCustomer from '../../utils/deleteCustomer';
+
+const initialFilterObject = {
+    sortBy: {
+        issuedTime: -1,
+    },
+    customerId: id,
+};
 
 const copyText = (e) => {
     navigator.clipboard.writeText(e.target.innerText.substring(0, 500));
@@ -26,40 +34,31 @@ const copyText = (e) => {
     });
 };
 
+const cx = classNames.bind(styles);
+
 function Customer() {
+    const { jwtToken } = useContext(AuthContext);
     const { id } = useParams();
-
-    const initialFilterObject = {
-        sortBy: {
-            issuedTime: -1,
-        },
-        customerId: id,
-    };
     const navigate = useNavigate();
-
-    const { token } = useContext(AuthContext);
 
     const [customer, setCustomer] = useState(null);
     const [editingStatus, setEditingStatus] = useState(false);
-
     const [transactions, setTransactions] = useState([]);
     const [filterObject, setFilterObject] = useState(initialFilterObject);
-
     const [customerName, setCustomerName] = useState(null);
     const [customerAddress, setCustomerAddress] = useState(null);
     const [customerPhoneArray, setCustomerPhoneArray] = useState([]);
     const [customerPhone, setCustomerPhone] = useState('');
     const [addedPhones, setAddedPhones] = useState([]);
-
     const [coordinates, setCoordinates] = useState(null);
 
     //- INITIALIZING CUSTOMER AND TRANSACTIONS
     useEffect(() => {
         const asyncWrapper = async () => {
-            let customerResult = await fetchCustomers(id, token);
+            let customerResult = await fetchCustomers(id, jwtToken);
             let transactionResults = await fetchTransactions(
                 initialFilterObject,
-                token
+                jwtToken
             );
             setCustomer(customerResult);
             setCoordinates((prevCoordinates) => {
@@ -153,7 +152,7 @@ function Customer() {
         customerDetails.name = customerName;
         customerDetails.address = customerAddress;
         customerDetails.phone = [...addedPhones, ...customerPhoneArray];
-        let result = await updateCustomer(id, customerDetails, token);
+        let result = await updateCustomer(id, customerDetails, jwtToken);
         if (result.status == 'success') {
             setCustomer(result.data);
             setEditingStatus(false);
@@ -164,7 +163,7 @@ function Customer() {
         }
     };
     const handleDeleteCustomer = async () => {
-        let results = await deleteCustomer(id, token);
+        let results = await deleteCustomer(id, jwtToken);
         navigate('/dashboard/customers');
     };
 

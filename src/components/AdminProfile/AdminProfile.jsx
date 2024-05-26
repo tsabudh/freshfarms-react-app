@@ -10,7 +10,7 @@ import Tag from '../UI/Tag/Tag';
 import updateAdmin from '../../utils/updateAdmin';
 
 function AdminProfile() {
-    const { token } = useContext(AuthContext);
+    const { jwtToken } = useContext(AuthContext);
     const [profile, setProfile] = useState();
     const [loadingProfilePic, setLoadingProfilePic] = useState(false);
     const [newName, setNewName] = useState('');
@@ -41,7 +41,7 @@ function AdminProfile() {
         let matchedIndex = tempAddedPhones.findIndex(
             (elem) => elem == e.target.innerText.toLowerCase()
         );
-         if (matchedIndex >= 0) tempAddedPhones.splice(matchedIndex, 1);
+        if (matchedIndex >= 0) tempAddedPhones.splice(matchedIndex, 1);
         setAddedPhones(tempAddedPhones);
     };
 
@@ -73,7 +73,7 @@ function AdminProfile() {
 
     //- Function for fetching adminDetails and setting it to profile state
     async function getSetAdminProfile() {
-        const response = await fetchMyDetails(token);
+        const response = await fetchMyDetails(jwtToken);
         if (response.status == 'success') {
             uniqueParam = `?${new Date().getTime()}`;
             setProfile(response.data);
@@ -100,7 +100,7 @@ function AdminProfile() {
             setLoadingProfilePic(true);
 
             file = input.files[0];
-            let result = await uploadProfilePhoto(file, token);
+            let result = await uploadProfilePhoto(file, jwtToken);
             getSetAdminProfile();
             setLoadingProfilePic(false);
         };
@@ -132,8 +132,12 @@ function AdminProfile() {
         for (const [key, value] of formData) {
             if (value.trim().length != 0) adminDetails[key] = value;
         }
-      
-        const responseTxt = await updateAdmin(profile._id, adminDetails, token);
+
+        const responseTxt = await updateAdmin(
+            profile._id,
+            adminDetails,
+            jwtToken
+        );
         if (responseTxt.status == 'success') {
             setProfile(responseTxt.data);
             setEditing(false);
@@ -233,7 +237,7 @@ function AdminProfile() {
                                                 : 'inherit-text'
                                         }`}
                                         onClick={deleteStoredPhoneTag}
-                                        title='Remove Phone'
+                                        title="Remove Phone"
                                     >
                                         {item}
                                     </Tag>

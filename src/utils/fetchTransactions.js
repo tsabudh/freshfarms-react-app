@@ -1,5 +1,5 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export const fetchTransactions = (filterObject, token) => {
+export const fetchTransactions = (filterObject, jwtToken) => {
     return new Promise(async function (resolve, reject) {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = async () => {
@@ -18,7 +18,7 @@ export const fetchTransactions = (filterObject, token) => {
         );
 
         //* Hard coded authorization for Sachin Paudel(admin)
-        xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
+        xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
 
         xhttp.send();
     });

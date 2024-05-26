@@ -1,9 +1,5 @@
 .overview-panel {
-    // background: var(--surface2-light);
-
-    // border-radius: 1rem;
-    // padding-inline: 1rem;
-
+   
     & h1,
     & h3 {
         font-size: 2rem;
@@ -21,10 +17,7 @@
 }
 
 .transaction-table-container {
-    // padding: 1rem;
-    // border-radius: 1rem;
     margin-block: 1rem;
-
     background: var(--surface5-light);
 
     & h3 {

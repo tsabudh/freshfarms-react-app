@@ -91,7 +91,7 @@ const StatementPanel = () => {
         dateStateReducer,
         initialDateState
     );
-    const { token } = useContext(AuthContext);
+    const { jwtToken } = useContext(AuthContext);
     const [filterObject, setFilterObject] = useState();
     const [monthlyTransactions, setMonthlyTransactions] = useState();
     const [numberOfTransactions, setNumberOfTransactions] = useState();
@@ -128,7 +128,7 @@ const StatementPanel = () => {
 
                     let results = await fetchTransactions(
                         filterObjectTemp,
-                        token
+                        jwtToken
                     );
 
                     if (results) {

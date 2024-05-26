@@ -1,5 +1,5 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export const fetchProducts = (id, token) => {
+export const fetchProducts = (id, jwtToken) => {
     return new Promise((resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
@@ -15,7 +15,7 @@ export const fetchProducts = (id, token) => {
             else apiRoute = `${API_ROUTE}/api/v1/products/`;
 
             xhttp.open('GET', apiRoute);
-            xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
+            xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
 
             xhttp.send();
         } catch (error) {

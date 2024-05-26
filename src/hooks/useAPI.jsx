@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import API_ROUTE from '../assets/globals/baseRoute';
 
 const useAPI = (props) => {
-    let { url, token, body, method, addedHeaders } = props;
+    let { url, jwtToken, body, method, addedHeaders } = props;
     let apiRoute = `${API_ROUTE}/api/v1` + url;
 
     const [pendingStatus, setPendingStatus] = useState('static'); // posing must be in ['static','sending','success','failure']
@@ -15,8 +15,8 @@ const useAPI = (props) => {
         let responseObject = await requestAPI({
             url: apiRoute,
             method,
-            token,
-            body:requestBody,
+            jwtToken,
+            body: requestBody,
             addedHeaders,
         });
 
@@ -38,7 +38,7 @@ const useAPI = (props) => {
 export default useAPI;
 
 const requestAPI = async (props) => {
-    const { url, method, token, body, addedHeaders } = props;
+    const { url, method, jwtToken, body, addedHeaders } = props;
     console.log('requesting API');
     let headers = {};
 
@@ -47,7 +47,7 @@ const requestAPI = async (props) => {
             ? addedHeaders['Content-Type']
             : 'application/json';
 
-    headers['Authorization'] = `Bearer ${token}`;
+    headers['Authorization'] = `Bearer ${jwtToken}`;
 
     // Appending addedHeaders to headers
     headers = Object.assign(headers, addedHeaders);

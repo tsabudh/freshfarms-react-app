@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { AuthContext } from '../../context/AuthContext';
 
 function HeroHome() {
-    const { setToken } = useContext(AuthContext);
+    const { setJwtToken } = useContext(AuthContext);
     const navigate = useNavigate();
 
     async function dummyLogin() {
@@ -19,8 +19,8 @@ function HeroHome() {
         };
         let response = await loginAdmin(loginDetails);
         if (response.status == 'success') {
-            setToken(response.token);
-            localStorage.setItem('token', response.token);
+            setJwtToken(response.jwtToken);
+            localStorage.setItem('jwtToken', response.jwtToken);
             navigate('/dashboard');
         } else if (response.status == 'failure') {
             // setErrorMessage(response.message);
@@ -69,6 +69,9 @@ function HeroHome() {
                         <p>fresh dairy product</p>
                     </div>
                 </div>
+                <div className={styles.cta}>
+                    <a onClick={dummyLogin}>Live Demo</a>
+                </div>
             </section>
 
             <section className={styles.features}>
@@ -81,10 +84,6 @@ function HeroHome() {
                     <Card01 heading="Paneer" />
                     <Card01 heading="Ice cream" />
                 </div>
-            </section>
-
-            <section className={styles.cta}>
-                <a onClick={dummyLogin}>Live Demo</a>
             </section>
 
             {/* <section className={styles.footer}>

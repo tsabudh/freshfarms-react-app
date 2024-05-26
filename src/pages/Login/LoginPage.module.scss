@@ -5,10 +5,7 @@
     position: relative;
     min-height: 100vh;   
     align-items: stretch;
-    // justify-content: flex-start;
     justify-content: center;
-    // gap: 1rem;
-    // overflow: hidden;
 
     @include respond('tab-port'){
         flex-direction: column;

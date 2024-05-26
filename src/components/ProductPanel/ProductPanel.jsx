@@ -5,13 +5,13 @@ import fetchProducts from '../../utils/fetchProducts';
 import Product from '../Product/Product';
 
 function ProductPanel() {
-    const { token } = useContext(AuthContext);
+    const { jwtToken } = useContext(AuthContext);
 
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
         const asyncWrapper = async () => {
-            const response = await fetchProducts(null, token);
+            const response = await fetchProducts(null, jwtToken);
             if (response.status == 'success') {
                 setProducts(response.data);
             }

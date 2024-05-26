@@ -1,27 +1,29 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import Calender from '../Calender/Calender';
+import React, { useContext, useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
 
 import styles from './CustomerPanel.module.scss';
-import TransactionTable from '../TransactionTable/TransactionTable';
+import { AuthContext } from '../../context/AuthContext';
+
 import CustomerProfile from '../CustomerProfile/CustomerProfile';
 import fetchCustomers from '../../utils/fetchCustomers';
-import { AuthContext } from '../../context/AuthContext';
-let global;
+
+const cx = classNames.bind(styles);
 
 const CustomerPanel = () => {
+    const { jwtToken } = useContext(AuthContext);
     const [customers, setCustomers] = useState([]);
-    const { token } = useContext(AuthContext);
+
     useEffect(() => {
         let asyncWrapper = async function () {
-            let customerResults = await fetchCustomers(null, token);
+            let customerResults = await fetchCustomers(null, jwtToken);
             if (customerResults) setCustomers(customerResults);
         };
         asyncWrapper();
     }, []);
     return (
         <>
-            <div className={`${styles['card-container']}`}>
-                {customers.map((item, index, array) => {
+            <div className={cx('card-container')}>
+                {customers.map((item) => {
                     return <CustomerProfile key={item._id} customer={item} />;
                 })}
             </div>

@@ -1,43 +1,45 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/Sidebar/Sidebar';
-import { AuthContext } from '../../context/AuthContext';
+import { Outlet, useNavigate } from 'react-router-dom';
+import classNames from 'classnames/bind';
+
 import styles from './Dashboard.module.scss';
-import { Outlet } from 'react-router-dom';
-import Button from '../../components/UI/Button/Button';
+import { AuthContext } from '../../context/AuthContext';
+
+import Sidebar from '../../components/Sidebar/Sidebar';
 import NavBarDash from '../../components/NavBarDash/NavBarDash';
 
-const Dashboard = (props) => {
+const cx = classNames.bind(styles);
+
+const Dashboard = () => {
+    const { jwtToken } = useContext(AuthContext);
     const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
+
     const navigate = useNavigate();
-    const { token } = useContext(AuthContext);
 
     useEffect(() => {
-        if (!token) {
-            console.log('token not available');
+        if (!jwtToken) {
             navigate('/login');
         }
-    }, [token]);
+    }, [jwtToken]);
 
-    return (
-        token && (
-            <div className={styles.dashboard}>
-                <div className={styles['sidebar-container']}>
-                    <Sidebar
-                        sidebarIsOpen={sidebarIsOpen}
-                        setSidebarIsOpen={setSidebarIsOpen}
-                    />
-                </div>
-
-                <div className={styles.window}>
-                    <NavBarDash
-                        sidebarIsOpen={sidebarIsOpen}
-                        setSidebarIsOpen={setSidebarIsOpen}
-                    />
-                    <Outlet />
-                </div>
+    return jwtToken ? (
+        <div className={cx('dashboard')}>
+            <div className={cx('sidebar-container')}>
+                <Sidebar
+                    sidebarIsOpen={sidebarIsOpen}
+                    setSidebarIsOpen={setSidebarIsOpen}
+                />
             </div>
-        )
-    );
+
+            <div className={cx('window')}>
+                <NavBarDash
+                    sidebarIsOpen={sidebarIsOpen}
+                    setSidebarIsOpen={setSidebarIsOpen}
+                />
+                <Outlet />
+            </div>
+        </div>
+    ) : null;
 };
+
 export default Dashboard;

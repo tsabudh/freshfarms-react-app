@@ -1,5 +1,5 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export const deleteCustomer = (id, token) => {
+export const deleteCustomer = (id, jwtToken) => {
     return new Promise((resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
@@ -13,7 +13,7 @@ export const deleteCustomer = (id, token) => {
 
             apiRoute = `${API_ROUTE}/api/v1/customers/${id.toString()}`;
             xhttp.open('DELETE', apiRoute);
-            xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
+            xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
 
             xhttp.send();
         } catch (error) {

@@ -19,7 +19,7 @@ function MapBox(props) {
     const [selectedMarker, setSelectedMarker] = useState('not-selected');
     const [map, setMap] = useState(null);
 
-    const { token } = useContext(AuthContext);
+    const { jwtToken } = useContext(AuthContext);
     const { id } = useParams();
 
     useEffect(() => {
@@ -121,7 +121,7 @@ function MapBox(props) {
                 let responseTxt = await updateCustomer(
                     id,
                     newCustomerDetails,
-                    token
+                    jwtToken
                 );
 
                 //- Change coordinates if location change is a success
@@ -129,7 +129,7 @@ function MapBox(props) {
                     setCoordinates(responseTxt.data.location.coordinates);
                     setSelectedMarker('not-selected');
                 } else {
-                    //todo Make error visible in UI 
+                    //todo Make error visible in UI
                     console.log(responseTxt);
                 }
             }

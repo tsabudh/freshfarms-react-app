@@ -1,5 +1,5 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export async function postTransaction(transactionObject, token) {
+export async function postTransaction(transactionObject, jwtToken) {
     return new Promise(async (resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
@@ -14,7 +14,7 @@ export async function postTransaction(transactionObject, token) {
 
             xhttp.open('POST', apiRoute, true);
             xhttp.setRequestHeader('Content-Type', 'application/json');
-            xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
+            xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
 
             let requestBody = JSON.stringify(transactionObject);
             xhttp.send(requestBody);

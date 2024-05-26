@@ -1,5 +1,5 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export const updateAdmin = (id, adminDetails, token) => {
+export const updateAdmin = (id, adminDetails, jwtToken) => {
     return new Promise((resolve, reject) => {
         try {
             const xhttp = new XMLHttpRequest();
@@ -14,7 +14,7 @@ export const updateAdmin = (id, adminDetails, token) => {
             xhttp.open('PATCH', apiRoute);
             xhttp.setRequestHeader('Content-Type', 'application/json');
 
-            xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
+            xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
 
             let requestBody = JSON.stringify(adminDetails);
             xhttp.send(requestBody);

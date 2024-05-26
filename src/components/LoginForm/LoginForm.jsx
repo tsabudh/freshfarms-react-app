@@ -19,9 +19,15 @@ const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const { token, setToken } = useContext(AuthContext);
+    const { jwtToken, setJwtToken } = useContext(AuthContext);
+
     useEffect(() => {
-        if (token) navigate('/dashboard');
+        if (!!jwtToken) {
+            console.log(jwtToken);
+            console.log('jwtToken found');
+        }
+        console.log('Navigating to dashboard.');
+        if (jwtToken) navigate('/dashboard');
     });
     async function handleSubmit(e) {
         e.preventDefault();
@@ -34,13 +40,13 @@ const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
             //- Signing up new user
             setIsLoading(true);
             loginDetails.username = loginDetails.username.toLocaleLowerCase();
-            
+
             let response = await signupAdmin(loginDetails);
             if (response) setIsLoading(false);
             if (response.status == 'success') {
                 setIsLoading(false);
-                setToken(response.token);
-                localStorage.setItem('token', response.token);
+                setJwtToken(response.jwtToken);
+                localStorage.setItem('jwtToken', response.jwtToken);
                 navigate('/dashboard');
             } else if (response.status == 'failure') {
                 if (response.message) {
@@ -58,9 +64,9 @@ const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
             setIsLoading(true);
             let response = await loginAdmin(loginDetails);
             if (response) setIsLoading(false);
-            if (response.status == 'success') {
-                setToken(response.token);
-                localStorage.setItem('token', response.token);
+            if (response.status == 'success' && response.token) {
+                setJwtToken(response.token);
+                localStorage.setItem('jwtToken', response.token);
                 navigate('/dashboard');
             } else if (response.status == 'failure') {
                 if (response.message) {

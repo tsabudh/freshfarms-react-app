@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
+import classNames from 'classnames/bind';
+
+import styles from './LoginPage.module.scss';
+
 import LoginForm from '../../components/LoginForm/LoginForm';
 import OverlayContainer from '../../components/Overlay/OverlayContainer';
-import styles from './Login.module.scss';
 
-export default function Login(props) {
+const cx = classNames.bind(styles);
+
+export default function LoginPage(props) {
+    const {setAdmin} = props;
     const [isNewUser, setIsNewUser] = useState(false);
   
     return (
-        <div className={styles['container']}>
+        <div className={cx('container')}>
             <LoginForm
                 toggle={setIsNewUser}
                 isNewUser={isNewUser}
-                setAdmin={props.setAdmin}
+                setAdmin={setAdmin}
                      />
 
             <OverlayContainer

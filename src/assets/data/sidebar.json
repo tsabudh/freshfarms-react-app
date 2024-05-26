@@ -62,5 +62,11 @@
         "icon": "bi-info-circle-fill",
         "identity": "menu",
         "path": "/dashboard/profile"
+    },
+    {
+        "title": "chat",
+        "icon": "bi-info-circle-fill",
+        "identity": "menu",
+        "path": "/dashboard/chat"
     }
 ]

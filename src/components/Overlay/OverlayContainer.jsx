@@ -9,7 +9,7 @@ import { AuthContext } from '../../context/AuthContext';
 import loginAdmin from '../../utils/loginAdmin';
 
 function OverlayContainer({ isNewUser, toggle }) {
-    const { setToken } = useContext(AuthContext);
+    const { setJwtToken } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -24,9 +24,9 @@ function OverlayContainer({ isNewUser, toggle }) {
         };
         let response = await loginAdmin(loginDetails);
         setIsLoading(false);
-        if (response.status == 'success') {
-            setToken(response.token);
-            localStorage.setItem('token', response.token);
+        if (response.status == 'success' && response.token) {
+            setJwtToken(response.token);
+            localStorage.setItem('jwtToken', response.token);
             navigate('/dashboard');
         } else if (response.status == 'failure') {
             // setErrorMessage(response.message);
@@ -47,23 +47,13 @@ function OverlayContainer({ isNewUser, toggle }) {
             {isNewUser ? (
                 <p>
                     If you are a registered user,
-                    <span
-                        
-                        onClick={() => toggle(!isNewUser)}
-                    >
-                        Log in
-                    </span>
+                    <span onClick={() => toggle(!isNewUser)}>Log in</span>
                     instead.
                 </p>
             ) : (
                 <p>
                     If this is your first time,
-                    <span
-                        
-                        onClick={() => toggle(!isNewUser)}
-                    >
-                        Sign up
-                    </span>
+                    <span onClick={() => toggle(!isNewUser)}>Sign up</span>
                     instead.
                 </p>
             )}
@@ -75,7 +65,6 @@ function OverlayContainer({ isNewUser, toggle }) {
                     <div className={styles['rainbow']}></div>
                     <span>Log in with a dummy account instead.</span>
                 </div>
-              
 
                 <div className={styles['placeholder-loader']}>
                     {isLoading && <BouncingCircles height="1em" />}
