@@ -1,14 +1,14 @@
-import React, { Children, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { MdOutlineDeleteForever } from 'react-icons/md';
-import { FaCheck } from 'react-icons/fa6';
+import classNames from 'classnames';
+
+import { AuthContext } from '../../context/AuthContext';
+import styles from './RegisterBoard.module.scss';
 
 import Button from '../UI/Button/Button';
-import styles from './RegisterBoard.module.scss';
 import fetchCustomers from '../../utils/fetchCustomers';
 import fetchProducts from '../../utils/fetchProducts';
 import { postTransaction } from '../../utils/postTransactions';
-import classNames from 'classnames';
-import { AuthContext } from '../../context/AuthContext';
 
 const RegisterBoard = (props) => {
     const {
@@ -43,7 +43,6 @@ const RegisterBoard = (props) => {
         handleTransactionAmount();
     }, [cart]);
 
-   
     const addToCart = (e) => {
         e.preventDefault();
         setErrorMessage(null);
@@ -100,54 +99,39 @@ const RegisterBoard = (props) => {
         e.preventDefault();
         setPosting('sending');
         setErrorMessage(null);
-        let newTransaction = {};
 
-        // Adding customer to transaction
-        const selectCustomerEl = document.getElementById('customers');
-        const selectedCustomer =
-            selectCustomerEl.options[selectCustomerEl.selectedIndex].value;
+        const selectedCustomer = document.getElementById('customers').value;
 
-        newTransaction.customer = {
-            customerId: selectedCustomer,
+        const newTransaction = {
+            customer: { customerId: selectedCustomer },
         };
 
-        if (transactionType == 'purchase') {
-            // Adding items to transaction
-            let items = cart.map((item) => {
-                return { productId: item._id, quantity: item.quantity };
-            });
+        if (transactionType === 'purchase') {
+            const items = cart.map((item) => ({
+                productId: item._id,
+                quantity: item.quantity,
+            }));
+
             newTransaction.items = items;
-
-            // Adding paidInFull to transaction
             newTransaction.paidInFull = paidInFull;
-
-            // Adding transaction amount if paid in full
-            if (paidInFull) {
-                newTransaction.paid = transactionAmount;
-            } else {
-                newTransaction.paid = paidAmount;
-            }
-
-            // If not paid in full is selected 'No' but transaction amount equals paid in full
-            if (paidAmount == transactionAmount)
-                newTransaction.paidInFull = true;
-        } else if (transactionType == 'payment') {
+            newTransaction.paid = paidInFull ? transactionAmount : paidAmount;
+            newTransaction.paidInFull = paidAmount === transactionAmount;
+        } else if (transactionType === 'payment') {
             newTransaction.type = 'payment';
             newTransaction.paid = paidAmount;
         }
-        let result = await postTransaction(newTransaction, jwtToken);
-        if (result.status == 'success') {
+
+        const result = await postTransaction(newTransaction, jwtToken);
+
+        if (result.status === 'success') {
             setPosting('success');
             setErrorMessage(null);
             setPaidAmount(0);
             setCart([]);
-            let productResponse = await fetchProducts(null, jwtToken);
-            // console.log(productResponse); //!    JWT MALFORMED
+            const productResponse = await fetchProducts(null, jwtToken);
             setProducts(productResponse.data);
             setTransactionFilterObject({
-                sortBy: {
-                    issuedTime: -1,
-                },
+                sortBy: { issuedTime: -1 },
                 limit: 5,
             });
         } else {
@@ -157,21 +141,15 @@ const RegisterBoard = (props) => {
     };
 
     const handlePaidAmount = (e) => {
-        console.log(Number(e.target.value));
-        if (paidInFull) {
-            setPaidAmount(transactionAmount);
-        } else {
-            setPaidAmount(Number(e.target.value));
-        }
+        setPaidAmount(Number(e.target.value));
     };
+
     const handleTransactionAmount = () => {
         let totalAmount = cart.reduce((accumulator, currentItem) => {
             return accumulator + currentItem.price * currentItem.quantity;
         }, 0);
 
-        // If paidInFull is true, set paidAmount as totalAmount
         if (paidInFull) setTransactionAmount(totalAmount);
-        // document.getElementById('transactionRegistrationForm').style.setProperty('--')
     };
 
     return (
@@ -370,7 +348,7 @@ function PurchaseUI({
     posting,
     addTransaction,
     handlePaidAmount,
-    paidAmount
+    paidAmount,
 }) {
     return (
         <div className={styles['purchase']}>
