@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import LoginPage from './pages/Login/LoginPage';
 import Home from './pages/Home/Home';
 
+import ErrorBoundary from './components/ErrorBoundary';
 import TransactionPanel from './components/TransactionPanel/TransactionPanel';
 import CustomerPanel from './components/CustomerPanel/CustomerPanel';
 import StatementPanel from './components/StatementPanel/StatementPanel';
@@ -35,8 +36,10 @@ function App() {
             if (storedToken) {
                 let response = await refreshToken(storedToken);
                 if (response.status == 'success') {
-                    setJwtToken(response.jwtToken);
+                    setJwtToken(response.token);
+                    localStorage.setItem('jwtToken',response.token)
                 } else {
+                    
                     localStorage.removeItem('jwtToken');
                     toast('JWT Error', {
                         position: 'top-right',
@@ -57,7 +60,14 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/dashboard" element={<Dashboard />}>
-                    <Route index element={<OverviewPanel />} />
+                    <Route
+                        index
+                        element={
+                            <ErrorBoundary>
+                                <OverviewPanel />
+                            </ErrorBoundary>
+                        }
+                    />
                     <Route path="customers">
                         <Route index element={<CustomerPanel />} />
                         <Route path=":id" element={<Customer />} />
