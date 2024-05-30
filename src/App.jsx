@@ -16,7 +16,6 @@ import CustomerPanel from './components/CustomerPanel/CustomerPanel';
 import StatementPanel from './components/StatementPanel/StatementPanel';
 import InventoryPanel from './components/InventoryPanel/InventoryPanel';
 import OverviewPanel from './components/OverviewPanel/OverviewPanel';
-import CustomerAccount from './components/CustomerAccount/CustomerAccount';
 import Customer from './components/Customer/Customer';
 import Notifier from './components/Notifier/Notifier';
 import ProductPanel from './components/ProductPanel/ProductPanel';
@@ -24,6 +23,7 @@ import ProductDetails from './components/ProductDetails/ProductDetails';
 import AdminProfile from './components/AdminProfile/AdminProfile';
 import refreshToken from './utils/refreshToken';
 import ChatPanel from './components/ChatPanel/ChatPanel';
+import CustomerRegistry from './components/CustomerRegistry/CustomerRegistry';
 
 function App() {
     const [jwtToken, setJwtToken] = useState(localStorage.getItem('jwtToken'));
@@ -61,7 +61,7 @@ function App() {
                     <Route path="customers">
                         <Route index element={<CustomerPanel />} />
                         <Route path=":id" element={<Customer />} />
-                        <Route path="manage" element={<CustomerAccount />} />
+                        <Route path="manage" element={<CustomerRegistry />} />
                     </Route>
                     <Route path="products">
                         <Route index element={<ProductPanel />} />

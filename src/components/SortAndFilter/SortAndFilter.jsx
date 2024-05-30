@@ -50,155 +50,155 @@ const initialFilterState = {
     },
 };
 
+const updateSortedState = (newFilterState, key, state) => {
+    newFilterState[key].isSorted = state;
+};
+
+const updateOrderState = (newFilterState, key, order) => {
+    newFilterState[key].isSorted = true;
+    newFilterState[key].order = parseInt(order);
+};
+
+const updateOpenedState = (newFilterState, key, isOpened) => {
+    newFilterState[key].isOpened = isOpened;
+};
+
 const filterReducer = (filterState, action) => {
-    const newFilterState = Object.assign({}, filterState);
+    const newFilterState = { ...filterState };
+    const {
+        type,
+        update,
+        state,
+        order,
+        from,
+        to,
+        newProduct,
+        selected,
+        newCustomer,
+    } = action;
 
-    if (action.type === 'sortBy') {
-        if (action.update === 'issuedTimeState') {
-            newFilterState.issuedTime.isSorted = action.state;
-        } else if (action.update === 'issuedTime') {
-            newFilterState.issuedTime.isSorted = true;
-            newFilterState.issuedTime.order = parseInt(action.order);
-        } else if (action.update === 'customersState') {
-            newFilterState.customers.isSorted = action.state;
-        } else if (action.update === 'customers') {
-            newFilterState.customers.isSorted = true;
-            newFilterState.customers.order = parseInt(action.order);
-        } else if (action.update === 'productsState') {
-            newFilterState.products.isSorted = action.state;
-        } else if (action.update === 'products') {
-            newFilterState.products.isSorted = true;
-            newFilterState.products.order = parseInt(action.order);
-        } else if (action.update === 'totalQuantityState') {
-            newFilterState.totalQuantity.isSorted = action.state;
-        } else if (action.update === 'totalQuantity') {
-            newFilterState.totalQuantity.isSorted = true;
-            newFilterState.totalQuantity.order = parseInt(action.order);
-        } else if (action.update === 'itemsVarietyState') {
-            newFilterState.itemsVariety.isSorted = action.state;
-        } else if (action.update === 'itemsVariety') {
-            newFilterState.itemsVariety.isSorted = true;
-            newFilterState.itemsVariety.order = parseInt(action.order);
-        }
+    const sortByMappings = {
+        issuedTimeState: () =>
+            updateSortedState(newFilterState, 'issuedTime', state),
+        issuedTime: () => updateOrderState(newFilterState, 'issuedTime', order),
+        customersState: () =>
+            updateSortedState(newFilterState, 'customers', state),
+        customers: () => updateOrderState(newFilterState, 'customers', order),
+        productsState: () =>
+            updateSortedState(newFilterState, 'products', state),
+        products: () => updateOrderState(newFilterState, 'products', order),
+        totalQuantityState: () =>
+            updateSortedState(newFilterState, 'totalQuantity', state),
+        totalQuantity: () =>
+            updateOrderState(newFilterState, 'totalQuantity', order),
+        itemsVarietyState: () =>
+            updateSortedState(newFilterState, 'itemsVariety', state),
+        itemsVariety: () =>
+            updateOrderState(newFilterState, 'itemsVariety', order),
+        default: () => {},
+    };
 
-        return newFilterState;
-    }
+    const issuedTimeMappings = {
+        issuedTimeFrom: () => (newFilterState.issuedTime.from = from),
+        issuedTimeTo: () => (newFilterState.issuedTime.to = to),
+        remove: () => updateOpenedState(newFilterState, 'issuedTime', false),
+        default: () => updateOpenedState(newFilterState, 'issuedTime', true),
+    };
 
-    if (action.type === 'issuedTime') {
-        newFilterState.issuedTime.isOpened = true;
+    const productsMappings = {
+        productSet: () => {
+            if (newProduct) newFilterState.products.set.add(newProduct);
+        },
+        removeProduct: () => newFilterState.products.set.delete(selected),
+        remove: () => updateOpenedState(newFilterState, 'products', false),
+        default: () => updateOpenedState(newFilterState, 'products', true),
+    };
 
-        if (action.update === 'issuedTimeFrom')
-            newFilterState.issuedTime.from = action.from;
-        else if (action.update === 'issuedTimeTo')
-            newFilterState.issuedTime.to = action.to;
-        else if (action.update === 'remove') {
-            newFilterState.issuedTime.isOpened = false;
-        }
+    const customersMappings = {
+        customerSet: () => {
+            if (newCustomer) newFilterState.customers.set.add(newCustomer);
+        },
+        removeCustomer: () => {
+            if (selected) newFilterState.customers.set.delete(selected);
+        },
+        remove: () => updateOpenedState(newFilterState, 'customers', false),
+        default: () => updateOpenedState(newFilterState, 'customers', true),
+    };
 
-        return newFilterState;
-    }
-    if (action.type === 'products') {
-        newFilterState.products.isOpened = true;
+    const totalQuantityMappings = {
+        totalQuantityRangeFrom: () =>
+            (newFilterState.totalQuantity.from = from),
+        totalQuantityRangeTo: () => (newFilterState.totalQuantity.to = to),
+        remove: () => updateOpenedState(newFilterState, 'totalQuantity', false),
+        default: () => updateOpenedState(newFilterState, 'totalQuantity', true),
+    };
 
-        if (action.update === 'productSet') {
-            if (action.newProduct) {
-                newFilterState.products.set.add(action.newProduct);
-            }
-        } else if (action.update === 'removeProduct') {
-            newFilterState.products.set.delete(action.selected);
-        } else if (action.update === 'remove') {
-            newFilterState.products.isOpened = false;
-        }
-        return newFilterState;
-    }
-    if (action.type === 'customers') {
-        newFilterState.customers.isOpened = true;
+    const itemsVarietyMappings = {
+        itemsVarietyRangeFrom: () => (newFilterState.itemsVariety.from = from),
+        itemsVarietyRangeTo: () => (newFilterState.itemsVariety.to = to),
+        remove: () => updateOpenedState(newFilterState, 'itemsVariety', false),
+        default: () => updateOpenedState(newFilterState, 'itemsVariety', true),
+    };
 
-        if (action.update == 'customerSet') {
-            if (action.newCustomer) {
-                newFilterState.customers.set.add(action.newCustomer);
-            }
-        } else if (action.update === 'removeCustomer') {
-            if (action.selected) {
-                newFilterState.customers.set.delete(action.selected);
-            }
-        } else if (action.update === 'remove') {
-            newFilterState.customers.isOpened = false;
-        }
-        return newFilterState;
-    }
-    if (action.type === 'totalQuantity') {
-        newFilterState.totalQuantity.isOpened = true;
+    const actionMappings = {
+        sortBy: sortByMappings,
+        issuedTime: issuedTimeMappings,
+        products: productsMappings,
+        customers: customersMappings,
+        totalQuantity: totalQuantityMappings,
+        itemsVariety: itemsVarietyMappings,
+        default: {},
+    };
 
-        if (action.update === 'totalQuantityRangeFrom') {
-            newFilterState.totalQuantity.from = action.from;
-        }
-        if (action.update === 'totalQuantityRangeTo') {
-            newFilterState.totalQuantity.to = action.to;
-        }
-        if (action.update === 'remove') {
-            newFilterState.totalQuantity.isOpened = false;
-        }
+    const typeMappings = actionMappings[type] || actionMappings.default;
+    const actionHandler = typeMappings[update] || typeMappings.default;
+    actionHandler();
 
-        return newFilterState;
-    }
-    if (action.type === 'itemsVariety') {
-        newFilterState.itemsVariety.isOpened = true;
-        if (action.update === 'itemsVarietyRangeFrom') {
-            newFilterState.itemsVariety.from = action.from;
-        }
-        if (action.update === 'itemsVarietyRangeTo') {
-            newFilterState.itemsVariety.to = action.to;
-        }
-        if (action.update === 'remove') {
-            newFilterState.itemsVariety.isOpened = false;
-        }
-        return newFilterState;
-    }
+    return newFilterState;
 };
 
 const applyFilter = (filterState, setFilterObject, customerId) => {
-    let filterObject = {};
-    filterObject.sortBy = {
-        issuedTime: undefined,
-        customer: undefined,
-        itemsVariety: undefined,
-        totalQuantity: undefined,
+    const filterObject = {
+        sortBy: {
+            issuedTime: filterState.issuedTime.isSorted
+                ? filterState.issuedTime.order
+                : undefined,
+            customer: customerId
+                ? undefined
+                : filterState.customers.isSorted
+                ? filterState.customers.order
+                : undefined,
+            totalQuantity: filterState.totalQuantity.isSorted
+                ? filterState.totalQuantity.order
+                : undefined,
+            itemsVariety: filterState.itemsVariety.isSorted
+                ? filterState.itemsVariety.order
+                : undefined,
+        },
     };
 
-    //* FILTERING
-    //- DATE FILTER
     if (filterState.issuedTime.isOpened && filterState.issuedTime.from) {
-        filterObject.issuedTime = {};
-        filterObject.issuedTime.from = new Date(filterState.issuedTime.from);
-
-        filterObject.issuedTime.to = new Date(filterState.issuedTime.to);
-
-        if (filterObject.issuedTime.to == 'Invalid Date') {
-            filterObject.issuedTime.to = new Date();
-        }
+        filterObject.issuedTime = {
+            from: new Date(filterState.issuedTime.from),
+            to: filterState.issuedTime.to
+                ? new Date(filterState.issuedTime.to)
+                : new Date(),
+        };
     }
 
-    //- PRODUCT FILTER
-    if (filterState.products.isOpened && filterState.products.set.size != 0) {
+    if (filterState.products.isOpened && filterState.products.set.size > 0) {
         filterObject.productArray = Array.from(filterState.products.set);
     }
 
-    //- CUSTOMER FILTER
     if (customerId) {
-        //- If customer Id is provided, attach customer Id to filter object and move on to next filter
         filterObject.customerId = customerId;
-    } else {
-        //- If customer Id is not provided, provide customer filter function to take array of names
-        if (
-            filterState.customers.isOpened &&
-            filterState.customers.set.size != 0
-        ) {
-            filterObject.customerArray = Array.from(filterState.customers.set);
-        }
+    } else if (
+        filterState.customers.isOpened &&
+        filterState.customers.set.size > 0
+    ) {
+        filterObject.customerArray = Array.from(filterState.customers.set);
     }
 
-    //- TOTAL QUANTITY FILTER
     if (filterState.totalQuantity.isOpened) {
         filterObject.totalQuantity = {
             from: parseInt(filterState.totalQuantity.from),
@@ -206,7 +206,6 @@ const applyFilter = (filterState, setFilterObject, customerId) => {
         };
     }
 
-    //- ITEMS VARIETY FILTER
     if (filterState.itemsVariety.isOpened) {
         filterObject.itemsVariety = {
             from: parseInt(filterState.itemsVariety.from),
@@ -214,34 +213,10 @@ const applyFilter = (filterState, setFilterObject, customerId) => {
         };
     }
 
-    //* SORTING
-    //- ISSUED TIME SORT
-    if (filterState.issuedTime.isSorted) {
-        filterObject.sortBy.issuedTime = filterState.issuedTime.order;
-    }
-    //- CUSTOMER SORT
-    if (!customerId) {
-        //- If customer Id is not provided, no need to sort by customer names
-        if (filterState.customers.isSorted) {
-            filterObject.sortBy.customer = filterState.customers.order;
-        }
-    }
-
-    //- TOTAL QUANTITY SORT
-    if (filterState.totalQuantity.isSorted) {
-        filterObject.sortBy.totalQuantity = filterState.totalQuantity.order;
-    }
-    //- ITEMS VARIETY SORT
-    if (filterState.itemsVariety.isSorted) {
-        filterObject.sortBy.itemsVariety = filterState.itemsVariety.order;
-    }
-
-    //* setting filterObject for fetch trigger
     setFilterObject(filterObject);
 };
 
-const SortAndFilter = (props) => {
-    const { setFilterObject, customerId } = props;
+const SortAndFilter = ({ setFilterObject, customerId }) => {
     const [sortAndFilterIsOpened, setSortAndFilterIsOpened] = useState(false);
 
     const [filterState, dispatchFilter] = useReducer(
@@ -252,190 +227,127 @@ const SortAndFilter = (props) => {
     const onClose = () => {
         setSortAndFilterIsOpened(false);
     };
+
     const handleSortBy = (method, e) => {
-        if (method == 'issuedTime') {
-            dispatchFilter({
-                type: 'sortBy',
-                update: 'issuedTime',
-                order: e.target.value,
-            });
-        } else if (method === 'issuedTimeState') {
-            dispatchFilter({
-                type: 'sortBy',
+        const methodMappings = {
+            issuedTime: { update: 'issuedTime', order: e.target.value },
+            issuedTimeState: {
                 update: 'issuedTimeState',
                 state: e.target.checked,
-            });
-        } else if (method == 'customers') {
-            dispatchFilter({
-                type: 'sortBy',
-                update: 'customers',
-                order: e.target.value,
-            });
-        } else if (method === 'customersState') {
-            dispatchFilter({
-                type: 'sortBy',
+            },
+            customers: { update: 'customers', order: e.target.value },
+            customersState: {
                 update: 'customersState',
                 state: e.target.checked,
-            });
-        } else if (method == 'products') {
-            dispatchFilter({
-                type: 'sortBy',
-                update: 'products',
-                order: e.target.value,
-            });
-        } else if (method === 'productsState') {
-            dispatchFilter({
-                type: 'sortBy',
-                update: 'productsState',
-                state: e.target.checked,
-            });
-        } else if (method == 'totalQuantity') {
-            dispatchFilter({
-                type: 'sortBy',
-                update: 'totalQuantity',
-                order: e.target.value,
-            });
-        } else if (method === 'totalQuantityState') {
-            dispatchFilter({
-                type: 'sortBy',
+            },
+            products: { update: 'products', order: e.target.value },
+            productsState: { update: 'productsState', state: e.target.checked },
+            totalQuantity: { update: 'totalQuantity', order: e.target.value },
+            totalQuantityState: {
                 update: 'totalQuantityState',
                 state: e.target.checked,
-            });
-        } else if (method == 'itemsVariety') {
-            dispatchFilter({
-                type: 'sortBy',
-                update: 'itemsVariety',
-                order: e.target.value,
-            });
-        } else if (method === 'itemsVarietyState') {
-            dispatchFilter({
-                type: 'sortBy',
+            },
+            itemsVariety: { update: 'itemsVariety', order: e.target.value },
+            itemsVarietyState: {
                 update: 'itemsVarietyState',
                 state: e.target.checked,
+            },
+        };
+
+        const action = methodMappings[method];
+        if (action) {
+            dispatchFilter({
+                type: 'sortBy',
+                ...action,
             });
         }
     };
     const handleIssuedTime = (method, e) => {
-        if (method == 'issuedTimeFrom') {
+        const methodMappings = {
+            issuedTimeFrom: { update: 'issuedTimeFrom', from: e.target.value },
+            issuedTimeTo: { update: 'issuedTimeTo', to: e.target.value },
+            remove: { update: 'remove' },
+            default: { isOpened: true },
+        };
+
+        const action = methodMappings[method] || methodMappings.default;
+
+        if (action) {
             dispatchFilter({
                 type: 'issuedTime',
-                update: 'issuedTimeFrom',
-                from: e.target.value,
-            });
-        } else if (method === 'issuedTimeTo') {
-            dispatchFilter({
-                type: 'issuedTime',
-                update: 'issuedTimeTo',
-                to: e.target.value,
-            });
-        } else if (method === 'remove') {
-            dispatchFilter({
-                type: 'issuedTime',
-                update: 'remove',
-            });
-        } else {
-            dispatchFilter({
-                type: 'issuedTime',
-                isOpened: true,
+                ...action,
             });
         }
     };
     const handleProducts = (method, value) => {
-        if (method == 'products') {
-            dispatchFilter({
-                type: 'products',
-                update: 'productSet',
-                newProduct: value,
-            });
-        } else if (method === 'removeProduct') {
-            dispatchFilter({
-                type: 'products',
-                update: 'removeProduct',
-                selected: value,
-            });
-        } else if (method === 'remove') {
-            dispatchFilter({
-                type: 'products',
-                update: 'remove',
-            });
-        } else {
-            dispatchFilter({
-                type: 'products',
-                isOpened: true,
-            });
-        }
+        const methodMappings = {
+            products: { update: 'productSet', newProduct: value },
+            removeProduct: { update: 'removeProduct', selected: value },
+            remove: { update: 'remove' },
+            default: { isOpened: true },
+        };
+
+        const action = methodMappings[method] || methodMappings.default;
+        dispatchFilter({
+            type: 'products',
+            ...action,
+        });
     };
+
     const handleCustomers = (method, value) => {
-        if (method == 'customers') {
-            dispatchFilter({
-                type: 'customers',
-                update: 'customerSet',
-                newCustomer: value,
-            });
-        } else if (method === 'removeCustomer') {
-            dispatchFilter({
-                type: 'customers',
-                update: 'removeCustomer',
-                selected: value,
-            });
-        } else if (method === 'remove') {
-            dispatchFilter({
-                type: 'customers',
-                update: 'remove',
-            });
-        } else {
-            dispatchFilter({
-                type: 'customers',
-            });
-        }
+        const methodMappings = {
+            customers: { update: 'customerSet', newCustomer: value },
+            removeCustomer: { update: 'removeCustomer', selected: value },
+            remove: { update: 'remove' },
+            default: {},
+        };
+
+        const action = methodMappings[method] || methodMappings.default;
+        dispatchFilter({
+            type: 'customers',
+            ...action,
+        });
     };
+
     const handleQuantity = (method, e) => {
-        if (method == 'totalQuantityRangeFrom') {
-            dispatchFilter({
-                type: 'totalQuantity',
+        const methodMappings = {
+            totalQuantityRangeFrom: {
                 update: 'totalQuantityRangeFrom',
                 from: e.target.value,
-            });
-        } else if (method == 'totalQuantityRangeTo') {
-            dispatchFilter({
-                type: 'totalQuantity',
+            },
+            totalQuantityRangeTo: {
                 update: 'totalQuantityRangeTo',
                 to: e.target.value,
-            });
-        } else if (method === 'remove') {
-            dispatchFilter({
-                type: 'totalQuantity',
-                update: 'remove',
-            });
-        } else {
-            dispatchFilter({
-                type: 'totalQuantity',
-            });
-        }
+            },
+            remove: { update: 'remove' },
+            default: {},
+        };
+
+        const action = methodMappings[method] || methodMappings.default;
+        dispatchFilter({
+            type: 'totalQuantity',
+            ...action,
+        });
     };
     const handleItemsVariety = (method, e) => {
-        if (method === 'itemsVarietyRangeFrom') {
-            dispatchFilter({
-                type: 'itemsVariety',
+        const methodMappings = {
+            itemsVarietyRangeFrom: {
                 update: 'itemsVarietyRangeFrom',
                 from: e.target.value,
-            });
-        } else if (method === 'itemsVarietyRangeTo') {
-            dispatchFilter({
-                type: 'itemsVariety',
+            },
+            itemsVarietyRangeTo: {
                 update: 'itemsVarietyRangeTo',
                 to: e.target.value,
-            });
-        } else if (method === 'remove') {
-            dispatchFilter({
-                type: 'itemsVariety',
-                update: 'remove',
-            });
-        } else {
-            dispatchFilter({
-                type: 'itemsVariety',
-            });
-        }
+            },
+            remove: { update: 'remove' },
+            default: {},
+        };
+
+        const action = methodMappings[method] || methodMappings.default;
+        dispatchFilter({
+            type: 'itemsVariety',
+            ...action,
+        });
     };
 
     //* UI Rendering
@@ -448,293 +360,26 @@ const SortAndFilter = (props) => {
                         <p>Sort:</p>
 
                         <div className={styles.sort}>
-                            {/* Issued Time */}
-                            <div className={styles['sort-item']}>
-                                <input
-                                    type="checkbox"
-                                    checked={filterState.issuedTime.isSorted}
-                                    id="issuedTimeSort"
-                                    onChange={(e) =>
-                                        handleSortBy('issuedTimeState', e)
-                                    }
+                            <SortIssuedTime
+                                filterState={filterState}
+                                handleSortBy={handleSortBy}
+                            />
+                            {customerId ? null : (
+                                <SortCustomer
+                                    filterState={filterState}
+                                    handleSortBy={handleSortBy}
                                 />
-                                <label
-                                    htmlFor="issuedTimeSort"
-                                    className={
-                                        filterState.issuedTime.isSorted
-                                            ? styles['is-sorted']
-                                            : ''
-                                    }
-                                >
-                                    Date
-                                </label>
-                                <ul>
-                                    <li>
-                                        <input
-                                            type="radio"
-                                            id="issuedTimeSortAsc"
-                                            name="issuedTime"
-                                            value="1"
-                                            onChange={(e) =>
-                                                handleSortBy('issuedTime', e)
-                                            }
-                                        />
-                                        <label
-                                            htmlFor="issuedTimeSortAsc"
-                                            className={
-                                                filterState.issuedTime
-                                                    .isSorted &&
-                                                filterState.issuedTime.order ==
-                                                    '1'
-                                                    ? styles.selected
-                                                    : ''
-                                            }
-                                        >
-                                            <RiSortDesc />
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <input
-                                            type="radio"
-                                            id="issuedTimeSortDesc"
-                                            value="-1"
-                                            name="issuedTime"
-                                            onChange={(e) =>
-                                                handleSortBy('issuedTime', e)
-                                            }
-                                        />
-                                        <label
-                                            htmlFor="issuedTimeSortDesc"
-                                            className={
-                                                filterState.issuedTime
-                                                    .isSorted &&
-                                                filterState.issuedTime.order ==
-                                                    '-1'
-                                                    ? styles.selected
-                                                    : ''
-                                            }
-                                        >
-                                            <RiSortAsc />
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            {/* Customers  */}
-                            {!customerId && (
-                                <div className={styles['sort-item']}>
-                                    <input
-                                        type="checkbox"
-                                        id="customerSort"
-                                        checked={filterState.customers.isSorted}
-                                        onChange={(e) =>
-                                            handleSortBy('customersState', e)
-                                        }
-                                    />
-                                    <label
-                                        htmlFor="customerSort"
-                                        className={
-                                            filterState.customers.isSorted
-                                                ? styles['is-sorted']
-                                                : ''
-                                        }
-                                    >
-                                        Customer
-                                    </label>
-                                    <ul>
-                                        <li>
-                                            <input
-                                                type="radio"
-                                                id="customerSortAsc"
-                                                name="customers"
-                                                value={'1'}
-                                                onChange={(e) =>
-                                                    handleSortBy('customers', e)
-                                                }
-                                            />
-                                            <label
-                                                htmlFor="customerSortAsc"
-                                                className={
-                                                    filterState.customers
-                                                        .isSorted &&
-                                                    filterState.customers
-                                                        .order == '1'
-                                                        ? styles.selected
-                                                        : ''
-                                                }
-                                            >
-                                                <BsSortAlphaDown />
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <input
-                                                type="radio"
-                                                id="customerSortDesc"
-                                                name="customers"
-                                                value={'-1'}
-                                                onChange={(e) =>
-                                                    handleSortBy('customers', e)
-                                                }
-                                            />
-                                            <label
-                                                htmlFor="customerSortDesc"
-                                                className={
-                                                    filterState.customers
-                                                        .isSorted &&
-                                                    filterState.customers
-                                                        .order == '-1'
-                                                        ? styles.selected
-                                                        : ''
-                                                }
-                                            >
-                                                <BsSortAlphaUpAlt />
-                                            </label>
-                                        </li>
-                                    </ul>
-                                </div>
                             )}
-                            {/* Items Variety  */}
-                            <div className={styles['sort-item']}>
-                                <input
-                                    type="checkbox"
-                                    id="itemsVarietySort"
-                                    checked={filterState.itemsVariety.isSorted}
-                                    onChange={(e) =>
-                                        handleSortBy('itemsVarietyState', e)
-                                    }
-                                />
-                                <label
-                                    htmlFor="itemsVarietySort"
-                                    className={
-                                        filterState.itemsVariety.isSorted
-                                            ? styles['is-sorted']
-                                            : ''
-                                    }
-                                >
-                                    Variety
-                                </label>
-                                <ul>
-                                    <li>
-                                        <input
-                                            type="radio"
-                                            id="itemsVarietySortAsc"
-                                            name="itemsVariety"
-                                            value={'1'}
-                                            onChange={(e) =>
-                                                handleSortBy('itemsVariety', e)
-                                            }
-                                        />
-                                        <label
-                                            htmlFor="itemsVarietySortAsc"
-                                            className={
-                                                filterState.itemsVariety
-                                                    .isSorted &&
-                                                filterState.itemsVariety
-                                                    .order == '1'
-                                                    ? styles.selected
-                                                    : ''
-                                            }
-                                        >
-                                            <BsSortNumericDown />
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <input
-                                            type="radio"
-                                            id="itemsVarietySortDesc"
-                                            name="itemsVariety"
-                                            value={'-1'}
-                                            onChange={(e) =>
-                                                handleSortBy('itemsVariety', e)
-                                            }
-                                        />
-                                        <label
-                                            htmlFor="itemsVarietySortDesc"
-                                            className={
-                                                filterState.itemsVariety
-                                                    .isSorted &&
-                                                filterState.itemsVariety
-                                                    .order == '-1'
-                                                    ? styles.selected
-                                                    : ''
-                                            }
-                                        >
-                                            <BsSortNumericUpAlt />
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
+
+                            <SortItemVariety
+                                filterState={filterState}
+                                handleSortBy={handleSortBy}
+                            />
                             {/* Total Quantity  */}
-                            <div className={styles['sort-item']}>
-                                <input
-                                    type="checkbox"
-                                    id="totalQuantitySort"
-                                    checked={filterState.totalQuantity.isSorted}
-                                    onChange={(e) =>
-                                        handleSortBy('totalQuantityState', e)
-                                    }
-                                />
-                                <label
-                                    htmlFor="totalQuantitySort"
-                                    className={
-                                        filterState.totalQuantity.isSorted
-                                            ? styles['is-sorted']
-                                            : ''
-                                    }
-                                >
-                                    Quantity
-                                </label>
-                                <ul>
-                                    <li>
-                                        <input
-                                            type="radio"
-                                            id="totalQuantitySortAsc"
-                                            name="totalQuantity"
-                                            value={'1'}
-                                            onChange={(e) =>
-                                                handleSortBy('totalQuantity', e)
-                                            }
-                                        />
-                                        <label
-                                            htmlFor="totalQuantitySortAsc"
-                                            className={
-                                                filterState.totalQuantity
-                                                    .isSorted &&
-                                                filterState.totalQuantity
-                                                    .order == '1'
-                                                    ? styles.selected
-                                                    : ''
-                                            }
-                                        >
-                                            <BsSortNumericDown />
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <input
-                                            type="radio"
-                                            id="totalQuantitySortDesc"
-                                            name="totalQuantity"
-                                            value={'-1'}
-                                            onChange={(e) =>
-                                                handleSortBy('totalQuantity', e)
-                                            }
-                                        />
-                                        <label
-                                            htmlFor="totalQuantitySortDesc"
-                                            className={
-                                                filterState.totalQuantity
-                                                    .isSorted &&
-                                                filterState.totalQuantity
-                                                    .order == '-1'
-                                                    ? styles.selected
-                                                    : ''
-                                            }
-                                        >
-                                            <BsSortNumericUpAlt />
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
+                            <SortTotalQuantity
+                                filterState={filterState}
+                                handleSortBy={handleSortBy}
+                            />
                         </div>
                     </div>
                     {/* //* Filtering */}
@@ -1030,5 +675,261 @@ const SortAndFilter = (props) => {
         </div>
     );
 };
+
+function SortIssuedTime({ filterState, handleSortBy }) {
+    return (
+        <div className={styles['sort-item']}>
+            <input
+                type="checkbox"
+                checked={filterState.issuedTime.isSorted}
+                id="issuedTimeSort"
+                onChange={(e) => handleSortBy('issuedTimeState', e)}
+            />
+            <label
+                htmlFor="issuedTimeSort"
+                className={
+                    filterState.issuedTime.isSorted ? styles['is-sorted'] : ''
+                }
+            >
+                Date
+            </label>
+            <ul>
+                <li>
+                    <input
+                        type="radio"
+                        id="issuedTimeSortAsc"
+                        name="issuedTime"
+                        value="1"
+                        onChange={(e) => handleSortBy('issuedTime', e)}
+                    />
+                    <label
+                        htmlFor="issuedTimeSortAsc"
+                        className={
+                            filterState.issuedTime.isSorted &&
+                            filterState.issuedTime.order == '1'
+                                ? styles.selected
+                                : ''
+                        }
+                    >
+                        <RiSortDesc />
+                    </label>
+                </li>
+                <li>
+                    <input
+                        type="radio"
+                        id="issuedTimeSortDesc"
+                        value="-1"
+                        name="issuedTime"
+                        onChange={(e) => handleSortBy('issuedTime', e)}
+                    />
+                    <label
+                        htmlFor="issuedTimeSortDesc"
+                        className={
+                            filterState.issuedTime.isSorted &&
+                            filterState.issuedTime.order == '-1'
+                                ? styles.selected
+                                : ''
+                        }
+                    >
+                        <RiSortAsc />
+                    </label>
+                </li>
+            </ul>
+        </div>
+    );
+}
+
+function SortCustomer({ filterState, handleSortBy }) {
+    return (
+        <div className={styles['sort-item']}>
+            <input
+                type="checkbox"
+                id="customerSort"
+                checked={filterState.customers.isSorted}
+                onChange={(e) => handleSortBy('customersState', e)}
+            />
+            <label
+                htmlFor="customerSort"
+                className={
+                    filterState.customers.isSorted ? styles['is-sorted'] : ''
+                }
+            >
+                Customer
+            </label>
+            <ul>
+                <li>
+                    <input
+                        type="radio"
+                        id="customerSortAsc"
+                        name="customers"
+                        value={'1'}
+                        onChange={(e) => handleSortBy('customers', e)}
+                    />
+                    <label
+                        htmlFor="customerSortAsc"
+                        className={
+                            filterState.customers.isSorted &&
+                            filterState.customers.order == '1'
+                                ? styles.selected
+                                : ''
+                        }
+                    >
+                        <BsSortAlphaDown />
+                    </label>
+                </li>
+                <li>
+                    <input
+                        type="radio"
+                        id="customerSortDesc"
+                        name="customers"
+                        value={'-1'}
+                        onChange={(e) => handleSortBy('customers', e)}
+                    />
+                    <label
+                        htmlFor="customerSortDesc"
+                        className={
+                            filterState.customers.isSorted &&
+                            filterState.customers.order == '-1'
+                                ? styles.selected
+                                : ''
+                        }
+                    >
+                        <BsSortAlphaUpAlt />
+                    </label>
+                </li>
+            </ul>
+        </div>
+    );
+}
+
+function SortItemVariety({ filterState, handleSortBy }) {
+    return (
+        <div className={styles['sort-item']}>
+            <input
+                type="checkbox"
+                id="itemsVarietySort"
+                checked={filterState.itemsVariety.isSorted}
+                onChange={(e) => handleSortBy('itemsVarietyState', e)}
+            />
+            <label
+                htmlFor="itemsVarietySort"
+                className={
+                    filterState.itemsVariety.isSorted ? styles['is-sorted'] : ''
+                }
+            >
+                Variety
+            </label>
+            <ul>
+                <li>
+                    <input
+                        type="radio"
+                        id="itemsVarietySortAsc"
+                        name="itemsVariety"
+                        value={'1'}
+                        onChange={(e) => handleSortBy('itemsVariety', e)}
+                    />
+                    <label
+                        htmlFor="itemsVarietySortAsc"
+                        className={
+                            filterState.itemsVariety.isSorted &&
+                            filterState.itemsVariety.order == '1'
+                                ? styles.selected
+                                : ''
+                        }
+                    >
+                        <BsSortNumericDown />
+                    </label>
+                </li>
+                <li>
+                    <input
+                        type="radio"
+                        id="itemsVarietySortDesc"
+                        name="itemsVariety"
+                        value={'-1'}
+                        onChange={(e) => handleSortBy('itemsVariety', e)}
+                    />
+                    <label
+                        htmlFor="itemsVarietySortDesc"
+                        className={
+                            filterState.itemsVariety.isSorted &&
+                            filterState.itemsVariety.order == '-1'
+                                ? styles.selected
+                                : ''
+                        }
+                    >
+                        <BsSortNumericUpAlt />
+                    </label>
+                </li>
+            </ul>
+        </div>
+    );
+}
+
+function SortTotalQuantity({ filterState, handleSortBy }) {
+    return (
+        <div className={styles['sort-item']}>
+            <input
+                type="checkbox"
+                id="totalQuantitySort"
+                checked={filterState.totalQuantity.isSorted}
+                onChange={(e) => handleSortBy('totalQuantityState', e)}
+            />
+            <label
+                htmlFor="totalQuantitySort"
+                className={
+                    filterState.totalQuantity.isSorted
+                        ? styles['is-sorted']
+                        : ''
+                }
+            >
+                Quantity
+            </label>
+            <ul>
+                <li>
+                    <input
+                        type="radio"
+                        id="totalQuantitySortAsc"
+                        name="totalQuantity"
+                        value={'1'}
+                        onChange={(e) => handleSortBy('totalQuantity', e)}
+                    />
+                    <label
+                        htmlFor="totalQuantitySortAsc"
+                        className={
+                            filterState.totalQuantity.isSorted &&
+                            filterState.totalQuantity.order == '1'
+                                ? styles.selected
+                                : ''
+                        }
+                    >
+                        <BsSortNumericDown />
+                    </label>
+                </li>
+                <li>
+                    <input
+                        type="radio"
+                        id="totalQuantitySortDesc"
+                        name="totalQuantity"
+                        value={'-1'}
+                        onChange={(e) => handleSortBy('totalQuantity', e)}
+                    />
+                    <label
+                        htmlFor="totalQuantitySortDesc"
+                        className={
+                            filterState.totalQuantity.isSorted &&
+                            filterState.totalQuantity.order == '-1'
+                                ? styles.selected
+                                : ''
+                        }
+                    >
+                        <BsSortNumericUpAlt />
+                    </label>
+                </li>
+            </ul>
+        </div>
+    );
+}
+
+
 
 export default SortAndFilter;
