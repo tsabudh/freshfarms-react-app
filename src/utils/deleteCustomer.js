@@ -1,4 +1,4 @@
-import API_ROUTE from '../assets/globals/baseRoute';
+import API_ROUTE from '../assets/globals/baseRoute.js';
 export const deleteCustomer = (id, jwtToken) => {
     return new Promise((resolve, reject) => {
         try {
