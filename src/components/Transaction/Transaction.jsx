@@ -67,8 +67,8 @@ const Transaction = (props) => {
                     className={`${styles['cost']} ${styles['paid']}`}
                     title="Paid amount"
                 >
-                    Rs. {props.paidAmount}
-                    {!isExpanded && props.type == 'purchase' && ' |'}
+                    {props.paidAmount}
+                    {!isExpanded && props.type == 'purchase' }
                 </div>
             )}
             {props.type == 'purchase' ? (
@@ -78,7 +78,7 @@ const Transaction = (props) => {
                     }`}
                     title="Total Amount"
                 >
-                    Rs. {props.purchaseAmount}
+                    {props.purchaseAmount}
                 </div>
             ) : (
                 <div
@@ -87,7 +87,7 @@ const Transaction = (props) => {
                     }`}
                     title="Total Amount"
                 >
-                    Rs. {props.paidAmount}
+                    {props.paidAmount}
                 </div>
             )}
 
