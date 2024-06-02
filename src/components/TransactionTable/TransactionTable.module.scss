@@ -1,0 +1,15 @@
+.container {
+    .download {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-inline: 1rem;
+
+        & .icon {
+            cursor: pointer;
+            & button svg {
+                font-size: 1.8rem;
+            }
+        }
+    }
+}

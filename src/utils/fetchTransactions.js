@@ -5,7 +5,6 @@ export const fetchTransactions = (filterObject, jwtToken) => {
         xhttp.onreadystatechange = async () => {
             if (xhttp.readyState === XMLHttpRequest.DONE) {
                 let responseReceived = await JSON.parse(xhttp.responseText);
-                // console.log('Fetching transactions....');
                 resolve(responseReceived.data);
             }
         };

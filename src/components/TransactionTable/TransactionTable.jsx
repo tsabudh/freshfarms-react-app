@@ -1,9 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Transaction from '../Transaction/Transaction';
+import classNames from 'classnames/bind';
+
+import { PiFilePdfDuotone } from 'react-icons/pi';
 
 import { AuthContext } from '../../context/AuthContext';
+import styles from './TransactionTable.module.scss';
 
+import Button from '../UI/Button/Button';
 import { fetchTransactions } from '../../utils/fetchTransactions';
+import { convertToPDF } from '../../utils/pdf';
+
+const cx = classNames.bind(styles);
 
 const TransactionTable = (props) => {
     const { filterObject } = props;
@@ -13,7 +21,6 @@ const TransactionTable = (props) => {
 
     const asyncWrapper = async () => {
         try {
-            console.log('Fetching Transactions...');
             let result = await fetchTransactions(filterObject, jwtToken);
             setTransactions(result);
         } catch (error) {
@@ -26,7 +33,19 @@ const TransactionTable = (props) => {
     }, [filterObject]);
 
     return (
-        <div>
+        <div className={cx('container')}>
+            <div className={cx('download')}>
+                <div
+                    className={cx('icon')}
+                    onClick={() => convertToPDF(transactions)}
+                    title="Download transactions as PDF"
+                >
+                    <Button className="icon03">
+                        <PiFilePdfDuotone />
+                    </Button>
+                </div>
+            </div>
+
             {transactions?.map((transaction, index) => {
                 let customer = transaction.customer;
 

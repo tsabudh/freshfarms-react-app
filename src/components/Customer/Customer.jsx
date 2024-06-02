@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { TiUserDeleteOutline } from 'react-icons/ti';
@@ -22,7 +22,7 @@ const initialFilterObject = {
     sortBy: {
         issuedTime: -1,
     },
-    customerId: id,
+    customerId: null,
 };
 
 const copyText = (e) => {
@@ -40,10 +40,11 @@ function Customer() {
     const { jwtToken } = useContext(AuthContext);
     const { id } = useParams();
     const navigate = useNavigate();
-
     const [customer, setCustomer] = useState(null);
     const [editingStatus, setEditingStatus] = useState(false);
     const [transactions, setTransactions] = useState([]);
+
+    initialFilterObject.customerId = id;
     const [filterObject, setFilterObject] = useState(initialFilterObject);
     const [customerName, setCustomerName] = useState(null);
     const [customerAddress, setCustomerAddress] = useState(null);
@@ -69,7 +70,7 @@ function Customer() {
                 ) {
                     return customerResult.location.coordinates;
                 } else {
-                    // Default coordinates of shop
+                    // Coordinates of dairy shop is set as default
                     return [28.27182621011652, 83.60018489346729];
                 }
             });
@@ -228,25 +229,15 @@ function Customer() {
                                     )}
                                 </div>
                             </div>
-                            <div className={styles['detail']}>
-                                <div className={styles['detail_name']}>
-                                    Name
-                                </div>
-                                <div className={styles['detail_value']}>
-                                    {customer.name}
-                                    {editingStatus && (
-                                        <div
-                                            className={styles['input-wrapper']}
-                                        >
-                                            <input
-                                                type="text"
-                                                value={customerName}
-                                                onChange={handleCustomerName}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
+
+                            <CustomerDetailField
+                                detailName={'Name'}
+                                currentDetail={customer.name}
+                                inputDetail={customerName}
+                                eventHandlerFunction={handleCustomerName}
+                                editingStatus={editingStatus}
+                            />
+
                             <div className={styles['detail']}>
                                 <div className={styles['detail_name']}>
                                     Phone
@@ -299,26 +290,14 @@ function Customer() {
                                     )}
                                 </div>
                             </div>
-                            <div className={styles['detail']}>
-                                <div className={styles['detail_name']}>
-                                    Address
-                                </div>
 
-                                <div className={styles['detail_value']}>
-                                    {customer.address}
-                                    {editingStatus && (
-                                        <div
-                                            className={styles['input-wrapper']}
-                                        >
-                                            <input
-                                                type="text"
-                                                value={customerAddress}
-                                                onChange={handleCustomerAddress}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
+                            <CustomerDetailField
+                                detailName={'Address'}
+                                currentDetail={customer.address}
+                                inputDetail={customerAddress}
+                                eventHandlerFunction={handleCustomerAddress}
+                                editingStatus={editingStatus}
+                            />
                         </div>
                         <div className={styles['actions']}>
                             <Button
@@ -347,27 +326,72 @@ function Customer() {
                     </div>
                 </div>
 
-                <div className={styles['second-row']}>
-                    {coordinates ? (
-                        <MapBox
-                            coordinates={coordinates}
-                            setCoordinates={setCoordinates}
-                        />
-                    ) : null}
-                </div>
+                <CustomerLocation
+                    coordinates={coordinates}
+                    setCoordinates={setCoordinates}
+                />
 
-                <div className={styles['third-row']}>
-                    <h3>Transactions</h3>
-                    <div className={styles['transactions']}>
-                        <SortAndFilter
-                            setFilterObject={setFilterObject}
-                            customerId={customer._id}
-                        />
-                        <TransactionTable filterObject={filterObject} />
-                    </div>
-                </div>
+                <CustomerTransactions
+                    customer={customer}
+                    filterObject={filterObject}
+                    setFilterObject={setFilterObject}
+                />
             </div>
         )
+    );
+}
+
+function CustomerTransactions({ setFilterObject, customer, filterObject }) {
+    return (
+        <div className={styles['third-row']}>
+            <h3>Transactions</h3>
+            <div className={styles['transactions']}>
+                <SortAndFilter
+                    setFilterObject={setFilterObject}
+                    customerId={customer._id}
+                />
+                <TransactionTable filterObject={filterObject} />
+            </div>
+        </div>
+    );
+}
+
+function CustomerLocation({ coordinates, setCoordinates }) {
+    return (
+        <div className={styles['second-row']}>
+            {coordinates ? (
+                <MapBox
+                    coordinates={coordinates}
+                    setCoordinates={setCoordinates}
+                />
+            ) : null}
+        </div>
+    );
+}
+
+function CustomerDetailField({
+    detailName,
+    currentDetail,
+    inputDetail,
+    eventHandlerFunction,
+    editingStatus,
+}) {
+    return (
+        <div className={styles['detail']}>
+            <div className={styles['detail_name']}>{detailName}</div>
+            <div className={styles['detail_value']}>
+                {currentDetail}
+                {editingStatus && (
+                    <div className={styles['input-wrapper']}>
+                        <input
+                            type="text"
+                            value={inputDetail}
+                            onChange={eventHandlerFunction}
+                        />
+                    </div>
+                )}
+            </div>
+        </div>
     );
 }
 
