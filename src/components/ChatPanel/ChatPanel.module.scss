@@ -1,28 +1,39 @@
 @use '/src/scss/abstract/variables' as variables;
+@use '/src/scss/abstract/mixins' as mixins;
 
 .container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     // align-items: flex-start;
-    gap: 2rem;
+    gap: 0.8rem;
     height: 100%;
+    overflow-x: hidden;
+    position: relative;
 
     & .chat-window {
-        border: 1px solid red;
         flex-grow: 2;
         padding: 1rem 1rem;
 
         display: grid;
         // justify-content: flex-start;
         align-items: stretch;
-        grid-template-rows: auto 1fr;
+        grid-template-rows:  1fr auto;
         grid-template-columns: auto;
         // max-height: 400px;
 
         & .title {
             border-bottom: 1px solid variables.$color-green-100;
             margin-bottom: 1rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            & .friends-menu {
+                cursor: pointer;
+                padding-top: 0.6em;
+            }
         }
         & .chat-box {
             // align-self: flex-end;
@@ -32,27 +43,47 @@
             flex-direction: column;
             justify-content: flex-end;
 
+            max-width: 32rem;
             padding: 0.4rem;
             // border: 1px solid rgb(104, 104, 245);
             border-radius: 0.6rem;
-            background-color: variables.$color-green-20;
+            background-color: variables.$color-temp;
+            max-height: 40rem;
             // border: 2px dashed red;
+            & .chat-title {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
 
-            & .chat-name {
-                margin-block: 0.4rem;
-                font-weight: 500;
-                letter-spacing: 0.1px;
-                color: variables.$color-dark;
+                & .chat-name {
+                    margin-block: 0.4rem;
+                    font-weight: 500;
+                    letter-spacing: 0.1px;
+                    color: variables.$color-gray;
+                }
+                & .close {
+                    align-self: flex-start;
+                    font-size: 2rem;
+                    height: 1em;
+                    cursor: pointer;
+                    color: variables.$color-gray;
+                    border-radius: 50%;
+                    &:hover {
+                        color: variables.$color-gray-300;
+                    }
+                }
             }
             & .message-window {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
+                // display: flex;
+                // flex-direction: column;
+                // justify-content: flex-end;
                 flex-grow: 3;
                 // border: 1px solid orange;
                 border-radius: 0.6rem;
                 background-color: whitesmoke;
                 // max-height: 200px;
+                overflow-y: scroll;
+                height: 100%;
 
                 & .messages {
                     display: flex;
@@ -70,26 +101,23 @@
                         font-size: 1.4rem;
                         text-wrap: wrap;
 
-
                         &.sent {
                             background-color: variables.$color-ash;
                             color: variables.$color-dark;
                             align-self: flex-end;
                             border-bottom-right-radius: 1.6rem;
 
-                            &:first-child{
+                            &:first-child {
                                 border-bottom-right-radius: 0;
                             }
                             & + .sent {
                                 border-top-right-radius: 0;
                                 margin-top: 0.1rem;
                                 border-bottom-right-radius: 0;
-
-                                
                             }
                             & + .sent:last-of-type {
                                 // background-color: red;
-                                }
+                            }
                         }
 
                         &.received {
@@ -107,7 +135,6 @@
                                 border-top-right-radius: 1.6rem;
                                 border-bottom-right-radius: 0;
                                 margin-top: 0.1rem;
-
                             }
                         }
                     }
@@ -138,30 +165,54 @@
                     border-radius: 0.6rem;
                     padding: 0.4rem 0.8rem;
                     border: none;
-                    background-color: variables.$color-green;
-                    color: white;
+
+                    background-color: white;
+                    color: variables.$color-green;
+
+                    &:hover {
+                        background-color: variables.$color-green;
+                        color: white;
+                    }
+                    & svg {
+                        vertical-align: text-top;
+                    }
                 }
             }
         }
     }
 
     & .friends-window {
-        border: 1px solid blue;
-        min-width: 10rem;
+        flex-basis: 10rem;
+        max-width: 50%;
+        background-color: variables.$color-gray-200;
+        border-radius: 0.6rem;
+        padding: 0.6rem 0.4rem;
+        text-wrap: nowrap;
+        transition: all 0.5s ease;
 
+        @include mixins.respond(phone) {
+        }
+
+        &.hidden {
+            translate: 110% 0;
+            max-width: 0;
+            padding: 0;
+        }
         & .friend {
-            border-bottom: 1px solid variables.$color-green-100;
+            // border-bottom: 1px solid variables.$color-green-100;
             background-color: transparent;
             padding: 0.6rem 0.6rem;
+            margin-bottom: 0.1rem;
             cursor: pointer;
+            border-radius: 0.6rem;
 
             &:hover {
                 background-color: variables.$color-green-50;
             }
 
             &.active {
-                background-color: variables.$color-green;
-                color: white;
+                background-color: variables.$color-green-50;
+                color: #e4e4e4;
                 cursor: default;
             }
         }
