@@ -1,4 +1,4 @@
-import API_ROUTE from '../assets/globals/baseRoute';
+import API_ROUTE from '../assets/globals/baseRoute.js';
 
 export async function refreshToken(jwtToken) {
     return new Promise(async (resolve, reject) => {
