@@ -650,13 +650,14 @@ const SortAndFilter = ({ setFilterObject, customerId }) => {
                     <div className={styles['submit-div']}>
                         <Button
                             className={'primary03'}
-                            onClick={() =>
+                            onClick={() => {
                                 applyFilter(
                                     filterState,
                                     setFilterObject,
                                     customerId
-                                )
-                            }
+                                );
+                                onClose();
+                            }}
                         >
                             APPLY FILTER
                         </Button>
@@ -929,7 +930,5 @@ function SortTotalQuantity({ filterState, handleSortBy }) {
         </div>
     );
 }
-
-
 
 export default SortAndFilter;
