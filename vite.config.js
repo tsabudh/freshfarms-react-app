@@ -7,7 +7,7 @@ const API_URI =
         : 'http://localhost:3000';
 
 const WS_URI = process.env.NODE_ENV === 'production'
-        ? 'ws://skdapi.tsabudh.com.np'
+        ? 'wss://skdapi.tsabudh.com.np'
         : 'ws://localhost:3000';
 
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
