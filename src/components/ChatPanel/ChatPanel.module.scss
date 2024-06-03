@@ -18,27 +18,40 @@
         display: grid;
         // justify-content: flex-start;
         align-items: stretch;
-        grid-template-rows:  1fr 2.5fr;
-        grid-template-columns: auto;
+        grid-template-rows: 1fr auto 2.5fr;
+        grid-template-columns: 1fr 1fr 1fr;
         // max-height: 400px;
+        position: relative;
 
-        & .title {
-            border-bottom: 1px solid variables.$color-green-100;
-            margin-bottom: 1rem;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-start;
+        & .chat-header {
+            grid-column-start: 1;
+            grid-column-end: 4;
+            grid-row-start: 1;
+            grid-row-end: 1;
+            & .title {
+                border-bottom: 1px solid variables.$color-green-100;
+                margin-bottom: 1rem;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
 
-            & .friends-menu {
-                cursor: pointer;
-                padding-top: 0.6em;
+                & .friends-menu {
+                    cursor: pointer;
+                    padding-top: 0.6em;
+                }
             }
         }
         & .chat-box {
-            // align-self: flex-end;
+            grid-column-start: 3; /* Start on the 3rd column */
+            grid-column-end: 4; /* End on the 4th column */
+            grid-row-start: 3; /* Start on the 3rd row */
+            grid-row-end: 4;
+            align-self: flex-end;
             flex-grow: 2;
+            
 
+            min-height: 35rem;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;

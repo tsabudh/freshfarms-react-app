@@ -50,7 +50,6 @@ export default function ChatPanel() {
     const [activeFriend, setActiveFriend] = useState(null);
     const [areFriendsHidden, setAreFriendsHidden] = useState(false);
 
-  
     const connectWebSocket = () => {
         const newWebSocket = new WebSocket(WS_ROUTE);
 
@@ -110,7 +109,7 @@ export default function ChatPanel() {
         }
     }
     useEffect(() => {
-        // Fetch all messages of logged in user
+        // Fetch previous messages of logged in user
         let functionToFetchMessages = async () => {
             try {
                 let result = await fetchMessages(jwtToken);
@@ -158,7 +157,7 @@ export default function ChatPanel() {
     return (
         <div className={cx('container')}>
             <div className={cx('chat-window')}>
-                <section>
+                <section className={cx('chat-header')}>
                     <div className={cx('title')}>
                         <h2>Chats</h2>
                         <div
