@@ -50,6 +50,8 @@ export default function ChatPanel() {
     const [activeFriend, setActiveFriend] = useState(null);
     const [areFriendsHidden, setAreFriendsHidden] = useState(false);
 
+    console.log(messages);
+    console.log(WS_ROUTE);
     const connectWebSocket = () => {
         const newWebSocket = new WebSocket(WS_ROUTE);
 
@@ -88,6 +90,7 @@ export default function ChatPanel() {
         };
         newWebSocket.onclose = (event) => {
             console.log('Closing websocket.😞');
+            console.log(event);
         };
 
         setWebsocket(newWebSocket);
@@ -113,7 +116,9 @@ export default function ChatPanel() {
             try {
                 let result = await fetchMessages(jwtToken);
                 setMessages(result);
-            } catch (error) {}
+            } catch (error) {
+                console.log(error);
+            }
         };
         functionToFetchMessages();
     }, []);
@@ -130,7 +135,6 @@ export default function ChatPanel() {
         };
     }, [profile]);
 
-   
     useEffect(() => {
         getSetAdminProfile();
         getSetFriends();

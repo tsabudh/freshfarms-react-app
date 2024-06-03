@@ -7,11 +7,15 @@ export const fetchMessages = (jwtToken) => {
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
                     let response = JSON.parse(xhttp.responseText);
-                    resolve(response.data);
+                    if (response.status == 'success') {
+                        resolve(response.data);
+                    } else {
+                        reject(response);
+                    }
                 }
             };
 
-             apiRoute = `${API_ROUTE}/api/v1/messages/getMyMessages`;
+            apiRoute = `${API_ROUTE}/api/v1/messages/getMyMessages`;
 
             xhttp.open('GET', apiRoute);
             xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);

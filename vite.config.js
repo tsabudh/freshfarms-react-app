@@ -6,7 +6,8 @@ const API_URI =
         ? 'https://skdapi.tsabudh.com.np'
         : 'http://localhost:3000';
 
-const WS_URI = process.env.NODE_ENV === 'production'
+const WS_URI =
+    process.env.NODE_ENV === 'production'
         ? 'wss://skdapi.tsabudh.com.np'
         : 'ws://localhost:3000';
 
@@ -28,7 +29,7 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
             define: {
                 // API_URI: `http://127.0.0.1:3000`,
                 'process.env.API_URI': JSON.stringify(API_URI),
-                'process.env.WS_URI':JSON.stringify(WS_URI)
+                'process.env.WS_URI': JSON.stringify(WS_URI),
             },
         };
     } else {
@@ -39,7 +40,7 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
             plugins: [react()],
             define: {
                 'process.env.API_URI': JSON.stringify(API_URI),
-                'process.env.WS_URI':JSON.stringify(WS_URI)
+                'process.env.WS_URI': JSON.stringify(WS_URI),
             },
         };
     }
