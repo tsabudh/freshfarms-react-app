@@ -54,9 +54,10 @@ export default function ChatPanel() {
         const newWebSocket = new WebSocket(WS_ROUTE);
 
         newWebSocket.onopen = (event) => {
+            console.log('Opening connection to websocket.');
             const registerMessage = {
                 type: 'register',
-                sender: profile._id,
+                sender: profile?._id,
                 messageId: Date.now(),
             };
             newWebSocket.send(JSON.stringify(registerMessage));
@@ -82,8 +83,12 @@ export default function ChatPanel() {
                     break;
             }
         };
-        newWebSocket.onerror = (error) => {};
-        newWebSocket.onclose = (event) => {};
+        newWebSocket.onerror = (error) => {
+            console.log(error);
+        };
+        newWebSocket.onclose = (event) => {
+            console.log('Closing websocket.😞');
+        };
 
         setWebsocket(newWebSocket);
     };
@@ -95,8 +100,15 @@ export default function ChatPanel() {
         } else {
         }
     }
-
+    async function getSetFriends() {
+        const response = await fetchAdmins(jwtToken);
+        if (response.status == 'success') {
+            setFriends(response.data);
+        } else {
+        }
+    }
     useEffect(() => {
+        // Fetch all messages of logged in user
         let functionToFetchMessages = async () => {
             try {
                 let result = await fetchMessages(jwtToken);
@@ -105,7 +117,9 @@ export default function ChatPanel() {
         };
         functionToFetchMessages();
     }, []);
+
     useEffect(() => {
+        // Establish connection to websocket whenever profile(ie: user) changes
         connectWebSocket();
 
         // Cleanup on component unmount
@@ -116,13 +130,7 @@ export default function ChatPanel() {
         };
     }, [profile]);
 
-    async function getSetFriends() {
-        const response = await fetchAdmins(jwtToken);
-        if (response.status == 'success') {
-            setFriends(response.data);
-        } else {
-        }
-    }
+   
     useEffect(() => {
         getSetAdminProfile();
         getSetFriends();
