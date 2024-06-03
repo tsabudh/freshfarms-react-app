@@ -36,8 +36,6 @@ class ChatMessage {
 }
 
 export default function ChatPanel() {
-    console.log(WS_ROUTE);
-
     const { jwtToken } = useContext(AuthContext);
 
     const [messages, setMessages] = useState([]);
@@ -56,8 +54,6 @@ export default function ChatPanel() {
         const newWebSocket = new WebSocket(WS_ROUTE);
 
         newWebSocket.onopen = (event) => {
-            console.log('Connected to WebSocket server');
-
             const registerMessage = {
                 type: 'register',
                 sender: profile._id,
@@ -68,12 +64,8 @@ export default function ChatPanel() {
         newWebSocket.onmessage = (event) => {
             const newData = JSON.parse(event.data);
 
-            // console.log(messages);
-            console.log(newData);
             switch (newData.type) {
                 case 'message':
-                    console.log('NEW MESSAGE RECEIVED');
-                    console.log(event.data);
                     setMessages((prevMessages) => [
                         ...prevMessages,
                         newData,
@@ -81,9 +73,6 @@ export default function ChatPanel() {
                     ]);
                     break;
                 case 'ack':
-                    console.log('NEW ACKNOWLEDGMENT RECEIVED');
-                    console.log(event.data);
-
                     setMessages((prevMessages) => [
                         ...prevMessages,
                         newData,
@@ -93,14 +82,9 @@ export default function ChatPanel() {
                     break;
             }
         };
-        newWebSocket.onerror = (error) => {
-            console.error('WebSocket error:', error);
-        };
-        newWebSocket.onclose = (event) => {
-            console.log('Closing newWebSocket connection.');
-        };
+        newWebSocket.onerror = (error) => {};
+        newWebSocket.onclose = (event) => {};
 
-        console.log(newWebSocket);
         setWebsocket(newWebSocket);
     };
 
@@ -109,7 +93,6 @@ export default function ChatPanel() {
         if (response.status == 'success') {
             setProfile(response.data);
         } else {
-            console.log('Error fetching account s!');
         }
     }
 
@@ -117,11 +100,8 @@ export default function ChatPanel() {
         let functionToFetchMessages = async () => {
             try {
                 let result = await fetchMessages(jwtToken);
-                console.log(result);
                 setMessages(result);
-            } catch (error) {
-                console.log(error);
-            }
+            } catch (error) {}
         };
         functionToFetchMessages();
     }, []);
@@ -141,7 +121,6 @@ export default function ChatPanel() {
         if (response.status == 'success') {
             setFriends(response.data);
         } else {
-            console.log('Error fetching account s!');
         }
     }
     useEffect(() => {
@@ -151,7 +130,6 @@ export default function ChatPanel() {
 
     const sendMessage = (e) => {
         e.preventDefault();
-        console.log(profile._id);
 
         if (websocket.readyState == 1 && input) {
             const chatMessage = new ChatMessage(
@@ -161,10 +139,7 @@ export default function ChatPanel() {
                 Date.now().toString()
             );
             websocket.send(JSON.stringify(chatMessage));
-            // console.log(websocket);
-            // console.log(JSON.stringify(chatMessage));
         } else {
-            console.log('Websocket is not ready to send message.😢');
             connectWebSocket();
         }
     };
