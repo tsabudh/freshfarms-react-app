@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { AuthContext } from '../../context/AuthContext';
 import { IoMdCloseCircle } from 'react-icons/io';
 import { IoSendSharp } from 'react-icons/io5';
 import { FaUserFriends } from 'react-icons/fa';
-
-import styles from './ChatPanel.module.scss';
 import classNames from 'classnames/bind';
+
+import { AuthContext } from '../../context/AuthContext';
+import { WS_ROUTE } from '../../assets/globals/baseRoute';
+import styles from './ChatPanel.module.scss';
+
 import fetchMyDetails from '../../utils/fetchMyDetails';
 import { fetchAdmins } from '../../utils/fetchAdmins';
 import fetchMessages from '../../utils/fetchMessages';
@@ -34,6 +36,8 @@ class ChatMessage {
 }
 
 export default function ChatPanel() {
+    console.log(WS_ROUTE);
+
     const { jwtToken } = useContext(AuthContext);
 
     const [messages, setMessages] = useState([]);
@@ -49,7 +53,7 @@ export default function ChatPanel() {
     const [areFriendsHidden, setAreFriendsHidden] = useState(false);
 
     const connectWebSocket = () => {
-        const newWebSocket = new WebSocket('ws://localhost:3000');
+        const newWebSocket = new WebSocket(WS_ROUTE);
 
         newWebSocket.onopen = (event) => {
             console.log('Connected to WebSocket server');
@@ -240,7 +244,7 @@ export default function ChatPanel() {
 
             <div className={cx('friends-window', { hidden: areFriendsHidden })}>
                 {friends?.map((admin) => {
-                    if (admin && admin._id != profile._id) {
+                    if (admin && admin._id != profile?._id) {
                         return (
                             <div
                                 key={`friends_random_string${admin._id}`}
