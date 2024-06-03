@@ -50,8 +50,7 @@ export default function ChatPanel() {
     const [activeFriend, setActiveFriend] = useState(null);
     const [areFriendsHidden, setAreFriendsHidden] = useState(false);
 
-    console.log(messages);
-    console.log(WS_ROUTE);
+  
     const connectWebSocket = () => {
         const newWebSocket = new WebSocket(WS_ROUTE);
 
