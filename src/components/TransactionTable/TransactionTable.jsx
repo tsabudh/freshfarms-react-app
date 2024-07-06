@@ -14,15 +14,22 @@ import { convertToPDF } from '../../utils/pdf';
 const cx = classNames.bind(styles);
 
 const TransactionTable = (props) => {
-    const { filterObject } = props;
+    const { transactionFilterObject } = props;
 
     const { jwtToken } = useContext(AuthContext);
     const [transactions, setTransactions] = useState([]);
 
     const asyncWrapper = async () => {
         try {
-            let result = await fetchTransactions(filterObject, jwtToken);
+            if (!transactionFilterObject) {
+                throw new Error('Transaction filter object not defined.');
+            }
+            let result = await fetchTransactions(
+                transactionFilterObject,
+                jwtToken
+            );
             setTransactions(result);
+            console.log(result);
         } catch (error) {
             console.log(error);
         }
@@ -30,7 +37,7 @@ const TransactionTable = (props) => {
 
     useEffect(() => {
         asyncWrapper();
-    }, [filterObject]);
+    }, [transactionFilterObject]);
 
     return (
         <div className={cx('container')}>

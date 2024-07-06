@@ -5,11 +5,14 @@ export const fetchTransactions = (filterObject, jwtToken) => {
         xhttp.onreadystatechange = async () => {
             if (xhttp.readyState === XMLHttpRequest.DONE) {
                 let responseReceived = await JSON.parse(xhttp.responseText);
-                resolve(responseReceived.data);
+                if (responseReceived.status == 'success') {
+                    resolve(responseReceived.data);
+                } else reject(responseReceived);
             }
         };
 
         const filterString = JSON.stringify(filterObject);
+        console.log(filterString);
         const filterParam = btoa(filterString);
         xhttp.open(
             'GET',

@@ -33,7 +33,9 @@ function OverviewPanel() {
 
             <div className={cx('transaction-table-container')}>
                 <h3>Latest Transactions</h3>
+                
                 <TransactionTable transactionFilterObject={transactionFilterObject} />
+
             </div>
         </div>
     );
