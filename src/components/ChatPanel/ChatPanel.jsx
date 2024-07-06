@@ -38,6 +38,8 @@ class ChatMessage {
 export default function ChatPanel() {
     const { jwtToken } = useContext(AuthContext);
 
+    const messageWindowRef = useRef();
+
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [websocket, setWebsocket] = useState(null);
@@ -51,6 +53,7 @@ export default function ChatPanel() {
     const [areFriendsHidden, setAreFriendsHidden] = useState(false);
 
     const connectWebSocket = () => {
+        console.log(WS_ROUTE);
         const newWebSocket = new WebSocket(WS_ROUTE);
 
         newWebSocket.onopen = (event) => {
@@ -88,7 +91,6 @@ export default function ChatPanel() {
         };
         newWebSocket.onclose = (event) => {
             console.log('Closing websocket.😞');
-            console.log(event);
         };
 
         setWebsocket(newWebSocket);
@@ -113,6 +115,7 @@ export default function ChatPanel() {
         let functionToFetchMessages = async () => {
             try {
                 let result = await fetchMessages(jwtToken);
+                console.log(result);
                 setMessages(result);
             } catch (error) {
                 console.log(error);
@@ -137,6 +140,21 @@ export default function ChatPanel() {
         getSetAdminProfile();
         getSetFriends();
     }, []);
+
+    useEffect(() => {
+        const content = messageWindowRef.current;
+
+        if (content) {
+            const scrollToEnd = () => {
+                console.log('scrolling');
+                content.scrollTo({
+                    top: content.scrollHeight,
+                    // behavior: 'smooth',
+                });
+            };
+            scrollToEnd();
+        }
+    }, [messages]);
 
     const sendMessage = (e) => {
         e.preventDefault();
@@ -181,11 +199,15 @@ export default function ChatPanel() {
                                 <IoMdCloseCircle />
                             </div>
                         </div>
-                        <div className={cx('message-window')}>
+                        <div
+                            className={cx('message-window')}
+                            ref={messageWindowRef}
+                        >
                             <div className={cx('messages')}>
                                 {messages.map((data, index) => {
                                     const isSentByActiveFriend =
-                                        data.sender == activeFriend._id;
+                                        data.sender == activeFriend._id ||
+                                        data.recipient == activeFriend._id;
 
                                     if (isSentByActiveFriend) {
                                         return (
@@ -193,7 +215,8 @@ export default function ChatPanel() {
                                                 key={index}
                                                 className={cx(
                                                     'message',
-                                                    data.type == 'message'
+                                                    data.sender ==
+                                                        activeFriend._id
                                                         ? 'received'
                                                         : 'sent'
                                                 )}
