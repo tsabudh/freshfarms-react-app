@@ -379,14 +379,19 @@ function PurchaseUI({
                         </option>
                     ))}
                 </select>
-                <input
-                    type="number"
-                    id="productQuantity"
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
-                    min={1}
-                />
-                <span className={styles['unit']}>{selectedProductUnit}</span>
+                <div className="">
+                    <input
+                        type="number"
+                        id="productQuantity"
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
+                        min={1}
+                    />
+                    <span className={styles['unit']}>
+                        {selectedProductUnit}
+                    </span>
+                </div>
+                    
                 <Button className="stylish03" onClick={addToCart}>
                     add
                 </Button>
