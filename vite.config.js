@@ -16,18 +16,11 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
         return {
             // dev specific config
             plugins: [react()],
-            css: {
-                preprocessorOptions: {
-                    scss: {
-                        // additionalData: `@use "/src/scss/abstract" as *;`,
-                    },
-                },
-            },
+          
             server: {
                 host: true,
             },
             define: {
-                // API_URI: `http://127.0.0.1:3000`,
                 'process.env.API_URI': JSON.stringify(API_URI),
                 'process.env.WS_URI': JSON.stringify(WS_URI),
             },

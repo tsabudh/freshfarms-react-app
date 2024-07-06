@@ -1,3 +1,4 @@
+@use '/src/scss/abstract/mixins' as mixins;
 .sidebar {
     // min-width: fit-content;
     position: relative;
@@ -19,12 +20,21 @@
 
     background: linear-gradient(to bottom right, #0c332e, #0b2d29);
     background: var(--surface2-light);
-    transition: width 0.5s ease;
+    transition: width 0.5s ease, transform 0.5s ease;
+
+    @include mixins.respond(tab-port) {
+        // width: auto;
+        position: absolute;
+        z-index: 9999;
+    }
+
     &--opened {
         width: 20rem;
+        // transform: translate(0%);
     }
     &--closed {
         width: 0rem;
+        // transform: translate(-150%);
     }
 
     & .header {
