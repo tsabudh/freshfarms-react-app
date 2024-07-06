@@ -70,18 +70,10 @@ export default function ChatPanel() {
 
             switch (newData.type) {
                 case 'message':
-                    setMessages((prevMessages) => [
-                        ...prevMessages,
-                        newData,
-                        // newData.message,
-                    ]);
+                    setMessages((prevMessages) => [...prevMessages, newData]);
                     break;
                 case 'ack':
-                    setMessages((prevMessages) => [
-                        ...prevMessages,
-                        newData,
-                        // newData.message,
-                    ]);
+                    setMessages((prevMessages) => [...prevMessages, newData]);
                     setInput('');
                     break;
             }
@@ -146,10 +138,8 @@ export default function ChatPanel() {
 
         if (content) {
             const scrollToEnd = () => {
-                console.log('scrolling');
                 content.scrollTo({
                     top: content.scrollHeight,
-                    // behavior: 'smooth',
                 });
             };
             scrollToEnd();
