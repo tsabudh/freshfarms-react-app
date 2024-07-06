@@ -18,7 +18,7 @@ import MapBox from '../UI/MapBox/MapBox';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import deleteCustomer from '../../utils/deleteCustomer';
 
-const initialFilterObject = {
+const initialTransactionFilterObject = {
     sortBy: {
         issuedTime: -1,
     },
@@ -44,8 +44,10 @@ function Customer() {
     const [editingStatus, setEditingStatus] = useState(false);
     const [transactions, setTransactions] = useState([]);
 
-    initialFilterObject.customerId = id;
-    const [filterObject, setFilterObject] = useState(initialFilterObject);
+    initialTransactionFilterObject.customerId = id;
+    const [transactionFilterObject, setTransactionFilterObject] = useState(
+        initialTransactionFilterObject
+    );
     const [customerName, setCustomerName] = useState(null);
     const [customerAddress, setCustomerAddress] = useState(null);
     const [customerPhoneArray, setCustomerPhoneArray] = useState([]);
@@ -58,7 +60,7 @@ function Customer() {
         const asyncWrapper = async () => {
             let customerResult = await fetchCustomers(id, jwtToken);
             let transactionResults = await fetchTransactions(
-                initialFilterObject,
+                initialTransactionFilterObject,
                 jwtToken
             );
             setCustomer(customerResult);
@@ -333,24 +335,30 @@ function Customer() {
 
                 <CustomerTransactions
                     customer={customer}
-                    filterObject={filterObject}
-                    setFilterObject={setFilterObject}
+                    transactionFilterObject={transactionFilterObject}
+                    setTransactionFilterObject={setTransactionFilterObject}
                 />
             </div>
         )
     );
 }
 
-function CustomerTransactions({ setFilterObject, customer, filterObject }) {
+function CustomerTransactions({
+    setTransactionFilterObject,
+    customer,
+    transactionFilterObject,
+}) {
     return (
         <div className={styles['third-row']}>
             <h3>Transactions</h3>
             <div className={styles['transactions']}>
                 <SortAndFilter
-                    setFilterObject={setFilterObject}
+                    setTransactionFilterObject={setTransactionFilterObject}
                     customerId={customer._id}
                 />
-                <TransactionTable filterObject={filterObject} />
+                <TransactionTable
+                    transactionFilterObject={transactionFilterObject}
+                />
             </div>
         </div>
     );
