@@ -12,7 +12,6 @@ export const fetchTransactions = (filterObject, jwtToken) => {
         };
 
         const filterString = JSON.stringify(filterObject);
-        console.log(filterString);
         const filterParam = btoa(filterString);
         xhttp.open(
             'GET',

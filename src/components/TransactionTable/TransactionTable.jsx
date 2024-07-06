@@ -29,7 +29,6 @@ const TransactionTable = (props) => {
                 jwtToken
             );
             setTransactions(result);
-            console.log(result);
         } catch (error) {
             console.log(error);
         }
