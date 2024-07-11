@@ -8,7 +8,6 @@ export const fetchAdmins = (jwtToken) => {
                 if (xhttp.readyState == 4) {
                     let response = JSON.parse(xhttp.responseText);
                     resolve(response);
-                    console.log('message');
                 }
             };
 

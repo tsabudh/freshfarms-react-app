@@ -107,7 +107,6 @@ export default function ChatPanel() {
         let functionToFetchMessages = async () => {
             try {
                 let result = await fetchMessages(jwtToken);
-                console.log(result);
                 setMessages(result);
             } catch (error) {
                 console.log(error);
