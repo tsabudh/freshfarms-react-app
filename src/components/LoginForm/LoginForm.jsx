@@ -1,137 +1,115 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import classNames from 'classnames/bind';
 
 import styles from './LoginForm.module.scss';
-import Button from '../UI/Button/Button';
-import loginAdmin from '../../utils/loginAdmin';
-
 import { AuthContext } from '../../context/AuthContext';
-import signupAdmin from '../../utils/signupAdmin';
-import BouncingCircles from '../UI/Vectors/BouncingCircles';
 
-const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
+import Button from '../UI/Button/Button';
+import loginUser from '../../utils/loginUser';
+import BouncingCircles from '../UI/Vectors/BouncingCircles';
+import refreshToken from '../../utils/refreshToken';
+import {
+    setJwtToLocalStorage,
+    setUserToLocalStorage,
+} from '../../utils/localStorageUtils';
+
+const cx = classNames.bind(styles);
+
+const LoginForm = ({ isAdmin, toggle }) => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const loginFormRef = useRef(null);
+
     const navigate = useNavigate();
 
-    const { jwtToken, setJwtToken } = useContext(AuthContext);
+    const { jwtToken, setJwtToken, user, setUser } = useContext(AuthContext);
 
     useEffect(() => {
         if (!!jwtToken) {
-            console.log(jwtToken);
             console.log('jwtToken found');
         }
-        console.log('Navigating to dashboard.');
-        if (jwtToken) navigate('/dashboard');
-    });
+
+        async function asyncWrapper() {
+            if (jwtToken && user?.role) {
+                let response = await refreshToken(jwtToken, user.role);
+                if (response.status == 'success') {
+                    setJwtToken(response.token);
+                    setJwtToLocalStorage(response.token);
+                    setUser(response.user);
+                    setUserToLocalStorage(response.user);
+                    console.log('Refreshing token success!');
+                    navigate('/dashboard');
+                }
+            }
+        }
+        asyncWrapper();
+    }, []);
+
     async function handleSubmit(e) {
         e.preventDefault();
         setErrorMessage(null);
-        let form = document.getElementById('loginForm');
+        let form = loginFormRef.current;
         let loginDetails = {};
         let formData = new FormData(form);
         formData.forEach((value, key) => (loginDetails[key] = value));
-        if (isNewUser) {
-            //- Signing up new user
-            setIsLoading(true);
-            loginDetails.username = loginDetails.username.toLocaleLowerCase();
 
-            let response = await signupAdmin(loginDetails);
-            if (response) setIsLoading(false);
-            if (response.status == 'success') {
-                setIsLoading(false);
-                setJwtToken(response.jwtToken);
-                localStorage.setItem('jwtToken', response.jwtToken);
-                navigate('/dashboard');
-            } else if (response.status == 'failure') {
-                if (response.message) {
-                    setErrorMessage(response.message);
-                } else if (response.errors) {
-                    setErrorMessage(response.errors[0].msg);
-                }
-            } else {
-                setErrorMessage('Something went wrong on our side.😞');
+        const userRole = isAdmin ? 'admin' : 'customer';
+        setIsLoading(true);
+        loginDetails.username = loginDetails.username.toLocaleLowerCase();
+
+        let response = await loginUser(loginDetails, userRole);
+        if (response) setIsLoading(false);
+
+        if (response.status == 'success') {
+            setIsLoading(false);
+            setJwtToken(response.token);
+            setUser(response.user);
+            setJwtToLocalStorage(response.token);
+            setUserToLocalStorage(response.user);
+
+            navigate('/dashboard');
+        } else if (response.status == 'failure') {
+            if (response.message) {
+                setErrorMessage(response.message);
+            } else if (response.errors) {
+                setErrorMessage(response.errors[0].msg);
             }
-
-            return;
         } else {
-            //- Logging in user
-            setIsLoading(true);
-            let response = await loginAdmin(loginDetails);
-            if (response) setIsLoading(false);
-            if (response.status == 'success' && response.token) {
-                setJwtToken(response.token);
-                localStorage.setItem('jwtToken', response.token);
-                navigate('/dashboard');
-            } else if (response.status == 'failure') {
-                if (response.message) {
-                    setErrorMessage(response.message);
-                } else if (response.errors) {
-                    setErrorMessage(response.errors[0].msg);
-                }
-            } else {
-                setErrorMessage('Something went wrong on our side.😞');
-            }
-            if (!response) {
-                console.log('server error');
-            }
+            setErrorMessage('Something went wrong on our side.😞');
         }
+
         return;
     }
 
     return (
-        <div
-            className={`${styles['signup-container']}  ${
-                isNewUser
-                    ? styles['signup-container--sign-in']
-                    : styles['signup-container--sign-up']
-            }`}
-        >
+        <div className={cx('login-container')}>
             <div className={`${styles['form-container']}`}>
-                <form id="loginForm" className="form">
-                    <h3>{!isNewUser ? 'Log in' : 'Sign up'}</h3>
-
-                    {isNewUser && (
-                        <div>
-                            <div className={styles['input-group']}>
-                                <label
-                                    htmlFor="name"
-                                    className={styles['input-label']}
-                                >
-                                    Name
-                                </label>
-                                <input
-                                    className={styles['input-field']}
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </div>
-                            <div className={styles['input-group']}>
-                                <label
-                                    htmlFor="phone"
-                                    className={styles['input-label']}
-                                >
-                                    Phone
-                                </label>
-                                <input
-                                    className={styles['input-field']}
-                                    id="phone"
-                                    name="phone"
-                                    type="text"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                />
-                            </div>
+                <form id="loginForm" className={cx('form')} ref={loginFormRef}>
+                    <div className={cx('header')}>
+                        <div
+                            className={cx(
+                                'active',
+                                isAdmin ? 'admin' : 'customer'
+                            )}
+                        >
+                            {isAdmin ? 'Admin' : 'Customer'} Login
                         </div>
-                    )}
+                        <div
+                            className={cx(
+                                'inactive',
+                                isAdmin ? 'customer' : 'admin'
+                            )}
+                            onClick={() => toggle((isAdmin) => !isAdmin)}
+                        >
+                            {isAdmin ? 'Customer' : 'Admin'}
+                        </div>
+                    </div>
+
                     <div className={styles['input-group']}>
                         <label
                             htmlFor="username"
@@ -166,8 +144,12 @@ const LoginForm = ({ isNewUser, toggle, setAdmin }) => {
                     </div>
                 </form>
                 <div className={styles['action']}>
-                    <Button className="stylish01" onClick={handleSubmit}>
-                        {isNewUser ? 'Signup' : 'Login'}
+                    <Button
+                        className={isAdmin ? 'amber-01' : 'berry-01'}
+                        onClick={handleSubmit}
+                        form="loginForm"
+                    >
+                        Login
                     </Button>
                     {isLoading && (
                         <BouncingCircles height="2.5rem" width="5rem" />

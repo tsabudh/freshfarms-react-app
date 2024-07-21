@@ -1,8 +1,10 @@
+@use '../../scss/abstract/variables' as vars;
+
 .dashboard {
     display: flex;
     overflow: hidden;
-    color: #636a2b;
-    color: rgb(56, 48, 48);
+    color: vars.$c-brown-400;
+    background: vars.$c-berry-100;
 
     & .sidebar-container {
         display: block;
@@ -16,21 +18,4 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-
-    & .navigation-bar {
-        background-color: #f3f3f4;
-        display: flex;
-        padding: 0.5rem 1.5rem;
-        margin-bottom: 1rem;
-
-        & .go-back {
-            height: 100%;
-        }
-        & .logo {
-            align-self: flex-end;
-            flex-grow: 1;
-            text-align: right;
-            margin-inline: 2rem;
-        }
-    }
 }

@@ -3,9 +3,10 @@ import classNames from 'classnames/bind';
 
 import styles from './ProductPanel.module.scss';
 import { AuthContext } from '../../context/AuthContext';
+import { productImages } from '../../assets/data/productImages.json';
 
 import fetchProducts from '../../utils/fetchProducts';
-import Product from '../Product/Product';
+import ProductCard from './ProductCard';
 
 const cx = classNames.bind(styles);
 
@@ -26,7 +27,14 @@ function ProductPanel() {
     return (
         <div className={cx('container')}>
             {products.map((item) => {
-                return <Product key={item._id} product={item} />;
+                let imageData = productImages[item.name];
+                return (
+                    <ProductCard
+                        key={item._id}
+                        product={item}
+                        imageData={imageData}
+                    />
+                );
             })}
         </div>
     );

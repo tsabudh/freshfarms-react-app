@@ -1,4 +1,4 @@
-@use '/src/scss/abstract/variables' as variables;
+@use '/src/scss/abstract/variables' as vars;
 @use '/src/scss/abstract/mixins' as mixins;
 
 .container {
@@ -10,10 +10,11 @@
     height: 100%;
     overflow-x: hidden;
     position: relative;
+    border-bottom: 1rem solid vars.$c-gray-100;
 
     & .chat-window {
         flex-grow: 2;
-        padding: 1rem 1rem;
+        padding: 1rem 1rem 0rem;
 
         display: grid;
         // justify-content: flex-start;
@@ -29,16 +30,33 @@
             grid-row-start: 1;
             grid-row-end: 1;
             & .title {
-                border-bottom: 1px solid variables.$color-green-100;
+                border-bottom: 1px solid vars.$color-green-100;
                 margin-bottom: 1rem;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: flex-start;
 
+                & h2 {
+                    font-weight: 300;
+                    color: vars.$c-berry-400;
+                }
+
                 & .friends-menu {
                     cursor: pointer;
                     padding-top: 0.6em;
+
+                    color: vars.$c-gray-200;
+                    &:hover {
+                        color: vars.$c-gray-300;
+                    }
+
+                    &:active {
+                        color: vars.$c-berry-bright;
+                    }
+                    &.closed {
+                        color: vars.$c-berry-bright;
+                    }
                 }
             }
         }
@@ -60,7 +78,8 @@
             padding: 0.4rem;
             // border: 1px solid rgb(104, 104, 245);
             border-radius: 0.6rem;
-            background-color: variables.$color-temp;
+            background-color: #{vars.$color-blue};
+            backdrop-filter: blur(5px);
             max-height: 40rem;
             // border: 2px dashed red;
             & .chat-title {
@@ -72,17 +91,29 @@
                     margin-block: 0.4rem;
                     font-weight: 500;
                     letter-spacing: 0.1px;
-                    color: variables.$color-gray;
+                    color: vars.$c-amber-100;
+                    text-transform: capitalize;
                 }
                 & .close {
                     align-self: flex-start;
-                    font-size: 2rem;
+                    font-size: 1.8rem;
                     height: 1em;
                     cursor: pointer;
-                    color: variables.$color-gray;
+                    color: vars.$c-berry-400;
+                    background-color: vars.$c-amber-100;
                     border-radius: 50%;
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
                     &:hover {
-                        color: variables.$color-gray-300;
+                        background-color: vars.$c-berry-500;
+                        color: vars.$c-amber-100;
+                    }
+                    &:active {
+                        color: vars.$c-amber-500;
+                        background-color: vars.$c-amber-100;
                     }
                 }
             }
@@ -92,7 +123,7 @@
                 // justify-content: flex-end;
                 flex-grow: 3;
                 // border: 1px solid orange;
-                border-radius: 0.6rem;
+                // border-radius: 0.6rem;
                 background-color: whitesmoke;
                 // max-height: 200px;
                 overflow-y: scroll;
@@ -109,14 +140,15 @@
                         border-radius: 1.6rem;
                         margin-top: 0.5rem;
                         flex-basis: 60%;
-                        max-width: 20rem;
+                        max-width: 65%;
                         font-weight: 400;
                         font-size: 1.4rem;
                         text-wrap: wrap;
+                        margin-block: 0.6rem;
 
                         &.sent {
-                            background-color: variables.$color-ash;
-                            color: variables.$color-dark;
+                            background-color: vars.$c-gray-100;
+                            color: vars.$c-gray-400;
                             align-self: flex-end;
                             border-bottom-right-radius: 1.6rem;
 
@@ -135,7 +167,7 @@
 
                         &.received {
                             align-self: flex-start;
-                            background-color: variables.$color-blue-fb;
+                            background-color: vars.$color-blue-fb;
                             color: white;
                             border-bottom-left-radius: 0;
 
@@ -170,21 +202,24 @@
 
                     &:focus {
                         outline: none;
-                        border: 1px solid variables.$color-green-100;
+                        border: 1px solid vars.$color-green-100;
                     }
                 }
 
                 & button {
                     border-radius: 0.6rem;
                     padding: 0.4rem 0.8rem;
+
+                    background-color: vars.$c-white;
+                    color: vars.$c-gray-200;
                     border: none;
 
-                    background-color: white;
-                    color: variables.$color-green;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
 
                     &:hover {
-                        background-color: variables.$color-green;
-                        color: white;
+                        color: vars.$color-blue;
                     }
                     & svg {
                         vertical-align: text-top;
@@ -197,8 +232,10 @@
     & .friends-window {
         flex-basis: 10rem;
         max-width: 50%;
-        background-color: variables.$color-gray-200;
-        border-radius: 0.6rem;
+        background-color: vars.$c-gray-100;
+        color: vars.$c-gray-300;
+        border-top-left-radius: 0.6rem;
+        border-top-right-radius: 0.6rem;
         padding: 0.6rem 0.4rem;
         text-wrap: nowrap;
         transition: all 0.5s ease;
@@ -211,21 +248,32 @@
             max-width: 0;
             padding: 0;
         }
+
+        & .hr {
+            width: 100%;
+            height: 2px;
+            background-color: vars.$c-white;
+            margin-block: 0.6rem;
+        }
         & .friend {
-            // border-bottom: 1px solid variables.$color-green-100;
+            // border-bottom: 1px solid vars.$color-green-100;
             background-color: transparent;
             padding: 0.6rem 0.6rem;
             margin-bottom: 0.1rem;
             cursor: pointer;
             border-radius: 0.6rem;
+            border: 1px solid transparent;
+            text-transform: capitalize;
 
             &:hover {
-                background-color: variables.$color-green-50;
+                background-color: vars.$c-amber-100;
+                color: vars.$c-gray-400;
             }
 
             &.active {
-                background-color: variables.$color-green-50;
-                color: #e4e4e4;
+                background-color: vars.$c-white;
+                color: vars.$c-gray-400;
+                border-color: vars.$c-berry-bright;
                 cursor: default;
             }
         }

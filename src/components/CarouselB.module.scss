@@ -1,0 +1,242 @@
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+@use '/src/scss/base/typography';
+
+.carousel {
+    $arrow-icon-bg-color: vars.$c-berry-200;
+    $arrow-icon-hover-color: vars.$c-amber-bright;
+    $arrow-icon-active-color: white;
+    $arrow-icon-active-bg-color: vars.$c-amber-400;
+    $arrow-color: white;
+
+    $dot-indicator-svg-fill: vars.$c-brown-400;
+    $dot-indicator-svg-hover-fill: vars.$c-amber-400;
+    $dot-indicator-svg-active-fill: vars.$c-amber-bright;
+
+    $dot-indicator-bg-color: vars.$c-berry-bright;
+    $dot-indicator-inactive-bg-color: vars.$c-amber-300;
+    $dot-indicator-inactive-hover-bg-color: vars.$c-amber-400;
+
+    position: relative;
+
+    height: 100%;
+
+    & .main {
+        // overflow: hidden ; // Add this when carousel container does not have overflow hidden
+
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 2.4rem;
+        border-top-right-radius: 15rem;
+
+        @include mixins.respond(tab-port) {
+            gap: 1rem;
+        }
+
+        & .slides-frame {
+            overflow: hidden;
+            position: relative;
+
+            @include mixins.respond(phone) {
+            }
+
+            & .slides-tape {
+                display: flex;
+                flex-direction: row;
+                position: relative;
+
+                display: grid;
+                grid-template-areas: 'area';
+                grid-template-rows: auto;
+                grid-template-columns: auto;
+
+                transition: translate 0.5s ease-in-out;
+
+                .carousel-content {
+                    grid-area: area;
+
+                    position: relative;
+                    inset: 0;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    flex-shrink: 0;
+                    width: 100%;
+                    // padding-inline: 6rem;
+                    // padding: 6rem;
+                    transition: background-color 1s ease, transform 1s ease,
+                        opacity 1s ease;
+
+                    &.hidden {
+                        opacity: 0;
+                    }
+                    &.is-left {
+                        transform: translate(-150%, 0);
+                        opacity: 0;
+                    }
+                    &.is-right {
+                        transform: translate(150%, 0);
+                        opacity: 0;
+                    }
+                    &.active {
+                        opacity: 1;
+                        transform: translate(0%, 0);
+                    }
+                }
+            }
+        }
+
+        & .arrow {
+            color: $arrow-color;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 2.4rem;
+            font-weight: 800;
+            border-radius: 100%;
+
+            position: absolute;
+            z-index: 100;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &-left {
+                left: 0;
+            }
+            &-right {
+                right: 0;
+            }
+
+            & .icon {
+                width: 3.5rem;
+                height: 3.5rem;
+
+                background-color: $arrow-icon-bg-color;
+                --padding: 0.5rem;
+                padding: var(--padding);
+
+                border-radius: 50%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                    color: $arrow-icon-hover-color;
+                }
+                &:active {
+                    color: $arrow-icon-active-color;
+                    background-color: $arrow-icon-active-bg-color;
+                }
+                &.less-than {
+                    padding-right: calc(var(--padding) + 0.4rem);
+                }
+                &.greater-than {
+                    padding-left: calc(var(--padding) + 0.4rem);
+                }
+            }
+        }
+    }
+
+    .dot-indicators {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+
+        display: flex;
+        flex-direction: row;
+        gap: 0.8rem;
+        // bottom: 8rem;
+        justify-content: center;
+        align-items: center;
+        // height: ;
+        // display: none;
+
+        @include mixins.respond(tab-port) {
+            display: flex;
+        }
+        & svg {
+            font-size: 2.8rem;
+            cursor: pointer;
+            color: $dot-indicator-svg-fill;
+            color: black;
+            fill: $dot-indicator-svg-fill;
+
+            &:hover {
+                color: $dot-indicator-svg-hover-fill;
+                fill: $dot-indicator-svg-hover-fill;
+            }
+            &:active {
+                color: $dot-indicator-svg-active-fill;
+                fill: $dot-indicator-svg-active-fill;
+            }
+        }
+        & .indicator {
+            background-color: $dot-indicator-bg-color;
+            height: 0.8rem;
+            flex-basis: 0.8rem;
+            flex-shrink: 0;
+            flex-grow: 0;
+            border-radius: 100%;
+            border: none;
+            outline: none;
+            cursor: pointer;
+
+            &-inactive {
+                background-color: $dot-indicator-inactive-bg-color;
+
+                &:hover {
+                    background-color: $dot-indicator-inactive-hover-bg-color;
+                }
+            }
+
+            &.current {
+                cursor: default;
+            }
+        }
+    }
+}
+
+.carousel .main .slides-frame .slides-tape .carousel-content {
+    align-items: center;
+    justify-content: center;
+
+    &:nth-of-type(2n) {
+        background-color: vars.$c-amber-400;
+        background: linear-gradient(
+            to right bottom,
+            vars.$c-amber-400,
+            vars.$c-berry-bright
+        );
+    }
+    &:nth-of-type(2n + 1) {
+        background-color: vars.$c-berry-400;
+        background: linear-gradient(
+            to right bottom,
+            vars.$c-berry-400,
+            vars.$c-amber-bright
+        );
+    }
+
+    & .image-content {
+        & .image-wrapper {
+            & figure {
+                height: 25rem;
+                & img {
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+        }
+    }
+}

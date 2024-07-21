@@ -3,8 +3,6 @@ import styles from './ErrorFormFooter.module.scss';
 function ErrorFormFooter(props) {
     const { pendingStatus, errorMessage } = props; // pendingStatus must be in ['static','sending','success','failure']
 
-    console.log(pendingStatus, errorMessage);
-
     return (
         <div className={styles['form-footer']}>
             {pendingStatus != 'static' ? (

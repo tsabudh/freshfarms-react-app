@@ -1,16 +1,35 @@
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+
 .container {
+    background: linear-gradient(to right, #{vars.$c-amber-400}70, vars.$c-amber-300);
+    padding-top: 0.6rem;
+
+    // border-radius: 1rem;
+
     & .button-list {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         gap: 2rem;
-        margin-inline: 2rem;
+        padding-inline: 1rem;
+
         margin-bottom: 0.5rem;
+
+        & .my-location {
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+
+            &:hover {
+                color: vars.$c-gray-400;
+            }
+        }
     }
 
     & .map-container {
-        border: 2px solid rgb(64, 70, 70);
-        border-radius: 1rem;
+        border: 2px solid vars.$c-amber-300;
+        // border-radius: 1rem;
         overflow: hidden;
     }
     & .marker-red {

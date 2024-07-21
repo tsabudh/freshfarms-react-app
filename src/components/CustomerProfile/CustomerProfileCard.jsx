@@ -2,13 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
-import styles from './CustomerProfile.module.scss';
+import styles from './CustomerProfileCard.module.scss';
 
 import Tag from '../UI/Tag/Tag';
 
 const cx = classNames.bind(styles);
 
-const CustomerProfile = ({ customer }) => {
+const CustomerProfileCard = ({ customer }) => {
     const navigate = useNavigate();
     return (
         <div
@@ -49,4 +49,4 @@ const CustomerProfile = ({ customer }) => {
     );
 };
 
-export default CustomerProfile;
+export default CustomerProfileCard;

@@ -8,22 +8,18 @@ import OverlayContainer from '../../components/Overlay/OverlayContainer';
 
 const cx = classNames.bind(styles);
 
-export default function LoginPage(props) {
-    const {setAdmin} = props;
-    const [isNewUser, setIsNewUser] = useState(false);
-  
+export default function LoginPage() {
+    const [isAdmin, setIsAdmin] = useState(false);
+
     return (
         <div className={cx('container')}>
             <LoginForm
-                toggle={setIsNewUser}
-                isNewUser={isNewUser}
-                setAdmin={setAdmin}
-                     />
+                toggle={setIsAdmin}
+                isAdmin={isAdmin}
+                
+                
+            />
 
-            <OverlayContainer
-                isNewUser={isNewUser}
-                toggle={setIsNewUser}
-                   />
         </div>
     );
 }

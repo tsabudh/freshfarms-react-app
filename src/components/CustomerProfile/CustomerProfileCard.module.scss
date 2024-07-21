@@ -1,3 +1,6 @@
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+
 .card {
     min-width: 20rem;
     min-height: 10rem;
@@ -8,7 +11,26 @@
     flex-direction: row;
     overflow: hidden;
     color: black;
-    cursor: pointer;
+    cursor: default;
+
+    $card: #{&};
+
+    &:hover {
+        #{$card}-right {
+            background-color: vars.$c-amber-200;
+        }
+        #{$card}-left {
+            &-picture {
+                border-color: vars.$c-berry-500;
+            }
+        }
+    }
+
+    &:active {
+        #{$card}-right {
+            background-color: vars.$c-amber-300;
+        }
+    }
 
     &-left {
         width: 25%;
@@ -39,10 +61,12 @@
         }
     }
     &-right {
-        background: white;
+        background-color: vars.$c-gray-100;
+
         flex-grow: 1;
 
         padding: 1rem 1.5rem;
+        padding-left: 3.5rem;
         text-align: right;
 
         & .name {

@@ -2,9 +2,18 @@ import React, { useState } from 'react';
 import styles from './Details.module.scss';
 import Tag from '../../UI/Tag/Tag';
 
-const Details = (props) => {
-    const { items, purchaseAmount } = props;
-    console.log(props);
+const Details = ({
+    items,
+    purchaseAmount,
+    paidAmount,
+    paidInFull,
+    serialNumber,
+    timeStamp,
+    transaction,
+    type,
+    customer,
+    id,
+}) => {
     return (
         <React.Fragment>
             <div className={styles['container']}>
@@ -12,15 +21,11 @@ const Details = (props) => {
                     <h4>Customer</h4>
                     <div className={styles['field']}>
                         <div className={styles['title']}>Name</div>
-                        <div className={styles['values']}>
-                            {props.customer.name}
-                        </div>
+                        <div className={styles['values']}>{customer.name}</div>
                     </div>
                     <div className={styles['field']}>
                         <div className={styles['title']}>ID</div>
-                        <div className={styles['values']}>
-                            {props.customer._id}
-                        </div>
+                        <div className={styles['values']}>{customer._id}</div>
                     </div>
                 </section>
 
@@ -28,37 +33,37 @@ const Details = (props) => {
                     <h4>Transaction</h4>
                     <div className={styles['field']}>
                         <div className={styles['title']}>Transaction ID</div>
-                        <div className={styles['values']}>{props.id}</div>
+                        <div className={styles['values']}>{id}</div>
                     </div>
                     <div className={styles['field']}>
                         <div className={styles['title']}>Issued By</div>
                         <div className={styles['values']}>
-                            <span>{props.transaction.issuedBy.name}</span>
-                            <Tag>{props.transaction.createdBy}</Tag>
+                            <span>{transaction.issuedBy?.name}</span>
+                            <Tag>{transaction.createdBy}</Tag>
                         </div>
                     </div>
                     <div className={styles['field']}>
                         <div className={styles['title']}>Type</div>
                         <div className={styles['values']}>
-                            {props.transaction.type}
+                            {transaction.type}
                         </div>
                     </div>
                     <div className={styles['field']}>
                         <div className={styles['title']}>Cost</div>
                         <div className={styles['values']}>
-                            {props.transaction.purchaseAmount}
+                            {transaction.purchaseAmount}
                         </div>
                     </div>
                     <div className={styles['field']}>
                         <div className={styles['title']}>Paid In Full</div>
                         <div className={styles['values']}>
-                            {props.transaction.paidInFull.toString()}
+                            {transaction.paidInFull.toString()}
                         </div>
                     </div>
                     <div className={styles['field']}>
                         <div className={styles['title']}>Paid</div>
                         <div className={styles['values']}>
-                            {props.transaction.paid}
+                            {transaction.paid}
                         </div>
                     </div>
                     <div className={styles['field']}>
@@ -66,7 +71,7 @@ const Details = (props) => {
                         <div
                             className={`${styles['values']} ${styles['values--col']}`}
                         >
-                            {props.transaction.items.map((item, index) => {
+                            {transaction.items.map((item, index) => {
                                 return (
                                     <div className={styles['item']} key={index}>
                                         <div
@@ -140,6 +145,7 @@ const Details = (props) => {
                             {items.map((item, index) => {
                                 return (
                                     <SalesRow
+                                        key={item._id + index}
                                         item-key={item._id}
                                         serialNumber={index + 1}
                                         product={item.productName}
@@ -168,14 +174,20 @@ const Details = (props) => {
 };
 
 export default Details;
-const SalesRow = (props) => {
+const SalesRow = ({
+    serialNumber,
+    priceThen,
+    product,
+    quantity,
+    totalPrice,
+}) => {
     return (
         <tr>
-            <td>{props.serialNumber}</td>
-            <td className={styles.product}>{props.product}</td>
-            <td>{props.priceThen}</td>
-            <td>{props.quantity}</td>
-            <td>{props.totalPrice}</td>
+            <td>{serialNumber}</td>
+            <td className={styles.product}>{product}</td>
+            <td>{priceThen}</td>
+            <td>{quantity}</td>
+            <td>{totalPrice}</td>
         </tr>
     );
 };

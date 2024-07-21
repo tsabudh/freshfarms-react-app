@@ -1,0 +1,16 @@
+@use '/src/scss/abstract/mixins.scss' as mixins;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    // height: calc(100vh - 5rem);
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    @include mixins.respond('tab-port') {
+        flex-direction: column;
+        height: calc(100vh - 5rem);
+    }
+}

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { MdOutlineDeleteForever } from 'react-icons/md';
-import classNames from 'classnames';
+import classNames from 'classnames/bind';
 
 import { AuthContext } from '../../context/AuthContext';
 import styles from './RegisterBoard.module.scss';
@@ -9,6 +9,8 @@ import Button from '../UI/Button/Button';
 import fetchCustomers from '../../utils/fetchCustomers';
 import fetchProducts from '../../utils/fetchProducts';
 import { postTransaction } from '../../utils/postTransactions';
+
+const cx = classNames.bind(styles);
 
 const RegisterBoard = (props) => {
     const {
@@ -31,10 +33,15 @@ const RegisterBoard = (props) => {
 
     useEffect(() => {
         let asyncFunc = async () => {
-            let customerResults = await fetchCustomers(null, jwtToken);
-            let productResults = await fetchProducts(null, jwtToken);
-            setCustomers(customerResults);
-            setProducts(productResults.data);
+            let customerResponseObject = await fetchCustomers(null, jwtToken);
+            let productResponseObject = await fetchProducts(null, jwtToken);
+
+            if (customerResponseObject.status == 'success') {
+                setCustomers(customerResponseObject.data);
+            }
+            if (productResponseObject.status == 'success') {
+                setProducts(productResponseObject.data);
+            }
         };
         asyncFunc();
     }, []);
@@ -83,14 +90,12 @@ const RegisterBoard = (props) => {
         setCart(newCart);
     };
 
-    const removeFromCart = (e) => {
-        e.preventDefault();
-        let elementItem = e.target.parentNode.parentNode.parentNode.parentNode;
-
+    const removeFromCart = (_, id) => {
         let newCart = [...cart];
         let found = newCart.findIndex((item) => {
-            return item._id == elementItem.dataset._id;
+            return item._id == id;
         });
+
         newCart.splice(found, 1);
         setCart(newCart);
     };
@@ -115,7 +120,7 @@ const RegisterBoard = (props) => {
             newTransaction.items = items;
             newTransaction.paidInFull = paidInFull;
             newTransaction.paid = paidInFull ? transactionAmount : paidAmount;
-            newTransaction.paidInFull = paidAmount === transactionAmount;
+            // newTransaction.paidInFull = paidAmount === transactionAmount;
         } else if (transactionType === 'payment') {
             newTransaction.type = 'payment';
             newTransaction.paid = paidAmount;
@@ -128,8 +133,8 @@ const RegisterBoard = (props) => {
             setErrorMessage(null);
             setPaidAmount(0);
             setCart([]);
-            const productResponse = await fetchProducts(null, jwtToken);
-            setProducts(productResponse.data);
+            // const productResponse = await fetchProducts(null, jwtToken);
+            // setProducts(productResponse.data);
             setTransactionFilterObject({
                 sortBy: { issuedTime: -1 },
                 limit: 5,
@@ -160,6 +165,8 @@ const RegisterBoard = (props) => {
                     <div className={styles['tab-container']}>
                         <div
                             className={`${styles['tab']} ${
+                                styles['purchase']
+                            } ${
                                 transactionType == 'purchase'
                                     ? styles.active
                                     : ''
@@ -169,7 +176,7 @@ const RegisterBoard = (props) => {
                             Purchase
                         </div>
                         <div
-                            className={`${styles['tab']} ${
+                            className={`${styles['tab']} ${styles['payment']} ${
                                 transactionType == 'payment'
                                     ? styles.active
                                     : ''
@@ -223,7 +230,7 @@ const RegisterBoard = (props) => {
                         </span>
                     ) : null}
                     {errorMessage && (
-                        <span className={`${styles['error']}`}>
+                        <span className={`${styles['error-message']}`}>
                             {errorMessage}
                         </span>
                     )}
@@ -235,7 +242,7 @@ const RegisterBoard = (props) => {
 
 export default RegisterBoard;
 
-function Cart({ cart, removeFromCart }) {
+function Cart({ cart, removeFromCart, transactionAmount }) {
     return (
         <div className={styles['cart']}>
             {/* //* HEAD */}
@@ -243,13 +250,6 @@ function Cart({ cart, removeFromCart }) {
                 <div
                     className={`${styles['cart-item']} ${styles['cart-item--head']}`}
                 >
-                    <div
-                        className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--id']}`}
-                    >
-                        <span className={styles['cart-item-piece-label']}>
-                            PID
-                        </span>
-                    </div>
                     <div
                         className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--name']}`}
                     >
@@ -261,7 +261,7 @@ function Cart({ cart, removeFromCart }) {
                         className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--price']}`}
                     >
                         <span className={styles['cart-item-piece-label']}>
-                            Price
+                            Unit price
                         </span>
                     </div>
                     <div
@@ -270,6 +270,20 @@ function Cart({ cart, removeFromCart }) {
                         <span className={styles['cart-item-piece-label']}>
                             Quantity
                         </span>
+                    </div>
+                    <div
+                        className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--quantity']}`}
+                    >
+                        <span className={styles['cart-item-piece-label']}>
+                            Price
+                        </span>
+                    </div>
+                    <div
+                        className={`${styles['cart-item-piece--head']} ${styles['cart-item-piece']} ${styles['cart-item-piece--delete']}`}
+                    >
+                        <span
+                            className={styles['cart-item-piece-delete']}
+                        ></span>
                     </div>
                 </div>
             ) : null}
@@ -283,6 +297,13 @@ function Cart({ cart, removeFromCart }) {
                     />
                 );
             })}
+
+            {cart.length > 0 ? (
+                <div className={cx('total-price')}>
+                    <span className={cx("label")}>Total Price:</span>
+                    <span className={cx("price")}>{transactionAmount}</span>
+                </div>
+            ) : null}
         </div>
     );
 }
@@ -290,16 +311,17 @@ function Cart({ cart, removeFromCart }) {
 function CartItem(props) {
     const { item, removeFromCart } = props;
     return (
-        <div className={styles['cart-item']} key={item._id} data-_id={item._id}>
-            <div
+        <div className={styles['cart-item']} key={item._id}>
+            {/* <div
                 className={`${styles['cart-item-piece']} ${styles['cart-item-piece--id']}`}
             >
                 <span className={styles['cart-item-piece-value']}>
                     {item._id}
                 </span>
-            </div>
+            </div> */}
             <div
                 className={`${styles['cart-item-piece']} ${styles['cart-item-piece--name']}`}
+                title={item._id}
             >
                 <span className={styles['cart-item-piece-value']}>
                     {item.name}
@@ -312,16 +334,29 @@ function CartItem(props) {
                     {item.price}
                 </span>
             </div>
+
             <div
                 className={`${styles['cart-item-piece']} ${styles['cart-item-piece--quantity']}`}
             >
                 <span className={styles['cart-item-piece-value']}>
                     {item.quantity}
                 </span>
+            </div>
+
+            <div
+                className={`${styles['cart-item-piece']} ${styles['cart-item-piece--price']}`}
+            >
+                <span className={styles['cart-item-piece-value']}>
+                    {item.price * item.quantity}
+                </span>
+            </div>
+            <div
+                className={`${styles['cart-item-piece']} ${styles['cart-item-piece--delete']}`}
+            >
                 <span
                     className={styles['cart-item-piece-delete']}
                     onClick={(e) => {
-                        removeFromCart(e);
+                        removeFromCart(e, item._id);
                     }}
                 >
                     <MdOutlineDeleteForever />
@@ -351,15 +386,16 @@ function PurchaseUI({
     paidAmount,
 }) {
     return (
-        <div className={styles['purchase']}>
+        <div className={styles['purchase-dash']}>
             <div className={styles['form-group']}>
                 <label htmlFor="customers">Customer :</label>
                 <select name="" id="customers">
-                    {customers?.map((item) => (
-                        <option key={item._id} value={item._id}>
-                            {item.name}
-                        </option>
-                    ))}
+                    {customers &&
+                        customers.map((item) => (
+                            <option key={item._id} value={item._id}>
+                                {item.name}
+                            </option>
+                        ))}
                 </select>
             </div>
             <div className={styles['form-group']}>
@@ -391,13 +427,17 @@ function PurchaseUI({
                         {selectedProductUnit}
                     </span>
                 </div>
-                    
-                <Button className="stylish03" onClick={addToCart}>
+
+                <Button className="amber-03 ghost small" onClick={addToCart}>
                     add
                 </Button>
             </div>
 
-            <Cart cart={cart} removeFromCart={removeFromCart} />
+            <Cart
+                cart={cart}
+                removeFromCart={removeFromCart}
+                transactionAmount={transactionAmount}
+            />
 
             <div className={styles['form-group']}>
                 <div className={styles['pay']}>
@@ -410,7 +450,7 @@ function PurchaseUI({
                                 id="paidInFullYes"
                                 onChange={() => setPaidInFull(true)}
                                 value={true}
-                                checked={paidInFull}
+                                checked={paidInFull == true}
                             />
 
                             <label htmlFor="paidInFullYes">
@@ -431,7 +471,7 @@ function PurchaseUI({
                                 id="paidInFullNo"
                                 onChange={() => setPaidInFull(false)}
                                 value={false}
-                                checked={!paidInFull}
+                                checked={paidInFull == false}
                             />
 
                             <label htmlFor="paidInFullNo">
@@ -472,7 +512,7 @@ function PurchaseUI({
             </div>
 
             <Button
-                className={classNames(`stylish01`, {
+                className={classNames(`berry-02`, `small`, {
                     loading: posting == 'sending',
                 })}
                 onClick={addTransaction}
@@ -491,7 +531,7 @@ function PaymentUI({
     paidAmount,
 }) {
     return (
-        <div className={styles['payment']}>
+        <div className={styles['payment-dash']}>
             <div className={styles['form-group']}>
                 <label htmlFor="customers">Customer :</label>
                 <select id="customers">
@@ -512,7 +552,7 @@ function PaymentUI({
                 />
             </div>
             <Button
-                className={classNames(`stylish01`, {
+                className={classNames(`berry-02`, `small`, {
                     loading: posting == 'sending',
                 })}
                 onClick={addTransaction}

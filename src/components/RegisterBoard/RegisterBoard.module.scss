@@ -1,11 +1,20 @@
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+
 .form-container {
-    --color-purchase: #2ecc71;
+    // $color-purchase: #2ecc71;
     margin-block: 1rem;
     padding: 1rem;
-    background: var(--surface5-light);
+    background: vars.$c-berry-200;
+    border-radius: 1.8rem;
 
+    & h3 {
+        color: vars.$c-gray-200;
+        font-size: 1.8rem;
+        margin-block: 0.6rem 1rem;
+    }
     & form {
-        background: var(--surface5-light);
+        background: vars.$c-berry-200;
 
         border-radius: 1rem;
         margin-block: 0.5rem;
@@ -27,7 +36,7 @@
             text-transform: capitalize;
             margin-inline: 1rem;
             padding: 0.5rem 1rem;
-            border: 0.5px solid gray;
+            border: 0.5px solid vars.$c-gray-200;
             border-radius: 1rem;
             outline: none;
 
@@ -39,7 +48,7 @@
             padding: 0.5rem 1rem;
             margin-inline: 1rem;
             max-width: 7rem;
-            border: 0.5px solid gray;
+            border: 0.5px solid vars.$c-gray-200;
             border-radius: 1rem;
             outline: none;
             letter-spacing: 0.5px;
@@ -69,22 +78,23 @@
         border-bottom: 1px solid whitesmoke;
 
         &-item {
-            background: rgb(100, 238, 162);
+            background: vars.$c-amber-200;
 
             color: black;
             letter-spacing: 0.5px;
+            font-size: 1.4rem;
 
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-around;
 
-            border-radius: 1rem;
+            // border-radius: 1rem;
             margin-bottom: 0.5rem;
             min-height: 1rem;
 
             &--head {
-                background: rgba(13, 108, 196, 0.925);
+                background: vars.$c-gray-300;
                 color: white;
             }
             &-piece {
@@ -100,8 +110,8 @@
                     min-width: 25rem;
                 }
                 &--name {
-                    flex-basis: 10rem;
-                    min-width: 10rem;
+                    flex-basis: 16rem;
+                    min-width: 16rem;
                 }
                 &--price {
                     flex-basis: 10rem;
@@ -110,6 +120,12 @@
                 &--quantity {
                     flex-basis: 10rem;
                     min-width: 10rem;
+                }
+                &--delete {
+                    flex-basis: 3rem;
+                    min-width: 3rem;
+                    align-self: stretch;
+                    flex-grow: 0;
                 }
 
                 &-label {
@@ -125,14 +141,34 @@
                     font-size: 1.5em;
                     vertical-align: sub;
                     cursor: pointer;
-                    color: rgb(255, 123, 0);
+                    color: vars.$c-gray-200;
+
                     &:hover {
-                        color: orangered;
+                        color: vars.$c-berry-500;
                     }
                     &:active {
-                        color: red;
+                        color: vars.$c-berry-bright;
                     }
                 }
+            }
+        }
+
+        & .total-price {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+
+            padding-inline: 1rem;
+            
+            & .label {
+                display: inline-block;
+                padding: 1rem 1.2rem;
+            }
+
+            & .price {
+                display: inline-block;
+                padding: 1rem 1.2rem;
             }
         }
     }
@@ -215,34 +251,40 @@
     align-items: center;
 
     & .status {
-        --status-color: rgba(13, 44, 221, 0.678);
-        background: var(--status-color);
+        $status-color: vars.$c-amber-400;
+        background: $status-color;
 
         padding: 0.2rem 1rem;
         border-radius: 1rem;
         margin-inline: 1rem;
         font-size: 1rem;
-        filter: drop-shadow(0px 0px 2px --status-color);
-        color: white;
+        letter-spacing: 1px;
+        filter: drop-shadow(0px 0px 2px $status-color);
+        color: vars.$c-gray-300;
 
         &.success {
-            --status-color: rgb(49, 207, 49);
+            background: vars.$c-success-600;
+            color: vars.$c-gray-300;
         }
         &.failure {
-            --status-color: red;
+            background: vars.$c-berry-400;
+            color: vars.$c-amber-100;
         }
     }
-    & .error {
-        border: 1px solid red;
-        border-radius: 1rem;
+    & .error-message {
+        border: 1px solid vars.$c-berry-500;
+        border-radius: 2rem;
         padding: 0.5rem 1rem;
         font-size: 1.4rem;
         max-width: 50rem;
         overflow-x: auto;
         max-height: 3em;
         cursor: url('img/cursor-touch.png') 8 8, grab;
-        background: wheat;
-        color: brown;
+        background: vars.$c-amber-100;
+        color: vars.$c-berry-500;
+
+        transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
         &::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
             background-color: #f5f5f5;
@@ -260,36 +302,56 @@
 }
 
 .form-container {
+    $color-payment: #2ecc71;
+    $color-purchase: vars.$c-amber-400;
+
     .tab-container {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        background-color: var(--surface5-light);
 
         & .tab {
             flex-basis: 60%;
             text-align: center;
             padding-block: 0.5rem;
             cursor: pointer;
+            border-radius: 1rem;
 
+            &.payment {
+                color: $color-payment;
+            }
+            &.purchase {
+                color: $color-purchase;
+            }
             &.active {
                 color: white;
-                border-top-left-radius: 1rem;
-                border-top-right-radius: 1rem;
-                background-color: var(--color-purchase);
+                // border-top-left-radius: 1rem;
+                // border-top-right-radius: 1rem;
+
+                &.purchase {
+                    background-color: $color-purchase;
+                    border-bottom-right-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
+
+                &.payment {
+                    background-color: $color-payment;
+                    border-bottom-right-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
             }
         }
     }
-    .purchase {
-        background: var(--surface8-light);
-        border: 2px solid var(--color-purchase);
+    & .purchase-dash {
+        background-color: vars.$c-amber-100;
+        border: 2px solid $color-purchase;
         padding-block: 1rem;
         border-radius: 1rem;
         border-top-left-radius: 0;
     }
-    .payment {
-        background: var(--surface8-light);
-        border: 2px solid var(--color-purchase);
+    & .payment-dash {
+        background-color: vars.$c-berry-100;
+        border: 2px solid $color-payment;
         padding-block: 1rem;
         border-radius: 1rem;
         border-top-right-radius: 0;

@@ -3,7 +3,7 @@ export const signupAdmin = (customerDetails) => {
     return new Promise((resolve, reject) => {
         try {
             const xhttp = new XMLHttpRequest();
-            const apiRoute = `${API_ROUTE}/api/v1/admins/signup`;
+            const apiRoute = `${API_ROUTE}/api/v1/admins/login`;
 
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {

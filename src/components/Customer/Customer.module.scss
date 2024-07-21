@@ -1,9 +1,12 @@
-@import '../../scss/abstract/mixins';
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
 
 .container {
     & > button {
         color: white;
     }
+
+    color: vars.$c-brown-400;
 
     & .first-row {
         display: flex;
@@ -13,19 +16,22 @@
         margin-bottom: 2rem;
         margin-inline: 1rem;
 
-        @include respond('phone') {
+        @include mixins.respond('phone') {
             flex-direction: column;
         }
 
         &_left {
-            background: white;
-            // width: 30%;
+            background: linear-gradient(
+                to right top,
+                #{vars.$c-gray-100}10,
+                #{vars.$c-amber-300}10
+            );
+            border: 1px solid #{vars.$c-amber-300};
             flex-basis: 30rem;
             padding-block: 1rem;
-            color: black;
             border-radius: 1rem;
             flex-grow: 2;
-            @include respond('phone') {
+            @include mixins.respond('phone') {
                 flex-basis: 20rem;
             }
             & .profile {
@@ -66,17 +72,22 @@
             }
         }
         &_right {
-            background: white;
-            // width: 60%;
+            --break-gradient: 50%;
+
+            background: linear-gradient(
+                to right top,
+                #{vars.$c-gray-100}10 var(--break-gradient),
+                #{vars.$c-amber-300}50
+            );
+
+            border: 1px solid #{vars.$c-amber-300};
             flex-basis: 60rem;
             flex-grow: 3;
-            color: black;
             border-radius: 1rem;
 
-            @include respond('phone') {
+            @include mixins.respond('phone') {
                 flex-basis: 20rem;
             }
-            // padding-block: 1rem;
             & .detail {
                 display: flex;
                 flex-direction: row;
@@ -90,7 +101,6 @@
 
                 &_name {
                     width: 30%;
-                    // border: 1px solid red;
                     font-weight: 600;
                 }
                 &_value {
@@ -99,6 +109,8 @@
                     flex-direction: row;
                     flex-wrap: wrap;
                     text-transform: capitalize;
+
+                    align-items: flex-start;
 
                     & input {
                         padding: 0.2rem 0.5rem;
@@ -112,7 +124,6 @@
                     color: red;
                     margin-inline: 1rem;
                     aspect-ratio: 1;
-                    // background-color: black;
                     border: 1px solid red;
                     font-weight: 800;
                     border-radius: 0.3rem;
@@ -131,21 +142,27 @@
                     }
                 }
             }
+
+            &:hover {
+                --break-gradient: 10%;
+            }
         }
 
         & .actions {
             display: flex;
             flex-direction: row;
-            justify-content: space-around;
+            justify-content: flex-end;
             margin-block: 1rem;
+            padding-inline: 1rem;
+
+            &.editing {
+                justify-content: space-around;
+            }
         }
     }
 
     & .second-row {
         margin: 2rem 1rem;
-        // border: 2px solid rgb(64, 70, 70);
-        // border-radius: 1rem;
-        // overflow: hidden;
     }
 
     & .third-row {
@@ -156,10 +173,6 @@
             font-weight: 400;
         }
         & .transactions {
-            // border: 1px solid white;
-            // padding-block: 1rem;
-            // border-radius: 1rem;
-            // background: rgba(34, 238, 211, 0.568);
         }
     }
 }

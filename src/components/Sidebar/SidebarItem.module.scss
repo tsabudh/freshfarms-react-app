@@ -1,6 +1,7 @@
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+
 .sidebar-item {
-    // padding: 1rem;
-    // margin: 1rem;
     text-decoration: none;
     display: block;
     padding: 0.75rem 1rem;
@@ -8,29 +9,48 @@
     text-transform: capitalize;
     color: white;
 
+    &:hover {
+        background-color: #{vars.$c-amber-200}10;
+        cursor: pointer;
+
+        & & span {
+            border-left: 2px solid vars.$c-amber-300;
+
+            &.active {
+                border-left: 2px solid vars.$c-berry-bright;
+            }
+        }
+        & .sidebar-title span {
+            border-left: 2px solid vars.$c-amber-300;
+            color: vars.$c-amber-200;
+
+            &.active {
+                background-color: transparent;
+            }
+        }
+    }
+
     &.active {
-        color: green;
-        background-color: green;
     }
     &.inactive {
-        color: red;
-        background-color: red;
     }
 
     & span {
         border-left: 2px solid transparent;
         padding-inline: 2px;
+        display: block;
+        width: 100%;
 
         &:hover {
             display: inline-block;
-            // text-decoration: underline;
-            border-left: 2px solid rgb(219 111 18);
+            border-left: 2px solid vars.$c-amber-300;
             text-underline-position: under;
-            color: white;
+            color: vars.$c-amber-200;
         }
 
         &.active {
-            border-left: 2px solid #2ecc71;
+            border-left: 2px solid vars.$c-berry-bright;
+            color: vars.$c-amber-300;
         }
     }
 
@@ -39,6 +59,14 @@
         display: flex;
         font-size: 1em;
         justify-content: space-between;
+        &:hover {
+            & span {
+                border-left: 2px solid vars.$c-amber-300;
+            }
+            &.toggle-btn {
+                color: vars.$c-amber-300;
+            }
+        }
         & span {
             font-weight: 300;
             cursor: pointer;
@@ -50,7 +78,6 @@
     }
     .sidebar-title .toggle-btn {
         cursor: pointer;
-        // transition: transform 0.3s;
         background: none;
         color: white;
         border: none;
@@ -58,6 +85,10 @@
         & svg {
             color: inherit;
             width: 1rem;
+
+            &:hover {
+                color: vars.$c-amber-400;
+            }
         }
     }
 
@@ -76,7 +107,6 @@
     & .plain {
         cursor: pointer;
         display: block;
-        // color: #fff;
         text-decoration: none;
         font-weight: 300;
 

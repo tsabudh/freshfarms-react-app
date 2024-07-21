@@ -1,4 +1,5 @@
-@import '../../scss/abstract/mixins';
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
 
 .Transaction {
     display: flex;
@@ -14,8 +15,15 @@
     padding: 1rem;
     margin: 1rem;
 
+    &:hover {
+        background: vars.$c-amber-200;
+    }
+
     &.payment {
         background: rgb(190, 255, 190);
+        &:hover {
+            background: #{vars.$c-amber-200}50;
+        }
     }
     & .date-and-time {
         max-width: 13.5rem;
@@ -24,7 +32,7 @@
             font-size: 2.5rem;
             font-weight: 600;
 
-            @include fluidFont(1.8rem, 2.5rem);
+            @include mixins.fluidFont(1.8rem, 2.5rem);
         }
         & .period {
             font-size: 1.1rem;
@@ -45,13 +53,13 @@
             padding: 0.5rem;
             text-transform: capitalize;
             // min-width: 16rem;
-            @include fluid('min-width', 10rem, 16rem);
+            @include mixins.fluid('min-width', 10rem, 16rem);
         }
         & .product-list {
             display: flex;
             list-style-type: none;
             flex-wrap: wrap;
-            @include respond('phone') {
+            @include mixins.respond('phone') {
                 display: none;
             }
 

@@ -1,0 +1,28 @@
+@use '/src/scss/abstract/variables' as vars;
+
+.section-tag {
+    text-transform: uppercase;
+    position: absolute;
+    top: 8rem;
+    right: 0;
+    z-index: 500;
+
+    background-color: vars.$c-berry-bright;
+    color: vars.$c-berry-100;
+    padding: 1rem;
+    padding-left: 2rem;
+
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
+
+    cursor: default;
+
+    &.berry {
+        background-color: vars.$c-berry-bright;
+        color: vars.$c-berry-100;
+    }
+    &.amber {
+        background-color: vars.$c-amber-bright;
+        color: vars.$c-amber-100;
+    }
+}

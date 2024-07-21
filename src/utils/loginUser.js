@@ -1,9 +1,9 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export async function loginAdmin(loginDetails) {
+export async function loginUser(loginDetails, userRole) {
     return new Promise(async (resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
-            let apiRoute = `${API_ROUTE}/api/v1/admins/login`;
+            let apiRoute = `${API_ROUTE}/api/v1/${userRole}s/login`;
 
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
@@ -33,4 +33,4 @@ export async function loginAdmin(loginDetails) {
     });
 }
 
-export default loginAdmin;
+export default loginUser;

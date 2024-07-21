@@ -1,0 +1,25 @@
+{
+    "slides": [
+        {
+            "src": "/img/ice-cream.jpg",
+            "alt": "Ice cream",
+            "quote": "Ice cream is the best!",
+            "link": "/#",
+            "name": "Ice cream"
+        },
+        {
+            "src": "/img/yogurt-bowl.jpg",
+            "alt": "Yogurt",
+            "quote": "Yogurt is the best!",
+            "link": "/#",
+            "name": "Yogurt"
+        },
+        {
+            "src": "/img/paneer-bowl.jpg",
+            "alt": "Paneer",
+            "quote": "Paneer is the best!",
+            "link": "/#",
+            "name": "Paneer"
+        }
+    ]
+}

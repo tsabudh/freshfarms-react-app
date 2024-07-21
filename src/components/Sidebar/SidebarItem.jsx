@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import styles from './SidebarItem.module.scss';
+import classNames from 'classnames/bind';
+
 import { SlArrowDown } from 'react-icons/sl';
+
+import styles from './SidebarItem.module.scss';
+import { AuthContext } from '../../context/AuthContext';
+
+const cx = classNames.bind(styles);
 
 function SidebarItem({ item, id, expanded, handleExpand }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [active, setActive] = useState();
+    const { userRole } = useContext(AuthContext);
 
     const handleNavigate = (e) => {
         if (item.identity == 'menu') {
@@ -27,51 +34,49 @@ function SidebarItem({ item, id, expanded, handleExpand }) {
 
     if (item.children) {
         return (
-            <div
-                className={`${styles['sidebar-item']} ${
-                    expanded == id ? styles['open'] : ' '
-                } 
-                 `}
-            >
+            <div className={cx('sidebar-item', { open: expanded == id })}>
                 {/* <div className={open ? "sidebar-item open" : "sidebar-item"}> */}
                 <div
-                    className={`${styles['sidebar-title']} 
+                    className={`${cx('sidebar-title')} 
                        `}
                     onClick={() => handleExpand(id)}
                 >
-                    <span className={active ? styles.active : ' '}>
+                    <span className={cx({ active: active })}>
                         {/* ITEM ICON  */}
 
                         {item.title}
                     </span>
-                    <button className={styles['toggle-btn']}>
+                    <div className={cx('toggle-btn')}>
                         <SlArrowDown />
-                    </button>
+                    </div>
                 </div>
-                <div className={styles['sidebar-content']}>
-                    {item.children.map((child, index) => (
-                        <SidebarItem
-                            key={index}
-                            item={child}
-                            handleExpand={handleExpand}
-                            // setActive={setActive}
-                        />
-                    ))}
+                <div className={cx('sidebar-content')}>
+                    {item.children.map((child, index) => {
+                        if (userRole == 'customer' && item.adminOnly)
+                            return null;
+
+                        return (
+                            <SidebarItem
+                                key={index}
+                                item={child}
+                                handleExpand={handleExpand}
+                                // setActive={setActive}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         );
     } else {
+        if (userRole == 'customer' && item.adminOnly) return null;
         return (
-            <div
-                onClick={handleNavigate}
-                className={`${styles['sidebar-item']} `}
-            >
+            <div onClick={handleNavigate} className={`${cx('sidebar-item')} `}>
                 {item.icon && <i className={item.icon}></i>}
                 <div
                     className={`${
                         item.identity === 'menu'
-                            ? styles['sidebar-title']
-                            : styles['plain']
+                            ? cx('sidebar-title')
+                            : cx('plain')
                     }`}
                 >
                     <span className={active ? styles.active : ''}>

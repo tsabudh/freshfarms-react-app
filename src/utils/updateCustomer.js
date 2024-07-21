@@ -1,28 +1,31 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export const updateCustomer = (id, customerDetails, jwtToken) => {
-    return new Promise((resolve, reject) => {
-        try {
-            const xhttp = new XMLHttpRequest();
-            const apiRoute = `${API_ROUTE}/api/v1/customers/${id.toString()}`;
+export const updateCustomer = async (id, customerDetails, jwtToken,userRole) => {
+    try {
 
-            xhttp.onreadystatechange = () => {
-                if (xhttp.readyState == 4) {
-                    let response = JSON.parse(xhttp.responseText);
-                    resolve(response);
-                }
-            };
-            xhttp.open('PATCH', apiRoute);
-            xhttp.setRequestHeader('Content-Type', 'application/json');
+        let apiRoute = `${API_ROUTE}/api/v1/customers/one/${id.toString()}`;
 
-            xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
-
-            let requestBody = JSON.stringify(customerDetails);
-            xhttp.send(requestBody);
-        } catch (error) {
-            console.log(error);
-            return;
+        if(userRole && userRole==='customer'){
+            apiRoute = `${API_ROUTE}/api/v1/customers/updateMyDetails`
         }
-    });
+        const response = await fetch(apiRoute, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+            body: JSON.stringify(customerDetails),
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const responseData = await response.json();
+        console.log(responseData);
+        return responseData;
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 export default updateCustomer;

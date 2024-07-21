@@ -1,0 +1,22 @@
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+
+.products-container {
+    padding: 1rem 1.2rem;
+    // background-color: vars.$c-berry-100;
+
+    & h2 {
+        font-weight: 400;
+        color: vars.$c-berry-400;
+        margin-bottom: 1rem;
+    }
+
+    & .products {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1.6rem;
+        flex-wrap: wrap;
+    }
+}

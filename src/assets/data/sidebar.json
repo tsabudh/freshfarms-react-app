@@ -9,19 +9,14 @@
         "title": "transactions",
         "icon": "bi-gear-fill",
         "identity": "menu",
-        "children": [
-            {
-                "title": "overview",
-                "path": "/dashboard/transactions",
-                "identity": "sub-menu"
-            }
-        ]
+        "path": "/dashboard/transactions"
     },
-
     {
         "title": "customers",
         "icon": "bi-person-fill",
         "identity": "menu",
+
+        "adminOnly": true,
         "children": [
             {
                 "title": "overview",
@@ -29,8 +24,8 @@
                 "identity": "sub-menu"
             },
             {
-                "title": "manage",
-                "path": "/dashboard/customers/manage",
+                "title": "add",
+                "path": "/dashboard/customers/add",
                 "identity": "sub-menu"
             }
         ]
@@ -46,14 +41,10 @@
                 "identity": "sub-menu"
             },
             {
-                "title": "details",
-                "path": "/dashboard/products/details",
-                "identity": "sub-menu"
-            },
-            {
-                "title": "inventory",
-                "path": "/dashboard/products/inventory",
-                "identity": "sub-menu"
+                "title": "manage",
+                "path": "/dashboard/products/manage",
+                "identity": "sub-menu",
+                "adminOnly": true
             }
         ]
     },

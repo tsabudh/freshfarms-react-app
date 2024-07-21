@@ -11,27 +11,28 @@ import { AuthContext } from '../../context/AuthContext';
 import fetchMyDetails from '../../utils/fetchMyDetails';
 import Tooltip from '../UI/Tooltip/Tooltip';
 
-function NavBarDash(props) {
-    const { sidebarIsOpen, setSidebarIsOpen } = props;
-    const [admin, setAdmin] = useState({});
-    const { jwtToken, setJwtToken } = useContext(AuthContext);
+function NavBarDash({ sidebarIsOpen, setSidebarIsOpen }) {
+    const { jwtToken, setJwtToken, user, setUser, userRole } =
+        useContext(AuthContext);
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        async function asyncWrapper() {
-            let responseObject = await fetchMyDetails(jwtToken);
-            if (responseObject.status == 'success') {
-                setAdmin(Object.assign({}, responseObject.data));
-            }
-        }
-        asyncWrapper();
-    }, []);
+    // useEffect(() => {
+    //     async function asyncWrapper() {
+    //         let responseObject = await fetchMyDetails(jwtToken, userRole);
+    //         if (responseObject.status == 'success') {
+    //             setUser(Object.assign({}, responseObject.data));
+    //         }
+    //     }
+    //     asyncWrapper();
+    // }, []);
 
     const handleLogout = (e) => {
-        setJwtToken(null);
         localStorage.removeItem('jwtToken');
-        setAdmin({});
+        localStorage.removeItem('user');
+        setJwtToken(null);
+        setUser(null);
+        navigate('/login');
     };
 
     const handleToggle = (e) => {
@@ -40,11 +41,10 @@ function NavBarDash(props) {
     return (
         <div className={styles['navigation-bar']}>
             <div
-                onClick={handleToggle}
                 className={`${styles['toggle-sidebar']} 
-                ${sidebarIsOpen ? styles['toggle-sidebar--open'] : ''}`}
+                    ${sidebarIsOpen ? styles['toggle-sidebar--open'] : ''}`}
             >
-                <IoMenuSharp />
+                <IoMenuSharp onClick={handleToggle} />
             </div>
 
             {location.pathname != '/dashboard' && (
@@ -52,7 +52,10 @@ function NavBarDash(props) {
                     className={`${styles['go-back']} 
                     ${sidebarIsOpen ? '' : styles['go-back--pushed']}`}
                 >
-                    <Button className="stylish06" onClick={() => navigate(-1)}>
+                    <Button
+                        className="amber-02 small"
+                        onClick={() => navigate(-1)}
+                    >
                         <span>Go back </span>
                         <RiArrowGoBackFill />
                     </Button>
@@ -60,9 +63,9 @@ function NavBarDash(props) {
             )}
 
             <div className={styles['details']}>
-                <div className={styles['name']}>{admin && admin.name}</div>
-                <div className={styles['logout']} onClick={handleLogout}>
-                    <GrLogout />
+                <div className={styles['name']}>{user && user.name}</div>
+                <div className={styles['logout']}>
+                    <GrLogout onClick={handleLogout} />
                     <Tooltip className={'bottom-left'} text={'Logout'} />
                 </div>
             </div>

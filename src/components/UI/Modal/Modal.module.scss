@@ -1,4 +1,6 @@
-@import '../../../scss/utilities/scrollbar.scss';
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+@use '/src/scss/utilities/scrollbar.scss';
 
 .modal-overlay {
     position: absolute;
@@ -46,9 +48,13 @@
                         cursor: pointer;
 
                         color: rgb(9, 129, 79);
+                        color: vars.$c-berry-400;
 
+                        &:hover {
+                            color: vars.$c-amber-400;
+                        }
                         &:active {
-                            color: rgb(16, 167, 104);
+                            color: vars.$c-berry-bright;
                         }
                     }
                 }

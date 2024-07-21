@@ -1,0 +1,29 @@
+@use '/src/scss/abstract/variables' as vars;
+
+.favorites {
+    position: relative;
+    background-color: vars.$c-berry-100;
+    background: linear-gradient(
+        to right bottom,
+        vars.$c-berry-100,
+        vars.$c-amber-100
+    );
+    padding: 15rem 2.4rem;
+
+    & .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5rem;
+
+        & .h2 {
+            font-size: 4rem;
+            color: vars.$c-amber-400;
+            font-weight: 300;
+            line-height: 98%;
+            font-family: Inter;
+            text-align: center;
+            margin-top: 3rem;
+        }
+    }
+}
