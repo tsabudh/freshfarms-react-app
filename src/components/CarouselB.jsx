@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 
 import styles from './CarouselB.module.scss';
 import classNames from 'classnames/bind';
-import IconLessThan from './ui/Icons/IconLessThan';
-import IconGreaterThan from './ui/Icons/IconGreaterThan';
+import IconLessThan from './UI/Icons/IconLessThan';
+import IconGreaterThan from './UI/Icons/IconGreaterThan';
 const cx = classNames.bind(styles);
 
 export const CarouselB = ({ data, className }) => {
