@@ -10,7 +10,7 @@ import Tag from '../UI/Tag/Tag';
 import updateAdmin from '../../utils/updateAdmin';
 
 function AdminProfile() {
-    const { jwtToken } = useContext(AuthContext);
+    const { jwtToken, user } = useContext(AuthContext);
     const [profile, setProfile] = useState();
     const [loadingProfilePic, setLoadingProfilePic] = useState(false);
     const [newName, setNewName] = useState('');
@@ -18,9 +18,9 @@ function AdminProfile() {
     const [newPhone, setNewPhone] = useState('');
 
     const [editing, setEditing] = useState(false);
-    const [adminPhone, setAdminPhone] = useState('');
+    const [adminPhone, setUserPhone] = useState('');
     const [addedPhones, setAddedPhones] = useState([]);
-    const [adminPhoneArray, setAdminPhoneArray] = useState([]);
+    const [adminPhoneArray, setUserPhoneArray] = useState([]);
 
     const deleteStoredPhoneTag = (e) => {
         //- Return if not editing
@@ -31,7 +31,7 @@ function AdminProfile() {
             (elem) => elem == e.target.innerText.toLowerCase()
         );
         if (matchedIndex >= 0) tempAdminPhoneArray.splice(matchedIndex, 1);
-        setAdminPhoneArray(tempAdminPhoneArray);
+        setUserPhoneArray(tempAdminPhoneArray);
     };
     const deleteAddedPhoneTag = (e) => {
         //- Return if not editing
@@ -64,7 +64,7 @@ function AdminProfile() {
         setAddedPhones(Array.from(newSet));
 
         //- clearing input field after addition
-        setAdminPhone('');
+        setUserPhone('');
         newPhoneArray.push(newNumber);
     };
 
@@ -73,11 +73,11 @@ function AdminProfile() {
 
     //- Function for fetching adminDetails and setting it to profile state
     async function getSetAdminProfile() {
-        const response = await fetchMyDetails(jwtToken);
+        const response = await fetchMyDetails(jwtToken, user.role);
         if (response.status == 'success') {
             uniqueParam = `?${new Date().getTime()}`;
             setProfile(response.data);
-            setAdminPhoneArray(response.data.phone);
+            setUserPhoneArray(response.data.phone);
         } else {
             console.log('Error fetching account s!');
         }
@@ -108,14 +108,14 @@ function AdminProfile() {
     };
 
     const handleAdminPhone = (e) => {
-        setAdminPhone(e.target.value);
+        setUserPhone(e.target.value);
     };
 
     const enableEditing = async (e) => {
         setEditing(true);
     };
     const disableEditing = async (e) => {
-        setAdminPhoneArray(profile.phone);
+        setUserPhoneArray(profile.phone);
 
         setEditing(false);
     };

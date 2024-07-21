@@ -13,10 +13,8 @@ import { convertToPDF } from '../../utils/pdf';
 
 const cx = classNames.bind(styles);
 
-const TransactionTable = (props) => {
-    const { transactionFilterObject } = props;
-
-    const { jwtToken } = useContext(AuthContext);
+const TransactionTable = ({ transactionFilterObject }) => {
+    const { jwtToken, user } = useContext(AuthContext);
     const [transactions, setTransactions] = useState([]);
 
     const asyncWrapper = async () => {
@@ -38,6 +36,8 @@ const TransactionTable = (props) => {
         asyncWrapper();
     }, [transactionFilterObject]);
 
+    if (!user) return null;
+
     return (
         <div className={cx('container')}>
             <div className={cx('download')}>
@@ -46,7 +46,7 @@ const TransactionTable = (props) => {
                     onClick={() => convertToPDF(transactions)}
                     title="Download transactions as PDF"
                 >
-                    <Button className="icon03">
+                    <Button className="berry-02 small">
                         <PiFilePdfDuotone />
                     </Button>
                 </div>

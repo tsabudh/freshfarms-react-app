@@ -1,3 +1,15 @@
-.home{
-    display: block;
+@use '../../scss/abstract/mixins' as mixins;
+@use '../../scss/abstract/variables' as vars;
+
+.home {
+    display: flex;
+    min-height: 100vh;
+
+    @include mixins.respond(tab-port) {
+        flex-direction: column;
+    }
+
+    & .window {
+        flex-basis: 100%;
+    }
 }

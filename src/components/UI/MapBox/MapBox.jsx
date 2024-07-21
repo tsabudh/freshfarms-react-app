@@ -7,6 +7,7 @@ import styles from './MapBox.module.scss';
 import Button from '../Button/Button';
 import updateCustomer from '../../../utils/updateCustomer';
 import { AuthContext } from '../../../context/AuthContext';
+import classNames from 'classnames/bind';
 
 //- DECLARING GLOBAL VARIABLES FOR MAP
 let marker = null,
@@ -14,14 +15,19 @@ let marker = null,
     zoomed = null,
     redMarker;
 
-function MapBox(props) {
-    const { coordinates, setCoordinates } = props;
+const cx = classNames.bind(styles);
+
+function MapBox({ coordinates, setCoordinates }) {
     const [selectedMarker, setSelectedMarker] = useState('not-selected');
     const [map, setMap] = useState(null);
 
-    const { jwtToken } = useContext(AuthContext);
-    const { id } = useParams();
+    const { jwtToken, user } = useContext(AuthContext);
 
+    const { id: paramId } = useParams();
+
+    const id = user.role == 'admin' ? paramId : user._id;
+
+    console.log(id);
     useEffect(() => {
         let map = L.map('map');
         map.setView(coordinates, 16);
@@ -78,7 +84,7 @@ function MapBox(props) {
             iconSize: [30, 50],
             iconAnchor: [15, 50],
             popupAnchor: [-3, -50],
-            className: styles['marker-red'],
+            className: cx('marker-red'),
         });
 
         //- Get latitude and longitude of clicked location
@@ -121,7 +127,8 @@ function MapBox(props) {
                 let responseTxt = await updateCustomer(
                     id,
                     newCustomerDetails,
-                    jwtToken
+                    jwtToken,
+                    user.role
                 );
 
                 //- Change coordinates if location change is a success
@@ -148,17 +155,14 @@ function MapBox(props) {
     };
 
     return (
-        <div className={styles['container']}>
-            <div className={styles['button-list']}>
-                <Button
-                    className="icon02"
-                    onClick={centerToCustomerLocation}
-                    title="Go to customer's location."
-                >
+        <div className={cx('container')}>
+            <div className={cx('button-list')}>
+                <div className={cx('my-location')}>
                     <MdMyLocation onClick={centerToCustomerLocation} />
-                </Button>
+                </div>
+
                 <Button
-                    className={`action02 ${
+                    className={`action-berry-01 ${
                         selectedMarker == 'not-selected'
                             ? ''
                             : selectedMarker == 'selected'
@@ -187,8 +191,8 @@ function MapBox(props) {
                 ) : null}
             </div>
 
-            <div className={styles['map-container']}>
-                <div className={styles['map-box']} id="map">
+            <div className={cx('map-container')}>
+                <div className={cx('map-box')} id="map">
                     Map box
                 </div>
             </div>

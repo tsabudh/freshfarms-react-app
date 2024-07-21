@@ -1,0 +1,10 @@
+@use '../../scss/abstract/mixins' as mixins;
+@use '../../scss/abstract/variables' as vars;
+
+.home {
+    display: flex;
+
+    @include mixins.respond(tab-port) {
+        flex-direction: column;
+    }
+}

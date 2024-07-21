@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import styles from './CustomerPanel.module.scss';
 import { AuthContext } from '../../context/AuthContext';
 
-import CustomerProfile from '../CustomerProfile/CustomerProfile';
+import CustomerProfileCard from '../CustomerProfile/CustomerProfileCard';
 import fetchCustomers from '../../utils/fetchCustomers';
 
 const cx = classNames.bind(styles);
@@ -15,8 +15,10 @@ const CustomerPanel = () => {
 
     useEffect(() => {
         let asyncWrapper = async function () {
-            let customerResults = await fetchCustomers(null, jwtToken);
-            if (customerResults) setCustomers(customerResults);
+            let customerResponse = await fetchCustomers(null, jwtToken);
+            if (customerResponse.status == 'success') {
+                if (customerResponse.data) setCustomers(customerResponse.data);
+            }
         };
         asyncWrapper();
     }, []);
@@ -24,7 +26,9 @@ const CustomerPanel = () => {
         <>
             <div className={cx('card-container')}>
                 {customers.map((item) => {
-                    return <CustomerProfile key={item._id} customer={item} />;
+                    return (
+                        <CustomerProfileCard key={item._id} customer={item} />
+                    );
                 })}
             </div>
         </>

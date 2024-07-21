@@ -1,0 +1,23 @@
+
+<svg version="1.1" id="skd_logo_svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	height="1em" width="1em" viewBox="0 0 371 296" style="enable-background:new 0 0 370.8 295.1;" xml:space="preserve">
+<style type="text/css">
+	.st0{
+        fill:none;
+        }
+	.st1{
+        fill:none;
+        stroke:#231F20;
+        stroke-width:10;
+        stroke-miterlimit:10;
+        }
+</style>
+<!-- <g id="g" stroke="inherit"> -->
+	<g id="Logo">
+		<polyline class="st1" stroke="currentColor" points="353.3,287.5 193,152.2 353.3,16.9 		"/>
+		<polyline class="st1" stroke="currentColor" points="202.8,287.5 363.1,152.2 202.8,16.9 		"/>
+		<path class="st1" d="M3.3,149.1l77.6-66h0.3L126,46.2C107.6,30.4,98.5,22.3,80.9,6.7L35.1,46.2l46.2,36.9l82.3,69.2L3.3,291.4"/>
+		<line class="st1" x1="178.2" y1="6.7" x2="178.2" y2="291.4"/>
+	</g>
+<!-- </g> -->
+</svg>

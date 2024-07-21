@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { IoMdCloseCircle } from 'react-icons/io';
 import { IoSendSharp } from 'react-icons/io5';
-import { FaUserFriends } from 'react-icons/fa';
+import { IoCloseSharp } from 'react-icons/io5';
+import { IoPeopleOutline } from 'react-icons/io5';
+
 import classNames from 'classnames/bind';
 
 import { AuthContext } from '../../context/AuthContext';
@@ -9,7 +10,7 @@ import { WS_ROUTE } from '../../assets/globals/baseRoute';
 import styles from './ChatPanel.module.scss';
 
 import fetchMyDetails from '../../utils/fetchMyDetails';
-import { fetchAdmins } from '../../utils/fetchAdmins';
+import fetchFriends from '../../utils/fetchFriends';
 import fetchMessages from '../../utils/fetchMessages';
 // import  WebSocket  from 'ws';
 const cx = classNames.bind(styles);
@@ -36,7 +37,7 @@ class ChatMessage {
 }
 
 export default function ChatPanel() {
-    const { jwtToken } = useContext(AuthContext);
+    const { jwtToken, user } = useContext(AuthContext);
 
     const messageWindowRef = useRef();
 
@@ -52,8 +53,10 @@ export default function ChatPanel() {
     const [activeFriend, setActiveFriend] = useState(null);
     const [areFriendsHidden, setAreFriendsHidden] = useState(false);
 
+    const [adminFriends, setAdminFriends] = useState(null);
+    const [customerFriends, setCustomerFriends] = useState(null);
+
     const connectWebSocket = () => {
-        console.log(WS_ROUTE);
         const newWebSocket = new WebSocket(WS_ROUTE);
 
         newWebSocket.onopen = (event) => {
@@ -89,17 +92,31 @@ export default function ChatPanel() {
     };
 
     async function getSetAdminProfile() {
-        const response = await fetchMyDetails(jwtToken);
+        const response = await fetchMyDetails(jwtToken, user.role);
         if (response.status == 'success') {
             setProfile(response.data);
         } else {
         }
     }
     async function getSetFriends() {
-        const response = await fetchAdmins(jwtToken);
-        if (response.status == 'success') {
-            setFriends(response.data);
-        } else {
+        try {
+            const friendsArray = await fetchFriends(jwtToken, user.role);
+            if (friendsArray) {
+                const [adminFriends, customerFriends] = friendsArray;
+                const friendsTemp = [
+                    ...(adminFriends || []),
+                    ...(customerFriends || []),
+                ];
+
+                setFriends(friendsTemp);
+                setAdminFriends(adminFriends || []);
+
+                if (user.role === 'admin') {
+                    setCustomerFriends(customerFriends || []);
+                }
+            }
+        } catch (error) {
+            console.log(error.message);
         }
     }
     useEffect(() => {
@@ -168,10 +185,12 @@ export default function ChatPanel() {
                     <div className={cx('title')}>
                         <h2>Chats</h2>
                         <div
-                            className={cx('friends-menu')}
+                            className={cx('friends-menu', {
+                                closed: areFriendsHidden,
+                            })}
                             onClick={() => setAreFriendsHidden((prev) => !prev)}
                         >
-                            <FaUserFriends />
+                            <IoPeopleOutline />
                         </div>
                     </div>
                 </section>
@@ -185,7 +204,7 @@ export default function ChatPanel() {
                                 className={cx('close')}
                                 onClick={() => setActiveFriend(null)}
                             >
-                                <IoMdCloseCircle />
+                                <IoCloseSharp />
                             </div>
                         </div>
                         <div
@@ -240,20 +259,39 @@ export default function ChatPanel() {
             </div>
 
             <div className={cx('friends-window', { hidden: areFriendsHidden })}>
-                {friends?.map((admin) => {
-                    if (admin && admin._id != profile?._id) {
+                {adminFriends?.map((friend) => {
+                    if (friend && friend._id != profile?._id) {
                         return (
                             <div
-                                key={`friends_random_string${admin._id}`}
+                                key={`friends_random_string${friend._id}`}
                                 className={cx(
                                     'friend',
-                                    activeFriend?._id === admin._id
+                                    activeFriend?._id === friend._id
                                         ? 'active'
                                         : 'inactive'
                                 )}
-                                onClick={() => setActiveFriend(admin)}
+                                onClick={() => setActiveFriend(friend)}
                             >
-                                {admin.name}
+                                {friend.name}
+                            </div>
+                        );
+                    }
+                })}
+                <div className={cx('hr')}></div>
+                {customerFriends?.map((friend) => {
+                    if (friend && friend._id != profile?._id) {
+                        return (
+                            <div
+                                key={`friends_random_string${friend._id}`}
+                                className={cx(
+                                    'friend',
+                                    activeFriend?._id === friend._id
+                                        ? 'active'
+                                        : 'inactive'
+                                )}
+                                onClick={() => setActiveFriend(friend)}
+                            >
+                                {friend.name}
                             </div>
                         );
                     }

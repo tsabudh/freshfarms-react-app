@@ -17,6 +17,7 @@ import Tag from '../UI/Tag/Tag';
 import MapBox from '../UI/MapBox/MapBox';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import deleteCustomer from '../../utils/deleteCustomer';
+import fetchMyDetails from '../../utils/fetchMyDetails';
 
 const initialTransactionFilterObject = {
     sortBy: {
@@ -36,9 +37,13 @@ const copyText = (e) => {
 
 const cx = classNames.bind(styles);
 
-function Customer() {
-    const { jwtToken } = useContext(AuthContext);
-    const { id } = useParams();
+function Customer({ customerId }) {
+    const { jwtToken, user } = useContext(AuthContext);
+    const { id: paramId } = useParams();
+
+    const id = customerId || paramId;
+
+    console.log(id);
     const navigate = useNavigate();
     const [customer, setCustomer] = useState(null);
     const [editingStatus, setEditingStatus] = useState(false);
@@ -58,24 +63,40 @@ function Customer() {
     //- INITIALIZING CUSTOMER AND TRANSACTIONS
     useEffect(() => {
         const asyncWrapper = async () => {
-            let customerResult = await fetchCustomers(id, jwtToken);
+            console.log(user.role);
+            let customerResponse;
+            if (user.role == 'admin') {
+                customerResponse = await fetchCustomers(
+                    id,
+                    jwtToken,
+                    user.role
+                );
+            }
+            if (user.role == 'customer') {
+                customerResponse = await fetchMyDetails(jwtToken, user.role);
+            }
             let transactionResults = await fetchTransactions(
                 initialTransactionFilterObject,
                 jwtToken
             );
-            setCustomer(customerResult);
-            setCoordinates((prevCoordinates) => {
-                //- If customer do not have any coordinates set, return default coordinates of shop
-                if (
-                    customerResult.location &&
-                    customerResult.location.coordinates.length != 0
-                ) {
-                    return customerResult.location.coordinates;
-                } else {
-                    // Coordinates of dairy shop is set as default
-                    return [28.27182621011652, 83.60018489346729];
-                }
-            });
+
+            if (customerResponse.status == 'success') {
+                let customerResponseData = customerResponse.data;
+                setCustomer(customerResponseData);
+                setCoordinates((prevCoordinates) => {
+                    //- If customer do not have any coordinates set, return default coordinates of shop
+                    if (
+                        customerResponseData.location &&
+                        customerResponseData.location.coordinates.length != 0
+                    ) {
+                        return customerResponseData.location.coordinates;
+                    } else {
+                        // Coordinates of dairy shop is set as default
+                        return [28.27182621011652, 83.60018489346729];
+                    }
+                });
+            }
+
             setTransactions(transactionResults);
         };
         asyncWrapper();
@@ -155,7 +176,12 @@ function Customer() {
         customerDetails.name = customerName;
         customerDetails.address = customerAddress;
         customerDetails.phone = [...addedPhones, ...customerPhoneArray];
-        let result = await updateCustomer(id, customerDetails, jwtToken);
+        let result = await updateCustomer(
+            id,
+            customerDetails,
+            jwtToken,
+            user.role
+        );
         if (result.status == 'success') {
             setCustomer(result.data);
             setEditingStatus(false);
@@ -170,32 +196,34 @@ function Customer() {
         navigate('/dashboard/customers');
     };
 
+    console.log(customer);
+
     return (
         customer && (
-            <div className={styles['container']}>
-                <div className={styles['first-row']}>
-                    <div className={styles['first-row_left']}>
-                        <div className={styles['profile']}>
-                            <figure className={styles['profile_picture']}>
+            <div className={cx('container')}>
+                <div className={cx('first-row')}>
+                    <div className={cx('first-row_left')}>
+                        <div className={cx('profile')}>
+                            <figure className={cx('profile_picture')}>
                                 <img
                                     src="/img/profile-picture.jpg"
                                     alt={customer.name}
                                 />
                             </figure>
-                            <span className={styles['profile_name']}>
+                            <span className={cx('profile_name')}>
                                 {customer.name}
                             </span>
-                            <div className={styles['tab']}>
-                                <div className={styles['purchase']}>
+                            <div className={cx('tab')}>
+                                <div className={cx('purchase')}>
                                     <p>Purchase</p>
 
                                     {customer.tab.purchase}
                                 </div>
-                                <div className={styles['paid']}>
+                                <div className={cx('paid')}>
                                     <p>Paid</p>
                                     {customer.tab.paid}
                                 </div>
-                                <div className={styles['due']}>
+                                <div className={cx('due')}>
                                     <p>Due</p>
                                     {customer.tab.due}
                                 </div>
@@ -203,13 +231,13 @@ function Customer() {
                         </div>
                     </div>
 
-                    <div className={styles['first-row_right']}>
-                        <div className={styles['details']}>
-                            <div className={styles['detail']}>
-                                <div className={styles['detail_name']}>
+                    <div className={cx('first-row_right')}>
+                        <div className={cx('details')}>
+                            <div className={cx('detail')}>
+                                <div className={cx('detail_name')}>
                                     Customer ID
                                 </div>
-                                <div className={styles['detail_value']}>
+                                <div className={cx('detail_value')}>
                                     <Tag
                                         className="orange01"
                                         onClick={copyText}
@@ -219,7 +247,7 @@ function Customer() {
                                     </Tag>
                                     {editingStatus && (
                                         <div
-                                            className={styles['delete']}
+                                            className={cx('delete')}
                                             onClick={handleDeleteCustomer}
                                         >
                                             <TiUserDeleteOutline />
@@ -240,11 +268,9 @@ function Customer() {
                                 editingStatus={editingStatus}
                             />
 
-                            <div className={styles['detail']}>
-                                <div className={styles['detail_name']}>
-                                    Phone
-                                </div>
-                                <div className={styles['detail_value']}>
+                            <div className={cx('detail')}>
+                                <div className={cx('detail_name')}>Phone</div>
+                                <div className={cx('detail_value')}>
                                     {customerPhoneArray.map((item) => (
                                         <Tag
                                             key={item}
@@ -273,9 +299,7 @@ function Customer() {
                                             </Tag>
                                         ))}
                                     {editingStatus && (
-                                        <div
-                                            className={styles['input-wrapper']}
-                                        >
+                                        <div className={cx('input-wrapper')}>
                                             <input
                                                 type="text"
                                                 value={customerPhone}
@@ -301,7 +325,12 @@ function Customer() {
                                 editingStatus={editingStatus}
                             />
                         </div>
-                        <div className={styles['actions']}>
+                        <div
+                            className={cx(
+                                'actions',
+                                editingStatus ? 'editing' : ''
+                            )}
+                        >
                             <Button
                                 className="action01 wait"
                                 onClick={() => setEditingStatus(true)}
@@ -317,13 +346,14 @@ function Customer() {
                                 </Button>
                             )}
 
-                            <Button
-                                className="action01 go"
-                                onClick={() => saveEdits(id)}
-                                disabled={!editingStatus}
-                            >
-                                Save
-                            </Button>
+                            {editingStatus && (
+                                <Button
+                                    className="action01 go"
+                                    onClick={() => saveEdits(id)}
+                                >
+                                    Save
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -349,9 +379,9 @@ function CustomerTransactions({
     transactionFilterObject,
 }) {
     return (
-        <div className={styles['third-row']}>
+        <div className={cx('third-row')}>
             <h3>Transactions</h3>
-            <div className={styles['transactions']}>
+            <div className={cx('transactions')}>
                 <SortAndFilter
                     setTransactionFilterObject={setTransactionFilterObject}
                     customerId={customer._id}
@@ -366,7 +396,7 @@ function CustomerTransactions({
 
 function CustomerLocation({ coordinates, setCoordinates }) {
     return (
-        <div className={styles['second-row']}>
+        <div className={cx('second-row')}>
             {coordinates ? (
                 <MapBox
                     coordinates={coordinates}
@@ -385,12 +415,12 @@ function CustomerDetailField({
     editingStatus,
 }) {
     return (
-        <div className={styles['detail']}>
-            <div className={styles['detail_name']}>{detailName}</div>
-            <div className={styles['detail_value']}>
+        <div className={cx('detail')}>
+            <div className={cx('detail_name')}>{detailName}</div>
+            <div className={cx('detail_value')}>
                 {currentDetail}
                 {editingStatus && (
-                    <div className={styles['input-wrapper']}>
+                    <div className={cx('input-wrapper')}>
                         <input
                             type="text"
                             value={inputDetail}

@@ -1,64 +1,58 @@
-import React, { useState, createContext, useContext, useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
-import './App.scss';
 import 'react-toastify/dist/ReactToastify.css';
+import './App.scss';
 
 import { AuthContext } from './context/AuthContext';
 
 import Dashboard from './pages/Dashboard/Dashboard';
-import LoginPage from './pages/Login/LoginPage';
 import Home from './pages/Home/Home';
+import LoginPage from './pages/Home/LoginPage';
 
-import ErrorBoundary from './components/ErrorBoundary';
-import TransactionPanel from './components/TransactionPanel/TransactionPanel';
-import CustomerPanel from './components/CustomerPanel/CustomerPanel';
-import StatementPanel from './components/StatementPanel/StatementPanel';
-import InventoryPanel from './components/InventoryPanel/InventoryPanel';
-import OverviewPanel from './components/OverviewPanel/OverviewPanel';
-import Customer from './components/Customer/Customer';
-import Notifier from './components/Notifier/Notifier';
-import ProductPanel from './components/ProductPanel/ProductPanel';
-import ProductDetails from './components/ProductDetails/ProductDetails';
 import AdminProfile from './components/AdminProfile/AdminProfile';
-import refreshToken from './utils/refreshToken';
 import ChatPanel from './components/ChatPanel/ChatPanel';
+import Customer from './components/Customer/Customer';
+import CustomerPanel from './components/CustomerPanel/CustomerPanel';
 import CustomerRegistry from './components/CustomerRegistry/CustomerRegistry';
+import ErrorBoundary from './components/ErrorBoundary';
+import InventoryPanel from './components/InventoryPanel/InventoryPanel';
+import Notifier from './components/Notifier/Notifier';
+import OverviewPanel from './components/OverviewPanel/OverviewPanel';
+import ProductManage from './components/ProductPanel/ProductManage';
+import ProductPanel from './components/ProductPanel/ProductPanel';
+import StatementPanel from './components/StatementPanel/StatementPanel';
+import TransactionPanel from './components/TransactionPanel/TransactionPanel';
+import LandingPage from './pages/Home/LandingPage';
+import { getUserFromLocalStorage } from './utils/localStorageUtils';
+import StorePage from './pages/Home/StorePage';
+import ContactPage from './pages/Home/ContactPage';
 
 function App() {
     const [jwtToken, setJwtToken] = useState(localStorage.getItem('jwtToken'));
-    const navigate = useNavigate();
+    const [user, setUser] = useState(getUserFromLocalStorage());
 
-    useEffect(() => {
-        async function asyncWrapper() {
-            let storedToken = localStorage.getItem('jwtToken');
-            if (storedToken) {
-                let response = await refreshToken(storedToken);
-                if (response.status == 'success') {
-                    setJwtToken(response.token);
-                    localStorage.setItem('jwtToken',response.token)
-                } else {
-                    
-                    localStorage.removeItem('jwtToken');
-                    toast('JWT Error', {
-                        position: 'top-right',
-                        theme: 'colored',
-                        toastId: 'jwt',
-                    });
-                    navigate('/login');
-                }
-            }
-        }
-        asyncWrapper();
-    }, []);
+    const userRole = user?.role;
 
     return (
-        <AuthContext.Provider value={{ jwtToken, setJwtToken }}>
+        <AuthContext.Provider
+            value={{
+                jwtToken,
+                setJwtToken,
+                user,
+                setUser,
+                userRole,
+            }}
+        >
             <Notifier />
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/" element={<Home />}>
+                    <Route index element={<LandingPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path='/store' element={<StorePage/>}/>
+                    <Route path='/contact' element={<ContactPage/>}/>
+
+                </Route>
                 <Route path="/dashboard" element={<Dashboard />}>
                     <Route
                         index
@@ -71,11 +65,11 @@ function App() {
                     <Route path="customers">
                         <Route index element={<CustomerPanel />} />
                         <Route path=":id" element={<Customer />} />
-                        <Route path="manage" element={<CustomerRegistry />} />
+                        <Route path="add" element={<CustomerRegistry />} />
                     </Route>
                     <Route path="products">
                         <Route index element={<ProductPanel />} />
-                        <Route path="details" element={<ProductDetails />} />
+                        <Route path="manage" element={<ProductManage />} />
                         <Route path="inventory" element={<InventoryPanel />} />
                     </Route>
                     <Route path="transactions">
@@ -83,7 +77,16 @@ function App() {
                         <Route path="statements" element={<StatementPanel />} />
                     </Route>
                     <Route path="chat" element={<ChatPanel />} />
-                    <Route path="profile" element={<AdminProfile />} />
+                    <Route
+                        path="profile"
+                        element={
+                            userRole == 'admin' ? (
+                                <AdminProfile />
+                            ) : userRole == 'customer' ? (
+                                <Customer customerId={user._id} />
+                            ) : null
+                        }
+                    />
                 </Route>
             </Routes>
         </AuthContext.Provider>

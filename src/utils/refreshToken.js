@@ -1,10 +1,10 @@
 import API_ROUTE from '../assets/globals/baseRoute.js';
 
-export async function refreshToken(jwtToken) {
+export async function refreshToken(jwtToken, userRole) {
     return new Promise(async (resolve, reject) => {
         try {
             let xhttp = new XMLHttpRequest();
-            let apiRoute = `${API_ROUTE}/api/v1/admins/refreshToken`;
+            let apiRoute = `${API_ROUTE}/api/v1/${userRole}s/refreshToken`;
 
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {

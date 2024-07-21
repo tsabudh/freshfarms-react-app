@@ -5,7 +5,7 @@ import SortAndFilter from '../SortAndFilter/SortAndFilter';
 import styles from './TransactionPanel.module.scss';
 
 const TransactionPanel = () => {
-    const [filterObject, setFilterObject] = useState({
+    const [transactionFilterObject, setTransactionFilterObject] = useState({
         sortBy: {
             issuedTime: -1,
         },
@@ -13,8 +13,12 @@ const TransactionPanel = () => {
 
     return (
         <div className={styles.container}>
-            <SortAndFilter setFilterObject={setFilterObject} />
-            <TransactionTable filterObject={filterObject} />
+            <SortAndFilter
+                setTransactionFilterObject={setTransactionFilterObject}
+            />
+            <TransactionTable
+                transactionFilterObject={transactionFilterObject}
+            />
         </div>
     );
 };

@@ -1,0 +1,123 @@
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+
+.product-card {
+    position: relative;
+    min-height: 2rem;
+    min-width: 2rem;
+    max-width: 60rem;
+    background-color: white;
+    border-radius: 1.4rem;
+    flex-basis: 50rem;
+
+    box-shadow: 1px 1px 10px 0px #{vars.$c-gray-300}50;
+    
+
+    & .product {
+        padding: 1rem 1rem;
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+        font-family: Inter;
+        max-height: 30rem;
+
+        @include mixins.respond(tab-land) {
+            flex-direction: column;
+            max-height: none;
+            gap: 0;
+        }
+
+        &_image {
+            flex-basis: 35%;
+
+            // & figure {
+            //     display: flex;
+            //     flex-direction: row;
+            //     align-items: center;
+            //     justify-content: center;
+            //     height: 100%;
+            //     width: 100%;
+
+            //     border-radius: 1.4rem;
+            //     overflow: hidden;
+
+            //     & img {
+            //         object-fit: contain;
+            //         width: 100%;
+            //         height: 100%;
+            //     }
+            // }
+        }
+
+        &_details {
+            flex-basis: 70%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+
+            padding-block: 1.5rem;
+
+            & .name {
+                align-self: flex-start;
+                text-transform: capitalize;
+                font-size: 2rem;
+                color: vars.$c-berry-400;
+                font-weight: 400;
+                border-bottom: 2px solid transparent;
+            }
+
+            & .description {
+            }
+
+            & .footer {
+                flex-grow: 2;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: flex-end;
+
+                @include mixins.respond(tab-land) {
+                    margin-top: 1rem;
+                }
+
+                & .unit {
+                    display: inline-block;
+                    padding: 1rem 1.2rem;
+                    font-size: 1.4rem;
+                    color: vars.$c-gray-200;
+                }
+                & .price {
+                    display: inline-block;
+                    padding: 1rem 1.2rem;
+                    border: 1px solid vars.$c-berry-400;
+                    color: vars.$c-berry-400;
+
+                    cursor: default;
+                }
+            }
+        }
+    }
+    &:hover {
+        box-shadow: 1px 1px 10px 0px #{vars.$c-brown-400}50;
+        background: linear-gradient(
+            to right top,
+            vars.$c-amber-200,
+            vars.$c-amber-200
+        );
+
+        & .product {
+            &_details {
+                & .name {
+                    border-color: vars.$c-berry-400;
+                    // color: vars.$c-amber-100;
+                }
+                & .footer {
+                    & .price {
+                        background-color: vars.$c-berry-400;
+                        color: vars.$c-amber-100;
+                    }
+                }
+            }
+        }
+    }
+}

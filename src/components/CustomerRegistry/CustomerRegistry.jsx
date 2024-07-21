@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './CustomerRegistry.module.scss';
 import { AuthContext } from '../../context/AuthContext';
 
 import Button from '../UI/Button/Button';
-import CustomerProfile from '../CustomerProfile/CustomerProfile';
+import CustomerProfileCard from '../CustomerProfile/CustomerProfileCard';
 import ErrorFormFooter from '../UI/Error/ErrorFormFooter';
 
 import useAPI from '../../hooks/useAPI';
@@ -32,11 +32,16 @@ function CustomerRegistry() {
     const [tabOptions, setTabOptions] = useState(false);
     const [failures, setFailures] = useState(failuresObject);
 
+    const [error, setError] = useState(null);
+
     const [posting, setPosting] = useState(''); // sending '' success failure
+
+    const createCustomerFormRef = useRef(null);
+
     let requestBody;
     const [pendingStatus, data, errorMessage, sendRequest, setRequestBody] =
         useAPI({
-            url: '/customers',
+            url: '/customers/all',
             method: 'POST',
             jwtToken: jwtToken,
             body: requestBody,
@@ -52,25 +57,95 @@ function CustomerRegistry() {
 
     const handleForm = async (e) => {
         e.preventDefault();
-        
-        let form = document.getElementById('createCustomerForm');
-        let formData = new FormData(form);
-        let details = {};
-        formData.forEach((value, key) => (details[key] = value));
-        sendRequest(details);
-        return;
+
+        try {
+            let form = createCustomerFormRef.current;
+            let formData = new FormData(form);
+            console.log(
+                formData.get('password') == formData.get('confirmPassword')
+            );
+            let details = {};
+            formData.forEach((value, key) => {
+                switch (key) {
+                    case 'name':
+                        if (value.length < 3)
+                            throw new Error(
+                                'Name must have at least three characters.'
+                            );
+
+                        const nameRegex = /^[a-zA-Zà-žÀ-Ž' -]+$/;
+                        if (!nameRegex.test(value))
+                            throw new Error('Please enter a valid name.');
+                        break;
+                    case 'username':
+                        if (value.length < 3)
+                            throw new Error(
+                                'Username must have more than three characters.'
+                            );
+                        const regex = /^[^a-zA-Z]/;
+                        if (regex.test(value))
+                            throw new Error(
+                                'Invalid username, please start username with [a-Z]'
+                            );
+                        break;
+                    case 'password':
+                        if (
+                            formData.get('password') !=
+                            formData.get('confirmPassword')
+                        )
+                            throw new Error(
+                                'Password and ConfirmPassword did not match.'
+                            );
+                        break;
+                    case 'address':
+                        if (value.length == 0)
+                            throw new Error('Address is required.');
+                        break;
+                }
+
+                details[key] = value;
+            });
+            // sendRequest(details);
+            return;
+        } catch (error) {
+            setError(error.message);
+        }
     };
 
     return (
         <div className={cx('container')}>
             <div className={cx('form-container')}>
                 <h3>Add a new customer</h3>
-                <form action="" id="createCustomerForm">
+                <form
+                    action=""
+                    id="createCustomerForm"
+                    ref={createCustomerFormRef}
+                >
                     <InputGroup
                         inputName="name"
                         fieldName="Name"
                         placeholder="Customer's Name"
                         inputId="customerName"
+                    />
+                    <InputGroup
+                        inputName="username"
+                        fieldName="Username"
+                        inputId="customerUsername"
+                        placeholder="Username"
+                    />
+                    <InputGroup
+                        inputName="password"
+                        fieldName="Password"
+                        inputId="customerPassword"
+                        placeholder="********"
+                        type="password"
+                    />
+                    <InputGroup
+                        inputName="confirmPassword"
+                        fieldName="Confirm Password"
+                        inputId="customerConfirmPassword"
+                        placeholder="********"
+                        type="password"
                     />
                     <InputGroup
                         inputName="address"
@@ -96,26 +171,34 @@ function CustomerRegistry() {
                         Add customer
                     </Button>
                 </form>
+
+                <div>{error}</div>
                 <ErrorFormFooter
                     pendingStatus={pendingStatus}
                     errorMessage={errorMessage}
                 />
             </div>
             <div className={cx('profile-container')}>
-                {data && <CustomerProfile customer={data} />}
+                {data && <CustomerProfileCard customer={data} />}
             </div>
         </div>
     );
 }
 
-function InputGroup({ fieldName, inputName, inputId, placeholder }) {
+function InputGroup({
+    fieldName,
+    inputName,
+    inputId,
+    placeholder,
+    type = 'text',
+}) {
     return (
         <div className={cx('input-group')}>
             <label htmlFor={inputId} className={cx('input-label')}>
                 {fieldName}
             </label>
             <input
-                type="text"
+                type={type}
                 id={inputId}
                 name={inputName}
                 className={cx('input-field')}

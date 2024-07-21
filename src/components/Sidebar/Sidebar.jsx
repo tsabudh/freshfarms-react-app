@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-
+import React, { useContext, useState } from 'react';
 import { IoMenuSharp } from 'react-icons/io5';
 
-import { GoSidebarCollapse } from 'react-icons/go';
-
 import styles from './Sidebar.module.scss';
+import items from '../../assets/data/sidebar.json';
+import { AuthContext } from '../../context/AuthContext';
 
 import SidebarItem from './SidebarItem';
+import { NavLink } from 'react-router-dom';
+import Logo from '../UI/Icons/Logo';
 
-import items from '../../assets/data/sidebar.json';
-import Button from '../UI/Button/Button';
-
-export default function Sidebar(props) {
-    const { sidebarIsOpen, setSidebarIsOpen } = props;
+export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }) {
     const [expanded, setExpanded] = useState(null);
 
+    const { userRole } = useContext(AuthContext);
 
     const handleToggle = (e) => {
         setSidebarIsOpen((prev) => !prev);
@@ -42,33 +39,25 @@ export default function Sidebar(props) {
                     <IoMenuSharp />
                 </div>
                 <figure className={styles['logo']}>
-                    <img
-                        src="/img/shree-krishna-dairy-white.svg"
-                        alt="Shree Krishna Dairy Logo"
-                    />
+                    <NavLink to="/">
+                        <Logo />
+                    </NavLink>
                 </figure>
             </div>
 
-            {items.map((item, index) => (
-                <SidebarItem
-                    key={index}
-                    item={item}
-                    id={index}
-                    setExpanded={setExpanded}
-                    handleExpand={handleExpand}
-                    expanded={expanded}
-                    // active={active}
-                    // setActive={setActive}
-                />
-            ))}
+            {items.map((item, index) => {
+                if (userRole == 'customer' && item.adminOnly) return null;
+                return (
+                    <SidebarItem
+                        key={index}
+                        item={item}
+                        id={index}
+                        setExpanded={setExpanded}
+                        handleExpand={handleExpand}
+                        expanded={expanded}
+                    />
+                );
+            })}
         </div>
     );
 }
-
-// sidebarIsOpen ? (
-//     <div className={styles['hamburger']}>
-//         <Button onClick={handleToggle}>TOGGLE</Button>
-//     </div>
-// ) : (
-//     ''
-// );

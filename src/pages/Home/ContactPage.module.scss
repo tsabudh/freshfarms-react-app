@@ -1,0 +1,52 @@
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+
+.contact-container {
+    background-color: vars.$c-amber-100;
+    padding: 1rem;
+
+    & .contact {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        & h2,
+        h3 {
+            font-weight: 400;
+            color: vars.$c-berry-400;
+            margin-bottom: 1rem;
+        }
+
+        & .direct {
+            & .title {
+                font-size: 1.8rem;
+                font-weight: 500;
+                margin-bottom: 1rem;
+                color: vars.$c-gray-400;
+            }
+            & ul {
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+
+                & li {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 0.6rem;
+
+                    & .field {
+                        flex-basis: 20%;
+                        color: vars.$c-gray-300;
+                    }
+
+                    & .value {
+                        flex-basis: 50%;
+                        color: vars.$c-sky-400;
+                    }
+                }
+            }
+        }
+    }
+}

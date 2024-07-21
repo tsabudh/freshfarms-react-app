@@ -1,0 +1,100 @@
+{
+    "productImages": {
+        "cow milk": [
+            {
+                "src": "/img/cow-milk-1.jpg",
+                "alt": "Cow Milk 1",
+                "quote": "Cow milk is nutritious!",
+                "name": "Cow Milk 1"
+            },
+            {
+                "src": "/img/cow-milk-2.jpg",
+                "alt": "Cow Milk 2",
+                "quote": "Fresh cow milk every day!",
+                "name": "Cow Milk 2"
+            },
+            {
+                "src": "/img/cow-milk-3.jpg",
+                "alt": "Cow Milk 3",
+                "quote": "Pure and healthy cow milk!",
+                "name": "Cow Milk 3"
+            }
+        ],
+        "buffalo milk": [
+            {
+                "src": "/img/buffalo-milk-1.jpg",
+                "alt": "Buffalo Milk 1",
+                "quote": "Rich and creamy buffalo milk!",
+                "name": "Buffalo Milk 1"
+            },
+            {
+                "src": "/img/buffalo-milk-2.jpg",
+                "alt": "Buffalo Milk 2",
+                "quote": "Fresh buffalo milk from the farm!",
+                "name": "Buffalo Milk 2"
+            }
+        ],
+        "mixed milk": [
+            {
+                "src": "/img/mixed-milk-1.jpg",
+                "alt": "Mixed Milk 1",
+                "quote": "The best of both worlds!",
+                "name": "Mixed Milk 1"
+            },
+            {
+                "src": "/img/mixed-milk-2.jpg",
+                "alt": "Mixed Milk 2",
+                "quote": "A perfect blend!",
+                "name": "Mixed Milk 2"
+            }
+        ],
+        "kurauni": [
+            {
+                "src": "/img/kurauni-1.jpg",
+                "alt": "Kurauni 1",
+                "quote": "Authentic kurauni taste!",
+                "name": "Kurauni 1"
+            },
+            {
+                "src": "/img/kurauni-2.jpg",
+                "alt": "Kurauni 2",
+                "quote": "Traditional kurauni recipe!",
+                "name": "Kurauni 2"
+            }
+        ],
+        "yogurt": [
+            {
+                "src": "/img/yogurt-1.jpg",
+                "alt": "Yogurt 1",
+                "quote": "Creamy and tasty yogurt!",
+                "name": "Yogurt 1"
+            },
+            {
+                "src": "/img/yogurt-2.jpg",
+                "alt": "Yogurt 2",
+                "quote": "Fresh homemade yogurt!",
+                "name": "Yogurt 2"
+            },
+            {
+                "src": "/img/yogurt-3.jpg",
+                "alt": "Yogurt 3",
+                "quote": "Nutritious yogurt for everyone!",
+                "name": "Yogurt 3"
+            }
+        ],
+        "paneer": [
+            {
+                "src": "/img/paneer-1.jpg",
+                "alt": "Paneer 1",
+                "quote": "Creamy and tasty paneer!",
+                "name": "Paneer 1"
+            },
+            {
+                "src": "/img/paneer-2.jpg",
+                "alt": "Paneer 2",
+                "quote": "Fresh homemade paneer!",
+                "name": "Paneer 2"
+            }
+        ]
+    }
+}

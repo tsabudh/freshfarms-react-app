@@ -1,26 +1,25 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export const fetchMyDetails = (jwtToken) => {
-    return new Promise((resolve, reject) => {
-        try {
-            let xhttp = new XMLHttpRequest();
-            let apiRoute;
-            xhttp.onreadystatechange = () => {
-                if (xhttp.readyState == 4) {
-                    let response = JSON.parse(xhttp.responseText);
-                    resolve(response);
-                }
-            };
+export const fetchMyDetails = async (jwtToken, userRole) => {
+    try {
+        const apiRoute = `${API_ROUTE}/api/v1/${userRole}s/getMyDetails`;
 
-            apiRoute = `${API_ROUTE}/api/v1/admins/getMyDetails`;
+        const response = await fetch(apiRoute, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${jwtToken}`,
+                'Content-Type': 'application/json',
+            },
+        });
 
-            xhttp.open('GET', apiRoute);
-            xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
-
-            xhttp.send();
-        } catch (error) {
-            console.log(error.message);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    });
+
+        const responseData = await response.json();
+        return responseData;
+    } catch (error) {
+        console.log(error.message);
+    }
 };
 
 export default fetchMyDetails;

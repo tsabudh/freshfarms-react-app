@@ -1,3 +1,5 @@
+@use '/src/scss/abstract/variables' as vars;
+
 button {
     cursor: pointer;
     text-align: center;
@@ -206,5 +208,231 @@ button {
             background: #6c7c7a;
             color: #1bc59b;
         }
+    }
+
+    //-New designs
+    &.small.small {
+        padding: 0.4rem 0.6rem;
+        font-size: 1.4rem;
+    }
+
+    &.berry-01 {
+        padding: 1rem 1.6rem;
+        color: vars.$c-berry-100;
+        background-color: vars.$c-berry-500;
+        border-radius: 2rem;
+        border: none;
+        font-weight: 300;
+        font-size: 1.6rem;
+        font-family: Inter;
+        letter-spacing: 0.8px;
+
+        &:hover {
+            color: vars.$c-berry-500;
+            background-color: vars.$c-berry-100;
+        }
+        &:active {
+            color: vars.$c-berry-100;
+            background-color: vars.$c-berry-bright;
+        }
+
+        &.ghost {
+            background-color: transparent;
+            border: 1px solid vars.$c-berry-500;
+            color: vars.$c-berry-400;
+
+            &:hover {
+                color: vars.$c-berry-500;
+                background-color: vars.$c-berry-100;
+            }
+            &:active {
+                color: vars.$c-berry-100;
+                background-color: vars.$c-berry-bright;
+            }
+        }
+
+        &.white {
+            color: vars.$c-white;
+        }
+    }
+    &.berry-02 {
+        padding: 1rem 1.6rem;
+        color: vars.$c-berry-100;
+        background-color: vars.$c-berry-500;
+        border-radius: 2rem;
+        border: none;
+        font-weight: 300;
+        font-size: 1.6rem;
+        font-family: Inter;
+        letter-spacing: 0.8px;
+        border: 1px solid transparent;
+
+        &:hover {
+            color: vars.$c-berry-bright;
+            background-color: vars.$c-berry-100;
+            border: 1px solid vars.$c-berry-400;
+        }
+        &:active {
+            color: vars.$c-berry-100;
+            background-color: vars.$c-berry-400;
+        }
+
+        &.ghost {
+            background-color: transparent;
+            border: 1px solid vars.$c-berry-bright;
+            color: vars.$c-berry-bright;
+        }
+    }
+    &.amber-01 {
+        padding: 1rem 1.6rem;
+        color: vars.$c-amber-100;
+        background-color: vars.$c-amber-bright;
+        border-radius: 2rem;
+        border: none;
+        font-weight: 300;
+        font-size: 1.6rem;
+        font-family: Inter;
+        letter-spacing: 0.8px;
+
+        &:hover {
+            color: vars.$c-amber-bright;
+            background-color: vars.$c-berry-100;
+        }
+        &:active {
+            color: vars.$c-amber-100;
+            background-color: vars.$c-berry-bright;
+        }
+
+        &.ghost {
+            background-color: transparent;
+            border: 1px solid vars.$c-amber-bright;
+        }
+    }
+    &.amber-02 {
+        padding: 1rem 1.6rem;
+        color: vars.$c-amber-100;
+        background-color: vars.$c-berry-300;
+        border-radius: 2rem;
+        border: none;
+        font-weight: 300;
+        font-size: 1.6rem;
+        font-family: Inter;
+        letter-spacing: 0.8px;
+
+        &:hover {
+            color: vars.$c-amber-bright;
+            background-color: vars.$c-berry-100;
+        }
+        &:active {
+            color: vars.$c-amber-100;
+            background-color: vars.$c-berry-400;
+        }
+
+        &.ghost {
+            background-color: transparent;
+            border: 1px solid vars.$c-amber-bright;
+        }
+    }
+    &.amber-03 {
+        padding: 1rem 1.6rem;
+        background: vars.$c-amber-100;
+        color: vars.$c-berry-500;
+        border-radius: 2rem;
+        border: none;
+        font-weight: 300;
+        font-size: 1.6rem;
+        font-family: Inter;
+        letter-spacing: 0.8px;
+
+        &:hover {
+            color: vars.$c-amber-bright;
+            background-color: vars.$c-berry-bright;
+        }
+        &:active {
+            color: vars.$c-amber-bright;
+            background-color: vars.$c-berry-400;
+        }
+
+        &.ghost {
+            background-color: transparent;
+            border: 1px solid vars.$c-amber-bright;
+
+            &:hover {
+                color: vars.$c-amber-100;
+                background-color: vars.$c-berry-400;
+                border-color: transparent;
+            }
+
+            &:active {
+                background-color: vars.$c-berry-500;
+            }
+        }
+    }
+    &.contrast-01 {
+        padding: 1rem 1.6rem;
+        color: vars.$c-amber-500;
+        background-color: vars.$c-berry-300;
+        border-radius: 2rem;
+        border: none;
+        font-weight: 300;
+        font-size: 1.6rem;
+        font-family: Inter;
+        letter-spacing: 0.8px;
+
+        &:hover {
+            color: vars.$c-amber-bright;
+            background-color: vars.$c-berry-bright;
+        }
+        &:active {
+            color: vars.$c-amber-bright;
+            background-color: vars.$c-berry-400;
+        }
+
+        &.ghost {
+            background-color: transparent;
+            border: 1px solid vars.$c-amber-bright;
+
+            &:hover {
+                color: vars.$c-amber-100;
+                background-color: vars.$c-berry-400;
+                border-color: transparent;
+            }
+
+            &:active {
+                background-color: vars.$c-berry-500;
+            }
+        }
+    }
+
+    &.action-berry-01 {
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.8rem;
+        color: vars.$c-gray-200;
+        background: vars.$c-amber-200;
+
+        &.wait {
+            background: rgb(15, 13, 133);
+            background: vars.$c-amber-500;
+            color: vars.$c-amber-100;
+        }
+        &.stop {
+            background: rgb(173, 7, 7);
+        }
+        &.go {
+            background: vars.$c-success-600;
+            color: vars.$c-amber-100;
+
+            &:disabled {
+                background: rgba(156, 247, 156, 0.473);
+                cursor: default;
+            }
+        }
+    }
+}
+
+button {
+    &.white {
+        color: white;
     }
 }

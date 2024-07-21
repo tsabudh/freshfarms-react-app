@@ -1,14 +1,16 @@
-// Requires parent element to have position:relative;
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+
+//! Requires parent element to have position:relative;
 .tooltip {
     display: none;
     position: absolute;
 
-    --background-color: rgb(63, 59, 59);
-    background-color: var(--background-color);
+    $background-color: vars.$c-amber-400;
+    background-color: $background-color;
 
-    color: white;
-
-    // top: 5px;
+    color: vars.$c-white;
+    z-index: 10;
 
     & span {
         display: inline-block;
@@ -18,10 +20,9 @@
     }
     // & .<position relative to parent>-<position relative to tooltip>
     &.bottom-left {
-       
         top: calc(100% + 10px);
         right: 0;
-        border-radius: 0.5rem;
+        border-radius: 0.6rem;
 
         &::after {
             --border-size: -6px;
@@ -34,8 +35,7 @@
 
             border-style: solid;
             border-width: 6px;
-            border-color: transparent transparent var(--background-color)
-                transparent;
+            border-color: transparent transparent $background-color transparent;
         }
     }
 }

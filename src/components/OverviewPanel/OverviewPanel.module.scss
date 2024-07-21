@@ -1,5 +1,7 @@
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+
 .overview-panel {
-   
     & h1,
     & h3 {
         font-size: 2rem;
@@ -8,19 +10,21 @@
         text-transform: capitalize;
     }
     & h1 {
-        color: rgb(255, 255, 255);
+        color: vars.$c-gray-200;
+
         margin-inline: 1rem;
     }
     & h3 {
-        color: #897219;
+        color: vars.$c-brown-400;
     }
 }
 
 .transaction-table-container {
     margin-block: 1rem;
-    background: var(--surface5-light);
+    background: vars.$c-berry-100;
 
     & h3 {
         margin-inline: 1rem;
+        padding-block-start: 2rem;
     }
 }

@@ -6,7 +6,7 @@ import BouncingCircles from '../UI/Vectors/BouncingCircles';
 import Button from '../../components/UI/Button/Button';
 import styles from './OverlayContainer.module.scss';
 import { AuthContext } from '../../context/AuthContext';
-import loginAdmin from '../../utils/loginAdmin';
+import loginUser from '../../utils/loginUser';
 
 function OverlayContainer({ isNewUser, toggle }) {
     const { setJwtToken } = useContext(AuthContext);
@@ -22,7 +22,7 @@ function OverlayContainer({ isNewUser, toggle }) {
             username: 'john',
             password: '1234',
         };
-        let response = await loginAdmin(loginDetails);
+        let response = await loginUser(loginDetails);
         setIsLoading(false);
         if (response.status == 'success' && response.token) {
             setJwtToken(response.token);

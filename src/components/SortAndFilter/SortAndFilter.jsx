@@ -157,7 +157,7 @@ const filterReducer = (filterState, action) => {
     return newFilterState;
 };
 
-const applyFilter = (filterState, setFilterObject, customerId) => {
+const applyFilter = (filterState, setTransactionFilterObject, customerId) => {
     const filterObject = {
         sortBy: {
             issuedTime: filterState.issuedTime.isSorted
@@ -213,10 +213,10 @@ const applyFilter = (filterState, setFilterObject, customerId) => {
         };
     }
 
-    setFilterObject(filterObject);
+    setTransactionFilterObject(filterObject);
 };
 
-const SortAndFilter = ({ setFilterObject, customerId }) => {
+const SortAndFilter = ({ setTransactionFilterObject, customerId }) => {
     const [sortAndFilterIsOpened, setSortAndFilterIsOpened] = useState(false);
 
     const [filterState, dispatchFilter] = useReducer(
@@ -264,8 +264,8 @@ const SortAndFilter = ({ setFilterObject, customerId }) => {
     };
     const handleIssuedTime = (method, e) => {
         const methodMappings = {
-            issuedTimeFrom: { update: 'issuedTimeFrom', from: e.target.value },
-            issuedTimeTo: { update: 'issuedTimeTo', to: e.target.value },
+            issuedTimeFrom: { update: 'issuedTimeFrom', from: e?.target.value },
+            issuedTimeTo: { update: 'issuedTimeTo', to: e?.target.value },
             remove: { update: 'remove' },
             default: { isOpened: true },
         };
@@ -313,11 +313,11 @@ const SortAndFilter = ({ setFilterObject, customerId }) => {
         const methodMappings = {
             totalQuantityRangeFrom: {
                 update: 'totalQuantityRangeFrom',
-                from: e.target.value,
+                from: e?.target.value,
             },
             totalQuantityRangeTo: {
                 update: 'totalQuantityRangeTo',
-                to: e.target.value,
+                to: e?.target.value,
             },
             remove: { update: 'remove' },
             default: {},
@@ -333,11 +333,11 @@ const SortAndFilter = ({ setFilterObject, customerId }) => {
         const methodMappings = {
             itemsVarietyRangeFrom: {
                 update: 'itemsVarietyRangeFrom',
-                from: e.target.value,
+                from: e?.target.value,
             },
             itemsVarietyRangeTo: {
                 update: 'itemsVarietyRangeTo',
-                to: e.target.value,
+                to: e?.target.value,
             },
             remove: { update: 'remove' },
             default: {},
@@ -351,329 +351,382 @@ const SortAndFilter = ({ setFilterObject, customerId }) => {
     };
 
     //* UI Rendering
-    return sortAndFilterIsOpened ? (
-        <Modal isOpen={sortAndFilterIsOpened} onClose={onClose}>
-            <div className={styles['sort-and-filter']}>
-                <div className={styles['sort-filter-tab']}>
-                    {/* //* Sorting */}
-                    <div className="wrapper">
-                        <p>Sort:</p>
+    return (
+        <React.Fragment>
+            {sortAndFilterIsOpened ? (
+                <Modal isOpen={sortAndFilterIsOpened} onClose={onClose}>
+                    <div className={styles['sort-and-filter']}>
+                        <div className={styles['sort-filter-tab']}>
+                            {/* //* Sorting */}
+                            <div className="wrapper">
+                                <p>Sort:</p>
 
-                        <div className={styles.sort}>
-                            <SortIssuedTime
-                                filterState={filterState}
-                                handleSortBy={handleSortBy}
-                            />
-                            {customerId ? null : (
-                                <SortCustomer
-                                    filterState={filterState}
-                                    handleSortBy={handleSortBy}
-                                />
-                            )}
+                                <div className={styles.sort}>
+                                    <SortIssuedTime
+                                        filterState={filterState}
+                                        handleSortBy={handleSortBy}
+                                    />
+                                    {customerId ? null : (
+                                        <SortCustomer
+                                            filterState={filterState}
+                                            handleSortBy={handleSortBy}
+                                        />
+                                    )}
 
-                            <SortItemVariety
-                                filterState={filterState}
-                                handleSortBy={handleSortBy}
-                            />
-                            {/* Total Quantity  */}
-                            <SortTotalQuantity
-                                filterState={filterState}
-                                handleSortBy={handleSortBy}
-                            />
+                                    <SortItemVariety
+                                        filterState={filterState}
+                                        handleSortBy={handleSortBy}
+                                    />
+                                    {/* Total Quantity  */}
+                                    <SortTotalQuantity
+                                        filterState={filterState}
+                                        handleSortBy={handleSortBy}
+                                    />
+                                </div>
+                            </div>
+                            {/* //* Filtering */}
+                            <div className={styles.filter}>
+                                Filters:
+                                <ul>
+                                    {/* Date  */}
+                                    <li>
+                                        <button
+                                            onClick={handleIssuedTime}
+                                            className={styles['filter-btn']}
+                                        >
+                                            Date
+                                        </button>
+                                    </li>
+                                    {/* Products  */}
+                                    <li>
+                                        <button
+                                            onClick={handleProducts}
+                                            className={styles['filter-btn']}
+                                        >
+                                            Products
+                                        </button>
+                                    </li>
+                                    {/* Customers  */}
+                                    {!customerId && (
+                                        <li>
+                                            <button
+                                                onClick={handleCustomers}
+                                                className={styles['filter-btn']}
+                                            >
+                                                Customers
+                                            </button>
+                                        </li>
+                                    )}
+                                    <li>
+                                        <button
+                                            onClick={handleQuantity}
+                                            className={styles['filter-btn']}
+                                        >
+                                            Quantity
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            onClick={handleItemsVariety}
+                                            className={styles['filter-btn']}
+                                        >
+                                            Items Variety
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    {/* //* Filtering */}
-                    <div className={styles.filter}>
-                        Filters:
-                        <ul>
-                            {/* Date  */}
-                            <li>
-                                <button
-                                    onClick={handleIssuedTime}
-                                    className={styles['filter-btn']}
-                                >
-                                    Date
-                                </button>
-                            </li>
-                            {/* Products  */}
-                            <li>
-                                <button
-                                    onClick={handleProducts}
-                                    className={styles['filter-btn']}
-                                >
-                                    Products
-                                </button>
-                            </li>
-                            {/* Customers  */}
-                            {!customerId && (
-                                <li>
-                                    <button
-                                        onClick={handleCustomers}
-                                        className={styles['filter-btn']}
+                        {/* //* ADDED FILTERS  */}
+                        <div className={styles['added-filters']}>
+                            {filterState.issuedTime.isOpened && (
+                                <div className={styles['filter-bar']}>
+                                    <span>Date:</span>
+                                    <div className="">
+                                        <label htmlFor="issuedTimeFrom">
+                                            From:
+                                        </label>
+                                        <input
+                                            type="datetime-local"
+                                            id="issuedTimeFrom"
+                                            value={filterState.issuedTime.from}
+                                            onChange={(e) =>
+                                                handleIssuedTime(
+                                                    'issuedTimeFrom',
+                                                    e
+                                                )
+                                            }
+                                        />
+                                    </div>
+
+                                    <div className="">
+                                        <label htmlFor="issuedTimeTo">
+                                            To:
+                                        </label>
+                                        <input
+                                            type="datetime-local"
+                                            id="issuedTimeTo"
+                                            value={filterState.issuedTime.to}
+                                            onChange={(e) =>
+                                                handleIssuedTime(
+                                                    'issuedTimeTo',
+                                                    e
+                                                )
+                                            }
+                                        />
+                                    </div>
+
+                                    <Button
+                                        className={'primary01'}
+                                        onClick={() =>
+                                            handleIssuedTime('remove')
+                                        }
                                     >
-                                        Customers
-                                    </button>
-                                </li>
+                                        Remove
+                                    </Button>
+                                </div>
                             )}
-                            <li>
-                                <button
-                                    onClick={handleQuantity}
-                                    className={styles['filter-btn']}
-                                >
-                                    Quantity
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    onClick={handleItemsVariety}
-                                    className={styles['filter-btn']}
-                                >
-                                    Items Variety
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                {/* //* ADDED FILTERS  */}
-                <div className={styles['added-filters']}>
-                    {filterState.issuedTime.isOpened && (
-                        <div className={styles['filter-bar']}>
-                            <span>Date:</span>
-                            <div className="">
-                                <label htmlFor="issuedTimeFrom">From:</label>
-                                <input
-                                    type="datetime-local"
-                                    id="issuedTimeFrom"
-                                    value={filterState.issuedTime.from}
-                                    onChange={(e) =>
-                                        handleIssuedTime('issuedTimeFrom', e)
-                                    }
-                                />
-                            </div>
 
-                            <div className="">
-                                <label htmlFor="issuedTimeTo">To:</label>
-                                <input
-                                    type="datetime-local"
-                                    id="issuedTimeTo"
-                                    value={filterState.issuedTime.to}
-                                    onChange={(e) =>
-                                        handleIssuedTime('issuedTimeTo', e)
-                                    }
-                                />
-                            </div>
+                            {filterState.products.isOpened && (
+                                <div className={styles['filter-bar']}>
+                                    <span>Products:</span>
 
-                            <Button
-                                className={'primary01'}
-                                onClick={() => handleIssuedTime('remove')}
-                            >
-                                Remove
-                            </Button>
-                        </div>
-                    )}
+                                    <div>
+                                        {Array.from(
+                                            filterState.products.set
+                                        ).map((product, index) => (
+                                            <Tag
+                                                // className={'primary01'}
+                                                key={index}
+                                                onClick={() =>
+                                                    handleProducts(
+                                                        'removeProduct',
+                                                        product
+                                                    )
+                                                }
+                                            >
+                                                {product}
+                                            </Tag>
+                                        ))}
+                                    </div>
+                                    <div className="">
+                                        <label htmlFor="newProductFilter">
+                                            Enter to add product:
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="newProductFilter"
+                                        />
+                                    </div>
+                                    <Button
+                                        className={'primary02'}
+                                        onClick={() =>
+                                            handleProducts(
+                                                'products',
+                                                // 'burger'
+                                                document
+                                                    .getElementById(
+                                                        'newProductFilter'
+                                                    )
+                                                    .value.toLocaleLowerCase()
+                                            )
+                                        }
+                                    >
+                                        Add
+                                    </Button>
+                                    <Button
+                                        className={'primary01'}
+                                        onClick={() => handleProducts('remove')}
+                                    >
+                                        Remove
+                                    </Button>
+                                </div>
+                            )}
 
-                    {filterState.products.isOpened && (
-                        <div className={styles['filter-bar']}>
-                            <span>Products:</span>
-
-                            <div>
-                                {Array.from(filterState.products.set).map(
-                                    (product, index) => (
-                                        <Tag
-                                            // className={'primary01'}
-                                            key={index}
-                                            onClick={() =>
-                                                handleProducts(
-                                                    'removeProduct',
-                                                    product
+                            {filterState.customers.isOpened && (
+                                <div className={styles['filter-bar']}>
+                                    <span>Customers:</span>
+                                    <div>
+                                        {Array.from(
+                                            filterState.customers.set
+                                        ).map((customer, index) => (
+                                            <Tag
+                                                key={index}
+                                                onClick={() =>
+                                                    handleCustomers(
+                                                        'removeCustomer',
+                                                        customer
+                                                    )
+                                                }
+                                            >
+                                                {customer}
+                                            </Tag>
+                                        ))}
+                                    </div>
+                                    <div className="">
+                                        <label htmlFor="newCustomerFilter">
+                                            Enter to add customer:
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="newCustomerFilter"
+                                        />
+                                    </div>
+                                    <Button
+                                        className={'primary02'}
+                                        onClick={() =>
+                                            handleCustomers(
+                                                'customers',
+                                                document
+                                                    .getElementById(
+                                                        'newCustomerFilter'
+                                                    )
+                                                    .value.toLocaleLowerCase()
+                                            )
+                                        }
+                                    >
+                                        Add
+                                    </Button>
+                                    <Button
+                                        className={'primary01'}
+                                        onClick={() =>
+                                            handleCustomers('remove')
+                                        }
+                                    >
+                                        Remove
+                                    </Button>
+                                </div>
+                            )}
+                            {filterState.totalQuantity.isOpened && (
+                                <div className={styles['filter-bar']}>
+                                    <span>Quantity:</span>
+                                    <div className="">
+                                        <label htmlFor="quantityRangeFrom">
+                                            From:
+                                        </label>
+                                        <input
+                                            type="number"
+                                            id="quantityRangeFrom"
+                                            defaultValue={1}
+                                            onChange={(e) =>
+                                                handleQuantity(
+                                                    'totalQuantityRangeFrom',
+                                                    e
                                                 )
                                             }
-                                        >
-                                            {product}
-                                        </Tag>
-                                    )
-                                )}
-                            </div>
-                            <div className="">
-                                <label htmlFor="newProductFilter">
-                                    Enter to add product:
-                                </label>
-                                <input type="text" id="newProductFilter" />
-                            </div>
-                            <Button
-                                className={'primary02'}
-                                onClick={() =>
-                                    handleProducts(
-                                        'products',
-                                        // 'burger'
-                                        document
-                                            .getElementById('newProductFilter')
-                                            .value.toLocaleLowerCase()
-                                    )
-                                }
-                            >
-                                Add
-                            </Button>
-                            <Button
-                                className={'primary01'}
-                                onClick={() => handleProducts('remove')}
-                            >
-                                Remove
-                            </Button>
-                        </div>
-                    )}
-
-                    {filterState.customers.isOpened && (
-                        <div className={styles['filter-bar']}>
-                            <span>Customers:</span>
-                            <div>
-                                {Array.from(filterState.customers.set).map(
-                                    (customer, index) => (
-                                        <Tag
-                                            key={index}
-                                            onClick={() =>
-                                                handleCustomers(
-                                                    'removeCustomer',
-                                                    customer
+                                        />
+                                        <label htmlFor="quantityRangeTo">
+                                            To:
+                                        </label>
+                                        <input
+                                            type="number"
+                                            id="quantityRangeTo"
+                                            defaultValue={10}
+                                            onChange={(e) =>
+                                                handleQuantity(
+                                                    'totalQuantityRangeTo',
+                                                    e
                                                 )
                                             }
-                                        >
-                                            {customer}
-                                        </Tag>
-                                    )
-                                )}
-                            </div>
-                            <div className="">
-                                <label htmlFor="newCustomerFilter">
-                                    Enter to add customer:
-                                </label>
-                                <input type="text" id="newCustomerFilter" />
-                            </div>
-                            <Button
-                                className={'primary02'}
-                                onClick={() =>
-                                    handleCustomers(
-                                        'customers',
-                                        document
-                                            .getElementById('newCustomerFilter')
-                                            .value.toLocaleLowerCase()
-                                    )
-                                }
-                            >
-                                Add
-                            </Button>
-                            <Button
-                                className={'primary01'}
-                                onClick={() => handleCustomers('remove')}
-                            >
-                                Remove
-                            </Button>
-                        </div>
-                    )}
-                    {filterState.totalQuantity.isOpened && (
-                        <div className={styles['filter-bar']}>
-                            <span>Quantity:</span>
-                            <div className="">
-                                <label htmlFor="quantityRangeFrom">From:</label>
-                                <input
-                                    type="number"
-                                    id="quantityRangeFrom"
-                                    defaultValue={1}
-                                    onChange={(e) =>
-                                        handleQuantity(
-                                            'totalQuantityRangeFrom',
-                                            e
-                                        )
-                                    }
-                                />
-                                <label htmlFor="quantityRangeTo">To:</label>
-                                <input
-                                    type="number"
-                                    id="quantityRangeTo"
-                                    defaultValue={10}
-                                    onChange={(e) =>
-                                        handleQuantity(
-                                            'totalQuantityRangeTo',
-                                            e
-                                        )
-                                    }
-                                />
-                            </div>
+                                        />
+                                    </div>
 
-                            <Button
-                                className={'primary01'}
-                                onClick={() => handleQuantity('remove')}
-                            >
-                                Remove
-                            </Button>
-                        </div>
-                    )}
-                    {filterState.itemsVariety.isOpened && (
-                        <div className={styles['filter-bar']}>
-                            <span>Items Variety:</span>
-                            <div className="">
-                                <label htmlFor="itemsVarietyRangeFrom">
-                                    From:
-                                </label>
-                                <input
-                                    type="number"
-                                    id="itemsVarietyRangeFrom"
-                                    defaultValue={1}
-                                    onChange={(e) =>
-                                        handleItemsVariety(
-                                            'itemsVarietyRangeFrom',
-                                            e
-                                        )
-                                    }
-                                />
-                                <label htmlFor="itemsVarietyRangeTo">To:</label>
-                                <input
-                                    type="number"
-                                    id="itemsVarietyRangeTo"
-                                    defaultValue={10}
-                                    onChange={(e) =>
-                                        handleItemsVariety(
-                                            'itemsVarietyRangeTo',
-                                            e
-                                        )
-                                    }
-                                />
+                                    <Button
+                                        className={'primary01'}
+                                        onClick={() => handleQuantity('remove')}
+                                    >
+                                        Remove
+                                    </Button>
+                                </div>
+                            )}
+                            {filterState.itemsVariety.isOpened && (
+                                <div className={styles['filter-bar']}>
+                                    <span>Items Variety:</span>
+                                    <div className="">
+                                        <label htmlFor="itemsVarietyRangeFrom">
+                                            From:
+                                        </label>
+                                        <input
+                                            type="number"
+                                            id="itemsVarietyRangeFrom"
+                                            defaultValue={1}
+                                            onChange={(e) =>
+                                                handleItemsVariety(
+                                                    'itemsVarietyRangeFrom',
+                                                    e
+                                                )
+                                            }
+                                        />
+                                        <label htmlFor="itemsVarietyRangeTo">
+                                            To:
+                                        </label>
+                                        <input
+                                            type="number"
+                                            id="itemsVarietyRangeTo"
+                                            defaultValue={10}
+                                            onChange={(e) =>
+                                                handleItemsVariety(
+                                                    'itemsVarietyRangeTo',
+                                                    e
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                    <Button
+                                        className={'primary01'}
+                                        onClick={() =>
+                                            handleItemsVariety('remove')
+                                        }
+                                    >
+                                        Remove
+                                    </Button>
+                                </div>
+                            )}
+                            <div className={styles['submit-div']}>
+                                <Button
+                                    className={'amber-02 small'}
+                                    onClick={() => {
+                                        applyFilter(
+                                            filterState,
+                                            setTransactionFilterObject,
+                                            customerId
+                                        );
+                                        onClose();
+                                    }}
+                                >
+                                    APPLY FILTER
+                                </Button>
+                                <Button
+                                    className={'amber-01 small'}
+                                    onClick={() => {
+                                        applyFilter(
+                                            initialFilterState,
+                                            setTransactionFilterObject,
+                                            customerId
+                                        );
+                                        onClose();
+                                    }}
+                                >
+                                    RESET FILTER
+                                </Button>
                             </div>
-                            <Button
-                                className={'primary01'}
-                                onClick={() => handleItemsVariety('remove')}
-                            >
-                                Remove
-                            </Button>
                         </div>
-                    )}
-                    <div className={styles['submit-div']}>
-                        <Button
-                            className={'primary03'}
-                            onClick={() => {
-                                applyFilter(
-                                    filterState,
-                                    setFilterObject,
-                                    customerId
-                                );
-                                onClose();
-                            }}
-                        >
-                            APPLY FILTER
-                        </Button>
                     </div>
+                </Modal>
+            ) : null}
+
+            {
+                <div className={styles['main-button']}>
+                    <Button
+                        className="berry-01 small "
+                        onClick={() =>
+                            setSortAndFilterIsOpened((prev) => !prev)
+                        }
+                    >
+                        Sorts and Filters
+                    </Button>
                 </div>
-            </div>
-        </Modal>
-    ) : (
-        <div className={styles['main-button']}>
-            <Button
-                className="stylish01"
-                onClick={() => setSortAndFilterIsOpened((prev) => !prev)}
-            >
-                Sorts and Filters
-            </Button>
-        </div>
+            }
+        </React.Fragment>
     );
 };
 

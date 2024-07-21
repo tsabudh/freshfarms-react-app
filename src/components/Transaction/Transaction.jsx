@@ -5,35 +5,39 @@ import Details from './Details/Details';
 import styles from './Transaction.module.scss';
 import Modal from '../UI/Modal/Modal';
 
-const Transaction = (props) => {
+const Transaction = ({
+    customer,
+    timeStamp,
+    items,
+    paidInFull,
+    purchaseAmount,
+    paidAmount,
+    type,
+    serialNumber,
+    transaction,
+    id,
+}) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const TransactionClickHandler = () => {
         setIsExpanded(!isExpanded);
     };
-    // let customer = props.customer[0];
-    let customer = props.customer;
-    let transactionTime = new Date(props.timeStamp).toLocaleTimeString(
-        undefined,
-        {
-            hour: 'numeric',
-            minute: 'numeric',
-        }
-    );
-    let transactionDate = new Date(props.timeStamp).toLocaleDateString(
-        undefined,
-        {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-        }
-    );
+    // let customer = =customer[0];
+    let transactionTime = new Date(timeStamp).toLocaleTimeString(undefined, {
+        hour: 'numeric',
+        minute: 'numeric',
+    });
+    let transactionDate = new Date(timeStamp).toLocaleDateString(undefined, {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+    });
 
     return (
         <div
             className={`${styles.Transaction} ${
-                props.type == 'payment' ? styles['payment'] : ''
+                type == 'payment' ? styles['payment'] : ''
             }`}
             onClick={TransactionClickHandler}
         >
@@ -51,7 +55,7 @@ const Transaction = (props) => {
                 <div className={styles.customer}>{customer.name}</div>
 
                 <ul className={styles['product-list']}>
-                    {props.items.map((item) => {
+                    {items.map((item) => {
                         return (
                             <li key={item._id}>
                                 <a className={styles.product}>
@@ -62,40 +66,49 @@ const Transaction = (props) => {
                     })}
                 </ul>
             </div>
-            {!props.paidInFull && props.paidAmount != 0 && (
+            {!paidInFull && paidAmount != 0 && (
                 <div
                     className={`${styles['cost']} ${styles['paid']}`}
                     title="Paid amount"
                 >
-                    {props.paidAmount}
-                    {!isExpanded && props.type == 'purchase' }
+                    {paidAmount}
+                    {!isExpanded && type == 'purchase'}
                 </div>
             )}
-            {props.type == 'purchase' ? (
+            {type == 'purchase' ? (
                 <div
                     className={`${styles.cost} ${
-                        props.paidInFull ? styles['paid'] : styles['unpaid']
+                        paidInFull ? styles['paid'] : styles['unpaid']
                     }`}
                     title="Total Amount"
                 >
-                    {props.purchaseAmount}
+                    {purchaseAmount}
                 </div>
             ) : (
                 <div
                     className={`${styles.cost} ${
-                        props.paidInFull ? styles['paid'] : styles['unpaid']
+                        paidInFull ? styles['paid'] : styles['unpaid']
                     }`}
                     title="Total Amount"
                 >
-                    {props.paidAmount}
+                    {paidAmount}
                 </div>
             )}
 
             <Modal isOpen={isExpanded} onClose={() => setIsExpanded(false)}>
                 <Details
-                    // items={props.items}
-                    // purchaseAmount={props.purchaseAmount}
-                    {...props}
+                    // items={=items}
+                    // purchaseAmount={=purchaseAmount}
+                    items={items}
+                    purchaseAmount={purchaseAmount}
+                    paidAmount={paidAmount}
+                    paidInFull={paidInFull}
+                    serialNumber={serialNumber}
+                    timeStamp={timeStamp}
+                    transaction={transaction}
+                    type={type}
+                    customer={customer}
+                    id={id}
                 />
             </Modal>
         </div>
