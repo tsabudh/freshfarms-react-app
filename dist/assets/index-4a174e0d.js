@@ -26815,7 +26815,7 @@ function gC(t) {
         ],
     });
 }
-const yC = ({ isNewUser: t, toggle: e, setAdmin: n }) => {
+const yC = ({ isNewUser: t, toggle: e, setUser: n }) => {
         const [i, s] = C.useState(!1),
             [r, o] = C.useState(null),
             [a, l] = C.useState(''),
@@ -27025,7 +27025,7 @@ function SC(t) {
     return f.jsxs('div', {
         className: wC.container,
         children: [
-            f.jsx(yC, { toggle: n, isNewUser: e, setAdmin: t.setAdmin }),
+            f.jsx(yC, { toggle: n, isNewUser: e, setUser: t.setUser }),
             f.jsx(_C, { isNewUser: e, toggle: n }),
         ],
     });

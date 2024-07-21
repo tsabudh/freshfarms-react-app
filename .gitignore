@@ -30,3 +30,4 @@ vite.config.js.timestamp*
 TODO
 
 # SKIPPING BASE ROUTE SINCE IT IS ALREADY FIXED IN DEPLOYMENT
+dist
