@@ -60,7 +60,6 @@ export default function ChatPanel() {
         const newWebSocket = new WebSocket(WS_ROUTE);
 
         newWebSocket.onopen = (event) => {
-            console.log('Opening connection to websocket.');
             const registerMessage = {
                 type: 'register',
                 sender: profile?._id,
@@ -85,7 +84,6 @@ export default function ChatPanel() {
             console.log(error);
         };
         newWebSocket.onclose = (event) => {
-            console.log('Closing websocket.😞');
         };
 
         setWebsocket(newWebSocket);

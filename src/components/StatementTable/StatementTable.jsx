@@ -39,7 +39,6 @@ const StatementTable = (props) => {
                         tempCumulative[0].amount - tempCumulative[0].paid;
                 }
             });
-            // console.log(monthlyTransactions);
             setCumulative(tempCumulative);
         }
     }, [monthlyTransactions]);

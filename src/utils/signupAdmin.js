@@ -8,7 +8,6 @@ export const signupAdmin = (customerDetails) => {
             xhttp.onreadystatechange = () => {
                 if (xhttp.readyState == 4) {
                     let response = JSON.parse(xhttp.responseText);
-                    console.log(response);
                     resolve(response);
                 }
             };
@@ -16,7 +15,6 @@ export const signupAdmin = (customerDetails) => {
             xhttp.setRequestHeader('Content-Type', 'application/json');
 
             //todo MAKE BEARER TOKEN STORED AND WITHDRAW FROM COOKIES
-            console.log(JSON.stringify(customerDetails));
             let requestBody = JSON.stringify(customerDetails);
             xhttp.send(requestBody);
         } catch (error) {

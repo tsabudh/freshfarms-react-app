@@ -27,7 +27,6 @@ function MapBox({ coordinates, setCoordinates }) {
 
     const id = user.role == 'admin' ? paramId : user._id;
 
-    console.log(id);
     useEffect(() => {
         let map = L.map('map');
         map.setView(coordinates, 16);
@@ -40,7 +39,6 @@ function MapBox({ coordinates, setCoordinates }) {
                 '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }).addTo(map);
 
-        console.log('Added OpenStreetMap from OpenStreetMap Server');
 
         //- Setting Coordinates for customer that do not have location registered
         const lat = coordinates[0] || 83.60018489346729;
@@ -137,7 +135,6 @@ function MapBox({ coordinates, setCoordinates }) {
                     setSelectedMarker('not-selected');
                 } else {
                     //todo Make error visible in UI
-                    console.log(responseTxt);
                 }
             }
         }

@@ -38,9 +38,7 @@ let x = {
     itemsVariety: 2,
 };
 export function convertToPDF(data) {
-    let colNames; // = Object.keys(data[0]);
-    // console.log(colNames);
-    // console.log(data[0]);
+    let colNames; 
     const columns = [
         { header: 'Time', dataKey: 'time' },
         { header: 'Date', dataKey: 'date' },
@@ -55,7 +53,6 @@ export function convertToPDF(data) {
     ];
     colNames = columns.map((item) => item.dataKey);
     const headerNames = columns.map((item) => item.header);
-    console.log(headerNames);
     var doc = new jsPDF({
         orientation: 'landscape',
         format: 'a4',

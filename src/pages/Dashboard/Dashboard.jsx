@@ -24,35 +24,6 @@ const Dashboard = () => {
 
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     async function asyncWrapper() {
-    //         if (!jwtToken) {
-    //             const locallyStoredToken = getJwtFromLocalStorage();
-    //             const locallyStoredUser = getUserFromLocalStorage();
-
-    //             if (locallyStoredToken && locallyStoredUser) {
-    //                 let responseObject = await refreshToken(
-    //                     locallyStoredToken,
-    //                     user.role
-    //                 );
-
-    //                 if (responseObject.status == 'success') {
-    //                     setJwtToken(responseObject.jwtToken);
-    //                     setUser(responseObject.user);
-
-    //                     console.log(responseObject.user);
-    //                     setJwtToLocalStorage(responseObject.token);
-    //                     setUserToLocalStorage(responseObject.user);
-    //                 } else {
-    //                     console.log('Failed to fetch data. Login again');
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     asyncWrapper();
-    // }, []);
-
     useEffect(() => {
         async function asyncWrapper() {
             if (jwtToken && user) {
@@ -66,9 +37,6 @@ const Dashboard = () => {
                     setUserToLocalStorage(response.user);
                 }
             } else {
-                console.log(jwtToken);
-                console.log(user);
-                console.log('Navigating to Login');
                 navigate('/login');
             }
         }

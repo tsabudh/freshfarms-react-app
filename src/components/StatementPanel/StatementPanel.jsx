@@ -52,19 +52,16 @@ const dateStateReducer = (dateState, action) => {
     switch (action.type) {
         case 'initialize': {
             newDateState.dateObject = new Date();
-            console.log('first step');
             break;
         }
         case 'navigate': {
             if (action.step == -1) {
-                console.log('navigate step');
                 newDateState.dateObject = new Date(
                     dateState.year,
                     dateState.month - 1,
                     1
                 );
             } else if (action.step == 1) {
-                console.log('navigate step');
                 newDateState.dateObject = new Date(
                     dateState.year,
                     dateState.month + 1,
@@ -74,7 +71,6 @@ const dateStateReducer = (dateState, action) => {
             break;
         }
         case 'selectMonth': {
-            console.log('month select');
             newDateState.dateObject = new Date(
                 dateState.year,
                 action.selected,
@@ -107,7 +103,6 @@ const StatementPanel = () => {
     useEffect(() => {
         let asyncFunction = async () => {
             try {
-                console.log('????????????');
                 if (dateState) {
                     let filterObjectTemp = {};
 
@@ -165,17 +160,14 @@ const StatementPanel = () => {
                         });
                     } else throw new Error('Transactions not received.');
                 } else {
-                    console.log('DATE STATE NOT DEFINED💥💥🤯');
                 }
             } catch (error) {
-                console.log(error.message);
             }
         };
         asyncFunction();
     }, [dateState]);
 
     const navigateMonth = (type, value) => {
-        console.log('navigate');
         switch (type) {
             case 'navigate': {
                 dispatchDateState({

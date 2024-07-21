@@ -4,7 +4,6 @@ export const fetchCustomers = async (id, jwtToken, userRole) => {
         let apiRoute;
 
         if (userRole && userRole === 'customer') {
-            console.log('this is a customer');
             apiRoute = `${API_ROUTE}/api/v1/customers/getMyDetails`;
         } else if (id) {
             apiRoute = `${API_ROUTE}/api/v1/customers/one/${id.toString()}`;

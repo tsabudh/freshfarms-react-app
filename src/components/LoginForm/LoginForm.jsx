@@ -42,7 +42,6 @@ const LoginForm = ({ isAdmin, toggle }) => {
                     setJwtToLocalStorage(response.token);
                     setUser(response.user);
                     setUserToLocalStorage(response.user);
-                    console.log('Refreshing token success!');
                     navigate('/dashboard');
                 }
             }

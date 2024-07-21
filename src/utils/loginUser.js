@@ -27,7 +27,7 @@ export async function loginUser(loginDetails, userRole) {
             let requestBody = JSON.stringify(loginDetails);
             xhttp.send(requestBody);
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
             reject('Something went wrong.');
         }
     });

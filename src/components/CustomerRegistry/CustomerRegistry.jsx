@@ -61,9 +61,7 @@ function CustomerRegistry() {
         try {
             let form = createCustomerFormRef.current;
             let formData = new FormData(form);
-            console.log(
-                formData.get('password') == formData.get('confirmPassword')
-            );
+           
             let details = {};
             formData.forEach((value, key) => {
                 switch (key) {

@@ -43,7 +43,6 @@ function Customer({ customerId }) {
 
     const id = customerId || paramId;
 
-    console.log(id);
     const navigate = useNavigate();
     const [customer, setCustomer] = useState(null);
     const [editingStatus, setEditingStatus] = useState(false);
@@ -63,7 +62,6 @@ function Customer({ customerId }) {
     //- INITIALIZING CUSTOMER AND TRANSACTIONS
     useEffect(() => {
         const asyncWrapper = async () => {
-            console.log(user.role);
             let customerResponse;
             if (user.role == 'admin') {
                 customerResponse = await fetchCustomers(
@@ -196,7 +194,6 @@ function Customer({ customerId }) {
         navigate('/dashboard/customers');
     };
 
-    console.log(customer);
 
     return (
         customer && (

@@ -3,7 +3,6 @@ function isValidJson(jsonString) {
         JSON.parse(jsonString);
         return true;
     } catch (e) {
-        console.log(e);
         return false;
     }
 }
@@ -13,7 +12,6 @@ export function getUserFromLocalStorage() {
     const isJSON = isValidJson(storedUser);
 
     if (isJSON) return JSON.parse(storedUser);
-    else console.log("'user' item is not a valid json string.");
 
     return null;
 }

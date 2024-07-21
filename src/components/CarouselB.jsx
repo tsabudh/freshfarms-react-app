@@ -7,7 +7,6 @@ import IconGreaterThan from './UI/Icons/IconGreaterThan';
 const cx = classNames.bind(styles);
 
 export const CarouselB = ({ data, className }) => {
-    console.log(data);
     if (!data) {
         return <div></div>;
     }

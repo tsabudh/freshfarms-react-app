@@ -63,11 +63,9 @@ function ProductRegistry() {
 
             let details = {};
             formData.forEach((value, key) => {
-                console.log(value, key);
                 switch (key) {
                     case 'name':
                         if (value.length < 3) {
-                            console.log('name entered');
                             throw new Error(
                                 'Product name must have at least three characters.'
                             );

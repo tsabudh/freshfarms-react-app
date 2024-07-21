@@ -28,7 +28,6 @@ const useAPI = (props) => {
                 responseObject.message || responseObject.errors[0].msg
             );
             setPendingStatus('failure');
-            console.log(responseObject);
         }
     };
 
@@ -39,7 +38,6 @@ export default useAPI;
 
 const requestAPI = async (props) => {
     const { url, method, jwtToken, body, addedHeaders } = props;
-    console.log('requesting API');
     let headers = {};
 
     headers['Content-Type'] =
