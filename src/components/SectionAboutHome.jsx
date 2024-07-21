@@ -22,7 +22,7 @@ export default function SectionAboutHome() {
                     <div className={cx('col', 'second')}>
                         <figure className={cx('figure')}>
                             <img
-                                src="/img/ice-cream.jpg"
+                                src="/img/ice-cream-2.jpg"
                                 alt="Shree Krishna Dairy Building"
                             />
                         </figure>
@@ -32,7 +32,7 @@ export default function SectionAboutHome() {
                     <div className={cx('col', 'first')}>
                         <figure className={cx('figure')}>
                             <img
-                                src="/img/paneer-bowl.jpg"
+                                src="/img/paneer-2.jpg"
                                 alt="Shree Krishna Dairy Building"
                             />
                         </figure>
