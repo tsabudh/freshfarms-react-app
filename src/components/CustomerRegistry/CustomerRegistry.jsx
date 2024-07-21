@@ -105,7 +105,7 @@ function CustomerRegistry() {
 
                 details[key] = value;
             });
-            // sendRequest(details);
+            sendRequest(details);
             return;
         } catch (error) {
             setError(error.message);
