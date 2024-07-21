@@ -110,7 +110,7 @@
             max-width: 50rem;
             overflow-x: auto;
             max-height: 3em;
-            cursor: url('img/cursor-touch.png') 8 8, grab;
+            cursor: url('/img/cursor-touch.png') 8 8, grab;
             background: wheat;
             color: brown;
             &::-webkit-scrollbar-track {
