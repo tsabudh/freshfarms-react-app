@@ -26,6 +26,10 @@ const failuresObject = {
 
 function CustomerRegistry() {
     const { jwtToken } = useContext(AuthContext);
+
+    const profileContainerRef = useRef(null);
+    const createCustomerFormRef = useRef(null);
+
     const [dueAmount, setDueAmount] = useState('');
     const [purchaseAmount, setPurchaseAmount] = useState('');
     const [paidAmount, setPaidAmount] = useState('');
@@ -35,8 +39,6 @@ function CustomerRegistry() {
     const [error, setError] = useState(null);
 
     const [posting, setPosting] = useState(''); // sending '' success failure
-
-    const createCustomerFormRef = useRef(null);
 
     let requestBody;
     const [pendingStatus, data, errorMessage, sendRequest, setRequestBody] =
@@ -51,6 +53,12 @@ function CustomerRegistry() {
         setDueAmount(purchaseAmount - paidAmount);
     }, [purchaseAmount, paidAmount]);
 
+    useEffect(() => {
+        if (pendingStatus == 'success') {
+            profileContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [pendingStatus]);
+
     const handleTab = () => {
         setTabOptions((tabOptions) => !tabOptions);
     };
@@ -61,7 +69,7 @@ function CustomerRegistry() {
         try {
             let form = createCustomerFormRef.current;
             let formData = new FormData(form);
-           
+
             let details = {};
             formData.forEach((value, key) => {
                 switch (key) {
@@ -176,7 +184,7 @@ function CustomerRegistry() {
                     errorMessage={errorMessage}
                 />
             </div>
-            <div className={cx('profile-container')}>
+            <div className={cx('profile-container')} ref={profileContainerRef}>
                 {data && <CustomerProfileCard customer={data} />}
             </div>
         </div>
