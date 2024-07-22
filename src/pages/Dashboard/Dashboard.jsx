@@ -18,7 +18,7 @@ import {
 const cx = classNames.bind(styles);
 
 const Dashboard = () => {
-    const { jwtToken, setJwtToken, userRole, user, setUser } =
+    const { jwtToken, setJwtToken,  user, setUser } =
         useContext(AuthContext);
     const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
 
@@ -26,17 +26,24 @@ const Dashboard = () => {
 
     useEffect(() => {
         async function asyncWrapper() {
-            if (jwtToken && user) {
-                let response = await refreshToken(jwtToken, userRole);
+            try {
+                if (jwtToken && user) {
+                    let response = await refreshToken(jwtToken, user.role);
 
-                if (response.status == 'success') {
-                    setJwtToken(() => response.token);
-                    setJwtToLocalStorage(response.token);
+                    if (response.status == 'success') {
+                        setJwtToken(() => response.token);
+                        setJwtToLocalStorage(response.token);
 
-                    setUser(() => response.user);
-                    setUserToLocalStorage(response.user);
+                        setUser(() => response.user);
+                        setUserToLocalStorage(response.user);
+                    } else {
+                        navigate('/login');
+                    }
+                } else {
+                    navigate('/login');
                 }
-            } else {
+            } catch (error) {
+                console.log(error.message);
                 navigate('/login');
             }
         }

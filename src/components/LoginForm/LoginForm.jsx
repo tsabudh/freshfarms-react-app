@@ -30,20 +30,25 @@ const LoginForm = ({ isAdmin, toggle }) => {
     const { jwtToken, setJwtToken, user, setUser } = useContext(AuthContext);
 
     useEffect(() => {
-        if (!!jwtToken) {
-            console.log('jwtToken found');
-        }
-
         async function asyncWrapper() {
-            if (jwtToken && user?.role) {
-                let response = await refreshToken(jwtToken, user.role);
-                if (response.status == 'success') {
-                    setJwtToken(response.token);
-                    setJwtToLocalStorage(response.token);
-                    setUser(response.user);
-                    setUserToLocalStorage(response.user);
-                    navigate('/dashboard');
+            try {
+                if (jwtToken && user?.role) {
+                    let response = await refreshToken(jwtToken, user.role);
+                    if (response.status == 'success') {
+                        setJwtToken(response.token);
+                        setJwtToLocalStorage(response.token);
+                        setUser(response.user);
+                        setUserToLocalStorage(response.user);
+                        navigate('/dashboard');
+                    } else {
+                        navigate('/login');
+                        console.log(
+                            '-------------------login----------------------------------------'
+                        );
+                    }
                 }
+            } catch (error) {
+                console.log(error.message);
             }
         }
         asyncWrapper();

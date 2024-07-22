@@ -62,6 +62,13 @@ export function convertToPDF(data) {
     doc.setFont('times', 'normal');
     doc.setFontSize(12);
 
+    doc.text(
+        `Date: ${extractDate(new Date())}-${extractTime(new Date())}`,
+        14,
+        10,
+        { align: 'left' }
+    );
+
     let rows = [];
     for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let singleRowData = [];
@@ -125,13 +132,16 @@ export function convertToPDF(data) {
     autoTable(doc, {
         head: [headerNames],
         headStyles: {
-            fillColor: '#2ecc71',
-            textColor: 'white',
+            fillColor: '#4d4d4d',
+            textColor: '#ffffff',
+            lineColor: '#aca89e',
         },
         columns: columns,
         body: rows,
         columnStyles: {
-            time: { cellWidth: 20 },
+            time: {
+                cellWidth: 20,
+            },
             date: { cellWidth: 30 },
             _id: { cellWidth: 25, fontSize: 8 }, // Set font size for the '_id' column
             type: { cellWidth: 20 },
@@ -146,7 +156,14 @@ export function convertToPDF(data) {
             // Check if the column is '_id'
         },
         alternateRowStyles: {
-            fillColor: '#d9ffe9',
+            fillColor: '#efefef',
+            // fillColor: '#d9ffe9',
+        },
+        styles: {
+            // Apply styles to all rows
+            cellPadding: 2,
+            lineWidth: 0.1,
+            lineColor: '#aca89e', // Color for borders
         },
     });
 

@@ -243,7 +243,6 @@ const RegisterBoard = (props) => {
 export default RegisterBoard;
 
 function Cart({ cart, removeFromCart, transactionAmount }) {
-    console.log(transactionAmount);
     return (
         <div className={styles['cart']}>
             {/* //* HEAD */}
