@@ -118,6 +118,10 @@
                         outline: none;
                     }
                 }
+
+                &.name {
+                    text-transform: capitalize;
+                }
             }
         }
 

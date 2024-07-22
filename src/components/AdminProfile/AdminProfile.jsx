@@ -1,14 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
-import fetchMyDetails from '../../utils/fetchMyDetails';
-import { AuthContext } from '../../context/AuthContext';
+import classNames from 'classnames/bind';
 import { MdPhotoCamera } from 'react-icons/md';
-import Button from '../UI/Button/Button';
 
+import { AuthContext } from '../../context/AuthContext';
 import styles from './AdminProfile.module.scss';
+
+import Button from '../UI/Button/Button';
 import uploadProfilePhoto from '../../utils/uploadProfilePhoto';
 import Tag from '../UI/Tag/Tag';
+import fetchMyDetails from '../../utils/fetchMyDetails';
 import updateAdmin from '../../utils/updateAdmin';
 
+const cx = classNames.bind(styles);
 function AdminProfile() {
     const { jwtToken, user } = useContext(AuthContext);
     const [profile, setProfile] = useState();
@@ -193,22 +196,21 @@ function AdminProfile() {
                     </div>
 
                     {/* //- Name */}
-                    <div className={styles['field-wrapper']}>
-                        <div className={styles['profile-field']}>
-                            <span className={styles['key']}>Name</span>
-                            <span className={styles['value']}>
-                                {profile.name}
-                            </span>
+                    <div className={cx('field-wrapper')}>
+                        <div className={cx('profile-field')}>
+                            <span className={cx('key')}>Name</span>
+                            <span className={cx('value','name')}>{profile.name}</span>
                         </div>
 
                         {/* //- Editing name */}
                         {editing && (
                             <div
-                                className={`${styles['profile-field']} ${styles['profile-field--edits']}`}
+                                className={cx([
+                                    'profile-field',
+                                    'profile-field--edits',
+                                ])}
                             >
-                                <span
-                                    className={`${styles['key']} ${styles['key--edits']}`}
-                                >
+                                <span className={cx(['key', 'key-edits'])}>
                                     Change name
                                 </span>
                                 <input
@@ -224,10 +226,10 @@ function AdminProfile() {
                     </div>
 
                     {/* //- Phone  */}
-                    <div className={styles['field-wrapper']}>
-                        <div className={styles['profile-field']}>
-                            <span className={styles['key']}>Phone</span>
-                            <div className={styles['value']}>
+                    <div className={cx('field-wrapper')}>
+                        <div className={cx('profile-field')}>
+                            <span className={cx('key')}>Phone</span>
+                            <div className={cx('value')}>
                                 {adminPhoneArray.map((item) => (
                                     <Tag
                                         key={item}
@@ -248,13 +250,16 @@ function AdminProfile() {
                         {/*  //- Add phone numbers while ediding */}
                         {editing && (
                             <div
-                                className={`${styles['profile-field']} ${styles['profile-field--edits']}`}
+                                className={cx([
+                                    'profile-field',
+                                    'profile-field-edits',
+                                ])}
                             >
-                                <div className={styles['key']}>
+                                <div className={cx('key')}>
                                     {' '}
                                     Add phone number
                                 </div>
-                                <div className={`${styles['value']} `}>
+                                <div className={cx('value')}>
                                     {editing &&
                                         addedPhones.map((item) => (
                                             <Tag
@@ -296,22 +301,24 @@ function AdminProfile() {
                     </div>
 
                     {/* //- Username */}
-                    <div className={styles['field-wrapper']}>
-                        <div className={styles['profile-field']}>
-                            <span className={styles['key']}>Username</span>
-                            <span className={styles['value']}>
+                    <div className={cx('field-wrapper')}>
+                        <div className={cx('profile-field')}>
+                            <span className={cx('key')}>Username</span>
+                            <span className={cx('value')}>
                                 {profile.username}
                             </span>
                         </div>
 
                         {/*  //- Field to edit username */}
+
                         {editing && (
                             <div
-                                className={`${styles['profile-field']} ${styles['profile-field--edits']}`}
+                                className={cx([
+                                    'profile-field',
+                                    'profile-field-edits',
+                                ])}
                             >
-                                <span
-                                    className={`${styles['key']} ${styles['key--edits']}`}
-                                >
+                                <span className={cx(['key', 'key-edits'])}>
                                     Change Username
                                 </span>
                                 <input
@@ -328,12 +335,10 @@ function AdminProfile() {
                         )}
                     </div>
                     {/* //- Id  */}
-                    <div className={styles['field-wrapper']}>
-                        <div className={styles['profile-field']}>
-                            <span className={styles['key']}>ID</span>
-                            <span className={styles['value']}>
-                                {profile._id}
-                            </span>
+                    <div className={cx('field-wrapper')}>
+                        <div className={cx('profile-field')}>
+                            <span className={cx('key')}>ID</span>
+                            <span className={cx('value')}>{profile._id}</span>
                         </div>
                     </div>
 
