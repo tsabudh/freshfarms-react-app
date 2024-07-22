@@ -38,7 +38,7 @@ let x = {
     itemsVariety: 2,
 };
 export function convertToPDF(data) {
-    let colNames; 
+    let colNames;
     const columns = [
         { header: 'Time', dataKey: 'time' },
         { header: 'Date', dataKey: 'date' },
@@ -90,7 +90,9 @@ export function convertToPDF(data) {
             }
 
             if (currentColumn == 'customer') {
-                singleRowData.push(currentTransaction[currentColumn].name);
+                singleRowData.push(
+                    capitalizeName(currentTransaction[currentColumn].name)
+                );
                 continue;
             }
             if (currentColumn == 'paidInFull' || currentColumn == 'contract') {
@@ -143,14 +145,15 @@ export function convertToPDF(data) {
         didParseCell: function (data) {
             // Check if the column is '_id'
         },
-        alternateRowStyles:{
-            fillColor:"#d9ffe9"
-        }
-
+        alternateRowStyles: {
+            fillColor: '#d9ffe9',
+        },
     });
 
     // Save the PDF
-    doc.save('data.pdf');
+    doc.save(
+        `Transactions-${extractDate(new Date())}-${extractTime(new Date())}`
+    );
 }
 
 function extractDate(timeStamp) {
@@ -170,4 +173,8 @@ function extractTime(timeStamp) {
         minute: 'numeric',
     });
     return transactionTime;
+}
+
+function capitalizeName(name) {
+    return name.replace(/\b\w/g, (char) => char.toUpperCase());
 }
