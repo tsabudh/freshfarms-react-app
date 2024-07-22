@@ -157,18 +157,22 @@
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
-            align-items: center;
+            align-items: flex-end;
 
             padding-inline: 1rem;
-            
+
             & .label {
                 display: inline-block;
                 padding: 1rem 1.2rem;
+                color: vars.$c-gray-200;
+                font-size: 1.4rem;
             }
 
             & .price {
                 display: inline-block;
                 padding: 1rem 1.2rem;
+                color: vars.$c-gray-300;
+                font-weight: 500;
             }
         }
     }

@@ -243,6 +243,7 @@ const RegisterBoard = (props) => {
 export default RegisterBoard;
 
 function Cart({ cart, removeFromCart, transactionAmount }) {
+    console.log(transactionAmount);
     return (
         <div className={styles['cart']}>
             {/* //* HEAD */}
@@ -300,8 +301,8 @@ function Cart({ cart, removeFromCart, transactionAmount }) {
 
             {cart.length > 0 ? (
                 <div className={cx('total-price')}>
-                    <span className={cx("label")}>Total Price:</span>
-                    <span className={cx("price")}>{transactionAmount}</span>
+                    <span className={cx('label')}>Total Price:</span>
+                    <span className={cx('price')}>{transactionAmount}</span>
                 </div>
             ) : null}
         </div>
