@@ -13,6 +13,7 @@ import { postTransaction } from '../../utils/postTransactions';
 const cx = classNames.bind(styles);
 
 const RegisterBoard = (props) => {
+    console.log('RegisterBoard rendered');
     const {
         customers,
         setCustomers,
@@ -36,6 +37,8 @@ const RegisterBoard = (props) => {
             let customerResponseObject = await fetchCustomers(null, jwtToken);
             let productResponseObject = await fetchProducts(null, jwtToken);
 
+            console.log(customerResponseObject);
+            console.log( productResponseObject);
             if (customerResponseObject.status == 'success') {
                 setCustomers(customerResponseObject.data);
             }

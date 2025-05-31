@@ -1,26 +1,30 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export const fetchTransactions = (filterObject, jwtToken) => {
-    return new Promise(async function (resolve, reject) {
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = async () => {
-            if (xhttp.readyState === XMLHttpRequest.DONE) {
-                let responseReceived = await JSON.parse(xhttp.responseText);
-                if (responseReceived.status == 'success') {
-                    resolve(responseReceived.data);
-                } else reject(responseReceived);
-            }
-        };
 
+export const fetchTransactions = async (filterObject, jwtToken) => {
+    try {
         const filterString = JSON.stringify(filterObject);
         const filterParam = btoa(filterString);
-        xhttp.open(
-            'GET',
-            `${API_ROUTE}/api/v1/transactions/?filter=${filterParam}`
+
+        const response = await fetch(
+            `${API_ROUTE}/api/v1/transactions/?filter=${filterParam}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwtToken}`, // If needed
+                },
+                credentials: 'include', // Important: includes cookies (like refresh token/session)
+            }
         );
 
-        //* Hard coded authorization for Sachin Paudel(admin)
-        xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
+        const data = await response.json();
 
-        xhttp.send();
-    });
+        if (data.status === 'success') {
+            return data.data;
+        } else {
+            throw data;
+        }
+    } catch (error) {
+        throw error;
+    }
 };

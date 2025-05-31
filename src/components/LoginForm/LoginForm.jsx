@@ -42,9 +42,7 @@ const LoginForm = ({ isAdmin, toggle }) => {
                         navigate('/dashboard');
                     } else {
                         navigate('/login');
-                        console.log(
-                            '-------------------login----------------------------------------'
-                        );
+                       
                     }
                 }
             } catch (error) {
