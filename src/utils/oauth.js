@@ -17,11 +17,22 @@ export async function redirectToAuth() {
 }
 
 export async function openOAuthPopup() {
-  const code_verifier = crypto.randomUUID();
+
+ const array = new Uint8Array(64);
+  crypto.getRandomValues(array);
+
+  // Convert to base64url string, length will be >43 chars
+  const code_verifier = btoa(String.fromCharCode(...array))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  // SHA256 hash the code_verifier to get code_challenge
   const hashBuffer = await crypto.subtle.digest(
     "SHA-256",
     new TextEncoder().encode(code_verifier)
   );
+
   const code_challenge = btoa(String.fromCharCode(...new Uint8Array(hashBuffer)))
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
