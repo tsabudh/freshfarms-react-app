@@ -43,7 +43,7 @@ export default function OAuthPopup() {
             "*"
           );
         }
-        // window.close();
+        window.close();
       });
   }, []);
 
