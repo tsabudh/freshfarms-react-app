@@ -1,4 +1,4 @@
-import React, { useEffect, memo, useState, useContext } from 'react';
+import React, { useEffect, memo, useState, useContext, lazy } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { MdMyLocation } from 'react-icons/md';
@@ -8,6 +8,11 @@ import Button from '../Button/Button';
 import updateCustomer from '../../../utils/updateCustomer';
 import { AuthContext } from '../../../context/AuthContext';
 import classNames from 'classnames/bind';
+import L from 'leaflet';
+
+let L;
+// import 'leaflet/dist/leaflet.css';
+
 
 //- DECLARING GLOBAL VARIABLES FOR MAP
 let marker = null,
@@ -28,16 +33,21 @@ function MapBox({ coordinates, setCoordinates }) {
     const id = user.role == 'admin' ? paramId : user._id;
 
     useEffect(() => {
-        let map = L.map('map');
-        map.setView(coordinates, 16);
-        map.setMaxZoom(19);
-        map.setMinZoom(15);
+        (async () => { if (!L) {
+            const leafletModule = await import('leaflet');
+            L = leafletModule.default;
+            await import('leaflet/dist/leaflet.css');
+        }
+        let mapInstance = L.map('map');
+        mapInstance.setView(coordinates, 16);
+        mapInstance.setMaxZoom(19);
+        mapInstance.setMinZoom(15);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution:
                 '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        }).addTo(map);
+        }).addTo(mapInstance);
 
 
         //- Setting Coordinates for customer that do not have location registered
@@ -46,26 +56,26 @@ function MapBox({ coordinates, setCoordinates }) {
 
         //- Remove previous marker if exist
         if (marker) {
-            map.removeLayer(marker);
-            map.removeLayer(circle);
+            mapInstance.removeLayer(marker);
+            mapInstance.removeLayer(circle);
         }
 
         //- Set markers to current latitude and longitude
         if (lat && lng) {
-            marker = L.marker([lat, lng]).addTo(map);
-            circle = L.circle([lat, lng]).addTo(map);
+            marker = L.marker([lat, lng]).addTo(mapInstance);
+            circle = L.circle([lat, lng]).addTo(mapInstance);
 
             if (!zoomed) {
-                zoomed = map.fitBounds(circle.getBounds());
+                zoomed = mapInstance.fitBounds(circle.getBounds());
             }
         }
-        setMap(map);
+        setMap(mapInstance);
 
         //- Clean up map
         return () => {
-            map.off();
-            map.remove();
-        };
+            mapInstance.off();
+            mapInstance.remove();
+        };})()
     }, [coordinates]);
 
     const centerToCustomerLocation = (e) => {
