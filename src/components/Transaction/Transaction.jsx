@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 
-import Details from "./Details/Details";
 
 import styles from "./Transaction.module.scss";
-import Modal from "../UI/Modal/Modal";
+
+const LazyDetails = lazy(()=>import("./Details/Details"));
+const LazyModal = lazy(()=> import("../UI/Modal/Modal"));
 
 const Transaction = ({
   customer,
@@ -33,8 +34,6 @@ const Transaction = ({
     day: "numeric",
     year: "numeric",
   });
-
-  
 
   return (
     <div
@@ -93,24 +92,24 @@ const Transaction = ({
         </div>
       )}
 
-      <Modal isOpen={isExpanded} onClose={() => setIsExpanded(false)}>
-        {isExpanded && (
-          <Details
-            // items={=items}
-            // purchaseAmount={=purchaseAmount}
-            items={items}
-            purchaseAmount={purchaseAmount}
-            paidAmount={paidAmount}
-            paidInFull={paidInFull}
-            serialNumber={serialNumber}
-            timeStamp={timeStamp}
-            transaction={transaction}
-            type={type}
-            customer={customer}
-            id={id}
-          />
-        )}
-      </Modal>
+      {isExpanded && (
+        <Suspense fallback={<div>Loading transaction details...</div>}>
+          <LazyModal isOpen={isExpanded} onClose={() => setIsExpanded(false)}>
+            <LazyDetails
+              items={items}
+              purchaseAmount={purchaseAmount}
+              paidAmount={paidAmount}
+              paidInFull={paidInFull}
+              serialNumber={serialNumber}
+              timeStamp={timeStamp}
+              transaction={transaction}
+              type={type}
+              customer={customer}
+              id={id}
+            />
+          </LazyModal>
+        </Suspense>
+      )}
     </div>
   );
 };
