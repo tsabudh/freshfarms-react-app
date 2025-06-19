@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -14,7 +14,7 @@ import AdminProfile from "./components/AdminProfile/AdminProfile";
 import ChatPanel from "./components/ChatPanel/ChatPanel";
 import Customer from "./components/Customer/Customer";
 import CustomerPanel from "./components/CustomerPanel/CustomerPanel";
-import CustomerRegistry from "./components/CustomerRegistry/CustomerRegistry";
+
 import ErrorBoundary from "./components/ErrorBoundary";
 import InventoryPanel from "./components/InventoryPanel/InventoryPanel";
 import Notifier from "./components/Notifier/Notifier";
@@ -30,10 +30,12 @@ import ContactPage from "./pages/Home/ContactPage";
 import Callback from "./pages/Callback";
 import OAuthPopup from "./pages/OAuthPopup";
 
+const LazyCustomerRegistry = lazy(()=>import("./components/CustomerRegistry/CustomerRegistry"));
+
 function App() {
   const [jwtToken, setJwtToken] = useState(localStorage.getItem("jwtToken"));
   const [user, setUser] = useState(getUserFromLocalStorage());
-
+  
   const userRole = user?.role;
 
   return (
@@ -69,7 +71,11 @@ function App() {
           <Route path="customers">
             <Route index element={<CustomerPanel />} />
             <Route path=":id" element={<Customer />} />
-            <Route path="add" element={<CustomerRegistry />} />
+            <Route path="add" element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <LazyCustomerRegistry />
+              </Suspense>
+            } />
           </Route>
           <Route path="products">
             <Route index element={<ProductPanel />} />
