@@ -8,10 +8,8 @@ import Button from '../Button/Button';
 import updateCustomer from '../../../utils/updateCustomer';
 import { AuthContext } from '../../../context/AuthContext';
 import classNames from 'classnames/bind';
-import L from 'leaflet';
 
 let L;
-// import 'leaflet/dist/leaflet.css';
 
 
 //- DECLARING GLOBAL VARIABLES FOR MAP
