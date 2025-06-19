@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState,lazy, Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { TiUserDeleteOutline } from 'react-icons/ti';
@@ -14,10 +14,11 @@ import Button from '../UI/Button/Button';
 import TransactionTable from '../TransactionTable/TransactionTable';
 import SortAndFilter from '../SortAndFilter/SortAndFilter';
 import Tag from '../UI/Tag/Tag';
-import MapBox from '../UI/MapBox/MapBox';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import deleteCustomer from '../../utils/deleteCustomer';
 import fetchMyDetails from '../../utils/fetchMyDetails';
+
+const  LazyMapBox = lazy(()=>import('../UI/MapBox/MapBox'));
 
 const initialTransactionFilterObject = {
     sortBy: {
@@ -395,10 +396,12 @@ function CustomerLocation({ coordinates, setCoordinates }) {
     return (
         <div className={cx('second-row')}>
             {coordinates ? (
-                <MapBox
-                    coordinates={coordinates}
-                    setCoordinates={setCoordinates}
-                />
+                <Suspense fallback={<div>Loading Map...</div>}>
+                    <LazyMapBox
+                        coordinates={coordinates}
+                        setCoordinates={setCoordinates}
+                    />
+                </Suspense>
             ) : null}
         </div>
     );
