@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 const API_URI =
     process.env.NODE_ENV === 'production'
@@ -15,8 +16,8 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
     if (command === 'serve') {
         return {
             // dev specific config
-            plugins: [react()],
-          
+            plugins: [react(), ],
+
             server: {
                 host: true,
             },
@@ -30,7 +31,12 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
 
         return {
             // build specific config
-            plugins: [react()],
+            plugins: [react(),visualizer({
+                open: true, // opens the report automatically in your browser
+                gzipSize: true,
+                brotliSize: true,
+                filename: 'dist/report.html',
+            })],
             define: {
                 'process.env.API_URI': JSON.stringify(API_URI),
                 'process.env.WS_URI': JSON.stringify(WS_URI),

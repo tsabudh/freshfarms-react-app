@@ -30,12 +30,15 @@ import ContactPage from "./pages/Home/ContactPage";
 import Callback from "./pages/Callback";
 import OAuthPopup from "./pages/OAuthPopup";
 
-const LazyCustomerRegistry = lazy(()=>import("./components/CustomerRegistry/CustomerRegistry"));
+const LazyCustomerRegistry = lazy(() =>
+  import("./components/CustomerRegistry/CustomerRegistry")
+);
+const LazyCustomer = lazy(() => import("./components/Customer/Customer"));
 
 function App() {
   const [jwtToken, setJwtToken] = useState(localStorage.getItem("jwtToken"));
   const [user, setUser] = useState(getUserFromLocalStorage());
-  
+
   const userRole = user?.role;
 
   return (
@@ -70,12 +73,22 @@ function App() {
           />
           <Route path="customers">
             <Route index element={<CustomerPanel />} />
-            <Route path=":id" element={<Customer />} />
-            <Route path="add" element={
-              <Suspense fallback={<div>Loading...</div>}>
-                <LazyCustomerRegistry />
-              </Suspense>
-            } />
+            <Route
+              path=":id"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <LazyCustomer />
+                </Suspense>
+              }
+            />
+            <Route
+              path="add"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <LazyCustomerRegistry />
+                </Suspense>
+              }
+            />
           </Route>
           <Route path="products">
             <Route index element={<ProductPanel />} />

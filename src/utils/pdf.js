@@ -37,7 +37,11 @@ let x = {
     purchaseAmount: 380,
     itemsVariety: 2,
 };
-export function convertToPDF(data) {
+export async function convertToPDF(data) {
+
+    const { jsPDF } = await import('jspdf');
+    const autoTable = (await import('jspdf-autotable')).default;
+
     let colNames;
     const columns = [
         { header: 'Time', dataKey: 'time' },

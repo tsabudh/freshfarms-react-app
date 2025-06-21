@@ -36,7 +36,7 @@ const Dashboard = () => {
             setUser(() => response.user);
             setUserToLocalStorage(response.user);
           } else {
-            navigate("/login");
+            // navigate("/login");
           }
         } else {
           console.log("No JWT token or user found in context");
@@ -52,9 +52,11 @@ const Dashboard = () => {
       try {
         const response = await fetch("http://localhost:3000/api/auth/check", {
           method: "GET",
-          credentials: "include", // ⚠️ Send cookies with the request
+          credentials: "include",
         });
 
+        console.log("Checking auth with cookies:");
+        console.log(document.cookie);
         console.log("Response status:", response.status);
         if (response.ok) {
           const data = await response.json();
@@ -63,11 +65,11 @@ const Dashboard = () => {
           setUser(data.user); // You may still store user info in context
         } else {
             console.log("Session is invalid, redirecting to login");
-          navigate("/login");
+          // navigate("/login");
         }
       } catch (err) {
         console.error("Error validating session:", err);
-        navigate("/login");
+        // navigate("/login");
       }
     }
 
