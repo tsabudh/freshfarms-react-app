@@ -13,6 +13,7 @@ export interface Product {
   stock: number;
   sales: number;
   __v: number;
+  type: string;
 }
 export interface ProductCartItem extends Product {
   quantity: number;

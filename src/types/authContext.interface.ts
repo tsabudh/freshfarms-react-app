@@ -3,8 +3,8 @@ import { UserProfile } from "./user.interface";
 export interface AuthContextInterface {
   jwtToken: string | null;
   user: UserProfile | null;
-  setJwtToken: (token: string | null) => void;
-  setUser: (user: UserProfile | null) => void;
+  setJwtToken: React.Dispatch<React.SetStateAction<string | null>>;
+  setUser: React.Dispatch<React.SetStateAction<UserProfile | null>>;
   userRole: string | null;
-  setUserRole: (role: string | null) => void;
+  setUserRole: React.Dispatch<React.SetStateAction<string | null>>;
 }

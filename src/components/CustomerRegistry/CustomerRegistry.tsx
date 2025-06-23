@@ -177,7 +177,7 @@ function CustomerRegistry() {
         <div>{error}</div>
         <ErrorFormFooter
           pendingStatus={pendingStatus}
-          errorMessage={errorMessage}
+          errorMessage={errorMessage || undefined}
         />
       </div>
       <div className={cx("profile-container")} ref={profileContainerRef}>

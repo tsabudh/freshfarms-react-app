@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 function ProductCard({ product, imageData }:{
     product: Product | null;
-    imageData: ProductImageData[];
+    imageData?: ProductImageData[];
 }) {
     if (!product) return null;
 
@@ -20,7 +20,7 @@ function ProductCard({ product, imageData }:{
         <div className={cx('product-card')}>
             <section className={cx('product')}>
                 <section className={cx('product_image')}>
-                    <CarouselB data={imageData} />
+                  { imageData? <CarouselB data={imageData } />: null}
                 </section>
                 <section className={cx('product_details')}>
                     <h4 className={cx('name')}>{product.name}</h4>

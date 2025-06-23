@@ -10,13 +10,15 @@ import fetchCustomers from "../../utils/fetchCustomers";
 import fetchProducts from "../../utils/fetchProducts";
 import { postTransaction } from "../../utils/postTransactions";
 import { Product, ProductCartItem } from "types/product.type";
+import { Transaction } from "types/transaction.type";
+import { CustomerProfile } from "types/customer.interface";
 
 const cx = classNames.bind(styles);
 
 const RegisterBoard = (props: {
   customers: any[];
   setCustomers: (customers: any[]) => void;
-  products: any[];
+  products: ProductCartItem[];
   setProducts: (products: any[]) => void;
   setTransactionFilterObject: (filterObject: any) => void;
 }) => {
@@ -41,7 +43,7 @@ const RegisterBoard = (props: {
   const [transactionAmount, setTransactionAmount] = useState<number>(0);
   const [paidInFull, setPaidInFull] = useState<boolean>(true);
   const [paidAmount, setPaidAmount] = useState<number>(0);
-  const [selectedProductUnit, setSelectedProductUnit] = useState(null);
+  const [selectedProductUnit, setSelectedProductUnit] = useState<string | null>(null);
 
   useEffect(() => {
     let asyncFunc = async () => {
@@ -127,7 +129,7 @@ const RegisterBoard = (props: {
     }
     const selectedCustomer = el.value;
 
-    const newTransaction = {
+    const newTransaction: Partial<Transaction> = {
       customer: { customerId: selectedCustomer },
     };
 
@@ -146,7 +148,8 @@ const RegisterBoard = (props: {
       newTransaction.paid = paidAmount;
     }
 
-    const result = await postTransaction(newTransaction, jwtToken);
+    const finalNewTransaction = newTransaction as Transaction;
+    const result = await postTransaction(finalNewTransaction, jwtToken);
 
     if (result.status === "success") {
       setPosting("success");
@@ -165,7 +168,7 @@ const RegisterBoard = (props: {
     }
   };
 
-  const handlePaidAmount = (e) => {
+  const handlePaidAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPaidAmount(Number(e.target.value));
   };
 
@@ -252,7 +255,15 @@ const RegisterBoard = (props: {
 
 export default RegisterBoard;
 
-function Cart({ cart, removeFromCart, transactionAmount }) {
+function Cart({
+  cart,
+  removeFromCart,
+  transactionAmount,
+}: {
+  cart: ProductCartItem[];
+  removeFromCart: (e: React.MouseEvent, id: string) => void;
+  transactionAmount: number;
+}) {
   return (
     <div className={styles["cart"]}>
       {/* //* HEAD */}
@@ -306,7 +317,10 @@ function Cart({ cart, removeFromCart, transactionAmount }) {
   );
 }
 
-function CartItem(props) {
+function CartItem(props: {
+  item: ProductCartItem;
+  removeFromCart: (e: React.MouseEvent, id: string) => void;
+}) {
   const { item, removeFromCart } = props;
   return (
     <div className={styles["cart-item"]} key={item._id}>
@@ -362,7 +376,7 @@ function PurchaseUI({
   customers,
   setSelectedProductUnit,
   setPaidInFull,
-  setPaidAmount,
+//   setPaidAmount,
   setQuantity,
   products,
   quantity,
@@ -376,6 +390,24 @@ function PurchaseUI({
   addTransaction,
   handlePaidAmount,
   paidAmount,
+}: {
+  customers: Partial<CustomerProfile>[];
+  setSelectedProductUnit: React.Dispatch<React.SetStateAction<string | null>>;
+  setPaidInFull: (paidInFull: boolean) => void;
+//   setPaidAmount: (amount: number) => void;
+  setQuantity: (quantity: number) => void;
+  products: Product[];
+  quantity: number;
+  selectedProductUnit: string | null;
+  addToCart: (e: React.MouseEvent) => void;
+  cart: ProductCartItem[];
+  removeFromCart: (e: React.MouseEvent, id: string) => void;
+  paidInFull: boolean;
+  transactionAmount: number;
+  posting: "sending" | "" | "failure" | "success";
+  addTransaction: (e: React.MouseEvent<HTMLInputElement>) => Promise<void>;
+  handlePaidAmount: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  paidAmount: number;
 }) {
   return (
     <div className={styles["purchase-dash"]}>
@@ -410,7 +442,7 @@ function PurchaseUI({
             type="number"
             id="productQuantity"
             value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
+            onChange={(e) => setQuantity(Number(e.target.value))}
             min={1}
           />
           <span className={styles["unit"]}>{selectedProductUnit}</span>
@@ -432,14 +464,14 @@ function PurchaseUI({
           <div className={styles["type"]}>
             Paid in full?
             <div className={styles["grouped"]}>
-              <input
-                name="paidInFull"
-                type="radio"
-                id="paidInFullYes"
-                onChange={() => setPaidInFull(true)}
-                value={true}
-                checked={paidInFull == true}
-              />
+                <input
+                    name="paidInFull"
+                    type="radio"
+                    id="paidInFullYes"
+                    onChange={() => setPaidInFull(true)}
+                    value={"true"}
+                    checked={paidInFull == true}
+                />
 
               <label htmlFor="paidInFullYes">
                 <span
@@ -458,7 +490,7 @@ function PurchaseUI({
                 type="radio"
                 id="paidInFullNo"
                 onChange={() => setPaidInFull(false)}
-                value={false}
+                value={"false"}
                 checked={paidInFull == false}
               />
 
@@ -498,7 +530,7 @@ function PurchaseUI({
       </div>
 
       <Button
-        className={classNames(`berry-02`, `small`, {
+        className={cx(`berry-02`, `small`, {
           loading: posting == "sending",
         })}
         onClick={addTransaction}
@@ -515,6 +547,12 @@ function PaymentUI({
   handlePaidAmount,
   posting,
   paidAmount,
+}:{
+    customers: Partial<CustomerProfile>[];
+    addTransaction: (e: React.MouseEvent<HTMLInputElement>) => Promise<void>;
+    handlePaidAmount: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    posting: "sending" | "" | "failure" | "success";
+    paidAmount: number;
 }) {
   return (
     <div className={styles["payment-dash"]}>
@@ -538,7 +576,7 @@ function PaymentUI({
         />
       </div>
       <Button
-        className={classNames(`berry-02`, `small`, {
+        className={cx(`berry-02`, `small`, {
           loading: posting == "sending",
         })}
         onClick={addTransaction}

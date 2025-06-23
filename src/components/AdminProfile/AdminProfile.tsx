@@ -15,18 +15,29 @@ import { UserProfile } from "../../types/user.interface";
 const cx = classNames.bind(styles);
 function AdminProfile() {
   const { jwtToken, user } = useContext(AuthContext);
+
+ 
   const [profile, setProfile] = useState<UserProfile>();
-  const [loadingProfilePic, setLoadingProfilePic] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [newUsername, setNewUsername] = useState("");
+  const [loadingProfilePic, setLoadingProfilePic] = useState<boolean>(false);
+  const [newName, setNewName] = useState<string>("");
+  const [newUsername, setNewUsername] = useState<string>("");
   const [newPhone, setNewPhone] = useState("");
 
-  const [editing, setEditing] = useState(false);
-  const [adminPhone, setUserPhone] = useState("");
+  const [editing, setEditing] = useState<Boolean>(false);
+  const [adminPhone, setUserPhone] = useState<string>("");
   const [addedPhones, setAddedPhones] = useState<string[]>([]);
   const [adminPhoneArray, setUserPhoneArray] = useState<UserProfile["phone"]>(
     []
   );
+
+
+ if(!jwtToken || !user) {
+    return <div >Loading...</div>;
+  }
+
+  if(!profile){
+    return <div>Loading profile...</div>;
+  }
 
   const deleteStoredPhoneTag = (e: React.MouseEvent<HTMLElement>) => {
     if (!editing) return;
@@ -139,17 +150,17 @@ function AdminProfile() {
     setUserPhone(e.target.value);
   };
 
-  const enableEditing = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const enableEditing = async (e: React.MouseEvent<HTMLButtonElement>) => {
     setEditing(true);
   };
-  const disableEditing = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const disableEditing = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!profile) return;
     setUserPhoneArray(profile.phone);
 
     setEditing(false);
   };
 
-  const uploadChanges = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadChanges = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!profile) return;
 
@@ -160,16 +171,18 @@ function AdminProfile() {
     let formData = new FormData(formAdmin);
     formData.append("phone", JSON.stringify(addedPhones));
 
-    const adminDetails: { [key: string]: any } = {};
+    const adminDetails: Partial<Record<keyof UserProfile, any>> = {};
+    
     for (const [key, value] of formData) {
+      const typedKey = key as keyof UserProfile;
       if (typeof value === "string" && value.trim().length !== 0) {
-        adminDetails[key] = value;
+        adminDetails[typedKey] = value;
       } else if (value instanceof File && value.name) {
-        adminDetails[key] = value;
+        adminDetails[typedKey] = value;
       }
     }
 
-    const responseTxt = await updateAdmin(profile._id, adminDetails, jwtToken);
+    const responseTxt:any= await updateAdmin(profile._id, adminDetails as UserProfile, jwtToken);
     if (responseTxt.status == "success") {
       setProfile(responseTxt.data);
       setEditing(false);

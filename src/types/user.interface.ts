@@ -5,6 +5,6 @@ export interface UserProfile {
   profilePicture: string;
   createdAt: string | Date; 
   username: string;
-  role: 'admin' | 'user' | 'superadmin' | 'customer';
-  __v: number;
+  role: 'admin' | 'customer';
+  __v?: number;
 }
