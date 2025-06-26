@@ -1,0 +1,237 @@
+import React, {
+  FormEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import classNames from "classnames/bind";
+
+import styles from "./ProductRegistry.module.scss";
+import { AuthContext } from "../../context/AuthContext";
+
+import ProductCard from "./ProductCard";
+import Button from "../UI/Button/Button";
+import ErrorFormFooter from "../UI/Error/ErrorFormFooter";
+import useAPI from "../../hooks/useAPI";
+import { Product } from "types/product.type";
+import productImageData from "../../assets/data/productImages.json";
+const cx = classNames.bind(styles);
+
+const failuresObject = {
+  name: false,
+  nameMessage: "",
+  address: false,
+  addressMessage: "",
+  stock: true,
+  stockMessage: "",
+  tab: false,
+  purchase: false,
+  paid: false,
+};
+
+function ProductRegistry() {
+  const { jwtToken } = useContext(AuthContext);
+  const [dueAmount, setDueAmount] = useState<string>("");
+  const [purchaseAmount, setPurchaseAmount] = useState<string>("");
+  const [paidAmount, setPaidAmount] = useState<string>("");
+  const [tabOptions, setTabOptions] = useState<boolean>(false);
+  const [failures, setFailures] = useState(failuresObject);
+
+  const [error, setError] = useState<string | null>(null);
+
+  const createProductFormRef = useRef<HTMLFormElement | null>(null);
+
+  if (!jwtToken) {
+    return (
+      <div className={cx("container")}>
+        <h3>Please login to add a product.</h3>
+      </div>
+    );
+  }
+
+  // No requestBody initially, will override in sendRequest call
+  const [pendingStatus, data, errorMessage, sendRequest] = useAPI<Product, Partial<Product>>({
+    url: "/products",
+    method: "POST",
+    jwtToken: jwtToken,
+  });
+
+  useEffect(() => {
+    // Update dueAmount based on purchaseAmount and paidAmount
+    const purchase = parseFloat(purchaseAmount);
+    const paid = parseFloat(paidAmount);
+    if (!isNaN(purchase) && !isNaN(paid)) {
+      setDueAmount((purchase - paid).toString());
+    } else {
+      setDueAmount("");
+    }
+  }, [purchaseAmount, paidAmount]);
+
+  const handleTab = () => {
+    setTabOptions((prev) => !prev);
+  };
+
+  const handleForm = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    try {
+      const form = createProductFormRef.current;
+      if (!form) throw new Error("Form not found.");
+
+      const formData = new FormData(form);
+      const details: Partial<Record<keyof Product, any>> = {};
+
+      formData.forEach((value, key) => {
+        const typedKey = key as keyof Product;
+
+        if (typeof value !== "string") {
+          throw new Error(`Invalid value for ${key}. Expected a string.`);
+        }
+
+        const trimmedValue = value.trim();
+
+        switch (typedKey) {
+          case "name":
+            if (trimmedValue.length < 3) {
+              throw new Error("Product name must have at least three characters.");
+            }
+            if (!/^[a-zA-Z]+$/.test(trimmedValue)) {
+              throw new Error("Please enter a valid name for product (letters only).");
+            }
+            details[typedKey] = trimmedValue;
+            break;
+
+          case "type":
+            if (!/^[a-zA-Z]+$/.test(trimmedValue)) {
+              throw new Error("Please enter a valid type for product (letters only).");
+            }
+            details[typedKey] = trimmedValue;
+            break;
+
+          case "stock":
+            if (trimmedValue.length === 0) {
+              throw new Error("Please enter a stock number.");
+            }
+            if (!/^\d+$/.test(trimmedValue)) {
+              throw new Error("Please enter a valid number for stock.");
+            }
+            details[typedKey] = Number(trimmedValue);
+            break;
+
+          case "price":
+            if (trimmedValue.length === 0) {
+              throw new Error("Please enter a price.");
+            }
+            if (!/^\d+(\.\d{1,2})?$/.test(trimmedValue)) {
+              throw new Error("Please enter a valid price (e.g., 12.99).");
+            }
+            details[typedKey] = Number(trimmedValue);
+            break;
+
+          default:
+            details[typedKey] = trimmedValue;
+            break;
+        }
+      });
+
+      await sendRequest(details);
+    } catch (error: any) {
+      setError(error.message || "Unknown error");
+    }
+  };
+
+  return (
+    <div className={cx("container")}>
+      <div className={cx("form-container")}>
+        <h3>Add a new product</h3>
+        <form
+          id="createProductForm"
+          ref={createProductFormRef}
+          onSubmit={handleForm}
+          noValidate
+        >
+          <InputGroup
+            inputName="name"
+            fieldName="Name"
+            placeholder="Product's Name"
+            inputId="productName"
+          />
+          <InputGroup
+            inputName="price"
+            fieldName="Price"
+            inputId="productPrice"
+            placeholder="Price"
+          />
+
+          <InputGroup
+            inputName="stock"
+            fieldName="Stock"
+            inputId="productStock"
+            placeholder="Stock"
+          />
+          <InputGroup
+            inputName="type"
+            fieldName="Type"
+            inputId="productType"
+            placeholder="Cow, Buffalo, Mixed, Imported"
+          />
+          <InputGroup
+            inputName="code"
+            fieldName="Product Code"
+            inputId="productCode"
+            placeholder="'cm' for cow milk!"
+          />
+          <InputGroup
+            inputName="unit"
+            fieldName="Unit of measurement"
+            inputId="productUnit"
+            placeholder="kg or litre or any"
+          />
+
+          <Button className="action01 go" type="submit" disabled={pendingStatus === "sending"}>
+            {pendingStatus === "sending" ? "Adding..." : "Add product"}
+          </Button>
+        </form>
+
+        <div>{error}</div>
+        <ErrorFormFooter pendingStatus={pendingStatus} errorMessage={errorMessage as string} />
+      </div>
+      <div className={cx("profile-container")}>{data && <ProductCard product={data} />}</div>
+    </div>
+  );
+}
+
+interface InputGroupProps {
+  fieldName: string;
+  inputName: keyof Product | string;
+  inputId: string;
+  placeholder?: string;
+  type?: string;
+}
+
+function InputGroup({
+  fieldName,
+  inputName,
+  inputId,
+  placeholder,
+  type = "text",
+}: InputGroupProps) {
+  return (
+    <div className={cx("input-group")}>
+      <label htmlFor={inputId} className={cx("input-label")}>
+        {fieldName}
+      </label>
+      <input
+        type={type}
+        id={inputId}
+        name={inputName}
+        className={cx("input-field")}
+        placeholder={placeholder}
+      />
+    </div>
+  );
+}
+
+export default ProductRegistry;
