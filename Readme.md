@@ -1,6 +1,6 @@
-# Shreekrishna Dairy
+# Freshfarms 
 
-Shreekrishna Dairy is a digital logging system designed to manage and streamline the operations of a local dairy. This project aims to digitize daily records, improve data accuracy, and enhance operational efficiency.
+Freshfarms app is a digital logging system designed to manage and streamline the operations of a local dairy. This project aims to digitize daily records, improve data accuracy, and enhance operational efficiency.
 
 ## Features
 
@@ -22,8 +22,8 @@ Shreekrishna Dairy is a digital logging system designed to manage and streamline
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/shreekrishna-dairy.git
-    cd shree-krishna-dairy
+    git clone https://github.com/tsabudh/freshfarms-react-app
+    cd freshfarms-react-app
     ```
 2. **Install the dependencies**:
     ```
