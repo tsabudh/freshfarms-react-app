@@ -1,8 +1,8 @@
+import classNames from 'classnames/bind';
 import React from 'react';
 
-import styles from './NavBarHome.module.scss';
-import classNames from 'classnames/bind';
 import { NavLink } from 'react-router-dom';
+import styles from './NavBarHome.module.scss';
 import Logo from '../UI/Icons/Logo';
 const cx = classNames.bind(styles);
 

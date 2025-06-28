@@ -1,3 +1,4 @@
+import React from "react";
 import { UserProfile } from "./user.interface";
 
 export interface AuthContextInterface {

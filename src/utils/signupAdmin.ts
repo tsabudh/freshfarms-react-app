@@ -1,28 +1,31 @@
-import { CustomerProfile } from 'types/customer.interface';
+import type { CustomerProfile } from 'types/customer.interface';
 import API_ROUTE from '../assets/globals/baseRoute';
-export const signupAdmin = (customerDetails:CustomerProfile) => {
-    return new Promise((resolve, reject) => {
-        try {
-            const xhttp = new XMLHttpRequest();
-            const apiRoute = `${API_ROUTE}/api/v1/admins/login`;
 
-            xhttp.onreadystatechange = () => {
-                if (xhttp.readyState == 4) {
-                    let response = JSON.parse(xhttp.responseText);
-                    resolve(response);
-                }
-            };
-            xhttp.open('POST', apiRoute);
-            xhttp.setRequestHeader('Content-Type', 'application/json');
-
-            //todo MAKE BEARER TOKEN STORED AND WITHDRAW FROM COOKIES
-            let requestBody = JSON.stringify(customerDetails);
-            xhttp.send(requestBody);
-        } catch (error:any) {
-            console.log(error);
-            return;
-        }
+export async function signupAdmin(customerDetails: CustomerProfile) {
+  try {
+    const response = await fetch(`${API_ROUTE}/api/v1/admins/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(customerDetails),
     });
-};
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Admin signup failed');
+    }
+
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Signup failed:', error.message);
+      throw error;
+    } else {
+      throw new Error('Unknown error during admin signup');
+    }
+  }
+}
 
 export default signupAdmin;

@@ -47,7 +47,7 @@ export type FilterAction = {
   newCustomer?: string;
 };
 
-type SortDirection = 1 | -1; // 1 for ascending, -1 for descending
+// type SortDirection = 1 | -1; // 1 for ascending, -1 for descending
 // type SortDirection = 'asc' | 'desc';
 
 type SortByFields = {

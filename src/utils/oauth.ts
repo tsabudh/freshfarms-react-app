@@ -43,7 +43,7 @@ export async function openOAuthPopup() {
   const redirectUri = encodeURIComponent("http://localhost:5173/oauth-popup");
   const url = `http://localhost:4000/authorize?response_type=code&client_id=skd-app&redirect_uri=${redirectUri}&code_challenge=${code_challenge}&code_challenge_method=S256&state=xyz123`;
 
-  const popup = window.open(
+  window.open(
     url,
     "OAuthPopup",
     "width=500,height=600"
@@ -54,7 +54,7 @@ export async function openOAuthPopup() {
       if (event.origin !== "http://localhost:5173") return;
       if (event.data.type === "oauth:token") {
         window.removeEventListener("message", listener);
-        resolve(event.data.token);
+        resolve(event.data.token as string);
       } else if (event.data.type === "oauth:error") {
         reject(event.data.error);
       }

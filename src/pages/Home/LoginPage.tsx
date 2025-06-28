@@ -1,26 +1,28 @@
-import React, { useContext, useState } from "react";
 import classNames from "classnames/bind";
+import React, { useContext, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
 import styles from "./LoginPage.module.scss";
 
 import LoginForm from "../../components/LoginForm/LoginForm";
-import OverlayContainer from "../../components/Overlay/OverlayContainer";
-import { openOAuthPopup, redirectToAuth } from "../../utils/oauth";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { openOAuthPopup } from "../../utils/oauth";
 
 const cx = classNames.bind(styles);
 
 export default function LoginPage() {
   const [isAdmin, setIsAdmin] = useState(false);
-  const {setJwtToken, setUser} = useContext(AuthContext);
+  const {setJwtToken} = useContext(AuthContext);
   const navigate = useNavigate();
   
+
   const handleOAuthLogin = async () => {
     try {
-      const token = await openOAuthPopup();
-      // localStorage.setItem("access_token", token);
-      setJwtToken(token); // or dispatch to global auth context
+      const token = await openOAuthPopup() as unknown as string;
+      if(!token) {
+        throw new Error("No token received from OAuth");
+      }
+      setJwtToken(token); 
 
       navigate("/dashboard");
     } catch (err) {

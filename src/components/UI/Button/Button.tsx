@@ -8,7 +8,7 @@ const Button = (props:React.ButtonHTMLAttributes<HTMLButtonElement>) => {
         classNames = classArray.map((item) => styles[item]).join(' ');
     }
 
-    let { className = null, ...dynamicProps } = { ...props };
+    const { className:_discarded = null, ...dynamicProps } = { ...props };
 
     return (
         <button className={classNames} {...dynamicProps}>

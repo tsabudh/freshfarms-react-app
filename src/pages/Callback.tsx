@@ -7,7 +7,7 @@ const Callback = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
-    const state = urlParams.get("state");
+    // const state = urlParams.get("state");
     const code_verifier = sessionStorage.getItem("pkce_verifier");
 
     if (!code || !code_verifier) {

@@ -2,7 +2,7 @@ function isValidJson(jsonString:string) {
     try {
         JSON.parse(jsonString);
         return true;
-    } catch (e) {
+    } catch  {
         return false;
     }
 }
@@ -18,7 +18,7 @@ export function getUserFromLocalStorage() {
     return null;
 }
 export function setUserToLocalStorage(user:string | object) {
-    let userStringified = JSON.stringify(user);
+    const userStringified = JSON.stringify(user);
     localStorage.setItem('user', userStringified);
 }
 

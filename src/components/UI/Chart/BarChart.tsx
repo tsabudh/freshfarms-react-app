@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Chart from "chart.js/auto";
+import {Chart} from "chart.js/auto";
+import React, { useEffect } from "react";
 
+import type { Product } from "types/product.type";
 import styles from "./BarChart.module.scss";
-let chartData = {
+const chartData = {
   labels: [
     "Paneer",
     "Yogurt",
@@ -31,7 +32,7 @@ let chartData = {
     },
   ],
 };
-let chartOptions = {
+const chartOptions = {
   scales: {
     y: {
       suggestedMax: 150,
@@ -78,11 +79,11 @@ let chartOptions = {
 
 type BarChartProps = {
   products: { name: string; sales: number; stock: number }[];
-  setProducts: (products: any[]) => void;
+  setProducts: (products: Product[]) => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 function BarChart(props: BarChartProps) {
-  const { products, setProducts } = props;
+  const { products } = props;
   // const [products, setProducts] = useState([]);
   useEffect(() => {
     const wrapperFunc = async function () {
@@ -113,7 +114,7 @@ function BarChart(props: BarChartProps) {
       console.error("Canvas element with id 'myChart' not found.");
       return;
     }
-    let myChart = new Chart(ctx, {
+    const myChart = new Chart(ctx, {
       type: "bar",
       data: chartData,
       options: chartOptions,

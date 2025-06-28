@@ -1,3 +1,4 @@
+import classNames from "classnames/bind";
 import React, {
   FormEvent,
   useContext,
@@ -5,17 +6,16 @@ import React, {
   useRef,
   useState,
 } from "react";
-import classNames from "classnames/bind";
 
+import { Product } from "types/product.type";
+import ProductCard from "./ProductCard";
 import styles from "./ProductRegistry.module.scss";
+import productImageData from "../../assets/data/productImages.json";
 import { AuthContext } from "../../context/AuthContext";
 
-import ProductCard from "./ProductCard";
+import useAPI from "../../hooks/useAPI";
 import Button from "../UI/Button/Button";
 import ErrorFormFooter from "../UI/Error/ErrorFormFooter";
-import useAPI from "../../hooks/useAPI";
-import { Product } from "types/product.type";
-import productImageData from "../../assets/data/productImages.json";
 const cx = classNames.bind(styles);
 
 const failuresObject = {

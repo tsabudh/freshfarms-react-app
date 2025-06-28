@@ -1,5 +1,5 @@
-import React from 'react';
 import classNames from 'classnames/bind';
+import React from 'react';
 import styles from './FooterHome.module.scss';
 import Logo from './UI/Icons/Logo';
 
@@ -11,7 +11,7 @@ export default function FooterHome() {
             <div className={cx('brand')}>
                 <Logo />
                 <div className={cx('title')}>
-                    <h3 className={cx('h3')}>Shree Krishna Dairy</h3>
+                    <h3 className={cx('h3')}>Freshfarms</h3>
                 </div>
             </div>
             <div className={cx('copyright')}>

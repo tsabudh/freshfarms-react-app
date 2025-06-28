@@ -1,18 +1,18 @@
+import classNames from "classnames/bind";
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import classNames from "classnames/bind";
 
 import styles from "./LoginForm.module.scss";
 import { AuthContext } from "../../context/AuthContext";
 
-import Button from "../UI/Button/Button";
-import loginUser from "../../utils/loginUser";
-import BouncingCircles from "../UI/Vectors/BouncingCircles";
-import refreshToken from "../../utils/refreshToken";
 import {
   setJwtToLocalStorage,
   setUserToLocalStorage,
 } from "../../utils/localStorageUtils";
+import loginUser from "../../utils/loginUser";
+import refreshToken from "../../utils/refreshToken";
+import Button from "../UI/Button/Button";
+import BouncingCircles from "../UI/Vectors/BouncingCircles";
 
 const cx = classNames.bind(styles);
 
@@ -39,7 +39,7 @@ const LoginForm = ({
     async function asyncWrapper() {
       try {
         if (jwtToken && user?.role) {
-          let response = await refreshToken(jwtToken, user.role);
+          const response = await refreshToken(jwtToken, user.role);
           if (response.status == "success") {
             setJwtToken(response.token);
             setJwtToLocalStorage(response.token);
@@ -60,10 +60,10 @@ const LoginForm = ({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErrorMessage(null);
-    let form: HTMLFormElement =
+    const form: HTMLFormElement =
       loginFormRef.current as unknown as HTMLFormElement;
-    let loginDetails: { [key: string]: FormDataEntryValue } = {};
-    let formData = new FormData(form);
+    const loginDetails: { [key: string]: FormDataEntryValue } = {};
+    const formData = new FormData(form);
     formData.forEach((value, key) => (loginDetails[key] = value));
 
     const userRole = isAdmin ? "admin" : "customer";
@@ -72,7 +72,7 @@ const LoginForm = ({
       loginDetails.username as string
     ).toLocaleLowerCase();
 
-    let response = await loginUser(loginDetails, userRole);
+    const response = await loginUser(loginDetails, userRole);
     if (response) setIsLoading(false);
 
     if (response.status == "success") {

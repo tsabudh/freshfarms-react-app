@@ -1,48 +1,47 @@
-import jsPDF from "jspdf";
-import autoTable, { CellInput } from "jspdf-autotable";
-import { Transaction } from "types/transaction.type";
+import  { CellInput } from "jspdf-autotable";
+import  type { Transaction } from "types/transaction.type";
 
-let x = {
-  _id: "6658ac49df06c26698386808",
-  type: "purchase",
-  customer: {
-    customerId: "64678cdbaacc08d817283330",
-    name: "sabudh",
-    _id: "6658ac49df06c26698386809",
-  },
-  items: [
-    {
-      productId: "65c9d5108998cf37d0ab05ef",
-      quantity: 1,
-      _id: "6658ac49df06c2669838680a",
-      productName: "cow milk",
-      priceThen: 120,
-    },
-    {
-      productId: "65c9d5418998cf37d0ab05f3",
-      quantity: 2,
-      _id: "6658ac49df06c2669838680b",
-      productName: "mixed milk",
-      priceThen: 130,
-    },
-  ],
-  paidInFull: false,
-  contract: false,
-  paid: 300,
-  createdBy: "660041424f4946e14c555191",
-  createdAt: "2024-05-30T16:41:45.836Z",
-  updatedAt: "2024-05-30T16:41:45.836Z",
-  issuedTime: "2024-05-30T16:41:45.836Z",
-  __v: 0,
-  totalQuantity: 3,
-  purchaseAmount: 380,
-  itemsVariety: 2,
-};
+// const x = {
+//   _id: "6658ac49df06c26698386808",
+//   type: "purchase",
+//   customer: {
+//     customerId: "64678cdbaacc08d817283330",
+//     name: "sabudh",
+//     _id: "6658ac49df06c26698386809",
+//   },
+//   items: [
+//     {
+//       productId: "65c9d5108998cf37d0ab05ef",
+//       quantity: 1,
+//       _id: "6658ac49df06c2669838680a",
+//       productName: "cow milk",
+//       priceThen: 120,
+//     },
+//     {
+//       productId: "65c9d5418998cf37d0ab05f3",
+//       quantity: 2,
+//       _id: "6658ac49df06c2669838680b",
+//       productName: "mixed milk",
+//       priceThen: 130,
+//     },
+//   ],
+//   paidInFull: false,
+//   contract: false,
+//   paid: 300,
+//   createdBy: "660041424f4946e14c555191",
+//   createdAt: "2024-05-30T16:41:45.836Z",
+//   updatedAt: "2024-05-30T16:41:45.836Z",
+//   issuedTime: "2024-05-30T16:41:45.836Z",
+//   __v: 0,
+//   totalQuantity: 3,
+//   purchaseAmount: 380,
+//   itemsVariety: 2,
+// };
+
 export async function convertToPDF(data: Transaction[]) {
   const { jsPDF } = await import("jspdf");
   const autoTable = (await import("jspdf-autotable")).default;
 
-  let colNames;
   const columns = [
     { header: "Time", dataKey: "time" },
     { header: "Date", dataKey: "date" },
@@ -57,9 +56,9 @@ export async function convertToPDF(data: Transaction[]) {
   ];
   type ColumnKey = (typeof columns)[number]["dataKey"];
 
-  colNames = columns.map((item) => item.dataKey);
+  const colNames = columns.map((item) => item.dataKey);
   const headerNames = columns.map((item) => item.header);
-  var doc = new jsPDF({
+  const doc = new jsPDF({
     orientation: "landscape",
     format: "a4",
   });
@@ -75,15 +74,15 @@ export async function convertToPDF(data: Transaction[]) {
     { align: "left" }
   );
 
-  let rows = [];
+  const rows = [];
   type TransactionKey = keyof Transaction;
 
   for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-    let singleRowData = [];
+    const singleRowData = [];
 
     for (let colIndex = 0; colIndex < colNames.length; colIndex++) {
       const currentColumn = colNames[colIndex] as ColumnKey;
-      let currentTransaction = data[rowIndex];
+      const currentTransaction = data[rowIndex];
 
       if (currentColumn == "time") {
         singleRowData.push(extractTime(currentTransaction["createdAt"] || "Unknown"));
@@ -112,8 +111,8 @@ export async function convertToPDF(data: Transaction[]) {
       }
 
       if (currentColumn == "items") {
-        let cellData = currentTransaction[currentColumn].reduce(
-          (accumulatorValue, currentItem, _) => {
+        const cellData = currentTransaction[currentColumn].reduce(
+          (accumulatorValue, currentItem) => {
             return (
               accumulatorValue + `${currentItem.code}:${currentItem.quantity} `
             );
@@ -153,7 +152,7 @@ export async function convertToPDF(data: Transaction[]) {
       paid: { cellWidth: 20 },
       purchaseAmount: { cellWidth: 20 },
     },
-    didParseCell: function (data) {
+    didParseCell: function () {
       // Check if the column is '_id'
     },
     alternateRowStyles: {
@@ -175,7 +174,7 @@ export async function convertToPDF(data: Transaction[]) {
 }
 
 function extractDate(timeStamp: string | Date) {
-  let transactionDate = new Date(timeStamp).toLocaleDateString(undefined, {
+  const transactionDate = new Date(timeStamp).toLocaleDateString(undefined, {
     weekday: "short",
     month: "short",
     day: "numeric",
@@ -186,7 +185,7 @@ function extractDate(timeStamp: string | Date) {
 }
 
 function extractTime(timeStamp: string | Date) {
-  let transactionTime = new Date(timeStamp).toLocaleTimeString(undefined, {
+  const transactionTime = new Date(timeStamp).toLocaleTimeString(undefined, {
     hour: "numeric",
     minute: "numeric",
   });

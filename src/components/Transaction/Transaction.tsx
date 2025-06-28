@@ -1,10 +1,11 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useState, lazy, Suspense } from "react";
 
+import type { Transaction, TransactionItem } from "types/transaction.type";
 
 import styles from "./Transaction.module.scss";
 
-const LazyDetails = lazy(()=>import("./Details/Details"));
-const LazyModal = lazy(()=> import("../UI/Modal/Modal"));
+const LazyDetails = lazy(() => import("./Details/Details"));
+const LazyModal = lazy(() => import("../UI/Modal/Modal"));
 
 const Transaction = ({
   customer,
@@ -17,16 +18,16 @@ const Transaction = ({
   serialNumber,
   transaction,
   id,
-}:{
+}: {
   customer: { name: string; _id: string };
   timeStamp: string;
-  items: any[];
-  paidInFull: boolean;
+  items: TransactionItem[];
+  paidInFull: boolean | "no" | "yes";
   purchaseAmount: number;
   paidAmount: number;
   type: string;
   serialNumber: number;
-  transaction: any;
+  transaction: Transaction;
   id: string;
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -35,11 +36,11 @@ const Transaction = ({
     setIsExpanded(!isExpanded);
   };
   // let customer = =customer[0];
-  let transactionTime = new Date(timeStamp).toLocaleTimeString(undefined, {
+  const transactionTime = new Date(timeStamp).toLocaleTimeString(undefined, {
     hour: "numeric",
     minute: "numeric",
   });
-  let transactionDate = new Date(timeStamp).toLocaleDateString(undefined, {
+  const transactionDate = new Date(timeStamp).toLocaleDateString(undefined, {
     weekday: "short",
     month: "short",
     day: "numeric",
@@ -48,10 +49,20 @@ const Transaction = ({
 
   return (
     <div
+      role="button"
       className={`${styles.Transaction} ${
         type == "payment" ? styles["payment"] : ""
       }`}
       onClick={TransactionClickHandler}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          TransactionClickHandler();
+        }
+        if (e.key === "Escape") {
+          setIsExpanded(false);
+        }
+      }}
     >
       <div className={styles["date-and-time"]}>
         <div className={styles.time}>
@@ -68,7 +79,7 @@ const Transaction = ({
           {items.map((item) => {
             return (
               <li key={item._id}>
-                <a className={styles.product}>{item.productName}</a>
+                <button className={styles.product}>{item.productName}</button>
               </li>
             );
           })}

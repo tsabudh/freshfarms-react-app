@@ -4,11 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.scss";
 
-import { AuthContext } from "./context/AuthContext";
 
-import Dashboard from "./pages/Dashboard/Dashboard";
-import Home from "./pages/Home/Home";
-import LoginPage from "./pages/Home/LoginPage";
 
 import AdminProfile from "./components/AdminProfile/AdminProfile";
 import ChatPanel from "./components/ChatPanel/ChatPanel";
@@ -23,12 +19,16 @@ import ProductManage from "./components/ProductPanel/ProductManage";
 import ProductPanel from "./components/ProductPanel/ProductPanel";
 // import StatementPanel from "./components/StatementPanel/StatementPanel";
 import TransactionPanel from "./components/TransactionPanel/TransactionPanel";
-import LandingPage from "./pages/Home/LandingPage";
-import { getUserFromLocalStorage } from "./utils/localStorageUtils";
-import StorePage from "./pages/Home/StorePage";
-import ContactPage from "./pages/Home/ContactPage";
+import { AuthContext } from "./context/AuthContext";
 import Callback from "./pages/Callback";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import ContactPage from "./pages/Home/ContactPage";
+import Home from "./pages/Home/Home";
+import LandingPage from "./pages/Home/LandingPage";
+import LoginPage from "./pages/Home/LoginPage";
+import StorePage from "./pages/Home/StorePage";
 import OAuthPopup from "./pages/OAuthPopup";
+import { getUserFromLocalStorage } from "./utils/localStorageUtils";
 
 const LazyCustomerRegistry = lazy(() =>
   import("./components/CustomerRegistry/CustomerRegistry")

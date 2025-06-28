@@ -1,6 +1,5 @@
-import React from 'react';
-
 import classNames from 'classnames/bind';
+import React from 'react';
 import styles from './SectionAboutHome.module.scss';
 import SectionTag from './SectionTag';
 import Button from './UI/Button/Button';
@@ -23,7 +22,7 @@ export default function SectionAboutHome() {
                         <figure className={cx('figure')}>
                             <img
                                 src="/img/ice-cream-2.jpg"
-                                alt="Shree Krishna Dairy Building"
+                                alt="Freshfarms Building"
                             />
                         </figure>
                     </div>
@@ -33,13 +32,13 @@ export default function SectionAboutHome() {
                         <figure className={cx('figure')}>
                             <img
                                 src="/img/paneer-2.jpg"
-                                alt="Shree Krishna Dairy Building"
+                                alt="Freshfarms Building"
                             />
                         </figure>
                     </div>
                     <div className={cx('col', 'second')}>
                         <p>
-                            At Shree Krishna Dairy, we pride ourselves on
+                            At Freshfarms, we pride ourselves on
                             providing our community with the freshest and
                             highest quality dairy products. Our commitment to
                             traditional dairy practices, combined with strict

@@ -1,43 +1,31 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
 import classNames from "classnames/bind";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { MdPhotoCamera } from "react-icons/md";
 
-import { AuthContext } from "../../context/AuthContext";
 import styles from "./AdminProfile.module.scss";
+import { AuthContext } from "../../context/AuthContext";
 
-import Button from "../UI/Button/Button";
-import uploadProfilePhoto from "../../utils/uploadProfilePhoto";
-import Tag from "../UI/Tag/Tag";
-import fetchMyDetails from "../../utils/fetchMyDetails";
-import updateAdmin from "../../utils/updateAdmin";
 import { UserProfile } from "../../types/user.interface";
+import { fetchMyDetails } from "../../utils/fetchMyDetails";
+import { updateAdmin } from "../../utils/updateAdmin";
+import Button from "../UI/Button/Button";
+import Tag from "../UI/Tag/Tag";
 
 const cx = classNames.bind(styles);
 function AdminProfile() {
   const { jwtToken, user } = useContext(AuthContext);
 
- 
   const [profile, setProfile] = useState<UserProfile>();
   const [loadingProfilePic, setLoadingProfilePic] = useState<boolean>(false);
   const [newName, setNewName] = useState<string>("");
   const [newUsername, setNewUsername] = useState<string>("");
-  const [newPhone, setNewPhone] = useState("");
 
-  const [editing, setEditing] = useState<Boolean>(false);
+  const [editing, setEditing] = useState<boolean>(false);
   const [adminPhone, setUserPhone] = useState<string>("");
   const [addedPhones, setAddedPhones] = useState<string[]>([]);
   const [adminPhoneArray, setUserPhoneArray] = useState<UserProfile["phone"]>(
     []
   );
-
-
- if(!jwtToken || !user) {
-    return <div >Loading...</div>;
-  }
-
-  if(!profile){
-    return <div>Loading profile...</div>;
-  }
 
   const deleteStoredPhoneTag = (e: React.MouseEvent<HTMLElement>) => {
     if (!editing) return;
@@ -47,7 +35,7 @@ function AdminProfile() {
 
     const text = target.innerText.toLowerCase();
 
-    let tempAdminPhoneArray = [...adminPhoneArray];
+    const tempAdminPhoneArray = [...adminPhoneArray];
     const matchedIndex = tempAdminPhoneArray.findIndex((elem) => elem === text);
     if (matchedIndex >= 0) tempAdminPhoneArray.splice(matchedIndex, 1);
 
@@ -63,24 +51,24 @@ function AdminProfile() {
 
     const text = target.innerText.toLowerCase();
 
-    let tempAddedPhones = [...addedPhones];
-    let matchedIndex = tempAddedPhones.findIndex((elem) => elem === text);
+    const tempAddedPhones = [...addedPhones];
+    const matchedIndex = tempAddedPhones.findIndex((elem) => elem === text);
     if (matchedIndex >= 0) tempAddedPhones.splice(matchedIndex, 1);
     setAddedPhones(tempAddedPhones);
   };
 
-  const addAdminPhone = (e: React.MouseEvent<HTMLElement>) => {
+  const addAdminPhone = () => {
     if (!adminPhone || adminPhone == " ") return;
-    let newPhoneArray = [...addedPhones];
+    const newPhoneArray = [...addedPhones];
 
-    let newNumber = adminPhone.toLowerCase().trim();
+    const newNumber = adminPhone.toLowerCase().trim();
 
     if (newNumber.length != 10) return;
 
     //- adding new number to added phone state variable
-    let newSet = new Set<string>(newPhoneArray);
+    const newSet = new Set<string>(newPhoneArray);
     if (newNumber.includes(",")) {
-      let numArr = newNumber.split(",");
+      const numArr = newNumber.split(",");
       numArr.forEach((num: string) => newSet.add(num));
     } else {
       newSet.add(newNumber);
@@ -93,14 +81,14 @@ function AdminProfile() {
   };
 
   //- cache busting
-  let uniqueParam = `?${new Date().getTime()}`;
+  const uniqueParam = `?${Date.now()}`;
 
   //- Function for fetching adminDetails and setting it to profile state
   const getSetAdminProfile = useCallback(async () => {
+    if (!jwtToken) throw new Error("JWT Token not found in context");
     if (!user) throw new Error("User not found in context");
     const response = await fetchMyDetails(jwtToken, user.role);
     if (response.status === "success") {
-      uniqueParam = `?${new Date().getTime()}`;
       setProfile(response.data);
       setUserPhoneArray(response.data.phone);
     } else {
@@ -113,11 +101,13 @@ function AdminProfile() {
     getSetAdminProfile();
   }, [getSetAdminProfile]);
 
-  const handlePictureUpload = async (e:  React.MouseEvent<SVGElement, MouseEvent>) => {
+  const handlePictureUpload = async (
+    e: React.MouseEvent<SVGElement, MouseEvent>
+  ) => {
     e.preventDefault();
 
     //- Creating input element to select file
-    let input = document.createElement("input");
+    const input = document.createElement("input");
     input.type = "file";
     input.name = "profilePhoto";
     input.onchange = async () => {
@@ -130,11 +120,11 @@ function AdminProfile() {
         console.log("Selected file:", file);
 
         // TODO: CREATE A PREVIEW OF THE IMAGE
-        const previewUrl = URL.createObjectURL(file);
+        // const previewUrl = URL.createObjectURL(file);
         // setPreview(previewUrl);
 
         // ... upload logic here
-        let result = await uploadProfilePhoto(file, jwtToken);
+        //  const result = await uploadProfilePhoto(file, jwtToken);
         getSetAdminProfile();
         setLoadingProfilePic(false);
       } catch (err) {
@@ -150,10 +140,10 @@ function AdminProfile() {
     setUserPhone(e.target.value);
   };
 
-  const enableEditing = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const enableEditing = async () => {
     setEditing(true);
   };
-  const disableEditing = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const disableEditing = async () => {
     if (!profile) return;
     setUserPhoneArray(profile.phone);
 
@@ -162,17 +152,17 @@ function AdminProfile() {
 
   const uploadChanges = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!profile) return;
+    if (!profile || !jwtToken) return;
 
     const el = document.getElementById("form-admin-edits");
     if (!el) return;
-    let formAdmin: HTMLFormElement = el as HTMLFormElement;
+    const formAdmin: HTMLFormElement = el as HTMLFormElement;
 
-    let formData = new FormData(formAdmin);
+    const formData = new FormData(formAdmin);
     formData.append("phone", JSON.stringify(addedPhones));
 
-    const adminDetails: Partial<Record<keyof UserProfile, any>> = {};
-    
+    const adminDetails: Partial<Record<keyof UserProfile, string | object>> = {};
+
     for (const [key, value] of formData) {
       const typedKey = key as keyof UserProfile;
       if (typeof value === "string" && value.trim().length !== 0) {
@@ -181,13 +171,28 @@ function AdminProfile() {
         adminDetails[typedKey] = value;
       }
     }
-
-    const responseTxt:any= await updateAdmin(profile._id, adminDetails as UserProfile, jwtToken);
+    type UpdateAdminResponse = {
+      status: "success" | "error";
+      data: UserProfile;
+    };
+    const responseTxt = await updateAdmin(
+      profile._id,
+      adminDetails as UserProfile,
+      jwtToken
+    ) as UpdateAdminResponse;
     if (responseTxt.status == "success") {
       setProfile(responseTxt.data);
       setEditing(false);
     }
   };
+
+  if (!jwtToken || !user) {
+    return <div>Loading...</div>;
+  }
+
+  if (!profile) {
+    return <div>Loading profile...</div>;
+  }
 
   return (
     profile && (

@@ -2,11 +2,11 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import BouncingCircles from '../UI/Vectors/BouncingCircles';
-import Button from '../UI/Button/Button';
 import styles from './OverlayContainer.module.scss';
 import { AuthContext } from '../../context/AuthContext';
 import loginUser from '../../utils/loginUser';
+import Button from '../UI/Button/Button';
+import BouncingCircles from '../UI/Vectors/BouncingCircles';
 
 function OverlayContainer({ isNewUser, toggle }:{
     isNewUser: boolean;
@@ -21,11 +21,11 @@ function OverlayContainer({ isNewUser, toggle }:{
     async function dummyLogin() {
         setErrorMessage(null);
         setIsLoading(true);
-        let loginDetails = {
+        const loginDetails = {
             username: 'john',
             password: '1234',
         };
-        let response = await loginUser(loginDetails);
+        const response = await loginUser(loginDetails);
         setIsLoading(false);
         if (response.status == 'success' && response.token) {
             setJwtToken(response.token);
@@ -44,7 +44,7 @@ function OverlayContainer({ isNewUser, toggle }:{
             }`}
         >
             <div className={styles['headings']}>
-                <h1>Shree Krishna Dairy</h1>
+                <h1>Freshfarms</h1>
                 <h3>Admin Dashboard</h3>
             </div>
             {isNewUser ? (

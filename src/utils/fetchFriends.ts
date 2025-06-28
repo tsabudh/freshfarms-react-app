@@ -6,7 +6,7 @@ async function fetchFriends(jwtToken:string, userRole:string) {
 
     try {
         // Initialize return array
-        const returnArray = new Array();
+        const returnArray = [];
 
         const fetchOptions = {
             headers: {
@@ -23,7 +23,7 @@ async function fetchFriends(jwtToken:string, userRole:string) {
         }
 
         // Await both fetch calls at once using Promise.all
-        let [adminFriendsResponse, customerFriendsResponse] = await Promise.all(
+        const [adminFriendsResponse, customerFriendsResponse] = await Promise.all(
             fetchRequests
         );
 
@@ -41,7 +41,7 @@ async function fetchFriends(jwtToken:string, userRole:string) {
                 throw new Error('Fetching customer friends failed.');
             }
 
-            let customerFriendsResponseObject =
+            const customerFriendsResponseObject =
                 await customerFriendsResponse.json();
 
             const customerFriends = customerFriendsResponseObject.data;
@@ -50,8 +50,15 @@ async function fetchFriends(jwtToken:string, userRole:string) {
         }
 
         return returnArray;
-    } catch (error:any) {
-        console.error('Error fetching friends:', error);
+    } catch (error:unknown) {
+    // Handle errors
+        if (error instanceof Error) {   
+            console.error(error.message);
+        }
+        else {
+            throw new Error('An unexpected error occurred');
+        }
+        return null;
     }
 }
 

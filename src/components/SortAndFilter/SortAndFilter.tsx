@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState,  useReducer } from "react";
 
 import {
   BsSortAlphaDown,
@@ -9,11 +9,11 @@ import {
 
 import { RiSortAsc, RiSortDesc } from "react-icons/ri";
 
+import type { FilterAction, FilterObject, FilterState } from "types/filter.types";
 import styles from "./SortAndFilter.module.scss";
-import Modal from "../UI/Modal/Modal";
 import Button from "../UI/Button/Button";
+import Modal from "../UI/Modal/Modal";
 import Tag from "../UI/Tag/Tag";
-import { FilterAction, FilterObject, FilterState } from "types/filter.types";
 
 const initialFilterState: FilterState = {
   issuedTime: {
@@ -62,46 +62,13 @@ type MethodOfSort =
   | "totalQuantityState"
   | "itemsVariety"
   | "itemsVarietyState";
-type MethodOfFilterIssuedTime =
-  | "issuedTimeFrom"
-  | "issuedTimeTo"
-  | "remove"
-  | "default";
-type MethodOfFilterProducts =
-  | "products"
-  | "productSet"
-  | "removeProduct"
-  | "remove"
-  | "default";
 
-type ActionWithOrder = { update: string; order: string };
-type ActionWithState = { update: string; state: boolean };
-type ActionIssuedTime =
-  | { update: "issuedTimeFrom"; from: string }
-  | { update: "issuedTimeTo"; to: string }
-  | { update: "remove" }
-  | { isOpened: true };
-type ActionProducts =
-  | { update: string; newProduct?: string }
-  | { update: "removeProduct"; selected: string }
-  | { update: "remove" }
-  | { isOpened: true };
-type ActionCustomers =
-  | { update: string; newCustomer?: string }
-  | { update: "removeCustomer"; selected: string }
-  | { update: "remove" }
-  | { isOpened: true };
-type MethodMapping =
-  | ActionWithOrder
-  | ActionWithState
-  | ActionIssuedTime
-  | ActionProducts
-  | ActionCustomers
-  | { isOpened: boolean };
+
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type InputOrClickEvent =
   | React.MouseEvent<HTMLButtonElement>
-  | React.ChangeEvent<HTMLInputElement>;
+  | React.ChangeEvent<HTMLInputElement>
+  | React.MouseEvent<HTMLDivElement>;
 
 const updateSortedState = (
   newFilterState: FilterState,
@@ -248,7 +215,7 @@ const filterReducer = (
   return newFilterState;
 };
 
-const applyFilter = (filterState:FilterState, setTransactionFilterObject:React.Dispatch<any>, customerId:string) => {
+const applyFilter = (filterState:FilterState, setTransactionFilterObject:React.Dispatch<FilterObject>, customerId:string) => {
   const filterObject:FilterObject = {
     sortBy: {
       issuedTime: filterState.issuedTime.isSorted
@@ -308,8 +275,8 @@ const applyFilter = (filterState:FilterState, setTransactionFilterObject:React.D
 };
 
 const SortAndFilter = ({ setTransactionFilterObject, customerId }:{
-  setTransactionFilterObject: (Object: any) => void;
-  customerId: string;
+  setTransactionFilterObject: (Object: FilterObject) => void;
+  customerId?: string;
 }) => {
 
 
@@ -793,7 +760,7 @@ const SortAndFilter = ({ setTransactionFilterObject, customerId }:{
                     applyFilter(
                       filterState,
                       setTransactionFilterObject,
-                      customerId
+                      customerId as string
                     );
                     onClose();
                   }}
@@ -806,7 +773,7 @@ const SortAndFilter = ({ setTransactionFilterObject, customerId }:{
                     applyFilter(
                       initialFilterState,
                       setTransactionFilterObject,
-                      customerId
+                      customerId as string
                     );
                     onClose();
                   }}

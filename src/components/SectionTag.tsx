@@ -1,5 +1,5 @@
-import React from "react";
 import classNames from "classnames/bind";
+import React from "react";
 import styles from "./SectionTag.module.scss";
 
 const cx = classNames.bind(styles);
@@ -13,7 +13,7 @@ export default function SectionTag({
 }) {
   return (
     <div className={cx("section-tag", className?.split(" "))}>
-      {text || "Shree Krishna Dairy"}
+      {text || "Freshfarms"}
     </div>
   );
 }

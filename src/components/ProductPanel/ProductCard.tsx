@@ -1,12 +1,12 @@
+import classNames from 'classnames/bind';
 import React from 'react';
 
-import classNames from 'classnames/bind';
 
+import { Product, ProductImageData } from 'types/product.type';
 import styles from './ProductCard.module.scss';
 import { slides } from '../../assets/data/carouselA.json';
 
 import CarouselB from '../CarouselB';
-import { Product, ProductImageData } from 'types/product.type';
 
 const cx = classNames.bind(styles);
 

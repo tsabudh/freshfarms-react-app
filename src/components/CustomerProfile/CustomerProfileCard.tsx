@@ -1,11 +1,11 @@
+import classNames from 'classnames/bind';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import classNames from 'classnames/bind';
 
+import { CustomerProfile } from 'types/customer.interface';
 import styles from './CustomerProfileCard.module.scss';
 
 import Tag from '../UI/Tag/Tag';
-import { CustomerProfile } from 'types/customer.interface';
 
 const cx = classNames.bind(styles);
 

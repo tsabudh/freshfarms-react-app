@@ -1,19 +1,19 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { IoSendSharp } from "react-icons/io5";
-import { IoCloseSharp } from "react-icons/io5";
-import { IoPeopleOutline } from "react-icons/io5";
-
 import classNames from "classnames/bind";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { IoSendSharp , IoCloseSharp , IoPeopleOutline } from "react-icons/io5";
 
-import { AuthContext } from "../../context/AuthContext";
-import { WS_ROUTE } from "../../assets/globals/baseRoute";
-import styles from "./ChatPanel.module.scss";
 
-import fetchMyDetails from "../../utils/fetchMyDetails";
-import fetchFriends from "../../utils/fetchFriends";
-import fetchMessages from "../../utils/fetchMessages";
+
+
 import { AuthContextInterface } from "types/authContext.interface";
 import { UserProfile } from "types/user.interface";
+import styles from "./ChatPanel.module.scss";
+import { WS_ROUTE } from "../../assets/globals/baseRoute";
+import { AuthContext } from "../../context/AuthContext";
+
+import fetchFriends from "../../utils/fetchFriends";
+import fetchMessages from "../../utils/fetchMessages";
+import fetchMyDetails from "../../utils/fetchMyDetails";
 // import  WebSocket  from 'ws';
 const cx = classNames.bind(styles);
 
@@ -135,9 +135,9 @@ export default function ChatPanel() {
   }
   useEffect(() => {
     // Fetch previous messages of logged in user
-    let functionToFetchMessages = async () => {
+    const functionToFetchMessages = async () => {
       try {
-        let result = await fetchMessages(jwtToken);
+        const result = await fetchMessages(jwtToken);
         setMessages(result);
       } catch (error) {
         console.log(error);

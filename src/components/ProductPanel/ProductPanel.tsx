@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
+import React, { useContext, useEffect, useState } from "react";
 
+import { Product, ProductImageData } from "types/product.type";
+import ProductCard from "./ProductCard";
 import styles from "./ProductPanel.module.scss";
-import { AuthContext } from "../../context/AuthContext";
 import { productImages } from "../../assets/data/productImages.json";
+import { AuthContext } from "../../context/AuthContext";
 
 import fetchProducts from "../../utils/fetchProducts";
-import ProductCard from "./ProductCard";
-import { Product, ProductImageData } from "types/product.type";
 
 const cx = classNames.bind(styles);
 

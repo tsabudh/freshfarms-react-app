@@ -1,26 +1,26 @@
+import classNames from "classnames/bind";
 import React, { useContext, useEffect, useState, lazy, Suspense } from "react";
+import { TiUserDeleteOutline } from "react-icons/ti";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { TiUserDeleteOutline } from "react-icons/ti";
-import classNames from "classnames/bind";
 
-import styles from "./Customer.module.scss";
-import { AuthContext } from "../../context/AuthContext";
-
-import fetchCustomers from "../../utils/fetchCustomers";
-import updateCustomer from "../../utils/updateCustomer";
-import { fetchTransactions } from "../../utils/fetchTransactions";
-import Button from "../UI/Button/Button";
-import TransactionTable from "../TransactionTable/TransactionTable";
-import SortAndFilter from "../SortAndFilter/SortAndFilter";
-import Tag from "../UI/Tag/Tag";
-import Tooltip from "../UI/Tooltip/Tooltip";
-import deleteCustomer from "../../utils/deleteCustomer";
-import fetchMyDetails from "../../utils/fetchMyDetails";
 import type {
   CustomerLocation,
   CustomerProfile,
 } from "types/customer.interface";
+import styles from "./Customer.module.scss";
+import { AuthContext } from "../../context/AuthContext";
+
+import deleteCustomer from "../../utils/deleteCustomer";
+import fetchCustomers from "../../utils/fetchCustomers";
+import fetchMyDetails from "../../utils/fetchMyDetails";
+import { fetchTransactions } from "../../utils/fetchTransactions";
+import updateCustomer from "../../utils/updateCustomer";
+import SortAndFilter from "../SortAndFilter/SortAndFilter";
+import TransactionTable from "../TransactionTable/TransactionTable";
+import Button from "../UI/Button/Button";
+import Tag from "../UI/Tag/Tag";
+import Tooltip from "../UI/Tooltip/Tooltip";
 
 const LazyMapBox = lazy(() => import("../UI/MapBox/MapBox"));
 
@@ -85,13 +85,13 @@ function Customer({ customerId }: { customerId?: string | null }) {
       if (user.role === "customer") {
         customerResponse = await fetchMyDetails(jwtToken, user.role);
       }
-      let transactionResults = await fetchTransactions(
+      const transactionResults = await fetchTransactions(
         initialTransactionFilterObject,
         jwtToken
       );
 
       if (customerResponse.status == "success") {
-        let customerResponseData = customerResponse.data;
+        const customerResponseData = customerResponse.data;
         setCustomer(customerResponseData);
         setCoordinates((prevCoordinates) => {
           //- If customer do not have any coordinates set, return default coordinates of shop
@@ -136,7 +136,7 @@ function Customer({ customerId }: { customerId?: string | null }) {
     const target = e.target as HTMLElement;
     const tagText = target.innerText?.toLowerCase();
 
-    let tempCustomerPhoneArray = [...customerPhoneArray];
+    const tempCustomerPhoneArray = [...customerPhoneArray];
     const matchedIndex = tempCustomerPhoneArray.findIndex(
       (elem) => elem.toLowerCase() === tagText
     );
@@ -150,8 +150,8 @@ function Customer({ customerId }: { customerId?: string | null }) {
     //- Return if not editing
     if (!editingStatus) return;
 
-    let tempAddedPhones = [...addedPhones];
-    let matchedIndex = tempAddedPhones.findIndex(
+    const tempAddedPhones = [...addedPhones];
+    const matchedIndex = tempAddedPhones.findIndex(
       (elem) => elem == e.target.innerText.toLowerCase()
     );
     if (matchedIndex >= 0) tempAddedPhones.splice(matchedIndex, 1);
@@ -159,14 +159,14 @@ function Customer({ customerId }: { customerId?: string | null }) {
   };
 
   const addCustomerPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newPhoneArray: string[] = [...addedPhones];
+    const newPhoneArray: string[] = [...addedPhones];
 
-    let newNumber = customerPhone.toLowerCase().trim();
+    const newNumber = customerPhone.toLowerCase().trim();
 
     //- adding new number to added phone state variable
-    let newSet = new Set(newPhoneArray);
+    const newSet = new Set(newPhoneArray);
     if (newNumber.includes(",")) {
-      let numArr = newNumber.split(",");
+      const numArr = newNumber.split(",");
       numArr.forEach((num) => newSet.add(num));
     } else {
       newSet.add(newNumber);
@@ -194,11 +194,11 @@ function Customer({ customerId }: { customerId?: string | null }) {
   }
   const saveEdits = async (id: string) => {
     if (!customer || !user) return;
-    let customerDetails: CustomerUpdatePayload = {};
+    const customerDetails: CustomerUpdatePayload = {};
     customerDetails.name = customerName;
     customerDetails.address = customerAddress;
     customerDetails.phone = [...addedPhones, ...customerPhoneArray];
-    let result = await updateCustomer(id, customerDetails, jwtToken, user.role);
+    const result = await updateCustomer(id, customerDetails, jwtToken, user.role);
     if (result.status == "success") {
       setCustomer(result.data);
       setEditingStatus(false);
@@ -209,7 +209,7 @@ function Customer({ customerId }: { customerId?: string | null }) {
     }
   };
   const handleDeleteCustomer = async () => {
-    let results = await deleteCustomer(id, jwtToken);
+    const results = await deleteCustomer(id, jwtToken);
     navigate("/dashboard/customers");
   };
 

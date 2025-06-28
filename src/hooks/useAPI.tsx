@@ -2,7 +2,7 @@ import { useState } from "react";
 
 type PendingStatus = "static" | "sending" | "success" | "failure";
 
-interface UseAPIProps<B = any> {
+interface UseAPIProps<B> {
   url: string;
   jwtToken: string;
   method: "GET" | "POST" | "PUT" | "DELETE" | string;
@@ -10,14 +10,14 @@ interface UseAPIProps<B = any> {
   body?: B;
 }
 
-interface APIResponse<D = any> {
+interface APIResponse<D> {
   status: "success" | "failure";
   data?: D;
   message?: string;
   errors?: { msg: string }[];
 }
 
-async function requestAPI<D = any, B = any>(props: {
+async function requestAPI<D, B>(props: {
   url: string;
   method: string;
   jwtToken: string;
@@ -27,7 +27,7 @@ async function requestAPI<D = any, B = any>(props: {
   const { url, method, jwtToken, body, addedHeaders } = props;
 
   // Set headers, defaulting to JSON unless overridden
-  let headers: Record<string, string> = {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${jwtToken}`,
     ...addedHeaders,
@@ -41,7 +41,12 @@ async function requestAPI<D = any, B = any>(props: {
   const response = await fetch(url, {
     method,
     headers,
-    body: method !== "GET" && method !== "HEAD" ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
+    body:
+      method !== "GET" && method !== "HEAD"
+        ? body instanceof FormData
+          ? body
+          : JSON.stringify(body)
+        : undefined,
   });
 
   const json = await response.json();
@@ -52,7 +57,7 @@ async function requestAPI<D = any, B = any>(props: {
  * Custom hook to perform API requests with built-in loading, error and data states.
  * Exposes sendRequest and allows dynamic request body via setRequestBody.
  */
-function useAPI<D = any, B = any>(props: UseAPIProps<B>) {
+function useAPI<D, B>(props: UseAPIProps<B>) {
   const { url, jwtToken, method, addedHeaders, body: initialBody } = props;
 
   const [pendingStatus, setPendingStatus] = useState<PendingStatus>("static");
@@ -82,16 +87,28 @@ function useAPI<D = any, B = any>(props: UseAPIProps<B>) {
         setData(responseObject.data ?? null);
         setPendingStatus("success");
       } else {
-        setErrorMessage(responseObject.message ?? responseObject.errors?.[0].msg ?? "Unknown error");
+        setErrorMessage(
+          responseObject.message ??
+            responseObject.errors?.[0].msg ??
+            "Unknown error"
+        );
         setPendingStatus("failure");
       }
-    } catch (error: any) {
-      setErrorMessage(error.message || "Network error");
-      setPendingStatus("failure");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message || "Network error");
+        setPendingStatus("failure");
+      } else throw error; 
     }
   };
 
-  return [pendingStatus, data, errorMessage, sendRequest, setRequestBody] as const;
+  return [
+    pendingStatus,
+    data,
+    errorMessage,
+    sendRequest,
+    setRequestBody,
+  ] as const;
 }
 
 export default useAPI;

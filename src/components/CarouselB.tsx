@@ -1,9 +1,9 @@
+import classNames from 'classnames/bind';
 import React, { useRef, useState } from 'react';
 
 import styles from './CarouselB.module.scss';
-import classNames from 'classnames/bind';
-import IconLessThan from './UI/Icons/IconLessThan';
 import IconGreaterThan from './UI/Icons/IconGreaterThan';
+import IconLessThan from './UI/Icons/IconLessThan';
 const cx = classNames.bind(styles);
 
 export const CarouselB = ({ data, className }:{
@@ -88,7 +88,7 @@ function CarouselContent({ data, slide }:{
     return (
         <>
             {data.map((item, idx) => {
-                let classes = [];
+                const classes = [];
                 let addedClass = '';
 
                 if (slide == idx) addedClass = 'active';

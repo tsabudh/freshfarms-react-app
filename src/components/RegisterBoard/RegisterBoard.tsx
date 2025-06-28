@@ -1,28 +1,28 @@
+import classNames from "classnames/bind";
 import React, { useContext, useEffect, useState } from "react";
 import { MdOutlineDeleteForever } from "react-icons/md";
-import classNames from "classnames/bind";
 
-import { AuthContext } from "../../context/AuthContext";
+import type { CustomerProfile } from "types/customer.interface";
+import  type { FilterObject } from "types/filter.types";
+import type { Product, ProductCartItem } from "types/product.type";
+import type { Transaction } from "types/transaction.type";
 import styles from "./RegisterBoard.module.scss";
+import { AuthContext } from "../../context/AuthContext";
 
-import Button from "../UI/Button/Button";
-import fetchCustomers from "../../utils/fetchCustomers";
-import fetchProducts from "../../utils/fetchProducts";
+import {fetchCustomers} from "../../utils/fetchCustomers";
+import {fetchProducts} from "../../utils/fetchProducts";
 import { postTransaction } from "../../utils/postTransactions";
-import { Product, ProductCartItem } from "types/product.type";
-import { Transaction } from "types/transaction.type";
-import { CustomerProfile } from "types/customer.interface";
+import Button from "../UI/Button/Button";
 
 const cx = classNames.bind(styles);
 
 const RegisterBoard = (props: {
-  customers: any[];
-  setCustomers: (customers: any[]) => void;
+  customers: CustomerProfile[];
+  setCustomers: (customers: CustomerProfile[]) => void;
   products: ProductCartItem[];
-  setProducts: (products: any[]) => void;
-  setTransactionFilterObject: (filterObject: any) => void;
+  setProducts: (products: Product[]) => void;
+  setTransactionFilterObject: (filterObject: FilterObject) => void;
 }) => {
-  console.log("RegisterBoard rendered");
   const {
     customers,
     setCustomers,
@@ -30,7 +30,7 @@ const RegisterBoard = (props: {
     setProducts,
     setTransactionFilterObject,
   } = props;
-  const { jwtToken } = useContext(AuthContext);
+  const { jwtToken , userRole} = useContext(AuthContext);
   const [posting, setPosting] = useState<
     "sending" | "" | "failure" | "success"
   >(""); // sending '' success failure
@@ -43,12 +43,15 @@ const RegisterBoard = (props: {
   const [transactionAmount, setTransactionAmount] = useState<number>(0);
   const [paidInFull, setPaidInFull] = useState<boolean>(true);
   const [paidAmount, setPaidAmount] = useState<number>(0);
-  const [selectedProductUnit, setSelectedProductUnit] = useState<string | null>(null);
+  const [selectedProductUnit, setSelectedProductUnit] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
-    let asyncFunc = async () => {
-      let customerResponseObject = await fetchCustomers(null, jwtToken);
-      let productResponseObject = await fetchProducts(null, jwtToken);
+    const asyncFunc = async () => {
+      if(!jwtToken) return;
+      const customerResponseObject = await fetchCustomers(null, jwtToken, userRole);
+      const productResponseObject = await fetchProducts(null, jwtToken);
 
       console.log(customerResponseObject);
       console.log(productResponseObject);
@@ -107,8 +110,8 @@ const RegisterBoard = (props: {
   };
 
   const removeFromCart = (_: any, id: string) => {
-    let newCart = [...cart];
-    let found = newCart.findIndex((item) => {
+    const newCart = [...cart];
+    const found = newCart.findIndex((item) => {
       return item._id == id;
     });
 
@@ -173,7 +176,7 @@ const RegisterBoard = (props: {
   };
 
   const handleTransactionAmount = () => {
-    let totalAmount = cart.reduce((accumulator, currentItem) => {
+    const totalAmount = cart.reduce((accumulator, currentItem) => {
       return accumulator + currentItem.price * currentItem.quantity;
     }, 0);
 
@@ -376,7 +379,7 @@ function PurchaseUI({
   customers,
   setSelectedProductUnit,
   setPaidInFull,
-//   setPaidAmount,
+  //   setPaidAmount,
   setQuantity,
   products,
   quantity,
@@ -394,7 +397,7 @@ function PurchaseUI({
   customers: Partial<CustomerProfile>[];
   setSelectedProductUnit: React.Dispatch<React.SetStateAction<string | null>>;
   setPaidInFull: (paidInFull: boolean) => void;
-//   setPaidAmount: (amount: number) => void;
+  //   setPaidAmount: (amount: number) => void;
   setQuantity: (quantity: number) => void;
   products: Product[];
   quantity: number;
@@ -464,14 +467,14 @@ function PurchaseUI({
           <div className={styles["type"]}>
             Paid in full?
             <div className={styles["grouped"]}>
-                <input
-                    name="paidInFull"
-                    type="radio"
-                    id="paidInFullYes"
-                    onChange={() => setPaidInFull(true)}
-                    value={"true"}
-                    checked={paidInFull == true}
-                />
+              <input
+                name="paidInFull"
+                type="radio"
+                id="paidInFullYes"
+                onChange={() => setPaidInFull(true)}
+                value={"true"}
+                checked={paidInFull == true}
+              />
 
               <label htmlFor="paidInFullYes">
                 <span
@@ -547,12 +550,12 @@ function PaymentUI({
   handlePaidAmount,
   posting,
   paidAmount,
-}:{
-    customers: Partial<CustomerProfile>[];
-    addTransaction: (e: React.MouseEvent<HTMLInputElement>) => Promise<void>;
-    handlePaidAmount: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    posting: "sending" | "" | "failure" | "success";
-    paidAmount: number;
+}: {
+  customers: Partial<CustomerProfile>[];
+  addTransaction: (e: React.MouseEvent<HTMLInputElement>) => Promise<void>;
+  handlePaidAmount: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  posting: "sending" | "" | "failure" | "success";
+  paidAmount: number;
 }) {
   return (
     <div className={styles["payment-dash"]}>

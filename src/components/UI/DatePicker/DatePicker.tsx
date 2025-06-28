@@ -1,7 +1,7 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { ChangeEvent } from 'react';
+import styles from "./DatePicker.module.scss";
 import Button from '../Button/Button';
 
-import styles from "./DatePicker.module.scss";
 
 const monthNames = [
     'January',
@@ -19,7 +19,7 @@ const monthNames = [
 ];
 
 type DatePickerProps = {
-    navigateMonth: (action: string, value: any) => void;
+    navigateMonth: (action: string, value: number | ChangeEvent<HTMLSelectElement>) => void;
     dateState: {
         month: number;
         year: number;
@@ -27,7 +27,7 @@ type DatePickerProps = {
 } & React.HTMLAttributes<HTMLDivElement>;
 
 const DatePicker = (props: DatePickerProps) => {
-    let { navigateMonth, dateState } = props;
+    const { navigateMonth, dateState } = props;
    
 
     return (

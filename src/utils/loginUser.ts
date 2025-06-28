@@ -1,36 +1,35 @@
 import API_ROUTE from '../assets/globals/baseRoute';
-export async function loginUser(loginDetails:string, userRole:'customer' | 'admin') {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let xhttp = new XMLHttpRequest();
-            let apiRoute = `${API_ROUTE}/api/v1/${userRole}s/login`;
 
-            xhttp.onreadystatechange = () => {
-                if (xhttp.readyState == 4) {
-                    if (xhttp.responseText) {
-                        let response = JSON.parse(xhttp.responseText);
-                        resolve(response);
-                    } else {
-                        console.error('No response from the server.');
-                        resolve({
-                            status: 'failure',
-                            message:
-                                'No response from the server. net::ERR_CONNECTION_REFUSED',
-                        });
-                    }
-                }
-            };
+export async function loginUser(
+  loginDetails: string,
+  userRole: 'customer' | 'admin'
+) {
+  try {
+    const apiRoute = `${API_ROUTE}/api/v1/${userRole}s/login`;
 
-            xhttp.open('POST', apiRoute);
-            xhttp.setRequestHeader('Content-Type', 'application/json');
-
-            let requestBody = JSON.stringify(loginDetails);
-            xhttp.send(requestBody);
-        } catch (error:any) {
-            console.log(error.message);
-            reject('Something went wrong.');
-        }
+    const response = await fetch(apiRoute, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: loginDetails, // assumed to be already stringified
     });
+
+    const data = await response.json();
+
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error('Unknown error:', error);
+    }
+
+    return {
+      status: 'failure',
+      message: 'Something went wrong. Please try again later.',
+    };
+  }
 }
 
 export default loginUser;

@@ -9,7 +9,7 @@ type Card01Props = {
 
 
 function Card01(props:Card01Props) {
-    const { heading, description } = props;
+    const { heading } = props;
 
     return (
         <div className={styles.card01}>

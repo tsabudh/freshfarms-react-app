@@ -1,3 +1,5 @@
+import { UserProfile } from "./user.interface";
+
 export interface Transaction {
   _id: string;
   type: "purchase" | "payment" | string;
@@ -17,13 +19,15 @@ export interface Transaction {
   createdBy?: string;
   createdAt?: string;
   contract?: boolean | "no" | "yes";
+  issuedBy?: Partial<UserProfile>;
 }
 
 export interface TransactionItem {
   productId: string;
   quantity: number;
-  _id?: string;
+  _id: string;
   productName?: string;
-  priceThen?: number;
+  priceThen: number;
   code?: string;
+  unit:string;
 }

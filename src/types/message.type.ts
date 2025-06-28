@@ -1,4 +1,4 @@
-type ChatMessage = {
+export type ChatMessage = {
   sender: string;
   recipient: string;
   message: string;

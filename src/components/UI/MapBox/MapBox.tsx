@@ -1,21 +1,23 @@
+import classNames from "classnames/bind";
+import type {
+  Map as LeafletMap,
+  Marker as LeafletMarker,
+  Circle,
+  LeafletEvent,
+} from "leaflet";
 import React, {
   useEffect,
   memo,
   useState,
   useContext,
-  MouseEvent as ReactMouseEvent,
 } from "react";
+import { MdMyLocation } from "react-icons/md";
 import { useParams } from "react-router-dom";
 
-import { MdMyLocation } from "react-icons/md";
-
 import styles from "./MapBox.module.scss";
-import Button from "../Button/Button";
-import updateCustomer from "../../../utils/updateCustomer";
 import { AuthContext } from "../../../context/AuthContext";
-import classNames from "classnames/bind";
-
-import type { Map as LeafletMap, Marker as LeafletMarker, Layer, Zoom, Circle } from "leaflet";
+import { updateCustomer } from "../../../utils/updateCustomer";
+import Button from "../Button/Button";
 
 let L: typeof import("leaflet") | undefined = undefined;
 
@@ -39,18 +41,6 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
   const [map, setMap] = useState<LeafletMap | null>(null);
 
   const { jwtToken, user } = useContext(AuthContext);
-
-  if (!jwtToken || !user) {
-    return (
-      <div className={cx("container")}>
-        You are not authorized to view this page.
-      </div>
-    );
-  }
-
-  const { id: paramId } = useParams<{ id: string }>();
-
-  const id = user.role === "admin" ? paramId : user._id;
 
   useEffect(() => {
     (async () => {
@@ -85,10 +75,10 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
       //- Set markers to current latitude and longitude
       if (lat && lng) {
         marker = L.marker([lat, lng]).addTo(mapInstance);
-        circle = L.circle([lat, lng],60).addTo(mapInstance);
+        circle = L.circle([lat, lng], 60).addTo(mapInstance);
 
         if (!zoomed) {
-          zoomed = mapInstance.fitBounds(circle.getBounds()) ;
+          zoomed = mapInstance.fitBounds(circle.getBounds());
         }
       }
       setMap(mapInstance);
@@ -102,14 +92,22 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
   }, [coordinates]);
 
   // Use ReactMouseEvent<HTMLDivElement> or appropriate for icon click
-  const centerToCustomerLocation = (e: ReactMouseEvent) => {
+  const centerToCustomerLocation = () => {
     if (map) {
       map.setView(coordinates);
     }
   };
 
+  type MapClickEvent = LeafletEvent & {
+    latlng: {
+      lat: number;
+      lng: number;
+    };
+  };
+
+
   // Leaflet mouse event for map click
-  const addMarker = (e: any) => {
+  const addMarker = (e:MapClickEvent) => {
     if (!map || !L) return;
 
     //- If marker to add (redMarker) already exists, remove that marker
@@ -141,7 +139,17 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
     map.off("click", addMarker);
   };
 
-  const selectNewLocation = async (event: ReactMouseEvent) => {
+  const { id: paramId } = useParams<{ id: string }>();
+  if (!jwtToken || !user) {
+    return (
+      <div className={cx("container")}>
+        You are not authorized to view this page.
+      </div>
+    );
+  }
+  const id = user.role === "admin" ? paramId : user._id;
+
+  const selectNewLocation = async () => {
     if (!map) return;
 
     //- If marker is not selected, go on to add marker
@@ -160,7 +168,7 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
         const newCustomerDetails = {
           location: {
             type: "Point",
-            coordinates: [latlng.lat, latlng.lng],
+            coordinates: [latlng.lat, latlng.lng] as [number, number],
           },
         };
 
@@ -183,7 +191,7 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
     }
   };
 
-  const cancelLocationSelect = (event: ReactMouseEvent) => {
+  const cancelLocationSelect = () => {
     if (!map) return;
 
     map.off("click", addMarker);

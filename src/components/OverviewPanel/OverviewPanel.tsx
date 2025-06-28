@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
+import React, { useContext, useEffect, useState } from 'react';
 
 import styles from './OverviewPanel.module.scss';
 
+import { AuthContext } from '../../context/AuthContext';
 import RegisterBoard from '../RegisterBoard/RegisterBoard';
 import TransactionTable from '../TransactionTable/TransactionTable';
-import { AuthContext } from '../../context/AuthContext';
 
 const cx = classNames.bind(styles);
 

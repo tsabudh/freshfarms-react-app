@@ -1,28 +1,32 @@
-import { Transaction } from 'types/transaction.type.js';
-import API_ROUTE from '../assets/globals/baseRoute.js';
-export async function postTransaction(transactionObject:Transaction, jwtToken:string) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let xhttp = new XMLHttpRequest();
-            let apiRoute = `${API_ROUTE}/api/v1/transactions/`;
+import type { Transaction } from 'types/transaction.type.js';
+import API_ROUTE from '../assets/globals/baseRoute';
 
-            xhttp.onreadystatechange = () => {
-                if (xhttp.readyState == 4) {
-                    let response = JSON.parse(xhttp.responseText);
-                    resolve(response);
-                }
-            };
-
-            xhttp.open('POST', apiRoute, true);
-            xhttp.setRequestHeader('Content-Type', 'application/json');
-            xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
-
-            let requestBody = JSON.stringify(transactionObject);
-            xhttp.send(requestBody);
-        } catch (error:any) {
-            console.log(error);
-        }
+export async function postTransaction(transactionObject: Transaction, jwtToken: string) {
+  try {
+    const response = await fetch(`${API_ROUTE}/api/v1/transactions/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify(transactionObject),
     });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Transaction failed');
+    }
+
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(error.message);
+      throw error;
+    } else {
+      throw new Error('An unknown error occurred while posting the transaction.');
+    }
+  }
 }
 
 export default postTransaction;

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
+import React, { useEffect, useState } from 'react';
 
+import type { Product } from 'types/product.type';
 import styles from './StorePage.module.scss';
 import { productImages } from '../../assets/data/productImages.json';
 
 import ProductCard from '../../components/ProductPanel/ProductCard';
 
-import fetchProduct from '../../utils/fetchProducts';
-import { Product, ProductImageData } from 'types/product.type';
+import {fetchProducts} from '../../utils/fetchProducts';
 
 const cx = classNames.bind(styles);
 type ProductImageKeys = keyof typeof productImages;
@@ -17,7 +17,7 @@ function StorePage() {
 
     useEffect(() => {
         async function asyncWrapper() {
-            let productResponseObject = await fetchProduct();
+            const productResponseObject = await fetchProducts();
             if (productResponseObject.status == 'success') {
                 setProducts(() => productResponseObject.data);
             }
@@ -31,7 +31,7 @@ function StorePage() {
             <h2>Our products</h2>
             <div className={cx('products')}>
                 {products.map((item, index) => {
-                    let imageData = productImages[item.name as ProductImageKeys];
+                    const imageData = productImages[item.name as ProductImageKeys];
                     return (
                         <div key={item.name + index}>
                             <ProductCard product={item} imageData={imageData} />

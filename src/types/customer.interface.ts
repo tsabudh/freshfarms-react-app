@@ -6,7 +6,7 @@ export interface CustomerTab {
 }
 
 export interface CustomerLocation {
-  coordinates: any[]; // If you know coordinate type (e.g., number[]), specify it instead of any[]
+  coordinates: [number, number] | [string, string]; // If you know coordinate type (e.g., number[]), specify it instead of any[]
 }
 
 export interface CustomerProfile {

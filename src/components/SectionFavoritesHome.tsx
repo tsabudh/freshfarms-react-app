@@ -1,11 +1,11 @@
-import React from 'react';
 import classNames from 'classnames/bind';
+import React from 'react';
 
-import { slides } from '../assets/data/carouselA.json';
-import styles from './SectionFavoritesHome.module.scss';
-
-import SectionTag from './SectionTag';
 import CarouselA from './CarouselA';
+import styles from './SectionFavoritesHome.module.scss';
+import SectionTag from './SectionTag';
+import { slides } from '../assets/data/carouselA.json';
+
 import Button from './UI/Button/Button';
 
 const cx = classNames.bind(styles);

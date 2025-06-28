@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './Tooltip.module.scss';
 
 type ToolTipProps = {
+    text:string;
     title?: string;
     className?: string;
     onClick?: React.MouseEventHandler<HTMLDivElement>;
@@ -11,19 +12,19 @@ type ToolTipProps = {
 
 function Tooltip(props:ToolTipProps) {
     let classArray, classNames;
-    let defaultClass = styles['tooltip'];
+    const defaultClass = styles['tooltip'];
 
     if (props.className) {
         classArray = props.className.split(' ');
         classNames = classArray.map((item) => styles[item]).join(' ');
     }
 
-    let { className = null, ...dynamicProps } = { ...props };
+    const { className : _discarded, ...dynamicProps } = { ...props };
 
     return (
         <div className={defaultClass + ' ' + classNames} {...dynamicProps}>
             <div className="wrapper">
-                <span>{props.text}</span>
+                <span>{props.text || ""}</span>
             </div>
         </div>
     );

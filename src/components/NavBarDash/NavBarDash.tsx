@@ -1,14 +1,14 @@
 import React, { MouseEventHandler, useContext, useEffect, useState } from "react";
-import { RiArrowGoBackFill } from "react-icons/ri";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { IoMenuSharp } from "react-icons/io5";
 import { GrLogout } from "react-icons/gr";
+import { IoMenuSharp } from "react-icons/io5";
+import { RiArrowGoBackFill } from "react-icons/ri";
 
-import styles from "./NavBarDash.module.scss";
 import { useNavigate } from "react-router-dom";
-import Button from "../UI/Button/Button";
+import styles from "./NavBarDash.module.scss";
 import { AuthContext } from "../../context/AuthContext";
 import fetchMyDetails from "../../utils/fetchMyDetails";
+import Button from "../UI/Button/Button";
 import Tooltip from "../UI/Tooltip/Tooltip";
 
 function NavBarDash({

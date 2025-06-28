@@ -1,47 +1,48 @@
-import React, { useState, useEffect, useContext } from "react";
-import Transaction from "../Transaction/Transaction";
 import classNames from "classnames/bind";
-
+import React, { useState, useEffect, useContext } from "react";
 import { PiFilePdfDuotone } from "react-icons/pi";
-
-import { AuthContext } from "../../context/AuthContext";
+import type { FilterObject } from "types/filter.types";
+import type { Transaction as TransactionType } from "types/transaction.type";
 import styles from "./TransactionTable.module.scss";
-
-import Button from "../UI/Button/Button";
+import { AuthContext } from "../../context/AuthContext";
 import { fetchTransactions } from "../../utils/fetchTransactions";
 import { convertToPDF } from "../../utils/pdf";
-import { Transaction as TransactionType } from "types/transaction.type";
+import Transaction from "../Transaction/Transaction";
 
+import Button from "../UI/Button/Button";
 const cx = classNames.bind(styles);
 
 const TransactionTable = ({
   transactionFilterObject,
 }: {
-  transactionFilterObject: {
-    startDate: string;
-    endDate: string;
-    customerId?: string;
-    type?: string;
-  } | null;
+  transactionFilterObject: FilterObject;
 }) => {
   const { jwtToken, user } = useContext(AuthContext);
   const [transactions, setTransactions] = useState([]);
 
+useEffect(() => {
   const asyncWrapper = async () => {
+    if(!jwtToken) {
+      console.error("JWT token is not available.");
+      return;
+    }
     try {
       if (!transactionFilterObject) {
         throw new Error("Transaction filter object not defined.");
       }
-      let result = await fetchTransactions(transactionFilterObject, jwtToken);
+      const result = await fetchTransactions(transactionFilterObject, jwtToken);
       setTransactions(result);
-    } catch (error) {
-      console.log(error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error("Unknown error while fetching transactions", error);
+      }
     }
   };
 
-  useEffect(() => {
-    asyncWrapper();
-  }, [transactionFilterObject]);
+  asyncWrapper();
+}, [transactionFilterObject, jwtToken]);
 
   if (!user) return null;
 
@@ -52,6 +53,13 @@ const TransactionTable = ({
           className={cx("icon")}
           onClick={() => convertToPDF(transactions)}
           title="Download transactions as PDF"
+          role="button"
+          tabIndex={0 }
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              convertToPDF(transactions);
+            }
+          }}
         >
           <Button className="berry-02 small">
             <PiFilePdfDuotone />
@@ -60,7 +68,7 @@ const TransactionTable = ({
       </div>
 
       {transactions?.map((transaction: TransactionType, index) => {
-        let customer = transaction.customer;
+        const customer = transaction.customer;
 
         return (
           <Transaction

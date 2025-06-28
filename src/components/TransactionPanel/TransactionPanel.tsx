@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import TransactionTable from '../TransactionTable/TransactionTable';
-import SortAndFilter from '../SortAndFilter/SortAndFilter';
+import type { FilterObject } from 'types/filter.types';
 import styles from './TransactionPanel.module.scss';
+import SortAndFilter from '../SortAndFilter/SortAndFilter';
+import TransactionTable from '../TransactionTable/TransactionTable';
 
 const TransactionPanel = () => {
-    const [transactionFilterObject, setTransactionFilterObject] = useState({
+    const [transactionFilterObject, setTransactionFilterObject] = useState<FilterObject>({
         sortBy: {
             issuedTime: -1,
         },
+        
     });
 
     return (

@@ -1,3 +1,5 @@
+import classNames from "classnames/bind";
+import useAPI from "hooks/useAPI";
 import React, {
   FormEvent,
   useContext,
@@ -5,16 +7,14 @@ import React, {
   useRef,
   useState,
 } from "react";
-import classNames from "classnames/bind";
 
 import styles from "./CustomerRegistry.module.scss";
 import { AuthContext } from "../../context/AuthContext";
 
-import Button from "../UI/Button/Button";
 import CustomerProfileCard from "../CustomerProfile/CustomerProfileCard";
+import Button from "../UI/Button/Button";
 import ErrorFormFooter from "../UI/Error/ErrorFormFooter";
 
-import useAPI from "hooks/useAPI";
 
 const cx = classNames.bind(styles);
 
@@ -57,8 +57,8 @@ function CustomerRegistry() {
     });
 
   useEffect(() => {
-    let purchaseAmountNumber = parseFloat(purchaseAmount);
-    let paidAmountNumber = parseFloat(paidAmount);
+    const purchaseAmountNumber = parseFloat(purchaseAmount);
+    const paidAmountNumber = parseFloat(paidAmount);
     setDueAmount((purchaseAmountNumber - paidAmountNumber).toString());
   }, [purchaseAmount, paidAmount]);
 
@@ -76,10 +76,10 @@ function CustomerRegistry() {
     e.preventDefault();
 
     try {
-      let form = createCustomerFormRef.current!;
-      let formData = new FormData(form);
+      const form = createCustomerFormRef.current!;
+      const formData = new FormData(form);
 
-      let details: { [key: string]: FormDataEntryValue } = {};
+      const details: { [key: string]: FormDataEntryValue } = {};
       formData.forEach((value, key) => {
         switch (key) {
           case "name":

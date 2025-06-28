@@ -1,29 +1,34 @@
-import { UserProfile } from 'types/user.interface';
+import type { UserProfile } from 'types/user.interface';
 import API_ROUTE from '../assets/globals/baseRoute';
-export const updateAdmin = (id:string, adminDetails:UserProfile, jwtToken:string) => {
-    return new Promise((resolve, reject) => {
-        try {
-            const xhttp = new XMLHttpRequest();
-            const apiRoute = `${API_ROUTE}/api/v1/admins/updateMe`;
 
-            xhttp.onreadystatechange = () => {
-                if (xhttp.readyState == 4) {
-                    let response = JSON.parse(xhttp.responseText);
-                    resolve(response);
-                }
-            };
-            xhttp.open('PATCH', apiRoute);
-            xhttp.setRequestHeader('Content-Type', 'application/json');
+export async function updateAdmin(id: string, adminDetails: UserProfile, jwtToken: string) {
+  try {
+    const apiRoute = `${API_ROUTE}/api/v1/admins/updateMe`;
 
-            xhttp.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
-
-            let requestBody = JSON.stringify(adminDetails);
-            xhttp.send(requestBody);
-        } catch (error:any) {
-            console.log(error);
-            reject(error);
-        }
+    const response = await fetch(apiRoute, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify(adminDetails),
     });
-};
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Update failed');
+    }
+
+    return data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Update admin error:', error.message);
+      throw error;
+    } else {
+      throw new Error('Unknown error occurred during admin update');
+    }
+  }
+}
 
 export default updateAdmin;

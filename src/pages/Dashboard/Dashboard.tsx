@@ -1,53 +1,22 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
+import React, { useState, useContext, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 
 import styles from "./Dashboard.module.scss";
+import NavBarDash from "../../components/NavBarDash/NavBarDash";
+import Sidebar from "../../components/Sidebar/Sidebar";
 import { AuthContext } from "../../context/AuthContext";
 
-import Sidebar from "../../components/Sidebar/Sidebar";
-import NavBarDash from "../../components/NavBarDash/NavBarDash";
-import refreshToken from "../../utils/refreshToken";
-import {
-  getJwtFromLocalStorage,
-  getUserFromLocalStorage,
-  setJwtToLocalStorage,
-  setUserToLocalStorage,
-} from "../../utils/localStorageUtils";
 
 const cx = classNames.bind(styles);
 
 const Dashboard = () => {
-  const { jwtToken, setJwtToken, user, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
-    async function asyncWrapper() {
-      try {
-        if (jwtToken && user) {
-          let response = await refreshToken(jwtToken, user.role);
-
-          if (response.status == "success") {
-            setJwtToken(() => response.token);
-            setJwtToLocalStorage(response.token);
-
-            setUser(() => response.user);
-            setUserToLocalStorage(response.user);
-          } else {
-            // navigate("/login");
-          }
-        } else {
-          console.log("No JWT token or user found in context");
-          navigate("/login");
-        }
-      } catch (error:any) {
-        console.log(error.message);
-        navigate("/login");
-      }
-    }
-    // asyncWrapper();
     async function checkAuth() {
       try {
         const response = await fetch("http://localhost:3000/api/auth/check", {
@@ -74,7 +43,7 @@ const Dashboard = () => {
     }
 
     checkAuth();
-  }, []);
+  }, [setUser]);
 
   return (
     <div className={cx("dashboard")}>

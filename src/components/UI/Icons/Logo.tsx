@@ -10,7 +10,7 @@ export default function Logo({ cx }:{ cx?: (className: string) => string }) {
             viewBox="0 0 371 296"
             xmlSpace="preserve"
         >
-            <title>Shree Krishna Dairy</title>
+            <title>Freshfarms</title>
 
             <g id="Logo">
                 <polyline
