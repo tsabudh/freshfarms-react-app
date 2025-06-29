@@ -4,8 +4,6 @@ import { Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.scss";
 
-
-
 import AdminProfile from "./components/AdminProfile/AdminProfile";
 import ChatPanel from "./components/ChatPanel/ChatPanel";
 import Customer from "./components/Customer/Customer";
@@ -30,16 +28,15 @@ import StorePage from "./pages/Home/StorePage";
 import OAuthPopup from "./pages/OAuthPopup";
 import { getUserFromLocalStorage } from "./utils/localStorageUtils";
 
-const LazyCustomerRegistry = lazy(() =>
-  import("./components/CustomerRegistry/CustomerRegistry")
+const LazyCustomerRegistry = lazy(
+  () => import("./components/CustomerRegistry/CustomerRegistry")
 );
 const LazyCustomer = lazy(() => import("./components/Customer/Customer"));
 
 function App() {
   const [jwtToken, setJwtToken] = useState(localStorage.getItem("jwtToken"));
   const [user, setUser] = useState(getUserFromLocalStorage());
-const [userRole, setUserRole] = useState<string | null>(user? user.role : null);
- 
+   const userRole = user?.userRole || null;
 
   return (
     <AuthContext.Provider
@@ -49,7 +46,6 @@ const [userRole, setUserRole] = useState<string | null>(user? user.role : null);
         user,
         setUser,
         userRole,
-        setUserRole
       }}
     >
       <Notifier />
