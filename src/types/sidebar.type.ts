@@ -1,3 +1,5 @@
+import { SidebarIconName } from "../registry/iconRegistry";
+
 export type SubMenuItem = {
   title: string;
   path: string;
@@ -7,7 +9,7 @@ export type SubMenuItem = {
 
 export type SidebarMenuItem = {
   title: string;
-  icon?: string;
+  icon?: string | SidebarIconName;
   identity: 'menu';
   path?: string;
   adminOnly?: boolean;
