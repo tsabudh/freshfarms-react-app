@@ -51,7 +51,7 @@ export type FilterAction = {
 // type SortDirection = 'asc' | 'desc';
 
 type SortByFields = {
-  issuedTime?: number;
+  issuedTime?: number | undefined;
   customer?: number;
   totalQuantity?: number;
   itemsVariety?: number;
@@ -70,4 +70,5 @@ export type FilterObject = {
   customerArray?: string[]; // multiple customers
   totalQuantity?: TotalRangeFilter;
   itemsVariety?: TotalRangeFilter;
+  limit?: number;
 };

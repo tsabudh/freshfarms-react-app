@@ -2,7 +2,7 @@ import API_ROUTE from "../assets/globals/baseRoute";
 export const fetchCustomers = async (
   id: string | null,
   jwtToken: string,
-  userRole: "customer" | "admin"
+  userRole: "customer" | "admin" | string,
 ) => {
   try {
     let apiRoute;

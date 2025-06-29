@@ -1,5 +1,4 @@
-import React, { MouseEventHandler, useContext, useEffect, useState } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
+import React, { useContext } from "react";
 import { GrLogout } from "react-icons/gr";
 import { IoMenuSharp } from "react-icons/io5";
 import { RiArrowGoBackFill } from "react-icons/ri";
@@ -7,7 +6,6 @@ import { RiArrowGoBackFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import styles from "./NavBarDash.module.scss";
 import { AuthContext } from "../../context/AuthContext";
-import fetchMyDetails from "../../utils/fetchMyDetails";
 import Button from "../UI/Button/Button";
 import Tooltip from "../UI/Tooltip/Tooltip";
 
@@ -18,22 +16,11 @@ function NavBarDash({
   sidebarIsOpen: boolean;
   setSidebarIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const { jwtToken, setJwtToken, user, setUser, userRole } =
-    useContext(AuthContext);
+  const { setJwtToken, user, setUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //     async function asyncWrapper() {
-  //         let responseObject = await fetchMyDetails(jwtToken, userRole);
-  //         if (responseObject.status == 'success') {
-  //             setUser(Object.assign({}, responseObject.data));
-  //         }
-  //     }
-  //     asyncWrapper();
-  // }, []);
-
-  const handleLogout = (e:React.MouseEvent<SVGElement>) => {
+  const handleLogout = () => {
     localStorage.removeItem("jwtToken");
     localStorage.removeItem("user");
     setJwtToken(null);
@@ -41,7 +28,7 @@ function NavBarDash({
     navigate("/login");
   };
 
-  const handleToggle = (e:React.MouseEvent<SVGElement>) => {
+  const handleToggle = () => {
     setSidebarIsOpen((prev) => !prev);
   };
   return (

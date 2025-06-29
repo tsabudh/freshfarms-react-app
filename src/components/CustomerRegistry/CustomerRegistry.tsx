@@ -1,5 +1,4 @@
 import classNames from "classnames/bind";
-import useAPI from "hooks/useAPI";
 import React, {
   FormEvent,
   useContext,
@@ -8,17 +7,18 @@ import React, {
   useState,
 } from "react";
 
+import type { CustomerProfile } from "types/customer.interface";
 import styles from "./CustomerRegistry.module.scss";
 import { AuthContext } from "../../context/AuthContext";
+import useAPI from "../../hooks/useAPI";
 
 import CustomerProfileCard from "../CustomerProfile/CustomerProfileCard";
 import Button from "../UI/Button/Button";
 import ErrorFormFooter from "../UI/Error/ErrorFormFooter";
 
-
 const cx = classNames.bind(styles);
 
-const failuresObject = {
+const _failuresObject = {
   name: false,
   nameMessage: "",
   address: false,
@@ -40,21 +40,19 @@ function CustomerRegistry() {
   const [purchaseAmount, setPurchaseAmount] = useState<string>("");
   const [paidAmount, setPaidAmount] = useState<string>("");
   const [tabOptions, setTabOptions] = useState(false);
-  // const [failures, setFailures] = useState(failuresObject);
 
-  const [error, setError] = useState(null);
-
-  // const [posting, setPosting] = useState(''); // sending '' success failure
+  const [error, setError] = useState<string | null>(null);
 
   let requestBody;
-  if(!jwtToken) return <div className={cx("container")}>Please login to continue.</div>;
-  const [pendingStatus, data, errorMessage, sendRequest, setRequestBody] =
-    useAPI<any>({
-      url: "/customers/all",
-      method: "POST",
-      jwtToken: jwtToken,
-      body: requestBody,
-    });
+  const [pendingStatus, data, errorMessage, sendRequest] = useAPI<
+    CustomerProfile,
+    Partial<CustomerProfile>
+  >({
+    url: "/customers/all",
+    method: "POST",
+    jwtToken: jwtToken as string,
+    body: requestBody,
+  });
 
   useEffect(() => {
     const purchaseAmountNumber = parseFloat(purchaseAmount);
@@ -79,42 +77,63 @@ function CustomerRegistry() {
       const form = createCustomerFormRef.current!;
       const formData = new FormData(form);
 
-      const details: { [key: string]: FormDataEntryValue } = {};
+      const details: Partial<CustomerProfile> = {};
+      
       formData.forEach((value, key) => {
-        switch (key) {
-          case "name":
-            if ((value as string).length < 3)
-              throw new Error("Name must have at least three characters.");
+        const typedKey = key as keyof Pick<CustomerProfile, "name" | "username"| "address"|"password">;
 
-            const nameRegex = /^[a-zA-Zà-žÀ-Ž' -]+$/;
-            if (!nameRegex.test(value as string))
-              throw new Error("Please enter a valid name.");
-            break;
-          case "username":
-            if ((value as string).length < 3)
-              throw new Error("Username must have more than three characters.");
-            const regex = /^[^a-zA-Z]/;
-            if (regex.test(value as string))
-              throw new Error(
-                "Invalid username, please start username with [a-Z]"
-              );
-            break;
-          case "password":
-            if (formData.get("password") != formData.get("confirmPassword"))
-              throw new Error("Password and ConfirmPassword did not match.");
-            break;
-          case "address":
-            if ((value as string).length == 0)
-              throw new Error("Address is required.");
-            break;
+        if (typeof value !== "string") {
+          throw new Error(`Unexpected non-string value for key: ${key}`);
         }
 
-        details[key] = value;
+        const trimmedValue = value.trim();
+
+        switch (typedKey) {
+          case "name": {
+            if (trimmedValue.length < 3) {
+              throw new Error("Name must have at least three characters.");
+            }
+            const nameRegex = /^[a-zA-Zà-žÀ-Ž' -]+$/;
+            if (!nameRegex.test(trimmedValue)) {
+              throw new Error("Please enter a valid name.");
+            }
+            break;
+          }
+          case "username": {
+            if (trimmedValue.length < 3) {
+              throw new Error("Username must have more than three characters.");
+            }
+            const regex = /^[^a-zA-Z]/;
+            if (regex.test(trimmedValue)) {
+              throw new Error("Invalid username, please start with a letter.");
+            }
+            break;
+          }
+          case "password": {
+            if (formData.get("password") !== formData.get("confirmPassword")) {
+              throw new Error("Password and Confirm Password did not match.");
+            }
+            break;
+          }
+          case "address": {
+            if (trimmedValue.length === 0) {
+              throw new Error("Address is required.");
+            }
+            break;
+          }
+        }
+
+        // Assign after validation
+        if(trimmedValue){
+          details[typedKey] = trimmedValue as  CustomerProfile[typeof typedKey];
+        }
       });
+
       sendRequest(details);
+
       return;
-    } catch (error:any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) setError(error.message);
     }
   };
 
@@ -193,12 +212,12 @@ function InputGroup({
   inputId,
   placeholder,
   type = "text",
-}:{
-    fieldName: string;
-    inputName: string;
-    inputId: string;
-    placeholder?: string;
-    type?: "text" | "password" | "email";
+}: {
+  fieldName: string;
+  inputName: string;
+  inputId: string;
+  placeholder?: string;
+  type?: "text" | "password" | "email";
 }) {
   return (
     <div className={cx("input-group")}>
@@ -222,12 +241,12 @@ function CustomerTabOptions({
   dueAmount,
   setPurchaseAmount,
   setPaidAmount,
-}:{
-    tabOptions: string | boolean;
-    handleTab: () => void;
-    dueAmount: string;
-    setPurchaseAmount: (value: string) => void;
-    setPaidAmount: (value: string) => void;
+}: {
+  tabOptions: string | boolean;
+  handleTab: () => void;
+  dueAmount: string;
+  setPurchaseAmount: (value: string) => void;
+  setPaidAmount: (value: string) => void;
 }) {
   return (
     <div className={cx("advanced-container")}>
@@ -252,7 +271,9 @@ function CustomerTabOptions({
             inputId={"purchase"}
             inputName={"purchase"}
             placeholder={"Purchased Amount"}
-            onChangeFunction={(e:React.ChangeEvent<HTMLInputElement>) => setPurchaseAmount(e.target.value)}
+            onChangeFunction={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setPurchaseAmount(e.target.value)
+            }
             classNameModifier={"input-field--purchase"}
           />
 
@@ -288,16 +309,15 @@ function CustomerTabInputGroup({
   onChangeFunction,
   classNameModifier,
   ...otherProps
-}:{
-    labelName: string;
-    inputId: string;
-    inputName: string;
-    placeholder?: string;
-    onChangeFunction?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    classNameModifier?: string;
-    readOnly?: boolean;
-    inputValue?: string;
-    [key: string]: any; // for otherProps like readOnly, value etc.
+}: {
+  labelName: string;
+  inputId: string;
+  inputName: string;
+  placeholder?: string;
+  onChangeFunction?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  classNameModifier?: string;
+  readOnly?: boolean;
+  inputValue?: string;
 }) {
   const { readOnly, inputValue } = otherProps;
   return (

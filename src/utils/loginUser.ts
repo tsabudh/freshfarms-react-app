@@ -1,16 +1,16 @@
-import API_ROUTE from '../assets/globals/baseRoute';
+import API_ROUTE from "../assets/globals/baseRoute";
 
 export async function loginUser(
   loginDetails: string,
-  userRole: 'customer' | 'admin'
+  userRole: "customer" | "admin"
 ) {
   try {
     const apiRoute = `${API_ROUTE}/api/v1/${userRole}s/login`;
 
     const response = await fetch(apiRoute, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: loginDetails, // assumed to be already stringified
     });
@@ -22,12 +22,12 @@ export async function loginUser(
     if (error instanceof Error) {
       console.error(error.message);
     } else {
-      console.error('Unknown error:', error);
+      console.error("Unknown error:", error);
     }
 
     return {
-      status: 'failure',
-      message: 'Something went wrong. Please try again later.',
+      status: "failure",
+      message: "Something went wrong. Please try again later.",
     };
   }
 }

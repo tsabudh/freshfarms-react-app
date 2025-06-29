@@ -1,16 +1,22 @@
 import classNames from "classnames/bind";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { MdOutlineDeleteForever } from "react-icons/md";
 
 import type { CustomerProfile } from "types/customer.interface";
-import  type { FilterObject } from "types/filter.types";
+import type { FilterObject } from "types/filter.types";
 import type { Product, ProductCartItem } from "types/product.type";
 import type { Transaction } from "types/transaction.type";
 import styles from "./RegisterBoard.module.scss";
 import { AuthContext } from "../../context/AuthContext";
 
-import {fetchCustomers} from "../../utils/fetchCustomers";
-import {fetchProducts} from "../../utils/fetchProducts";
+import { fetchCustomers } from "../../utils/fetchCustomers";
+import { fetchProducts } from "../../utils/fetchProducts";
 import { postTransaction } from "../../utils/postTransactions";
 import Button from "../UI/Button/Button";
 
@@ -18,10 +24,17 @@ const cx = classNames.bind(styles);
 
 const RegisterBoard = (props: {
   customers: CustomerProfile[];
-  setCustomers: (customers: CustomerProfile[]) => void;
+  setCustomers: Dispatch<SetStateAction<never[]>>;
   products: ProductCartItem[];
-  setProducts: (products: Product[]) => void;
-  setTransactionFilterObject: (filterObject: FilterObject) => void;
+  setProducts: Dispatch<SetStateAction<never[]>>;
+  setTransactionFilterObject: (
+    filterObject: FilterObject
+  ) => void | Dispatch<
+    SetStateAction<FilterObject>
+  >| Dispatch<
+    SetStateAction<Partial<FilterObject>>
+  >
+
 }) => {
   const {
     customers,
@@ -30,7 +43,7 @@ const RegisterBoard = (props: {
     setProducts,
     setTransactionFilterObject,
   } = props;
-  const { jwtToken , userRole} = useContext(AuthContext);
+  const { jwtToken, userRole } = useContext(AuthContext);
   const [posting, setPosting] = useState<
     "sending" | "" | "failure" | "success"
   >(""); // sending '' success failure
@@ -49,12 +62,15 @@ const RegisterBoard = (props: {
 
   useEffect(() => {
     const asyncFunc = async () => {
-      if(!jwtToken) return;
-      const customerResponseObject = await fetchCustomers(null, jwtToken, userRole);
-      const productResponseObject = await fetchProducts(null, jwtToken);
+      if (!jwtToken || !userRole) return;
 
-      console.log(customerResponseObject);
-      console.log(productResponseObject);
+      const customerResponseObject = await fetchCustomers(
+        null,
+        jwtToken,
+        userRole
+      );
+      const productResponseObject = await fetchProducts(undefined, jwtToken);
+
       if (customerResponseObject.status == "success") {
         setCustomers(customerResponseObject.data);
       }
@@ -63,11 +79,7 @@ const RegisterBoard = (props: {
       }
     };
     asyncFunc();
-  }, []);
-
-  useEffect(() => {
-    handleTransactionAmount();
-  }, [cart]);
+  }, [jwtToken, userRole, setCustomers, setProducts]);
 
   const addToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -109,7 +121,7 @@ const RegisterBoard = (props: {
     setCart(newCart);
   };
 
-  const removeFromCart = (_: any, id: string) => {
+  const removeFromCart = (_: unknown, id: string) => {
     const newCart = [...cart];
     const found = newCart.findIndex((item) => {
       return item._id == id;
@@ -119,7 +131,9 @@ const RegisterBoard = (props: {
     setCart(newCart);
   };
 
-  const addTransaction = async (e: React.MouseEvent<HTMLInputElement>) => {
+  const addTransaction = async (
+    e: React.MouseEvent<HTMLInputElement | HTMLButtonElement>
+  ) => {
     e.preventDefault();
     setPosting("sending");
     setErrorMessage(null);
@@ -140,6 +154,10 @@ const RegisterBoard = (props: {
       const items = cart.map((item) => ({
         productId: item._id,
         quantity: item.quantity,
+        _id: item._id,
+        name: item.name,
+        priceThen: item.price,
+        unit: item.unit,
       }));
 
       newTransaction.items = items;
@@ -152,7 +170,10 @@ const RegisterBoard = (props: {
     }
 
     const finalNewTransaction = newTransaction as Transaction;
-    const result = await postTransaction(finalNewTransaction, jwtToken);
+    const result = await postTransaction(
+      finalNewTransaction,
+      jwtToken as string
+    );
 
     if (result.status === "success") {
       setPosting("success");
@@ -175,13 +196,13 @@ const RegisterBoard = (props: {
     setPaidAmount(Number(e.target.value));
   };
 
-  const handleTransactionAmount = () => {
+  useEffect(() => {
     const totalAmount = cart.reduce((accumulator, currentItem) => {
       return accumulator + currentItem.price * currentItem.quantity;
     }, 0);
 
     if (paidInFull) setTransactionAmount(totalAmount);
-  };
+  }, [cart, paidInFull]);
 
   return (
     <>
@@ -194,6 +215,13 @@ const RegisterBoard = (props: {
                 transactionType == "purchase" ? styles.active : ""
               }`}
               onClick={() => setTransactionType("purchase")}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setTransactionType("purchase");
+                }
+              }}
+              role="button"
             >
               Purchase
             </div>
@@ -202,6 +230,13 @@ const RegisterBoard = (props: {
                 transactionType == "payment" ? styles.active : ""
               }`}
               onClick={() => setTransactionType("payment")}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setTransactionType("payment");
+                }
+              }}
             >
               Payment
             </div>
@@ -264,7 +299,10 @@ function Cart({
   transactionAmount,
 }: {
   cart: ProductCartItem[];
-  removeFromCart: (e: React.MouseEvent, id: string) => void;
+  removeFromCart: (
+    e: React.MouseEvent | React.KeyboardEvent,
+    id: string
+  ) => void;
   transactionAmount: number;
 }) {
   return (
@@ -322,7 +360,10 @@ function Cart({
 
 function CartItem(props: {
   item: ProductCartItem;
-  removeFromCart: (e: React.MouseEvent, id: string) => void;
+  removeFromCart: (
+    e: React.MouseEvent | React.KeyboardEvent,
+    id: string
+  ) => void;
 }) {
   const { item, removeFromCart } = props;
   return (
@@ -367,6 +408,13 @@ function CartItem(props: {
           onClick={(e) => {
             removeFromCart(e, item._id);
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              removeFromCart(e, item._id);
+            }
+          }}
+          role="button"
+          tabIndex={0}
         >
           <MdOutlineDeleteForever />
         </span>
@@ -404,11 +452,16 @@ function PurchaseUI({
   selectedProductUnit: string | null;
   addToCart: (e: React.MouseEvent) => void;
   cart: ProductCartItem[];
-  removeFromCart: (e: React.MouseEvent, id: string) => void;
+  removeFromCart: (
+    e: React.MouseEvent | React.KeyboardEvent,
+    id: string
+  ) => void;
   paidInFull: boolean;
   transactionAmount: number;
   posting: "sending" | "" | "failure" | "success";
-  addTransaction: (e: React.MouseEvent<HTMLInputElement>) => Promise<void>;
+  addTransaction: (
+    e: React.MouseEvent<HTMLInputElement | HTMLButtonElement>
+  ) => Promise<void>;
   handlePaidAmount: (e: React.ChangeEvent<HTMLInputElement>) => void;
   paidAmount: number;
 }) {
@@ -480,9 +533,10 @@ function PurchaseUI({
                 <span
                   className={`${styles["custom-radio"]} ${styles.yes}`}
                   tabIndex={0}
-                  onKeyDown={(e) => {
+                  onKeyDown={(_e) => {
                     setPaidInFull(true);
                   }}
+                  role="button"
                 ></span>
                 <span>Yes</span>
               </label>
@@ -501,9 +555,10 @@ function PurchaseUI({
                 <span
                   className={`${styles["custom-radio"]} ${styles.no}`}
                   tabIndex={0}
-                  onKeyDown={(e) => {
+                  onKeyDown={(_e) => {
                     setPaidInFull(false);
                   }}
+                  role="button"
                 ></span>
                 <span>No</span>
               </label>
@@ -552,7 +607,7 @@ function PaymentUI({
   paidAmount,
 }: {
   customers: Partial<CustomerProfile>[];
-  addTransaction: (e: React.MouseEvent<HTMLInputElement>) => Promise<void>;
+  addTransaction: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   handlePaidAmount: (e: React.ChangeEvent<HTMLInputElement>) => void;
   posting: "sending" | "" | "failure" | "success";
   paidAmount: number;

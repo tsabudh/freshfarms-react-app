@@ -6,7 +6,7 @@ export interface CustomerTab {
 }
 
 export interface CustomerLocation {
-  coordinates: [number, number] | [string, string]; // If you know coordinate type (e.g., number[]), specify it instead of any[]
+  coordinates: [number, number] | [string, string];
 }
 
 export interface CustomerProfile {
@@ -16,10 +16,11 @@ export interface CustomerProfile {
   address: string;
   phone: string[];
   profilePicture: string;
-  role: string; // could be union of roles if known, e.g. 'customer' | 'admin'
+  role: string;
   tab: CustomerTab;
   location: CustomerLocation;
-  createdAt: string;  // or Date if you convert ISO string to Date
-  updatedAt: string;  // or Date
+  createdAt: string;
+  updatedAt: string;
   __v: number;
+  password?:string;
 }

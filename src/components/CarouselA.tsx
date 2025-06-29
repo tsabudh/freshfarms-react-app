@@ -2,6 +2,7 @@ import classNames from "classnames/bind";
 import React, { useRef, useState } from "react";
 
 import styles from "./CarouselA.module.scss";
+import { simulateClickOnKeyDown } from "../utils/utils";
 import IconGreaterThan from "./UI/Icons/IconGreaterThan";
 import IconLessThan from "./UI/Icons/IconLessThan";
 const cx = classNames.bind(styles);
@@ -13,10 +14,7 @@ export const CarouselA = ({
   data: Array<{ src: string; alt?: string; link?: string }>;
   className?: string;
 }) => {
-  if (!data) {
-    return <div></div>;
-  }
-  const [animationName, setAnimationName] = useState<
+  const [, setAnimationName] = useState<
     "slideFromRight" | "slideFromLeft" | null
   >(null);
   const [slide, setSlide] = useState(0);
@@ -28,10 +26,19 @@ export const CarouselA = ({
     setSlide(slide === 0 ? data.length - 1 : slide - 1);
   };
 
+  if (!data) {
+    return <div></div>;
+  }
   return (
     <div className={cx("carousel", cx(className))}>
       <div className={cx("main")}>
-        <div onClick={prevSlide} className={cx("arrow", "arrow-left")}>
+        <div
+          onClick={prevSlide}
+          className={cx("arrow", "arrow-left")}
+          role="button"
+          tabIndex={0}
+          onKeyDown={simulateClickOnKeyDown(prevSlide)}
+        >
           <div className={cx("icon", "less-than")}>
             <IconLessThan onClick={prevSlide} />
           </div>
@@ -43,7 +50,13 @@ export const CarouselA = ({
           </div>
         </div>
 
-        <div onClick={nextSlide} className={cx("arrow", "arrow-right")}>
+        <div
+          onClick={nextSlide}
+          className={cx("arrow", "arrow-right")}
+          role="button"
+          tabIndex={0}
+          onKeyDown={simulateClickOnKeyDown(nextSlide)}
+        >
           <div className={cx("icon", "greater-than")}>
             <IconGreaterThan onClick={nextSlide} />
           </div>
@@ -62,9 +75,11 @@ export const CarouselA = ({
               )}
               onClick={() => {
                 return setSlide((prevIndex) => {
-                  prevIndex < idx
-                    ? setAnimationName("slideFromRight")
-                    : setAnimationName("slideFromLeft");
+                  if (prevIndex < idx) {
+                    setAnimationName("slideFromRight");
+                  } else {
+                    setAnimationName("slideFromLeft");
+                  }
                   return idx;
                 });
               }}
@@ -76,9 +91,12 @@ export const CarouselA = ({
   );
 };
 
-function CarouselContent({ data, slide }:{
-    data: Array<{ src: string; alt?: string; link?: string }>;
-    slide: number;
+function CarouselContent({
+  data,
+  slide,
+}: {
+  data: Array<{ src: string; alt?: string; link?: string }>;
+  slide: number;
 }) {
   const canvasRef = useRef(null);
 

@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import React from 'react';
 
-import CarouselA from './CarouselA';
+import {CarouselA} from './CarouselA';
 import styles from './SectionFavoritesHome.module.scss';
 import SectionTag from './SectionTag';
 import { slides } from '../assets/data/carouselA.json';

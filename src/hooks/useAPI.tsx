@@ -2,7 +2,7 @@ import { useState } from "react";
 
 type PendingStatus = "static" | "sending" | "success" | "failure";
 
-interface UseAPIProps<B> {
+export interface UseAPIProps<B> {
   url: string;
   jwtToken: string;
   method: "GET" | "POST" | "PUT" | "DELETE" | string;
@@ -26,6 +26,10 @@ async function requestAPI<D, B>(props: {
 }): Promise<APIResponse<D>> {
   const { url, method, jwtToken, body, addedHeaders } = props;
 
+  // Throw error if jwt is undefined or null
+  if (jwtToken === undefined || jwtToken === null) {
+      throw new Error("JWT token is missing");
+    }
   // Set headers, defaulting to JSON unless overridden
   const headers: Record<string, string> = {
     "Content-Type": "application/json",

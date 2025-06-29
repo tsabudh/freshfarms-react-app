@@ -1,13 +1,13 @@
 import classNames from "classnames/bind";
 import React, { useContext, useEffect, useState } from "react";
 
-import { Product, ProductImageData } from "types/product.type";
+import type { Product } from "types/product.type";
 import ProductCard from "./ProductCard";
 import styles from "./ProductPanel.module.scss";
 import { productImages } from "../../assets/data/productImages.json";
 import { AuthContext } from "../../context/AuthContext";
 
-import fetchProducts from "../../utils/fetchProducts";
+import {fetchProducts} from "../../utils/fetchProducts";
 
 const cx = classNames.bind(styles);
 
@@ -17,13 +17,14 @@ function ProductPanel() {
 
   useEffect(() => {
     const asyncWrapper = async () => {
-      const response = await fetchProducts(null, jwtToken);
+      if(!jwtToken) return;
+      const response = await fetchProducts(undefined, jwtToken);
       if (response.status == "success") {
         setProducts(response.data);
       }
     };
     asyncWrapper();
-  }, []);
+  }, [jwtToken]);
 
   return (
     <div className={cx("container")}>

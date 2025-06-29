@@ -4,18 +4,20 @@ import { TiUserDeleteOutline } from "react-icons/ti";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import type { AuthContextInterface } from "types/authContext.interface";
 import type {
   CustomerLocation,
   CustomerProfile,
 } from "types/customer.interface";
+import type { FilterObject } from "types/filter.types";
 import styles from "./Customer.module.scss";
 import { AuthContext } from "../../context/AuthContext";
 
-import deleteCustomer from "../../utils/deleteCustomer";
-import fetchCustomers from "../../utils/fetchCustomers";
-import fetchMyDetails from "../../utils/fetchMyDetails";
+import { deleteCustomer } from "../../utils/deleteCustomer";
+import { fetchCustomers } from "../../utils/fetchCustomers";
+import { fetchMyDetails } from "../../utils/fetchMyDetails";
 import { fetchTransactions } from "../../utils/fetchTransactions";
-import updateCustomer from "../../utils/updateCustomer";
+import { updateCustomer } from "../../utils/updateCustomer";
 import SortAndFilter from "../SortAndFilter/SortAndFilter";
 import TransactionTable from "../TransactionTable/TransactionTable";
 import Button from "../UI/Button/Button";
@@ -24,14 +26,11 @@ import Tooltip from "../UI/Tooltip/Tooltip";
 
 const LazyMapBox = lazy(() => import("../UI/MapBox/MapBox"));
 
-const initialTransactionFilterObject: {
-  sortBy: { issuedTime: number };
-  customerId: string | null;
-} = {
+const initialTransactionFilterObject: FilterObject = {
   sortBy: {
     issuedTime: -1,
   },
-  customerId: null,
+  customerId: undefined,
 };
 
 const copyText = (e: React.MouseEvent<HTMLElement>) => {
@@ -47,21 +46,18 @@ const copyText = (e: React.MouseEvent<HTMLElement>) => {
 const cx = classNames.bind(styles);
 
 function Customer({ customerId }: { customerId?: string | null }) {
-  const { jwtToken, user } = useContext(AuthContext);
+  const { jwtToken, user } = useContext<AuthContextInterface>(AuthContext);
   const { id: paramId } = useParams();
 
   const id = customerId || paramId || null;
-  if (!id) {
-    return <div className={cx("container")}>No customer ID provided.</div>;
-  }
 
   const navigate = useNavigate();
   const [customer, setCustomer] = useState<CustomerProfile | null>(null);
   const [editingStatus, setEditingStatus] = useState(false);
-  const [transactions, setTransactions] = useState([]);
+  const [, setTransactions] = useState([]);
 
-  initialTransactionFilterObject.customerId = id;
-  const [transactionFilterObject, setTransactionFilterObject] = useState(
+  initialTransactionFilterObject.customerId = id ?? undefined;
+  const [transactionFilterObject, setTransactionFilterObject] = useState<FilterObject | Partial<FilterObject>>(
     initialTransactionFilterObject
   );
   const [customerName, setCustomerName] = useState<string | null>(null);
@@ -69,11 +65,12 @@ function Customer({ customerId }: { customerId?: string | null }) {
   const [customerPhoneArray, setCustomerPhoneArray] = useState<string[]>([]);
   const [customerPhone, setCustomerPhone] = useState("");
   const [addedPhones, setAddedPhones] = useState<string[]>([]);
-  const [coordinates, setCoordinates] = useState<CustomerLocation | null>(null);
+  const [coordinates, setCoordinates] = useState<[number,number] | null>(null);
 
   //- INITIALIZING CUSTOMER AND TRANSACTIONS
   useEffect(() => {
     const asyncWrapper = async () => {
+      if (!jwtToken) return;
       if (!user) {
         toast("Please login to continue");
         throw new Error("User not authenticated");
@@ -93,7 +90,7 @@ function Customer({ customerId }: { customerId?: string | null }) {
       if (customerResponse.status == "success") {
         const customerResponseData = customerResponse.data;
         setCustomer(customerResponseData);
-        setCoordinates((prevCoordinates) => {
+        setCoordinates((_prevCoordinates) => {
           //- If customer do not have any coordinates set, return default coordinates of shop
           if (
             customerResponseData.location &&
@@ -110,7 +107,7 @@ function Customer({ customerId }: { customerId?: string | null }) {
       setTransactions(transactionResults);
     };
     asyncWrapper();
-  }, []);
+  }, [id, jwtToken, user]);
 
   //- INITIALIZING STATE VARIABLES FOR CUSTOMER ADDRESS AND PHONES
   useEffect(() => {
@@ -146,19 +143,22 @@ function Customer({ customerId }: { customerId?: string | null }) {
       setCustomerPhoneArray(tempCustomerPhoneArray);
     }
   };
-  const deleteAddedPhoneTag = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const deleteAddedPhoneTag = (e: React.MouseEvent<HTMLDivElement>) => {
     //- Return if not editing
     if (!editingStatus) return;
 
+    const target = e.target as HTMLDivElement;
+    const clickedText = target.innerText.toLowerCase();
+
     const tempAddedPhones = [...addedPhones];
     const matchedIndex = tempAddedPhones.findIndex(
-      (elem) => elem == e.target.innerText.toLowerCase()
+      (elem) => elem === clickedText
     );
     if (matchedIndex >= 0) tempAddedPhones.splice(matchedIndex, 1);
     setAddedPhones(tempAddedPhones);
   };
 
-  const addCustomerPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const addCustomerPhone = () => {
     const newPhoneArray: string[] = [...addedPhones];
 
     const newNumber = customerPhone.toLowerCase().trim();
@@ -187,18 +187,19 @@ function Customer({ customerId }: { customerId?: string | null }) {
     setAddedPhones([]);
     setEditingStatus(false);
   };
-  interface CustomerUpdatePayload {
-    name?: string | null;
-    address?: string | null;
-    phone?: string[];
-  }
+
   const saveEdits = async (id: string) => {
     if (!customer || !user) return;
-    const customerDetails: CustomerUpdatePayload = {};
-    customerDetails.name = customerName;
-    customerDetails.address = customerAddress;
+    const customerDetails: Partial<CustomerProfile> = {};
+    customerDetails.name = customerName as string;
+    customerDetails.address = customerAddress as string;
     customerDetails.phone = [...addedPhones, ...customerPhoneArray];
-    const result = await updateCustomer(id, customerDetails, jwtToken, user.role);
+    const result = await updateCustomer(
+      id,
+      customerDetails,
+      jwtToken as string,
+      user.role
+    );
     if (result.status == "success") {
       setCustomer(result.data);
       setEditingStatus(false);
@@ -209,9 +210,15 @@ function Customer({ customerId }: { customerId?: string | null }) {
     }
   };
   const handleDeleteCustomer = async () => {
-    const results = await deleteCustomer(id, jwtToken);
+    if (!(id && jwtToken))
+      throw new Error("Could not delete customer. Id or JWT not found.");
+    await deleteCustomer(id, jwtToken);
     navigate("/dashboard/customers");
   };
+
+  if (!id) {
+    return <div className={cx("container")}>No customer ID provided.</div>;
+  }
 
   return (
     customer && (
@@ -253,6 +260,13 @@ function Customer({ customerId }: { customerId?: string | null }) {
                     <div
                       className={cx("delete")}
                       onClick={handleDeleteCustomer}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          handleDeleteCustomer();
+                        }
+                      }}
+                      tabIndex={0}
+                      role="button"
                     >
                       <TiUserDeleteOutline />
                       <Tooltip
@@ -363,16 +377,10 @@ function CustomerTransactions({
   transactionFilterObject,
 }: {
   setTransactionFilterObject: React.Dispatch<
-    React.SetStateAction<{
-      sortBy: { issuedTime: number };
-      customerId: string | null;
-    }>
+    React.SetStateAction<FilterObject | Partial<FilterObject>>
   >;
   customer: CustomerProfile;
-  transactionFilterObject: {
-    sortBy: { issuedTime: number };
-    customerId: string | null;
-  };
+  transactionFilterObject: FilterObject | Partial<FilterObject>
 }) {
   return (
     <div className={cx("third-row")}>
@@ -382,7 +390,7 @@ function CustomerTransactions({
           setTransactionFilterObject={setTransactionFilterObject}
           customerId={customer._id}
         />
-        <TransactionTable transactionFilterObject={transactionFilterObject} />
+        <TransactionTable transactionFilterObject={transactionFilterObject as FilterObject} />
       </div>
     </div>
   );
@@ -392,8 +400,8 @@ function CustomerLocation({
   coordinates,
   setCoordinates,
 }: {
-  coordinates: CustomerLocation | null;
-  setCoordinates: React.Dispatch<React.SetStateAction<CustomerLocation | null>>;
+  coordinates: [number,number] | null;
+  setCoordinates: React.Dispatch<React.SetStateAction<[number,number] | null>>;
 }) {
   return (
     <div className={cx("second-row")}>

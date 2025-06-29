@@ -1,13 +1,8 @@
 import classNames from 'classnames/bind';
-import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import styles from './HeroHome.module.scss';
 import SectionTag from './SectionTag';
-import { AuthContext } from '../context/AuthContext';
 
-import loginUser from '../utils/loginUser';
 import Button from './UI/Button/Button';
 import Logo from './UI/Icons/Logo';
 

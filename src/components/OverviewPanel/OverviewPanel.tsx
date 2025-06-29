@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext,  useState } from 'react';
 
+import type { FilterObject } from 'types/filter.types';
 import styles from './OverviewPanel.module.scss';
 
 import { AuthContext } from '../../context/AuthContext';
@@ -17,12 +18,12 @@ const initialTransactionFilterObject = {
 };
 
 function OverviewPanel() {
-    const [transactionFilterObject, setTransactionFilterObject] = useState(
+    const [transactionFilterObject, setTransactionFilterObject] = useState<FilterObject>(
         initialTransactionFilterObject
     );
     const [products, setProducts] = useState([]);
     const [customers, setCustomers] = useState([]);
-    const { userRole, user } = useContext(AuthContext);
+    const { userRole } = useContext(AuthContext);
 
     const isAdmin = userRole === 'admin';
 

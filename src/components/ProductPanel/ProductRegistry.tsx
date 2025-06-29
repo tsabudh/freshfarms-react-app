@@ -7,10 +7,9 @@ import React, {
   useState,
 } from "react";
 
-import { Product } from "types/product.type";
+import type { Product } from "types/product.type";
 import ProductCard from "./ProductCard";
 import styles from "./ProductRegistry.module.scss";
-import productImageData from "../../assets/data/productImages.json";
 import { AuthContext } from "../../context/AuthContext";
 
 import useAPI from "../../hooks/useAPI";
@@ -18,7 +17,7 @@ import Button from "../UI/Button/Button";
 import ErrorFormFooter from "../UI/Error/ErrorFormFooter";
 const cx = classNames.bind(styles);
 
-const failuresObject = {
+const _failuresObject = {
   name: false,
   nameMessage: "",
   address: false,
@@ -32,29 +31,22 @@ const failuresObject = {
 
 function ProductRegistry() {
   const { jwtToken } = useContext(AuthContext);
-  const [dueAmount, setDueAmount] = useState<string>("");
-  const [purchaseAmount, setPurchaseAmount] = useState<string>("");
-  const [paidAmount, setPaidAmount] = useState<string>("");
-  const [tabOptions, setTabOptions] = useState<boolean>(false);
-  const [failures, setFailures] = useState(failuresObject);
+  const [, setDueAmount] = useState<string>("");
+  const [purchaseAmount] = useState<string>("");
+  const [paidAmount] = useState<string>("");
 
   const [error, setError] = useState<string | null>(null);
 
   const createProductFormRef = useRef<HTMLFormElement | null>(null);
 
-  if (!jwtToken) {
-    return (
-      <div className={cx("container")}>
-        <h3>Please login to add a product.</h3>
-      </div>
-    );
-  }
-
   // No requestBody initially, will override in sendRequest call
-  const [pendingStatus, data, errorMessage, sendRequest] = useAPI<Product, Partial<Product>>({
+  const [pendingStatus, data, errorMessage, sendRequest] = useAPI<
+    Product,
+    Partial<Product>
+  >({
     url: "/products",
     method: "POST",
-    jwtToken: jwtToken,
+    jwtToken: jwtToken as string,
   });
 
   useEffect(() => {
@@ -68,10 +60,6 @@ function ProductRegistry() {
     }
   }, [purchaseAmount, paidAmount]);
 
-  const handleTab = () => {
-    setTabOptions((prev) => !prev);
-  };
-
   const handleForm = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -81,7 +69,7 @@ function ProductRegistry() {
       if (!form) throw new Error("Form not found.");
 
       const formData = new FormData(form);
-      const details: Partial<Record<keyof Product, any>> = {};
+      const details: Partial<Record<keyof Product, string | number>> = {};
 
       formData.forEach((value, key) => {
         const typedKey = key as keyof Product;
@@ -95,17 +83,23 @@ function ProductRegistry() {
         switch (typedKey) {
           case "name":
             if (trimmedValue.length < 3) {
-              throw new Error("Product name must have at least three characters.");
+              throw new Error(
+                "Product name must have at least three characters."
+              );
             }
             if (!/^[a-zA-Z]+$/.test(trimmedValue)) {
-              throw new Error("Please enter a valid name for product (letters only).");
+              throw new Error(
+                "Please enter a valid name for product (letters only)."
+              );
             }
             details[typedKey] = trimmedValue;
             break;
 
           case "type":
             if (!/^[a-zA-Z]+$/.test(trimmedValue)) {
-              throw new Error("Please enter a valid type for product (letters only).");
+              throw new Error(
+                "Please enter a valid type for product (letters only)."
+              );
             }
             details[typedKey] = trimmedValue;
             break;
@@ -136,11 +130,20 @@ function ProductRegistry() {
         }
       });
 
-      await sendRequest(details);
-    } catch (error: any) {
-      setError(error.message || "Unknown error");
+      await sendRequest(details as Partial<Product>);
+    } catch (error: unknown) {
+      if (error instanceof Error) setError(error.message );
+      else setError("Unknown error!")
     }
   };
+
+  if (!jwtToken) { 
+    return (
+      <div className={cx("container")}>
+        <h3>Please login to add a product.</h3>
+      </div>
+    );
+  }
 
   return (
     <div className={cx("container")}>
@@ -190,15 +193,24 @@ function ProductRegistry() {
             placeholder="kg or litre or any"
           />
 
-          <Button className="action01 go" type="submit" disabled={pendingStatus === "sending"}>
+          <Button
+            className="action01 go"
+            type="submit"
+            disabled={pendingStatus === "sending"}
+          >
             {pendingStatus === "sending" ? "Adding..." : "Add product"}
           </Button>
         </form>
 
         <div>{error}</div>
-        <ErrorFormFooter pendingStatus={pendingStatus} errorMessage={errorMessage as string} />
+        <ErrorFormFooter
+          pendingStatus={pendingStatus}
+          errorMessage={errorMessage as string}
+        />
       </div>
-      <div className={cx("profile-container")}>{data && <ProductCard product={data} />}</div>
+      <div className={cx("profile-container")}>
+        {data && <ProductCard product={data} />}
+      </div>
     </div>
   );
 }

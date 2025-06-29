@@ -9,8 +9,8 @@ import {
   setJwtToLocalStorage,
   setUserToLocalStorage,
 } from "../../utils/localStorageUtils";
-import loginUser from "../../utils/loginUser";
-import refreshToken from "../../utils/refreshToken";
+import { loginUser } from "../../utils/loginUser";
+import { refreshToken } from "../../utils/refreshToken";
 import Button from "../UI/Button/Button";
 import BouncingCircles from "../UI/Vectors/BouncingCircles";
 
@@ -50,14 +50,16 @@ const LoginForm = ({
             navigate("/login");
           }
         }
-      } catch (error: any) {
-        console.log(error.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.log(error.message);
+        } else throw new Error("Unknown Error Occurred.");
       }
     }
     asyncWrapper();
-  }, []);
+  }, [jwtToken, navigate, setUser, user?.role, setJwtToken]);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     setErrorMessage(null);
     const form: HTMLFormElement =
@@ -72,7 +74,7 @@ const LoginForm = ({
       loginDetails.username as string
     ).toLocaleLowerCase();
 
-    const response = await loginUser(loginDetails, userRole);
+    const response = await loginUser(JSON.stringify(loginDetails), userRole);
     if (response) setIsLoading(false);
 
     if (response.status == "success") {
@@ -107,6 +109,13 @@ const LoginForm = ({
             <div
               className={cx("inactive", isAdmin ? "customer" : "admin")}
               onClick={() => toggle((isAdmin: boolean) => !isAdmin)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  toggle((isAdmin: boolean) => !isAdmin);
+                }
+              }}
+              role="button"
+              tabIndex={0}
             >
               {isAdmin ? "Customer" : "Admin"}
             </div>
@@ -150,7 +159,9 @@ const LoginForm = ({
           {isLoading && <BouncingCircles height="2.5rem" width="5rem" />}
         </div>
         {errorMessage && (
-          <div className={styles["error-message"]}>{errorMessage as string}</div>
+          <div className={styles["error-message"]}>
+            {errorMessage as string}
+          </div>
         )}
       </div>
     </div>
