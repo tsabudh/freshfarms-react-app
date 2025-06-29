@@ -6,6 +6,7 @@ import styles from "./LoginPage.module.scss";
 
 import LoginForm from "../../components/LoginForm/LoginForm";
 import { AuthContext } from "../../context/AuthContext";
+import { setJwtToLocalStorage } from "../../utils/localStorageUtils";
 import { openOAuthPopup } from "../../utils/oauth";
 
 const cx = classNames.bind(styles);
@@ -22,7 +23,10 @@ export default function LoginPage() {
       if(!token) {
         throw new Error("No token received from OAuth");
       }
+      console.log("Tasks on popup done.")
       setJwtToken(token); 
+      setJwtToLocalStorage(token);
+      
 
       navigate("/dashboard");
     } catch (err) {
