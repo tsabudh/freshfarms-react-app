@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { PiFilePdfDuotone } from "react-icons/pi";
 import type { FilterObject } from "types/filter.types";
 import type { Transaction as TransactionType } from "types/transaction.type";
@@ -10,6 +10,7 @@ import { convertToPDF } from "../../utils/pdf";
 import Transaction from "../Transaction/Transaction";
 
 import Button from "../UI/Button/Button";
+import { Pagination } from "@mui/material";
 const cx = classNames.bind(styles);
 
 const TransactionTable = ({
@@ -19,19 +20,32 @@ const TransactionTable = ({
 }) => {
   const { jwtToken, user } = useContext(AuthContext);
   const [transactions, setTransactions] = useState([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalDocs, setTotalDocs] = useState<number>(0);
+  const [displayCount, setDisplayCount] = useState<number>(10);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
-useEffect(() => {
-  const asyncWrapper = async () => {
-    if(!jwtToken) {
+  const retrieveTransactions = useCallback(async () => {
+    if (!jwtToken) {
       console.error("JWT token is not available.");
       return;
     }
+
     try {
       if (!transactionFilterObject) {
         throw new Error("Transaction filter object not defined.");
       }
-      const result = await fetchTransactions(transactionFilterObject, jwtToken);
-      setTransactions(result);
+
+      const result = await fetchTransactions(
+        jwtToken,
+        transactionFilterObject,
+        currentPage,
+        displayCount
+      );
+
+      console.log(result);
+      setTransactions(result.data);
+      setTotalPages(result.totalPages);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -39,10 +53,11 @@ useEffect(() => {
         console.error("Unknown error while fetching transactions", error);
       }
     }
-  };
+  }, [jwtToken, transactionFilterObject, currentPage, displayCount]);
 
-  asyncWrapper();
-}, [transactionFilterObject, jwtToken]);
+  useEffect(() => {
+    retrieveTransactions();
+  }, [retrieveTransactions]);
 
   if (!user) return null;
 
@@ -54,7 +69,7 @@ useEffect(() => {
           onClick={() => convertToPDF(transactions)}
           title="Download transactions as PDF"
           role="button"
-          tabIndex={0 }
+          tabIndex={0}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               convertToPDF(transactions);
@@ -89,6 +104,12 @@ useEffect(() => {
           />
         );
       })}
+      <section className={cx("pagination")}>
+        <Pagination
+          count={totalPages}
+          onChange={(_,page) => setCurrentPage(page)}
+        />
+      </section>
     </div>
   );
 };
