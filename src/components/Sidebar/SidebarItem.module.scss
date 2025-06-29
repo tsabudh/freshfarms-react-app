@@ -1,118 +1,122 @@
-@use '/src/scss/abstract/variables' as vars;
-@use '/src/scss/abstract/mixins' as mixins;
+@use "/src/scss/abstract/variables" as vars;
+@use "/src/scss/abstract/mixins" as mixins;
 
 .sidebar-item {
-    text-decoration: none;
+  text-decoration: none;
+  display: block;
+  padding: 0.75rem 1rem;
+  transition: background-color 0.15s;
+  text-transform: capitalize;
+  color: vars.$c-gray-300;
+
+  &:hover {
+    background-color: rgba(gray, 0.05);
+    cursor: pointer;
+
+    & & span {
+      // border-left: 2px solid vars.$c-amber-300;
+      color: vars.$c-berry-500;
+
+      &.active {
+        // border-left: 2px solid vars.$c-berry-bright;
+      }
+    }
+    & .sidebar-title span {
+      // border-left: 2px solid vars.$c-amber-300;
+    border-left: 2px solid transparent;
+
+      color: vars.$c-berry-bright;
+
+      &.active {
+        background-color: transparent;
+      }
+    }
+  }
+
+  &.active {
+  }
+  &.inactive {
+  }
+
+  & span {
+    border-left: 2px solid transparent;
+    padding-inline: 2px;
     display: block;
-    padding: 0.75rem 1rem;
-    transition: background-color 0.15s;
-    text-transform: capitalize;
-    color: white;
+    width: 100%;
 
     &:hover {
-        background-color: #{vars.$c-amber-200}10;
-        cursor: pointer;
-
-        & & span {
-            border-left: 2px solid vars.$c-amber-300;
-
-            &.active {
-                border-left: 2px solid vars.$c-berry-bright;
-            }
-        }
-        & .sidebar-title span {
-            border-left: 2px solid vars.$c-amber-300;
-            color: vars.$c-amber-200;
-
-            &.active {
-                background-color: transparent;
-            }
-        }
+      display: inline-block;
+      // border-left: 2px solid vars.$c-amber-300;
+      text-underline-position: under;
+      //   color: vars.$c-berry-500;
     }
 
     &.active {
+      //   border-left: 2px solid vars.$c-berry-bright;
+      color: vars.$c-berry-500;
     }
-    &.inactive {
-    }
+  }
 
+  .sidebar-title {
+    cursor: pointer;
+    display: flex;
+    font-size: 1em;
+    justify-content: space-between;
+    &:hover {
+      //   background-color: rgba(gray, 0.05);
+      & span {
+        // border-left: 2px solid vars.$c-amber-300;
+      }
+      &.toggle-btn {
+        color: vars.$c-amber-300;
+      }
+    }
     & span {
-        border-left: 2px solid transparent;
-        padding-inline: 2px;
-        display: block;
-        width: 100%;
-
-        &:hover {
-            display: inline-block;
-            border-left: 2px solid vars.$c-amber-300;
-            text-underline-position: under;
-            color: vars.$c-amber-200;
-        }
-
-        &.active {
-            border-left: 2px solid vars.$c-berry-bright;
-            color: vars.$c-amber-300;
-        }
+      font-weight: 300;
+      cursor: pointer;
     }
+  }
+  .sidebar-title span i {
+    display: inline-block;
+    width: 1.5rem;
+  }
+  .sidebar-title .toggle-btn {
+    cursor: pointer;
+    background: none;
+    color: vars.$c-gray-300;
+    border: none;
 
-    .sidebar-title {
-        cursor: pointer;
-        display: flex;
-        font-size: 1em;
-        justify-content: space-between;
-        &:hover {
-            & span {
-                border-left: 2px solid vars.$c-amber-300;
-            }
-            &.toggle-btn {
-                color: vars.$c-amber-300;
-            }
-        }
-        & span {
-            font-weight: 300;
-            cursor: pointer;
-        }
+    & svg {
+      color: inherit;
+      width: 1rem;
     }
-    .sidebar-title span i {
-        display: inline-block;
-        width: 1.5rem;
+  }
+  .sidebar-title:hover .toggle-btn {
+    & svg {
+      color: vars.$c-berry-500;
     }
-    .sidebar-title .toggle-btn {
-        cursor: pointer;
-        background: none;
-        color: white;
-        border: none;
+  }
+  &.open > .sidebar-title .toggle-btn {
+    transform: rotate(180deg);
+  }
+  .sidebar-content {
+    padding-top: 0.25em;
+    height: 0;
+    overflow: hidden;
+  }
+  &.open > .sidebar-content {
+    height: auto;
+  }
 
-        & svg {
-            color: inherit;
-            width: 1rem;
+  & .plain {
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    font-weight: 300;
 
-            &:hover {
-                color: vars.$c-amber-400;
-            }
-        }
+    & i {
+      display: inline-block;
+      width: 1.7em;
     }
-
-    &.open > .sidebar-title .toggle-btn {
-        transform: rotate(180deg);
-    }
-    .sidebar-content {
-        padding-top: 0.25em;
-        height: 0;
-        overflow: hidden;
-    }
-    &.open > .sidebar-content {
-        height: auto;
-    }
-
-    & .plain {
-        cursor: pointer;
-        display: block;
-        text-decoration: none;
-        font-weight: 300;
-
-        & i {
-            display: inline-block;
-            width: 1.7em;
-        }
-    }
+  }
 }

@@ -6,12 +6,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import type { SidebarMenuItem, SubMenuItem } from "types/sidebar.type";
 import styles from "./SidebarItem.module.scss";
 import { AuthContext } from "../../context/AuthContext";
+import { sidebarIconMap } from "../../registry/iconRegistry";
 
 const cx = classNames.bind(styles);
 
 // Type guard to distinguish SidebarMenuItem from SubMenuItem
-function isSidebarMenuItem(item: SidebarMenuItem | SubMenuItem): item is SidebarMenuItem {
-  return item.identity === "menu";
+function isSidebarMenuItem(
+  item: SidebarMenuItem | SubMenuItem
+): item is SidebarMenuItem {
+  return "children" in item;
 }
 
 function SidebarItem({
@@ -30,10 +33,16 @@ function SidebarItem({
   const [active, setActive] = useState<boolean>();
   const { userRole } = useContext(AuthContext);
 
+  const Icon =
+    "icon" in item && item.icon && item.icon in sidebarIconMap
+      ? sidebarIconMap[item.icon as keyof typeof sidebarIconMap]
+      : sidebarIconMap["DefaultIcon"];
+
   const handleNavigate = (_e: React.MouseEvent) => {
     if (isSidebarMenuItem(item)) {
       handleExpand(id as number);
     } else {
+      console.log("navigating.");
       navigate(item.path);
     }
   };
@@ -41,7 +50,11 @@ function SidebarItem({
   useEffect(() => {
     if (location.pathname === item.path) {
       setActive(true);
-    } else if (isSidebarMenuItem(item) && item.children && location.pathname.includes(item.title)) {
+    } else if (
+      isSidebarMenuItem(item) &&
+      item.children &&
+      location.pathname.includes(item.title)
+    ) {
       setActive(true);
     } else {
       setActive(false);
@@ -51,6 +64,7 @@ function SidebarItem({
   // Render sidebar menu with children
   if (isSidebarMenuItem(item) && item.children) {
     if (userRole === "customer" && item.adminOnly) return null;
+
     return (
       <div className={cx("sidebar-item", { open: expanded === id })}>
         <div
@@ -65,10 +79,8 @@ function SidebarItem({
             }
           }}
         >
-          <span className={cx({ active })}>
-            {item.icon && <i className={item.icon}></i>}
-            {item.title}
-          </span>
+          <Icon />
+          <span className={cx({ active })}>{item.title}</span>
           <div className={cx("toggle-btn")}>
             <SlArrowDown />
           </div>
@@ -95,23 +107,27 @@ function SidebarItem({
   if (userRole === "customer" && item.adminOnly) return null;
 
   return (
-    <div
-      onClick={handleNavigate}
-      className={cx("sidebar-item")}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          handleNavigate(e as unknown as React.MouseEvent);
-        }
-      }}
-    >
-      {isSidebarMenuItem(item) && item.icon && <i className={item.icon}></i>}
-      <div className={cx(item.identity === "menu" ? "sidebar-title" : "plain")}>
-        <span className={active ? styles.active : ""}>{item.title}</span>
+    <>
+      <div
+        onClick={handleNavigate}
+        className={cx("sidebar-item")}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleNavigate(e as unknown as React.MouseEvent);
+          }
+        }}
+      >
+        <div
+          className={cx(item.identity === "menu" ? "sidebar-title" : "plain")}
+        >
+          {item.identity === "sub-menu" ? null : <Icon />}
+          <span className={active ? styles.active : ""}>{item.title}</span>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
