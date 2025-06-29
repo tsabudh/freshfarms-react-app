@@ -2,7 +2,7 @@
 @use '/src/scss/abstract/mixins' as mixins;
 
 .navigation-bar {
-    background-color: vars.$c-amber-100;
+    background-color: vars.$c-gray-100;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,10 +70,10 @@
         & .logout {
             position: relative;
             cursor: pointer;
-            color: vars.$c-berry-300;
+            color: vars.$c-gray-300;
 
             &:hover {
-                color: vars.$c-amber-400;
+                color: vars.$color-dark;
             }
             &:hover [class*='tooltip'] {
                 display: block;

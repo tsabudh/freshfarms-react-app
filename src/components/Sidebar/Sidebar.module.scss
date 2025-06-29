@@ -34,13 +34,13 @@
     }
 
     & .header {
-        border-bottom: 0.5px solid vars.$c-amber-bright;
+        border-bottom: 0.5px solid vars.$c-gray-200;
     }
     .hamburger {
         position: absolute;
         top: 0.5rem;
         right: 0.3rem;
-        color: vars.$c-amber-300;
+        color: vars.$c-gray-300;
         font-size: 2.5rem;
         cursor: pointer;
     }

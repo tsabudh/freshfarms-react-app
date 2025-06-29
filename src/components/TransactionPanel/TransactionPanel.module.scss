@@ -1,5 +1,8 @@
+@use '/src/scss/abstract/variables' as vars;
+@use '/src/scss/abstract/mixins' as mixins;
+
 .container {
-    background: var(--surface5-light);
+    // background: vars.$c-gray-50;
     border-radius: 1rem;
     padding-block: 1rem;
 }

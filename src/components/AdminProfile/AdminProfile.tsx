@@ -87,7 +87,7 @@ function AdminProfile() {
   const getSetAdminProfile = useCallback(async () => {
     if (!jwtToken) throw new Error("JWT Token not found in context");
     if (!user) throw new Error("User not found in context");
-    const response = await fetchMyDetails(jwtToken, user.role);
+    const response = await fetchMyDetails(jwtToken, user.userRole);
     if (response.status === "success") {
       setProfile(response.data);
       setUserPhoneArray(response.data.phone);

@@ -5,16 +5,16 @@
     // $color-purchase: #2ecc71;
     margin-block: 1rem;
     padding: 1rem;
-    background: vars.$c-berry-200;
-    border-radius: 1.8rem;
+    // background: vars.$c-berry-100;
+    // border-radius: 1.8rem;
 
     & h3 {
-        color: vars.$c-gray-200;
+        color: vars.$c-gray-300;
         font-size: 1.8rem;
         margin-block: 0.6rem 1rem;
     }
     & form {
-        background: vars.$c-berry-200;
+        background: vars.$c-amber-100;
 
         border-radius: 1rem;
         margin-block: 0.5rem;
@@ -326,6 +326,7 @@
             }
             &.purchase {
                 color: $color-purchase;
+                
             }
             &.active {
                 color: white;
@@ -354,7 +355,7 @@
         border-top-left-radius: 0;
     }
     & .payment-dash {
-        background-color: vars.$c-berry-100;
+        background-color: vars.$c-amber-100;
         border: 2px solid $color-payment;
         padding-block: 1rem;
         border-radius: 1rem;

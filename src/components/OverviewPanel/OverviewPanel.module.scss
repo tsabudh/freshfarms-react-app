@@ -22,6 +22,7 @@
 .transaction-table-container {
     margin-block: 1rem;
     background: vars.$c-berry-100;
+    border-top: vars.$c-gray-200;
 
     & h3 {
         margin-inline: 1rem;

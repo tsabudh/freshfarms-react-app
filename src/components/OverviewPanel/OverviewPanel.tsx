@@ -30,7 +30,6 @@ function OverviewPanel() {
   
     return (
         <div className={cx('overview-panel')}>
-            <h1>Overview</h1>
             {isAdmin && (
                 <RegisterBoard
                     setTransactionFilterObject={setTransactionFilterObject}
