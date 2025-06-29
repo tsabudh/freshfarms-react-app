@@ -7,5 +7,5 @@ export interface AuthContextInterface {
   setJwtToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUser: React.Dispatch<React.SetStateAction<UserProfile | null>>;
   userRole: string | null;
-  setUserRole: React.Dispatch<React.SetStateAction<string | null>>;
+  setUserRole?: React.Dispatch<React.SetStateAction<string | null>>;
 }
