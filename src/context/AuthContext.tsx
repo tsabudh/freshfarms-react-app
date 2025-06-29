@@ -7,5 +7,4 @@ export const AuthContext = createContext<AuthContextInterface>({
     setJwtToken: () => {},
     setUser: () => {},
     userRole: null,
-    setUserRole: () => {},
 });
