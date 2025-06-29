@@ -79,7 +79,7 @@ const Transaction = ({
           {items.map((item) => {
             return (
               <li key={item._id}>
-                <button className={styles.product}>{item.productName}</button>
+                <span className={styles.product}>{item.productName}</span>
               </li>
             );
           })}
