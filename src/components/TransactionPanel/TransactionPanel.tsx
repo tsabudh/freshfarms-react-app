@@ -15,6 +15,7 @@ const TransactionPanel = () => {
 
     return (
         <div className={styles.container}>
+            <h3>Transactions</h3>
             <SortAndFilter
                 setTransactionFilterObject={setTransactionFilterObject}
             />

@@ -1,3 +1,4 @@
+import { Pagination } from "@mui/material";
 import classNames from "classnames/bind";
 import React, { useState, useEffect, useContext, useCallback } from "react";
 import { PiFilePdfDuotone } from "react-icons/pi";
@@ -10,13 +11,14 @@ import { convertToPDF } from "../../utils/pdf";
 import Transaction from "../Transaction/Transaction";
 
 import Button from "../UI/Button/Button";
-import { Pagination } from "@mui/material";
 const cx = classNames.bind(styles);
 
 const TransactionTable = ({
   transactionFilterObject,
+  showPagination = true,
 }: {
   transactionFilterObject: FilterObject;
+  showPagination?: boolean;
 }) => {
   const { jwtToken, user } = useContext(AuthContext);
   const [transactions, setTransactions] = useState([]);
@@ -46,6 +48,7 @@ const TransactionTable = ({
       console.log(result);
       setTransactions(result.data);
       setTotalPages(result.totalPages);
+      setTotalDocs(result.totalDocs);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -105,10 +108,12 @@ const TransactionTable = ({
         );
       })}
       <section className={cx("pagination")}>
-        <Pagination
-          count={totalPages}
-          onChange={(_,page) => setCurrentPage(page)}
-        />
+        {showPagination ? (
+          <Pagination
+            count={totalPages}
+            onChange={(_, page) => setCurrentPage(page)}
+          />
+        ) : null}
       </section>
     </div>
   );
