@@ -24,6 +24,11 @@ const CustomerProfileCard = ({ customer }: { customer: CustomerProfile }) => {
       tabIndex={0}
     >
       <div className={cx("card-left")}>
+        <img
+          src="/img/card-background-blue.svg"
+          alt="svg"
+          className={cx("svg-image")}
+        />
         <div className={cx("card-left-picture")}>
           <figure>
             <img src="/img/profile-picture.jpg" alt="Customer" />
