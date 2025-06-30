@@ -38,8 +38,8 @@ const LoginForm = ({
   useEffect(() => {
     async function asyncWrapper() {
       try {
-        if (jwtToken && user?.role) {
-          const response = await refreshToken(jwtToken, user.role);
+        if (jwtToken && user?.userRole) {
+          const response = await refreshToken(jwtToken, user.userRole);
           if (response.status == "success") {
             setJwtToken(response.token);
             setJwtToLocalStorage(response.token);
@@ -57,7 +57,7 @@ const LoginForm = ({
       }
     }
     asyncWrapper();
-  }, [jwtToken, navigate, setUser, user?.role, setJwtToken]);
+  }, [jwtToken, navigate, setUser, user, setJwtToken]);
 
   async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();

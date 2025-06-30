@@ -1,9 +1,9 @@
 import classNames from "classnames/bind";
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { MdPhotoCamera } from "react-icons/md";
+import ProfilePicture from "../ProfilePicture";
 
 import styles from "./AdminProfile.module.scss";
-import API_ROUTE from "../../assets/globals/baseRoute";
 import { AuthContext } from "../../context/AuthContext";
 
 import { UserProfile } from "../../types/user.interface";
@@ -81,8 +81,6 @@ function AdminProfile() {
     newPhoneArray.push(newNumber);
   };
 
-  //- cache busting
-  const uniqueParam = `?${Date.now()}`;
 
   //- Function for fetching adminDetails and setting it to profile state
   const getSetAdminProfile = useCallback(async () => {
@@ -221,12 +219,7 @@ function AdminProfile() {
               } `}
             >
               {!loadingProfilePic ? (
-                <img
-                  // src={`https://tsabudh-shreekrishnadairy1.s3.ap-south-1.amazonaws.com/admins/profilePicture/${profile._id}-profile-picture.webp${uniqueParam}`}
-                  src={`${API_ROUTE}/api/v1/admins/profilePicture/${profile._id}-profile-picture.webp${uniqueParam}`}
-                  alt=""
-                  className=""
-                />
+                <ProfilePicture userId={user._id} token={jwtToken}/>
               ) : null}
             </figure>
             {editing ? (

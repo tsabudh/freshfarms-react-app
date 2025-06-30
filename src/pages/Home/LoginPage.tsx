@@ -1,38 +1,64 @@
 import classNames from "classnames/bind";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import styles from "./LoginPage.module.scss";
 
 import LoginForm from "../../components/LoginForm/LoginForm";
 import { AuthContext } from "../../context/AuthContext";
-import { setJwtToLocalStorage } from "../../utils/localStorageUtils";
+import {
+  getJwtFromLocalStorage,
+  getUserFromLocalStorage,
+  setJwtToLocalStorage,
+} from "../../utils/localStorageUtils";
 import { openOAuthPopup } from "../../utils/oauth";
+import { refreshToken } from "../../utils/refreshToken";
 
 const cx = classNames.bind(styles);
 
 export default function LoginPage() {
   const [isAdmin, setIsAdmin] = useState(false);
-  const {setJwtToken} = useContext(AuthContext);
+  const { setJwtToken, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  
 
   const handleOAuthLogin = async () => {
     try {
-      const token = await openOAuthPopup() as unknown as string;
-      if(!token) {
+      const token = (await openOAuthPopup()) as unknown as string;
+      if (!token) {
         throw new Error("No token received from OAuth");
       }
-      console.log("Tasks on popup done.")
-      setJwtToken(token); 
+      console.log("Tasks on popup done.");
+      setJwtToken(token);
       setJwtToLocalStorage(token);
-      
 
       navigate("/dashboard");
     } catch (err) {
       console.error("OAuth failed:", err);
     }
   };
+
+  useEffect(() => {
+    const refreshTokenWrapper = async () => {
+      const locallyStoredToken = getJwtFromLocalStorage();
+      const locallyStoredUser = getUserFromLocalStorage();
+
+      if (!(locallyStoredToken && locallyStoredUser)) return;
+      const response = await refreshToken(
+        locallyStoredToken,
+        locallyStoredUser.role
+      );
+
+      const refreshedUser = response.user;
+      const refreshedToken = response.token;
+      if (!(refreshedUser && refreshedToken)) return;
+
+      setUser(refreshedUser);
+      setJwtToken(refreshedToken);
+      navigate("/dashboard");
+    };
+
+    refreshTokenWrapper();
+  }, [setJwtToken, setUser, navigate]);
 
   return (
     <div className={cx("container")}>

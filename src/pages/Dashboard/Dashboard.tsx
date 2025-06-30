@@ -10,7 +10,7 @@ import { AuthContext } from "../../context/AuthContext";
 const cx = classNames.bind(styles);
 
 const Dashboard = () => {
-  const { setUser } = useContext(AuthContext);
+  const { setUser, jwtToken } = useContext(AuthContext);
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
 
   const navigate = useNavigate();
@@ -21,6 +21,10 @@ const Dashboard = () => {
         const response = await fetch("http://localhost:3000/api/auth/check", {
           method: "GET",
           credentials: "include",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "Content-Type": "application/json",
+          },
         });
 
         if (response.ok) {
@@ -30,7 +34,7 @@ const Dashboard = () => {
           setUser(data.user); // You may still store user info in context
         } else {
           console.log("Session is invalid, redirecting to login");
-          navigate("/login");
+          // navigate("/login");
         }
       } catch (err) {
         console.error("Error validating session:", err);
@@ -39,7 +43,7 @@ const Dashboard = () => {
     }
 
     checkAuth();
-  }, [setUser, navigate]);
+  }, [setUser, navigate, jwtToken]);
 
   return (
     <div className={cx("dashboard")}>

@@ -45,6 +45,7 @@ function OverviewPanel() {
 
                 <TransactionTable
                     transactionFilterObject={transactionFilterObject}
+                    showPagination={false}
                 />
             </div>
         </div>
