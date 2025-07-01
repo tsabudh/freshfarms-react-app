@@ -29,12 +29,10 @@ const RegisterBoard = (props: {
   setProducts: Dispatch<SetStateAction<never[]>>;
   setTransactionFilterObject: (
     filterObject: FilterObject
-  ) => void | Dispatch<
-    SetStateAction<FilterObject>
-  >| Dispatch<
-    SetStateAction<Partial<FilterObject>>
-  >
-
+  ) =>
+    | void
+    | Dispatch<SetStateAction<FilterObject>>
+    | Dispatch<SetStateAction<Partial<FilterObject>>>;
 }) => {
   const {
     customers,
@@ -46,7 +44,7 @@ const RegisterBoard = (props: {
   const { jwtToken, userRole } = useContext(AuthContext);
   const [posting, setPosting] = useState<
     "sending" | "" | "failure" | "success"
-  >(""); // sending '' success failure
+  >("");
   const [quantity, setQuantity] = useState<number>(1);
   const [cart, setCart] = useState<ProductCartItem[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -163,7 +161,6 @@ const RegisterBoard = (props: {
       newTransaction.items = items;
       newTransaction.paidInFull = paidInFull;
       newTransaction.paid = paidInFull ? transactionAmount : paidAmount;
-      // newTransaction.paidInFull = paidAmount === transactionAmount;
     } else if (transactionType === "payment") {
       newTransaction.type = "payment";
       newTransaction.paid = paidAmount;
@@ -180,8 +177,6 @@ const RegisterBoard = (props: {
       setErrorMessage(null);
       setPaidAmount(0);
       setCart([]);
-      // const productResponse = await fetchProducts(null, jwtToken);
-      // setProducts(productResponse.data);
       setTransactionFilterObject({
         sortBy: { issuedTime: -1 },
         limit: 5,
@@ -203,6 +198,16 @@ const RegisterBoard = (props: {
 
     if (paidInFull) setTransactionAmount(totalAmount);
   }, [cart, paidInFull]);
+
+  useEffect(() => {
+    if (posting !== "success") return;
+
+    const highlighter = setTimeout(() => {
+      setPosting("");
+    }, 2000);
+
+    return () => clearTimeout(highlighter);
+  }, [posting]);
 
   return (
     <>
