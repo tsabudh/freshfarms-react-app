@@ -40,18 +40,6 @@ function NavBarDash({
         <IoMenuSharp onClick={handleToggle} />
       </div>
 
-      {location.pathname != "/dashboard" && (
-        <div
-          className={`${styles["go-back"]} 
-                    ${sidebarIsOpen ? "" : styles["go-back--pushed"]}`}
-        >
-          <Button className="amber-02 small" onClick={() => navigate(-1)}>
-            <span>Go back </span>
-            <RiArrowGoBackFill />
-          </Button>
-        </div>
-      )}
-
       <div className={styles["details"]}>
         <div className={styles["name"]}>{user && user.name}</div>
         <div className={styles["logout"]}>
