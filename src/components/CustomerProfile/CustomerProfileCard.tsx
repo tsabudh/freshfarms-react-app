@@ -37,26 +37,26 @@ const CustomerProfileCard = ({ customer }: { customer: CustomerProfile }) => {
       </div>
       <div className={cx("card-right")}>
         <div className={cx("name")}>{customer.name}</div>
-        <div className={cx("tab")}>
-          <div className={cx("purchase")}>
-            <p>Purchase</p>
-            {customer.tab.purchase}
-          </div>
-          <div className={cx("paid")}>
-            <p>Paid</p>
-            {customer.tab.paid}
-          </div>
-          <div className={cx("due")}>
-            <p>Due</p>
-            {customer.tab.due}
-          </div>
-        </div>
         <div className={cx("phone")}>
           {customer.phone.map((item) => (
             <Tag key={item}>{item}</Tag>
           ))}
         </div>
         <div className={cx("address")}>{customer.address}</div>
+        <div className={cx("tab")}>
+          <div className={cx("purchase")}>
+            {customer.tab.purchase}
+            <p>Purchase</p>
+          </div>
+          <div className={cx("paid")}>
+            {customer.tab.paid}
+            <p>Paid</p>
+          </div>
+          <div className={cx("due")}>
+            {customer.tab.due}
+            <p>Due</p>
+          </div>
+        </div>
       </div>
     </div>
   );
