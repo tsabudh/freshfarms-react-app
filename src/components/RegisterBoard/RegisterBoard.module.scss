@@ -263,16 +263,15 @@
         margin-inline: 1rem;
         font-size: 1rem;
         letter-spacing: 1px;
-        filter: drop-shadow(0px 0px 2px $status-color);
         color: vars.$c-gray-300;
 
         &.success {
-            background: vars.$c-success-600;
-            color: vars.$c-gray-300;
+            background: vars.$color-green;
+            color: white
         }
         &.failure {
-            background: vars.$c-berry-400;
-            color: vars.$c-amber-100;
+            background: orangered;
+            color: white;
         }
     }
     & .error-message {
