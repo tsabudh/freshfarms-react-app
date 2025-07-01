@@ -6,6 +6,7 @@ import styles from "./Dashboard.module.scss";
 import NavBarDash from "../../components/NavBarDash/NavBarDash";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { AuthContext } from "../../context/AuthContext";
+import refreshToken from "@/utils/refreshToken";
 
 const cx = classNames.bind(styles);
 
@@ -18,27 +19,13 @@ const Dashboard = () => {
   useEffect(() => {
     async function checkAuth() {
       try {
-        const response = await fetch("http://localhost:3000/api/auth/check", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-
-          console.log("Session is valid:", data);
-          setUser(data.user); // You may still store user info in context
-        } else {
-          console.log("Session is invalid, redirecting to login");
-          // navigate("/login");
-        }
+        if (!jwtToken) throw new Error("Token not found!");
+        const data = await refreshToken(jwtToken);
+        setUser(data.user);
       } catch (err) {
         console.error("Error validating session:", err);
-        // navigate("/login");
+        localStorage.removeItem("jwtToken");
+        navigate("/login"); //TODO going into recursive navigate from login to dashboard in some case, fix it
       }
     }
 
