@@ -2,9 +2,8 @@ import API_ROUTE from "../assets/globals/baseRoute";
 
 export async function refreshToken(
   jwtToken: string,
-  userRole: "admin" | "customer"
 ) {
-  const apiRoute = `${API_ROUTE}/api/v1/${userRole}s/refreshToken`;
+  const apiRoute = `${API_ROUTE}/api/v1/common/refreshToken`;
 
   const response = await fetch(apiRoute, {
     method: "GET",
@@ -19,6 +18,8 @@ export async function refreshToken(
   }
 
   const data = await response.json();
+
+  if(!data) throw new Error("Fatal: could not extract data from response.")
   return data;
 }
 
