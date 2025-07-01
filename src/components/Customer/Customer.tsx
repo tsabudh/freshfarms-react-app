@@ -83,8 +83,8 @@ function Customer({ customerId }: { customerId?: string | null }) {
         customerResponse = await fetchMyDetails(jwtToken, user.role);
       }
       const transactionResults = await fetchTransactions(
+        jwtToken,
         initialTransactionFilterObject,
-        jwtToken
       );
 
       if (customerResponse.status == "success") {
