@@ -13,11 +13,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "types": ["node"],
     "paths": {
-      "*": ["*"]
+      "@/*": ["*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "vite.config.js"]
 }

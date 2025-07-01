@@ -30,7 +30,7 @@
   ],
   "rules": {
     "no-undef": "error",
-    "react/react-in-jsx-scope": "off", // Next.js or React 17+
+    "react/react-in-jsx-scope": "off", //  React 17+
     "react/prop-types": "off", // Using TS instead
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "import/order": [
@@ -48,6 +48,12 @@
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      }
     }
   }
 }
