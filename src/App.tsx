@@ -36,7 +36,7 @@ const LazyCustomer = lazy(() => import("./components/Customer/Customer"));
 function App() {
   const [jwtToken, setJwtToken] = useState(localStorage.getItem("jwtToken"));
   const [user, setUser] = useState(getUserFromLocalStorage());
-   const userRole = user?.userRole || null;
+   const userRole = user?.role || null;
 
   return (
     <AuthContext.Provider
