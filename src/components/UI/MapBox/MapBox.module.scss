@@ -2,7 +2,7 @@
 @use '/src/scss/abstract/mixins' as mixins;
 
 .container {
-    background: linear-gradient(to right, #{vars.$c-amber-400}70, vars.$c-amber-300);
+    background-color: vars.$c-amber-100;
     padding-top: 0.6rem;
 
     // border-radius: 1rem;
@@ -18,17 +18,16 @@
 
         & .my-location {
             font-size: 2rem;
-            color: white;
+            color: vars.$c-gray-400;
             cursor: pointer;
 
             &:hover {
-                color: vars.$c-gray-400;
+                color: vars.$c-berry-400;
             }
         }
     }
 
     & .map-container {
-        border: 2px solid vars.$c-amber-300;
         // border-radius: 1rem;
         overflow: hidden;
     }
