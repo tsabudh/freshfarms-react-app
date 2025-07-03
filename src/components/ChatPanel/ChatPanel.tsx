@@ -54,7 +54,7 @@ export default function ChatPanel() {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
-  const [websocket, setWebsocket] = useState<WebSocket | null>(null);
+  // const [websocket, setWebsocket] = useState<WebSocket | null>(null);
 
   const [, setFriends] = useState<string[] | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -66,10 +66,74 @@ export default function ChatPanel() {
     null
   );
 
-  const connectWebSocket = () => {};
+  const websocketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    // Fetch previous messages of logged in user
+    if (!WS_ROUTE || !user?._id) return;
+
+    let reconnectTimeout: ReturnType<typeof setTimeout>;
+    let shouldReconnect = true;
+
+    const connectWebSocket = () => {
+      if (!WS_ROUTE) throw new Error("Fatal: WS_ROUTE not found!");
+
+      const ws = new WebSocket(WS_ROUTE);
+      websocketRef.current = ws;
+
+      ws.onopen = () => {
+        console.log("✅ WebSocket connected");
+        ws.send(
+          JSON.stringify({
+            type: "register",
+            sender: user._id,
+            messageId:  crypto.randomUUID(),
+          })
+        );
+      };
+
+      ws.onmessage = (event) => {
+        const newData = JSON.parse(event.data);
+
+        switch (newData.type) {
+          case "message":
+            setMessages((prevMessages) => [...prevMessages, newData]);
+            break;
+          case "ack":
+            setMessages((prevMessages) => [...prevMessages, newData]);
+            setInput("");
+            break;
+        }
+      };
+
+      ws.onerror = (error) => {
+        console.error("WebSocket error", error);
+      };
+
+      ws.onclose = () => {
+        console.warn("🔌 WebSocket closed");
+
+        if (shouldReconnect) {
+          reconnectTimeout = setTimeout(() => {
+            console.log("🔁 Reconnecting WebSocket...");
+            connectWebSocket();
+          }, 2000); // wait 2s before reconnecting
+        }
+      };
+    };
+    connectWebSocket();
+
+    // Cleanup on unmount or user change
+    return () => {
+      console.log("Unmounting.")
+      shouldReconnect = false;
+      clearTimeout(reconnectTimeout);
+      websocketRef.current?.close();
+    };
+  }, [user]);
+
+
+  useEffect(() => {
+    // Fetch past messages of logged in user
     const functionToFetchMessages = async () => {
       if (!jwtToken) return;
       try {
@@ -81,49 +145,6 @@ export default function ChatPanel() {
     };
     functionToFetchMessages();
   }, [jwtToken]);
-
-  useEffect(() => {
-    // Establish connection to websocket whenever profile(ie: user) changes
-    if (!WS_ROUTE) throw new Error("Fatal: WS_ROUTE not found!");
-    const newWebSocket = new WebSocket(WS_ROUTE);
-
-    newWebSocket.onopen = () => {
-      const registerMessage = {
-        type: "register",
-        sender: profile?._id,
-        messageId: Date.now(),
-      };
-      newWebSocket.send(JSON.stringify(registerMessage));
-    };
-    newWebSocket.onmessage = (event) => {
-      const newData = JSON.parse(event.data);
-
-      switch (newData.type) {
-        case "message":
-          setMessages((prevMessages: ChatMessage[]) => [
-            ...prevMessages,
-            newData,
-          ]);
-          break;
-        case "ack":
-          setMessages((prevMessages) => [...prevMessages, newData]);
-          setInput("");
-          break;
-      }
-    };
-    newWebSocket.onerror = (error) => {
-      console.log(error);
-    };
-    newWebSocket.onclose = () => {};
-
-    setWebsocket(newWebSocket);
-    // Cleanup on component unmount
-    return () => {
-      if (websocket) {
-        websocket.close();
-      }
-    };
-  }, [profile, websocket]);
 
   useEffect(() => {
     (async () => {
@@ -166,20 +187,19 @@ export default function ChatPanel() {
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!websocket || !profile || !activeFriend) {
+    console.log(e);
+    if (!(websocketRef.current && profile && activeFriend)) {
       console.error("WebSocket or profile or activeFriend is not set");
       return;
     }
-    if (websocket.readyState == 1 && input) {
+    if (websocketRef.current.readyState == 1 && input) {
       const chatMessage = new ChatMessage(
         profile._id,
         activeFriend._id,
         input,
         Date.now().toString()
       );
-      websocket.send(JSON.stringify(chatMessage));
-    } else {
-      connectWebSocket();
+      websocketRef.current.send(JSON.stringify(chatMessage));
     }
   };
 
@@ -196,7 +216,9 @@ export default function ChatPanel() {
               onClick={() => setAreFriendsHidden((prev) => !prev)}
               tabIndex={0}
               role="button"
-              onKeyDown={simulateClickOnKeyDown(() => setAreFriendsHidden((prev) => !prev))}
+              onKeyDown={simulateClickOnKeyDown(() =>
+                setAreFriendsHidden((prev) => !prev)
+              )}
             >
               <IoPeopleOutline />
             </div>
@@ -271,7 +293,9 @@ export default function ChatPanel() {
                 onClick={() => setActiveFriend(friend)}
                 role="button"
                 tabIndex={0}
-                onKeyDown={simulateClickOnKeyDown(()=>setActiveFriend(friend))}
+                onKeyDown={simulateClickOnKeyDown(() =>
+                  setActiveFriend(friend)
+                )}
               >
                 {friend.name}
               </div>
@@ -291,7 +315,9 @@ export default function ChatPanel() {
                 onClick={() => setActiveFriend(friend)}
                 role="button"
                 tabIndex={0}
-                onKeyDown={simulateClickOnKeyDown(()=> setActiveFriend(friend))}
+                onKeyDown={simulateClickOnKeyDown(() =>
+                  setActiveFriend(friend)
+                )}
               >
                 {friend.name}
               </div>
