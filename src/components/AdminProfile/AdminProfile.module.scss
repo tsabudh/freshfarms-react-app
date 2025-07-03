@@ -1,10 +1,9 @@
+@use "/src/scss/abstract/variables" as vars;
+@use "/src/scss/abstract/mixins" as mixins;
+
 .container {
-    font-family: Inter;
-    & h3 {
-        margin-inline: 1rem;
-        color: white;
-        font-weight: 400;
-    }
+    
+    color: vars.$color-dark;
     & .profile {
         font-size: inherit;
         display: flex;
@@ -32,7 +31,6 @@
             & svg {
                 position: absolute;
                 top: 80%;
-                // right: 15%;
                 left: 50%;
                 translate: 150% 0;
 
@@ -43,7 +41,7 @@
                 background: white;
             }
             & .figure {
-                padding: 0.5rem; //* PADDING
+                padding: 0.5rem; 
                 position: relative;
                 border-radius: 100%;
                 overflow: hidden;
@@ -63,23 +61,15 @@
 
         &-field {
             width: 100%;
-            // border-bottom: 1px solid gray;
-            // border-radius: 2rem;
             margin: 0.5rem;
-            // padding: 0.5rem 1rem;
-
-            // flex-basis: 80rem;
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
-            // align-items: flex-start;
             align-items: center;
             max-width: 80rem;
             overflow: auto;
 
             &--edits {
-                // border: 1px solid rgb(129, 153, 150);
-                // padding-block: 0.5rem;
 
                 & .input-wrapper {
                     margin-block: 1rem;
@@ -92,7 +82,6 @@
             & .key {
                 flex-basis: 20rem;
                 margin-inline: 1rem;
-                // border: 1px solid blue;
                 &--edits {
                     color: rgb(48, 11, 105);
                 }
@@ -101,7 +90,6 @@
             & .value {
                 flex-basis: 30rem;
                 padding: 1px;
-                // border: 1px solid red;
                 font-size: 1.8rem;
                 font-weight: 400;
                 &--edits {
@@ -114,7 +102,6 @@
                     max-width: 30rem;
 
                     &:focus-visible {
-                        // border: 1px solid rgb(69, 70, 77);
                         outline: none;
                     }
                 }
@@ -135,5 +122,10 @@
         margin-block: 1rem;
         visibility: visible;
         text-align: right;
+    }
+
+    & .add-button{
+        padding-inline: 0.5rem;
+        display: inline-block;
     }
 }
