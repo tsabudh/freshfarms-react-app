@@ -69,14 +69,11 @@
       justify-content: flex-end;
 
       max-width: 32rem;
-    //   padding: 0.4rem;
-      // border: 1px solid rgb(104, 104, 245);
       border-radius: 0.6rem;
       background-color: whitesmoke;
       backdrop-filter: blur(5px);
       max-height: 40rem;
       box-shadow: 0px 0px 10px vars.$c-gray-200;
-      // border: 2px dashed red;
       & .chat-title {
         display: flex;
         flex-direction: row;
@@ -93,11 +90,12 @@
         }
         & .close {
           align-self: flex-start;
-          font-size: 1.8rem;
-          height: 1em;
+          font-size: 2rem;
+          height: 1.2em;
+          width: 1.2em;
           cursor: pointer;
-          color: vars.$c-berry-400;
-          background-color: vars.$c-amber-100;
+          color: vars.$color-dark;
+          // background-color: vars.$c-amber-100;
           border-radius: 50%;
 
           display: flex;
@@ -115,14 +113,8 @@
         }
       }
       & .message-window {
-        // display: flex;
-        // flex-direction: column;
-        // justify-content: flex-end;
         flex-grow: 3;
-        // border: 1px solid orange;
-        // border-radius: 0.6rem;
         background-color: whitesmoke;
-        // max-height: 200px;
         overflow-y: scroll;
         height: 100%;
         padding: 0.4rem;
@@ -130,7 +122,6 @@
         & .messages {
           display: flex;
           flex-direction: column;
-          // gap: 0.8rem;
           padding: 0.4rem 0.2rem;
 
           & .message {
@@ -158,9 +149,7 @@
                 margin-top: 0.1rem;
                 border-bottom-right-radius: 0;
               }
-              & + .sent:last-of-type {
-                // background-color: red;
-              }
+             
             }
 
             &.received {
@@ -190,6 +179,7 @@
         align-items: stretch;
         gap: 0.2rem;
         margin-top: 0.6rem;
+        padding-inline: 0.2rem;
 
         & input {
           flex-grow: 2;
@@ -200,7 +190,8 @@
 
           &:focus {
             outline: none;
-            border: 1px solid vars.$color-green-100;
+            border: 1px solid vars.$color-gray;
+            box-shadow: 0 0 2px 2px vars.$c-gray-100;
           }
         }
 
@@ -217,7 +208,7 @@
           align-items: center;
 
           &:hover {
-            color: vars.$color-blue;
+            color: vars.$color-dark;
           }
           & svg {
             vertical-align: text-top;
@@ -254,7 +245,6 @@
       margin-block: 0.6rem;
     }
     & .friend {
-      // border-bottom: 1px solid vars.$color-green-100;
       background-color: transparent;
       padding: 0.6rem 0.6rem;
       margin-bottom: 0.1rem;
@@ -271,7 +261,7 @@
       &.active {
         background-color: vars.$c-white;
         color: vars.$c-gray-400;
-        border-color: vars.$c-berry-bright;
+        border-color: vars.$c-gray-300;
         cursor: default;
       }
     }
