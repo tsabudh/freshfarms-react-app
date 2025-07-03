@@ -45,7 +45,6 @@ const TransactionTable = ({
         displayCount
       );
 
-      console.log(result);
       setTransactions(result.data);
       setTotalPages(result.totalPages);
       setTotalDocs(result.totalDocs);

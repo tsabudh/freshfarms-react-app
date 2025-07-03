@@ -7,7 +7,7 @@ import styles from "./ProductPanel.module.scss";
 import { productImages } from "../../assets/data/productImages.json";
 import { AuthContext } from "../../context/AuthContext";
 
-import {fetchProducts} from "../../utils/fetchProducts";
+import { fetchProducts } from "../../utils/fetchProducts";
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +17,7 @@ function ProductPanel() {
 
   useEffect(() => {
     const asyncWrapper = async () => {
-      if(!jwtToken) return;
+      if (!jwtToken) return;
       const response = await fetchProducts(undefined, jwtToken);
       if (response.status == "success") {
         setProducts(response.data);
@@ -27,17 +27,19 @@ function ProductPanel() {
   }, [jwtToken]);
 
   return (
-    <div className={cx("container")}>
-      {products.map((item) => {
-        type ProductKey = keyof typeof productImages;
-        const imageList = productImages[item.name as ProductKey] || [];
+    <>
+      <h3>Our Products</h3>
+      <div className={cx("container")}>
+        {products.map((item) => {
+          type ProductKey = keyof typeof productImages;
+          const imageList = productImages[item.name as ProductKey] || [];
 
-       
-        return (
-          <ProductCard key={item._id} product={item} imageData={imageList} />
-        );
-      })}
-    </div>
+          return (
+            <ProductCard key={item._id} product={item} imageData={imageList} />
+          );
+        })}
+      </div>
+    </>
   );
 }
 

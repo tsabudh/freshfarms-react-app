@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 
+import API_ROUTE from "@/assets/globals/baseRoute";
 import type { Product } from "types/product.type";
 import ProductCard from "./ProductCard";
 import styles from "./ProductRegistry.module.scss";
@@ -44,7 +45,7 @@ function ProductRegistry() {
     Product,
     Partial<Product>
   >({
-    url: "/products",
+    url: `${API_ROUTE}/api/v1/products`,
     method: "POST",
     jwtToken: jwtToken as string,
   });
@@ -87,7 +88,7 @@ function ProductRegistry() {
                 "Product name must have at least three characters."
               );
             }
-            if (!/^[a-zA-Z]+$/.test(trimmedValue)) {
+            if (!/^[a-zA-Z\s]+$/.test(trimmedValue)) {
               throw new Error(
                 "Please enter a valid name for product (letters only)."
               );
@@ -132,12 +133,12 @@ function ProductRegistry() {
 
       await sendRequest(details as Partial<Product>);
     } catch (error: unknown) {
-      if (error instanceof Error) setError(error.message );
-      else setError("Unknown error!")
+      if (error instanceof Error) setError(error.message);
+      else setError("Unknown error!");
     }
   };
 
-  if (!jwtToken) { 
+  if (!jwtToken) {
     return (
       <div className={cx("container")}>
         <h3>Please login to add a product.</h3>
@@ -147,8 +148,8 @@ function ProductRegistry() {
 
   return (
     <div className={cx("container")}>
+      <h3>Add a new product</h3>
       <div className={cx("form-container")}>
-        <h3>Add a new product</h3>
         <form
           id="createProductForm"
           ref={createProductFormRef}

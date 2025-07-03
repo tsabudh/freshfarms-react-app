@@ -15,6 +15,7 @@ import useAPI from "../../hooks/useAPI";
 import CustomerProfileCard from "../CustomerProfile/CustomerProfileCard";
 import Button from "../UI/Button/Button";
 import ErrorFormFooter from "../UI/Error/ErrorFormFooter";
+import API_ROUTE from "@/assets/globals/baseRoute";
 
 const cx = classNames.bind(styles);
 
@@ -48,7 +49,7 @@ function CustomerRegistry() {
     CustomerProfile,
     Partial<CustomerProfile>
   >({
-    url: "/customers/all",
+    url: `${API_ROUTE}/api/v1/customers/all`,
     method: "POST",
     jwtToken: jwtToken as string,
     body: requestBody,
@@ -78,9 +79,12 @@ function CustomerRegistry() {
       const formData = new FormData(form);
 
       const details: Partial<CustomerProfile> = {};
-      
+
       formData.forEach((value, key) => {
-        const typedKey = key as keyof Pick<CustomerProfile, "name" | "username"| "address"|"password">;
+        const typedKey = key as keyof Pick<
+          CustomerProfile,
+          "name" | "username" | "address" | "password"
+        >;
 
         if (typeof value !== "string") {
           throw new Error(`Unexpected non-string value for key: ${key}`);
@@ -124,8 +128,8 @@ function CustomerRegistry() {
         }
 
         // Assign after validation
-        if(trimmedValue){
-          details[typedKey] = trimmedValue as  CustomerProfile[typeof typedKey];
+        if (trimmedValue) {
+          details[typedKey] = trimmedValue as CustomerProfile[typeof typedKey];
         }
       });
 
@@ -139,8 +143,8 @@ function CustomerRegistry() {
 
   return (
     <div className={cx("container")}>
+      <h3>Add a new customer</h3>
       <div className={cx("form-container")}>
-        <h3>Add a new customer</h3>
         <form action="" id="createCustomerForm" ref={createCustomerFormRef}>
           <InputGroup
             inputName="name"

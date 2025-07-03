@@ -15,7 +15,6 @@ import Notifier from "./components/Notifier/Notifier";
 import OverviewPanel from "./components/OverviewPanel/OverviewPanel";
 import ProductManage from "./components/ProductPanel/ProductManage";
 import ProductPanel from "./components/ProductPanel/ProductPanel";
-// import StatementPanel from "./components/StatementPanel/StatementPanel";
 import TransactionPanel from "./components/TransactionPanel/TransactionPanel";
 import { AuthContext } from "./context/AuthContext";
 import Callback from "./pages/Callback";
