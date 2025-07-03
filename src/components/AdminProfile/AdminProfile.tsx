@@ -81,12 +81,11 @@ function AdminProfile() {
     newPhoneArray.push(newNumber);
   };
 
-
   //- Function for fetching adminDetails and setting it to profile state
   const getSetAdminProfile = useCallback(async () => {
     if (!jwtToken) throw new Error("JWT Token not found in context");
     if (!user) throw new Error("User not found in context");
-    const response = await fetchMyDetails(jwtToken, user.userRole);
+    const response = await fetchMyDetails(jwtToken, user.role);
     if (response.status === "success") {
       setProfile(response.data);
       setUserPhoneArray(response.data.phone);
@@ -158,9 +157,11 @@ function AdminProfile() {
     const formAdmin: HTMLFormElement = el as HTMLFormElement;
 
     const formData = new FormData(formAdmin);
-    formData.append("phone", JSON.stringify(addedPhones));
+    if (addedPhones.length !== 0)
+      formData.append("phone", JSON.stringify(addedPhones));
 
-    const adminDetails: Partial<Record<keyof UserProfile, string | object>> = {};
+    const adminDetails: Partial<Record<keyof UserProfile, string | object>> =
+      {};
 
     for (const [key, value] of formData) {
       const typedKey = key as keyof UserProfile;
@@ -170,15 +171,17 @@ function AdminProfile() {
         adminDetails[typedKey] = value;
       }
     }
+    console.log(addedPhones);
+    console.log(adminDetails)
     type UpdateAdminResponse = {
       status: "success" | "error";
       data: UserProfile;
     };
-    const responseTxt = await updateAdmin(
+    const responseTxt = (await updateAdmin(
       profile._id,
       adminDetails as UserProfile,
       jwtToken
-    ) as UpdateAdminResponse;
+    )) as UpdateAdminResponse;
     if (responseTxt.status == "success") {
       setProfile(responseTxt.data);
       setEditing(false);
@@ -200,11 +203,11 @@ function AdminProfile() {
         <div className={styles["profile"]}>
           <div className={styles["profile-edit"]}>
             {editing ? (
-              <Button className="stylish01" onClick={disableEditing}>
+              <Button className="stylish02" onClick={disableEditing}>
                 Cancel
               </Button>
             ) : (
-              <Button className="stylish01" onClick={enableEditing}>
+              <Button className="stylish05" onClick={enableEditing}>
                 Edit
               </Button>
             )}
@@ -219,7 +222,7 @@ function AdminProfile() {
               } `}
             >
               {!loadingProfilePic ? (
-                <ProfilePicture userId={user._id} token={jwtToken}/>
+                <ProfilePicture userId={user._id} token={jwtToken} />
               ) : null}
             </figure>
             {editing ? (
@@ -297,9 +300,11 @@ function AdminProfile() {
                         id="phoneToAdd"
                         className={styles["value--edits"]}
                       />
-                      <Button onClick={addAdminPhone} className="stylish02">
+                      <div className={cx('add-button')}>
+                      <Button onClick={addAdminPhone} className="stylish05">
                         ADD
                       </Button>
+                        </div>
                     </div>
                   )}
                 </div>
