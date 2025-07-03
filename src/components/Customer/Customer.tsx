@@ -232,17 +232,16 @@ function Customer({ customerId }: { customerId?: string | null }) {
               <span className={cx("profile_name")}>{customer.name}</span>
               <div className={cx("tab")}>
                 <div className={cx("purchase")}>
-                  <p>Purchase</p>
-
                   {customer.tab.purchase}
+                  <p>Purchase</p>
                 </div>
                 <div className={cx("paid")}>
-                  <p>Paid</p>
                   {customer.tab.paid}
+                  <p>Paid</p>
                 </div>
                 <div className={cx("due")}>
-                  <p>Due</p>
                   {customer.tab.due}
+                  <p>Due</p>
                 </div>
               </div>
             </div>

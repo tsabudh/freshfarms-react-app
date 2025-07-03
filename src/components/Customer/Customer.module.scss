@@ -1,178 +1,176 @@
-@use '/src/scss/abstract/variables' as vars;
-@use '/src/scss/abstract/mixins' as mixins;
+@use "/src/scss/abstract/variables" as vars;
+@use "/src/scss/abstract/mixins" as mixins;
 
 .container {
-    & > button {
-        color: white;
+  & > button {
+    color: white;
+  }
+
+  color: vars.$color-dark;
+
+  & .first-row {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: stretch;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    margin-inline: 1rem;
+
+    @include mixins.respond("phone") {
+      flex-direction: column;
     }
 
-    color: vars.$c-brown-400;
-
-    & .first-row {
+    &_left {
+      background-color: white;
+      border: 1px solid vars.$color-gray-300;
+      flex-basis: 30rem;
+      padding-block: 1rem;
+      border-radius: 1rem;
+      flex-grow: 2;
+      @include mixins.respond("phone") {
+        flex-basis: 20rem;
+      }
+      & .profile {
         display: flex;
-        justify-content: space-evenly;
-        align-items: stretch;
+        flex-direction: column;
+        align-items: center;
         gap: 1rem;
-        margin-bottom: 2rem;
-        margin-inline: 1rem;
-
-        @include mixins.respond('phone') {
-            flex-direction: column;
+        text-align: center;
+        &_picture {
+          width: 10rem;
+          aspect-ratio: 1;
+          border-radius: 100%;
+          overflow: hidden;
         }
-
-        &_left {
-            background: linear-gradient(
-                to right top,
-                #{vars.$c-gray-100}10,
-                #{vars.$c-amber-300}10
-            );
-            border: 1px solid #{vars.$c-amber-300};
-            flex-basis: 30rem;
-            padding-block: 1rem;
-            border-radius: 1rem;
-            flex-grow: 2;
-            @include mixins.respond('phone') {
-                flex-basis: 20rem;
-            }
-            & .profile {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-                text-align: center;
-                &_picture {
-                    width: 10rem;
-                    aspect-ratio: 1;
-                    border-radius: 100%;
-                    overflow: hidden;
-                }
-                &_name {
-                    text-transform: capitalize;
-                }
-                & .tab {
-                    display: flex;
-                    justify-content: space-evenly;
-                    font-size: 2rem;
-                    text-align: center;
-                    align-self: stretch;
-                    & p {
-                        font-size: 1.2rem;
-                        color: black;
-                    }
-                    & .paid {
-                        color: green;
-                    }
-                    & .purchase {
-                        color: blue;
-                    }
-                    & .due {
-                        color: orangered;
-                    }
-                }
-            }
+        &_name {
+          text-transform: capitalize;
+          font-size: 2rem;
         }
-        &_right {
-            --break-gradient: 50%;
-
-            background: linear-gradient(
-                to right top,
-                #{vars.$c-gray-100}10 var(--break-gradient),
-                #{vars.$c-amber-300}50
-            );
-
-            border: 1px solid #{vars.$c-amber-300};
-            flex-basis: 60rem;
-            flex-grow: 3;
-            border-radius: 1rem;
-
-            @include mixins.respond('phone') {
-                flex-basis: 20rem;
-            }
-            & .detail {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-evenly;
-                margin-block: 0.2rem;
-                padding-inline: 1rem;
-                & > div {
-                    padding-block: 1rem;
-                    border-bottom: 1px solid rgb(205, 225, 228);
-                }
-
-                &_name {
-                    width: 30%;
-                    font-weight: 600;
-                }
-                &_value {
-                    width: 70%;
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    text-transform: capitalize;
-
-                    align-items: flex-start;
-
-                    & input {
-                        padding: 0.2rem 0.5rem;
-                        margin-inline: 0.5rem;
-                        text-transform: capitalize;
-                    }
-                }
-
-                & .delete {
-                    position: relative;
-                    color: red;
-                    margin-inline: 1rem;
-                    aspect-ratio: 1;
-                    border: 1px solid red;
-                    font-weight: 800;
-                    border-radius: 0.3rem;
-                    padding: 0 0.2rem;
-                    cursor: pointer;
-
-                    &:hover {
-                        color: rgb(255, 94, 0);
-                    }
-                    &:hover [class*='tooltip'] {
-                        display: block;
-                    }
-
-                    & svg {
-                        vertical-align: middle;
-                    }
-                }
-            }
-
-            &:hover {
-                --break-gradient: 10%;
-            }
-        }
-
-        & .actions {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-            margin-block: 1rem;
-            padding-inline: 1rem;
-
-            &.editing {
-                justify-content: space-around;
-            }
-        }
-    }
-
-    & .second-row {
-        margin: 2rem 1rem;
-    }
-
-    & .third-row {
-        & h3 {
-            margin: 1rem;
-            font-size: 1.8rem;
-            color: rgb(79, 102, 104);
+        & .tab {
+          display: flex;
+          justify-content: space-evenly;
+          padding-top: 1rem;
+          font-size: 1.9rem;
+          text-align: center;
+          align-self: stretch;
+          & p {
+            font-size: 1.2rem;
+            color: vars.$c-gray-200;
             font-weight: 400;
+          }
+          & .paid {
+            color: vars.$color-green;
+            font-weight: 700;
+          }
+          & .purchase {
+            color: vars.$c-amber-400;
+            font-weight: 700;
+          }
+          & .due {
+            color: vars.$c-berry-500;
+            font-weight: 700;
+          }
         }
-        & .transactions {
-        }
+      }
     }
+    &_right {
+      --break-gradient: 50%;
+
+      background-color: white;
+
+      border: 1px solid vars.$color-gray-300;
+      flex-basis: 60rem;
+      flex-grow: 3;
+      border-radius: 1rem;
+
+      @include mixins.respond("phone") {
+        flex-basis: 20rem;
+      }
+      & .detail {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin-block: 0.2rem;
+        padding-inline: 1rem;
+        & > div {
+          padding-block: 1rem;
+          border-bottom: 1px solid rgb(205, 225, 228);
+        }
+
+        &_name {
+          width: 30%;
+          font-weight: 600;
+        }
+        &_value {
+          width: 70%;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          text-transform: capitalize;
+
+          align-items: flex-start;
+
+          & input {
+            padding: 0.2rem 0.5rem;
+            margin-inline: 0.5rem;
+            text-transform: capitalize;
+          }
+        }
+
+        & .delete {
+          position: relative;
+          color: red;
+          margin-inline: 1rem;
+          aspect-ratio: 1;
+          border: 1px solid red;
+          font-weight: 800;
+          border-radius: 0.3rem;
+          padding: 0 0.2rem;
+          cursor: pointer;
+
+          &:hover {
+            color: rgb(255, 94, 0);
+          }
+          &:hover [class*="tooltip"] {
+            display: block;
+          }
+
+          & svg {
+            vertical-align: middle;
+          }
+        }
+      }
+
+      &:hover {
+        --break-gradient: 10%;
+      }
+    }
+
+    & .actions {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      margin-block: 1rem;
+      padding-inline: 1rem;
+
+      &.editing {
+        justify-content: space-around;
+      }
+    }
+  }
+
+  & .second-row {
+    margin: 2rem 1rem;
+  }
+
+  & .third-row {
+    & h3 {
+      margin: 1rem;
+      font-size: 1.8rem;
+      color: rgb(79, 102, 104);
+      font-weight: 400;
+    }
+    & .transactions {
+    }
+  }
 }
