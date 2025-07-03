@@ -208,7 +208,7 @@ export default function ChatPanel() {
       <div className={cx("chat-window")}>
         <section className={cx("chat-header")}>
           <div className={cx("title")}>
-            <h2>Chats</h2>
+            <h3>Chats</h3>
             <div
               className={cx("friends-menu", {
                 closed: areFriendsHidden,
