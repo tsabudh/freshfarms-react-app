@@ -1,15 +1,18 @@
 import classNames from "classnames/bind";
-import type {
-  Map as LeafletMap,
-  Marker as LeafletMarker,
-  Circle,
-  LeafletEvent,
+import {
+  type Map as LeafletMap,
+  type Marker as LeafletMarker,
+  type Circle,
+  type LeafletEvent,
+  Map,
 } from "leaflet";
 import React, {
   useEffect,
   memo,
   useState,
   useContext,
+  useRef,
+  useLayoutEffect,
 } from "react";
 import { MdMyLocation } from "react-icons/md";
 import { useParams } from "react-router-dom";
@@ -22,9 +25,7 @@ import Button from "../Button/Button";
 let L: typeof import("leaflet") | undefined = undefined;
 
 //- DECLARING GLOBAL VARIABLES FOR MAP
-let marker: LeafletMarker | null = null,
-  circle: Circle | null = null,
-  zoomed: LeafletMap | null = null,
+let zoomed: LeafletMap | null = null,
   redMarker: LeafletMarker | null = null;
 
 const cx = classNames.bind(styles);
@@ -41,54 +42,114 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
   const [map, setMap] = useState<LeafletMap | null>(null);
 
   const { jwtToken, user } = useContext(AuthContext);
+  const mapRef = useRef<Map | null>(null); // to store map instance
+  const markerRef = useRef<LeafletMarker | null>(null);
+  const circleRef = useRef<Circle | null>(null);
+  const initialCoordinates = useRef(coordinates);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    let isMounted = true;
+    const coords = initialCoordinates.current;
+
     (async () => {
       if (!L) {
         const leafletModule = await import("leaflet");
         L = leafletModule.default ?? leafletModule;
         await import("leaflet/dist/leaflet.css");
       }
-      if (!L) return;
+      if (!L || !isMounted) return;
 
-      const mapInstance = L.map("map");
-      mapInstance.setView(coordinates, 16);
-      mapInstance.setMaxZoom(19);
-      mapInstance.setMinZoom(15);
+      if (!mapRef.current) {
+        const mapInstance = L.map("map");
+        mapInstance.setView(coords, 16);
+        mapInstance.setMaxZoom(19);
+        mapInstance.setMinZoom(15);
 
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(mapInstance);
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        }).addTo(mapInstance);
 
-      //- Setting Coordinates for customer that do not have location registered
-      const lat = coordinates[0] || 83.60018489346729;
-      const lng = coordinates[1] || 28.27182621011652;
-
-      //- Remove previous marker if exist
-      if (marker) {
-        mapInstance.removeLayer(marker);
-        if (circle) mapInstance.removeLayer(circle);
+        mapRef.current = mapInstance;
+        setMap(mapInstance);
       }
 
-      //- Set markers to current latitude and longitude
-      if (lat && lng) {
-        marker = L.marker([lat, lng]).addTo(mapInstance);
-        circle = L.circle([lat, lng], 60).addTo(mapInstance);
+      // const map = mapRef.current;
 
-        if (!zoomed) {
-          zoomed = mapInstance.fitBounds(circle.getBounds());
-        }
-      }
-      setMap(mapInstance);
+      // const lat = coordinates[0] || 28.27182621011652;
+      // const lng = coordinates[1] || 83.60018489346729;
 
-      //- Clean up map
-      return () => {
-        mapInstance.off();
-        mapInstance.remove();
-      };
+      // //- Remove previous marker if exists
+      // if (marker) {
+      //   map.removeLayer(marker);
+      //   if (circleRef.current) map.removeLayer(circleRef.current);
+      // }
+
+      // markerRef.current = L.marker([lat, lng]).addTo(map);
+      // circleRef.current = L.circle([lat, lng], { radius: 60 }).addTo(map);
+
+      // if (!zoomed) {
+      //   zoomed = map.fitBounds(circleRef.current.getBounds());
+      // }
     })();
+
+    // ✅ Only run on component unmount
+    return () => {
+      isMounted = false;
+
+      // 🔐 Only destroy the map when unmounting
+      if (mapRef.current) {
+        mapRef.current.off();
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+
+      markerRef.current = null;
+      circleRef.current = null;
+      zoomed = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const mapInstance = mapRef.current;
+    if (!(mapInstance && L)) return;
+
+    // Set default/fallback coordinates if missing
+    const lat = coordinates[0] || 28.27182621011652;
+    const lng = coordinates[1] || 83.60018489346729;
+
+    // Remove old marker and circle
+    if (markerRef.current) {
+      mapInstance.removeLayer(markerRef.current);
+      markerRef.current = null;
+    }
+    if (circleRef.current) {
+      mapInstance.removeLayer(circleRef.current);
+      circleRef.current = null;
+    }
+
+    if (redMarker) mapInstance.removeLayer(redMarker);
+    // Add new marker and circle
+    markerRef.current = L.marker([lat, lng]).addTo(mapInstance);
+    circleRef.current = L.circle([lat, lng], { radius: 60 }).addTo(mapInstance);
+
+    // Zoom to circle bounds if not zoomed already
+    if (!zoomed) {
+      zoomed = mapInstance.fitBounds(circleRef.current.getBounds());
+    }
+
+    return () => {
+      // Clean up current marker/circle on unmount or dependency change
+      if (markerRef.current) {
+        mapInstance.removeLayer(markerRef.current);
+        markerRef.current = null;
+      }
+      if (circleRef.current) {
+        mapInstance.removeLayer(circleRef.current);
+        circleRef.current = null;
+      }
+    };
   }, [coordinates]);
 
   // Use ReactMouseEvent<HTMLDivElement> or appropriate for icon click
@@ -105,9 +166,8 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
     };
   };
 
-
   // Leaflet mouse event for map click
-  const addMarker = (e:MapClickEvent) => {
+  const addMarker = (e: MapClickEvent) => {
     if (!map || !L) return;
 
     //- If marker to add (redMarker) already exists, remove that marker
@@ -213,26 +273,28 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
           <MdMyLocation onClick={centerToCustomerLocation} />
         </div>
 
-        <Button
-          className={`action-berry-01 ${
-            selectedMarker === "not-selected"
-              ? ""
-              : selectedMarker === "selected"
-              ? "go"
-              : selectedMarker === "selecting"
-              ? "wait"
-              : ""
-          }`}
-          onClick={selectNewLocation}
-          title="Change customer's location."
-        >
-          {selectedMarker === "selected"
-            ? "Change Location"
-            : selectedMarker === "selecting"
-            ? "Pick a location"
-            : "Select New Location"}
-        </Button>
-        {selectedMarker === "selected" && (
+        {selectedMarker === "not-selected" || selectedMarker === "selected" ? (
+          <Button
+            className={`action02 ${
+              selectedMarker === "not-selected"
+                ? ""
+                : selectedMarker === "selected"
+                ? "go"
+                : selectedMarker === "selecting"
+                ? "wait"
+                : ""
+            }`}
+            onClick={selectNewLocation}
+            title="Change customer's location."
+          >
+            {selectedMarker === "not-selected"
+              ? "Change customer's location"
+              : "Confirm location"}
+          </Button>
+        ) : (
+          ""
+        )}
+        {selectedMarker === "selected" || selectedMarker === "selecting" ? (
           <Button
             className={`action02 stop`}
             onClick={cancelLocationSelect}
@@ -240,7 +302,7 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
           >
             Cancel
           </Button>
-        )}
+        ) : null}
       </div>
 
       <div className={cx("map-container")}>
