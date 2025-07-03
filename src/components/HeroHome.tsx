@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind';
 
+import { useNavigate } from 'react-router-dom';
 import styles from './HeroHome.module.scss';
 import SectionTag from './SectionTag';
 
@@ -9,6 +10,7 @@ import Logo from './UI/Icons/Logo';
 const cx = classNames.bind(styles);
 
 function HeroHome() {
+    const navigate = useNavigate();
     return (
         <>
             <section className={cx('hero')}>
@@ -27,7 +29,7 @@ function HeroHome() {
                     </p>
 
                     <div className={cx('cta')}>
-                        <Button className="berry-01">Visit our store</Button>
+                        <Button className="berry-01" onClick={()=>navigate('/store')}>Visit our store</Button>
                         <Button className="berry-01 berry-01 ghost ">
                             Contact us
                         </Button>
