@@ -183,7 +183,7 @@ export default function ChatPanel() {
       };
       scrollToEnd();
     }
-  }, [messages]);
+  }, [user,messages]);
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -246,6 +246,7 @@ export default function ChatPanel() {
                     data.recipient == activeFriend._id;
 
                   if (isSentByActiveFriend) {
+                    
                     return (
                       <div
                         key={index}
