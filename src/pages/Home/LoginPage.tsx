@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./LoginPage.module.scss";
 
 import LoginForm from "../../components/LoginForm/LoginForm";
+import Button from "../../components/UI/Button/Button";
 import { AuthContext } from "../../context/AuthContext";
 import {
   getJwtFromLocalStorage,
@@ -43,10 +44,7 @@ export default function LoginPage() {
       const locallyStoredUser = getUserFromLocalStorage();
 
       if (!(locallyStoredToken && locallyStoredUser)) return;
-      const response = await refreshToken(
-        locallyStoredToken,
-        locallyStoredUser.role
-      );
+      const response = await refreshToken(locallyStoredToken);
 
       const refreshedUser = response.user;
       const refreshedToken = response.token;
@@ -62,9 +60,15 @@ export default function LoginPage() {
 
   return (
     <div className={cx("container")}>
-      <LoginForm toggle={setIsAdmin} isAdmin={isAdmin} />
+      <div className={cx("wrapper")}>
+        <LoginForm toggle={setIsAdmin} isAdmin={isAdmin} />
 
-      <button onClick={handleOAuthLogin}>Login with OAuth</button>
+        {process.env.NODE_ENV !== "production" && (
+          <div className={cx("oauth-container")}>
+            <Button onClick={handleOAuthLogin}>Login with OAuth</Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
