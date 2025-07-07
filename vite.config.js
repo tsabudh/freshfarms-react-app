@@ -17,12 +17,12 @@ const resolve = {
 
 const API_URI =
     process.env.NODE_ENV === 'production'
-        ? 'https://skdapi.tsabudh.com.np'
+        ? 'https://freshfarms-express-server.onrender.com'
         : 'http://localhost:3000';
 
 const WS_URI =
     process.env.NODE_ENV === 'production'
-        ? 'wss://skdapi.tsabudh.com.np'
+        ? 'wss://freshfarms-express-server.onrender.com'
         : 'ws://localhost:3000';
 
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
