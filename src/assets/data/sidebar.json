@@ -19,7 +19,7 @@
         "adminOnly": true,
         "children": [
             {
-                "title": "overview",
+                "title": "List",
                 "path": "/dashboard/customers",
                 "identity": "sub-menu"
             },
@@ -36,7 +36,7 @@
         "identity": "menu",
         "children": [
             {
-                "title": "overview",
+                "title": "List",
                 "path": "/dashboard/products",
                 "identity": "sub-menu"
             },
