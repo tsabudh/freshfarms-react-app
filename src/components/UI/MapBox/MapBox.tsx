@@ -6,6 +6,9 @@ import {
   type LeafletEvent,
   Map,
 } from "leaflet";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import React, {
   useEffect,
   memo,
@@ -56,6 +59,17 @@ function MapBox({ coordinates, setCoordinates }: MapBoxProps) {
         const leafletModule = await import("leaflet");
         L = leafletModule.default ?? leafletModule;
         await import("leaflet/dist/leaflet.css");
+        // Clear internal Leaflet default icon config
+        delete (
+          L.Icon.Default.prototype as unknown as { _getIconUrl?: () => string }
+        )._getIconUrl;
+
+        // Set explicit paths to the images Vite knows
+        L.Icon.Default.mergeOptions({
+          iconRetinaUrl: markerIcon2x,
+          iconUrl: markerIcon,
+          shadowUrl: markerShadow,
+        });
       }
       if (!L || !isMounted) return;
 
