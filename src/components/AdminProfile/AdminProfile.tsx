@@ -115,7 +115,6 @@ function AdminProfile() {
       if (!file) return;
       try {
         // handle file (upload, preview, etc.)
-        console.log("Selected file:", file);
 
         // TODO: CREATE A PREVIEW OF THE IMAGE
         // const previewUrl = URL.createObjectURL(file);
@@ -171,8 +170,7 @@ function AdminProfile() {
         adminDetails[typedKey] = value;
       }
     }
-    console.log(addedPhones);
-    console.log(adminDetails)
+   
     type UpdateAdminResponse = {
       status: "success" | "error";
       data: UserProfile;
@@ -199,7 +197,7 @@ function AdminProfile() {
   return (
     profile && (
       <div className={styles["container"]}>
-        <h3>Profile</h3>
+        <h3 className={cx("h3")}>Profile</h3>
         <div className={styles["profile"]}>
           <div className={styles["profile-edit"]}>
             {editing ? (
@@ -266,7 +264,7 @@ function AdminProfile() {
                     key={item}
                     className={`${editing ? "inherit-text" : "inherit-text"}`}
                     onClick={deleteStoredPhoneTag}
-                    title="Remove Phone"
+                    title={editing ? "Remove Phone" : ""}
                   >
                     {item}
                   </Tag>
@@ -300,11 +298,11 @@ function AdminProfile() {
                         id="phoneToAdd"
                         className={styles["value--edits"]}
                       />
-                      <div className={cx('add-button')}>
-                      <Button onClick={addAdminPhone} className="stylish05">
-                        ADD
-                      </Button>
-                        </div>
+                      <div className={cx("add-button")}>
+                        <Button onClick={addAdminPhone} className="stylish05">
+                          ADD
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
