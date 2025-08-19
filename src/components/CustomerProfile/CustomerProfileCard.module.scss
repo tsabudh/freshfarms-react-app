@@ -16,12 +16,16 @@
   cursor: pointer;
 
   $card: #{&};
-  border: 2px solid vars.$c-gray-100;
+  border: 2px solid vars.$c-gray-200;
 
   &:hover {
-    border-color: vars.$c-gray-200;
+    border-color: vars.$c-gray-400;
     #{$card}-right {
       background-size: 4em 3em;
+
+      & .name {
+        color: vars.$c-gray-500;
+      }
     }
     #{$card}-left {
       & .svg-image {
@@ -95,7 +99,7 @@
       margin-top: 1.6rem;
       padding-left: 2rem;
       min-height: 4rem;
-      color: vars.$c-gray-300;
+      color: vars.$c-gray-400;
     }
 
     & .tab {
@@ -109,7 +113,7 @@
       margin-top: auto;
       & p {
         font-size: 1.2rem;
-        color: vars.$c-gray-200;
+        color: vars.$c-gray-300;
         font-weight: 400;
       }
       & .paid {

@@ -20,8 +20,7 @@
         transition: width 0.2s ease, padding-inline 0.2s ease;
         font-size: 2.5rem;
         padding-inline: 1.5rem;
-        color: vars.$c-berry-400;
-        filter: drop-shadow(0px 0px 1px vars.$c-berry-400);
+        color: vars.$c-gray-500;
 
         &--open {
             padding-inline: 0;
@@ -30,6 +29,9 @@
 
         & svg:hover {
             cursor: pointer;
+            color: vars.$c-blueGray-800;
+        }
+        & svg:active {
             color: vars.$c-berry-bright;
         }
     }
@@ -65,15 +67,19 @@
             margin-inline: 1rem;
             font-family: 'Oswald';
             text-transform: uppercase;
+            color: vars.$c-gray-500;
         }
 
         & .logout {
-            position: relative;
+            position: relative; // This is to position the tooltip
             cursor: pointer;
-            color: vars.$c-gray-300;
+            color: vars.$c-gray-400;
 
             &:hover {
                 color: vars.$color-dark;
+            }
+            &:active {
+                color: vars.$c-berry-400;
             }
             &:hover [class*='tooltip'] {
                 display: block;

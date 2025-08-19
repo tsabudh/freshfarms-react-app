@@ -9,12 +9,12 @@
     // border-radius: 1.8rem;
 
     & h3 {
-        color: vars.$c-gray-300;
+        color: vars.$c-gray-500;
         font-size: 1.8rem;
         margin-block: 0.6rem 1rem;
     }
     & form {
-        background: vars.$c-amber-100;
+        background: vars.$c-white;
 
         border-radius: 1rem;
         margin-block: 0.5rem;
@@ -307,6 +307,7 @@
 .form-container {
     $color-payment: #2ecc71;
     $color-purchase: vars.$c-amber-400;
+    $color-purchase: vars.$c-yellow-400;
 
     .tab-container {
         display: flex;
@@ -347,14 +348,14 @@
         }
     }
     & .purchase-dash {
-        background-color: vars.$c-amber-100;
+        background-color: vars.$c-gray-100;
         border: 2px solid $color-purchase;
         padding-block: 1rem;
         border-radius: 1rem;
         border-top-left-radius: 0;
     }
     & .payment-dash {
-        background-color: vars.$c-amber-100;
+        background-color: vars.$c-gray-100;
         border: 2px solid $color-payment;
         padding-block: 1rem;
         border-radius: 1rem;

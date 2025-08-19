@@ -1,92 +1,106 @@
-@use '/src/scss/abstract/variables' as vars;
-@use '/src/scss/abstract/mixins' as mixins;
+@use "/src/scss/abstract/variables" as vars;
+@use "/src/scss/abstract/mixins" as mixins;
 
 .Transaction {
-    display: flex;
-    flex-basis: 2rem;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-basis: 2rem;
+  justify-content: space-between;
+  align-items: center;
 
-    // border: 1px solid blue;
-    border-radius: 1rem;
-    color: #050505;
-    background: white;
+  // border: 1px solid blue;
+  border-radius: 1rem;
+  color: #050505;
+  background: white;
 
-    padding: 1rem;
-    margin: 1rem;
+  padding: 1rem;
+  margin: 1rem;
 
+  &:hover {
+    background: vars.$c-gray-50;
+  }
+
+  &.payment {
+    background: rgb(190, 255, 190);
     &:hover {
-        background: vars.$c-gray-50;
+      background: #{vars.$c-amber-200}50;
     }
+  }
+  & .date-and-time {
+    max-width: 13.5rem;
+    flex-basis: 13.5rem;
+    @include mixins.respond("phone") {
+        flex-shrink: 0;
+        flex-basis: 11.5rem;
+        color: vars.$c-gray-500;
+      }
+      & .time {
+        font-size: 2.5rem;
+        font-weight: 600;
 
-    &.payment {
-        background: rgb(190, 255, 190);
-        &:hover {
-            background: #{vars.$c-amber-200}50;
-        }
+      @include mixins.fluidFont(1.8rem, 2.5rem);
     }
-    & .date-and-time {
-        max-width: 13.5rem;
-        flex-basis: 13.5rem;
-        & .time {
-            font-size: 2.5rem;
-            font-weight: 600;
-
-            @include mixins.fluidFont(1.8rem, 2.5rem);
-        }
-        & .period {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        & .date {
-        }
+    & .period {
+      font-size: 1.1rem;
+      font-weight: 600;
     }
-
-    & .transaction-details {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-basis: 40rem;
-        flex-grow: 2;
-        margin-inline: 3rem;
-        & .customer {
-            padding: 0.5rem;
-            text-transform: capitalize;
-            // min-width: 16rem;
-            @include mixins.fluid('min-width', 10rem, 16rem);
-        }
-        & .product-list {
-            display: flex;
-            list-style-type: none;
-            flex-wrap: wrap;
-            @include mixins.respond('phone') {
-                display: none;
-            }
-
-            & li {
-                background: #ecf8f9;
-                // text-decoration: underline;
-                text-underline-position: below;
-                border-radius: 1rem;
-                padding: 0.1rem 0.7rem;
-                margin: 0.3rem;
-                white-space: nowrap;
-                text-transform: uppercase;
-                font-size: 1rem;
-                border: 1px solid rgba(179, 131, 223, 0.767);
-            }
-        }
+    & .date {
+      @include mixins.respond("phone") {
+        white-space: nowrap;
+        color: vars.$c-gray-500;
+        font-size: 1.4rem;
+      }
     }
+  }
 
-    & .cost {
-        font-weight: 700;
-        margin-inline: 0.3rem;
-
-        &.paid {
-            color: green;
-        }
-        &.unpaid {
-            color: orange;
-        }
+  & .transaction-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-basis: 40rem;
+    flex-grow: 2;
+    margin-inline: 3rem;
+     @include mixins.respond("tab-port") {
+        margin-inline: 1rem;
     }
+    & .customer {
+      padding: 0.5rem;
+      text-transform: capitalize;
+      // min-width: 16rem;
+      @include mixins.fluid("min-width", 10rem, 16rem);
+      text-overflow: ellipsis;
+    }
+    & .product-list {
+      display: flex;
+      list-style-type: none;
+      flex-wrap: wrap;
+      @include mixins.respond("phone") {
+        display: none;
+      }
+
+      & li {
+        background: #ecf8f9;
+        // text-decoration: underline;
+        text-underline-position: below;
+        border-radius: 1rem;
+        padding: 0.1rem 0.7rem;
+        margin: 0.3rem;
+        white-space: nowrap;
+        text-transform: uppercase;
+        font-size: 1rem;
+        border: 1px solid rgba(179, 131, 223, 0.767);
+      }
+    }
+  }
+
+  & .cost {
+    font-weight: 700;
+    margin-inline: 0.3rem;
+
+    &.paid {
+      color: green;
+    }
+    &.unpaid {
+      color: orange;
+    }
+  }
 }

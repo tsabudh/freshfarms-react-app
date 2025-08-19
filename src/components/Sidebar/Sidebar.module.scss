@@ -18,7 +18,7 @@
     bottom: 0;
 
     background: vars.$c-gray-50;
-
+    box-shadow: 0px 1px 5px #{vars.$c-gray-300}50;
     transition: width 0.5s ease, transform 0.5s ease;
 
     @include mixins.respond(tab-port) {
@@ -40,9 +40,16 @@
         position: absolute;
         top: 0.5rem;
         right: 0.3rem;
-        color: vars.$c-gray-300;
+        color: vars.$c-gray-400;
         font-size: 2.5rem;
         cursor: pointer;
+
+        &:hover {
+            color: vars.$c-gray-500;
+        }
+        &:active {
+            color: vars.$c-berry-400;
+        }
     }
 
     & .logo {
@@ -59,7 +66,7 @@
 
         & svg {
             font-size: 5rem;
-            color: vars.$c-white;
+            color: vars.$c-gray-300;
             font-weight: 800;
         }
     }

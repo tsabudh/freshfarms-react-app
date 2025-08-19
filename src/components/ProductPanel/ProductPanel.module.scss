@@ -1,7 +1,15 @@
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
+@use "/src/scss/abstract/variables" as vars;
 
-    padding: 2rem;
+.container{
+    & .h3{
+        color: vars.$c-gray-400;
+    }
+    & .products-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        
+        padding: 2rem;
+    }
+    
 }

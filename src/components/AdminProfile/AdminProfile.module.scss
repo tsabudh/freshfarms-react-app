@@ -4,6 +4,10 @@
 .container {
     
     color: vars.$color-dark;
+
+    & .h3{
+        color: vars.$c-gray-400;
+    }
     & .profile {
         font-size: inherit;
         display: flex;

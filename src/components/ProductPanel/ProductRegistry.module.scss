@@ -1,4 +1,9 @@
+@use "/src/scss/abstract/variables" as vars;
+
 .container {
+    & .h3{
+        color: vars.$c-gray-400;
+    }
     & .form-container {
         border-radius: 1rem;
         border: 1px solid #2ecc71;

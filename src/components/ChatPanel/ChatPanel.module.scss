@@ -36,6 +36,10 @@
         justify-content: space-between;
         align-items: flex-start;
 
+        & .h3{
+          color: vars.$c-gray-400;
+        }
+
         & .friends-menu {
           cursor: pointer;
           padding-top: 0.6em;
