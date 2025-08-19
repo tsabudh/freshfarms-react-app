@@ -3,7 +3,6 @@ import API_ROUTE from "../assets/globals/baseRoute";
 
 function ProfilePicture({ userId, token }: { userId: string; token: string }) {
   const [imgUrl, setImgUrl] = useState<string | null>(null);
-  console.log(userId,token)
   useEffect(() => {
     const fetchImage = async () => {
       try {
