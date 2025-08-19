@@ -148,7 +148,7 @@ function ProductRegistry() {
 
   return (
     <div className={cx("container")}>
-      <h3>Add a new product</h3>
+      <h3 className={cx("h3")}>Add a new product</h3>
       <div className={cx("form-container")}>
         <form
           id="createProductForm"

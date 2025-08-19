@@ -143,7 +143,7 @@ function CustomerRegistry() {
 
   return (
     <div className={cx("container")}>
-      <h3>Add a new customer</h3>
+      <h3 className={cx("h3")}>Add a new customer</h3>
       <div className={cx("form-container")}>
         <form action="" id="createCustomerForm" ref={createCustomerFormRef}>
           <InputGroup

@@ -27,9 +27,9 @@ function ProductPanel() {
   }, [jwtToken]);
 
   return (
-    <>
-      <h3>Our Products</h3>
-      <div className={cx("container")}>
+    <div className={cx("container")}>
+      <h3 className={cx('h3')}>Our Products</h3>
+      <div className={cx("products-container")}>
         {products.map((item) => {
           type ProductKey = keyof typeof productImages;
           const imageList = productImages[item.name as ProductKey] || [];
@@ -39,7 +39,7 @@ function ProductPanel() {
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
 
