@@ -1,32 +1,46 @@
-@use '/src/scss/abstract/variables' as vars;
+@use "/src/scss/abstract/variables" as vars;
 
 footer {
-    padding: 5rem 2.4rem;
-    background-color: vars.$c-amber-200;
+  padding: 5rem 2.4rem;
+  background-color: vars.$c-gray-400;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+
+  & .brand {
     display: flex;
-    flex-direction: column;
-    gap: 4rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
 
-    & .brand {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 1rem;
-
-        & svg {
-            font-size: 5rem;
-        }
-        & .title {
-            & .h3 {
-                font-size: 2.4rem;
-                color: vars.$c-amber-bright;
-                font-weight: 300;
-            }
-        }
+    & svg {
+      font-size: 5rem;
     }
-
-    & .copyright {
-        font-size: 1.6rem;
-        color: vars.$c-gray-200;
+    & .title {
+      & .h3 {
+        font-size: 2.4rem;
+        color: vars.$c-white;
+        font-weight: 500;
+        margin-bottom: 0.4rem;
+      }
+      & p {
+        color: vars.$c-white;
+        letter-spacing: 0.1ch;
+        padding-inline: 1rem;
+      }
     }
+  }
+
+  & .copyright {
+    font-size: 1.6rem;
+    color: vars.$c-gray-100;
+
+    & a {
+      color: vars.$c-lightBlue-900;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }

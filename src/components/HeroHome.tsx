@@ -17,9 +17,9 @@ function HeroHome() {
                 <div className={cx('watermark')}>
                     <Logo cx={cx} />
                 </div>
-                <SectionTag className={''} text={'Freshfarms'} />
+                {/* <SectionTag className={''} text={'Freshfarms'} /> */}
                 <div className={cx('content')}>
-                    <h1 className={cx('h1')}>THE BEST DAIRY IN TOWN</h1>
+                    <h1 className={cx('h1')}>THE BEST DAIRY <span>IN TOWN</span></h1>
                     <p className={cx("description")}>
                         Freshfarms has been providing fresh dairy
                         products to the town people since its opening in 2002.

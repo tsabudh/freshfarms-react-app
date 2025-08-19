@@ -19,7 +19,8 @@
     min-height: 2em;
     max-width: 20rem;
     // width: 30%;
-    background-color: vars.$c-brown-400;
+    background-color: vars.$c-gray-200;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
     @include mixins.respond(tab-port) {
         top: 0;
@@ -73,7 +74,7 @@
                 font-weight: 300;
                 letter-spacing: 1px;
                 font-size: 1.8rem;
-                color: white;
+                color: vars.$c-gray-500;
                 // color: vars.$color-green;
                 // border-bottom: 2px solid vars.$color-green;
                 padding: 0.5rem 0.5rem;
@@ -87,7 +88,7 @@
                     font-size: 1.6rem;
                 }
                 &:hover {
-                    color: vars.$c-berry-bright;
+                    color: vars.$c-orange-600;
                 }
             }
         }

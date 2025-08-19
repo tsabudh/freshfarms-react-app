@@ -1,69 +1,79 @@
-@use '/src/scss/abstract/variables' as vars;
+@use "/src/scss/abstract/mixins" as mixins;
+@use "/src/scss/abstract/variables" as vars;
 
 .about {
-    position: relative;
-    background-color: vars.$c-white;
-    padding: 15rem 2.4rem;
+  position: relative;
+  background-color: vars.$c-white;
+  padding: 15rem 2.4rem;
 
-    & .content {
-        display: flex;
+  & .content {
+    display: flex;
+    flex-direction: column;
+    gap: 10rem;
+
+    & .row {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+
+      @include mixins.respond("tab-port") {
         flex-direction: column;
-        gap: 10rem;
+      }
 
-        & .row {
-            display: flex;
-            flex-direction: row;
-            gap: 2rem;
-
-            &.first {
-                & .col.first {
-                    flex-basis: 50%;
-                    & .h2 {
-                        font-size: 4rem;
-                        color: vars.$c-gray-200;
-                        font-weight: 300;
-                        line-height: 98%;
-                        font-family: Inter;
-                        text-align: left;
-                        margin-block: 3rem;
-                    }
-                }
-
-                & .col.second {
-                    flex-basis: 50%;
-                    & figure {
-                        & img {
-                            background-color: vars.$c-amber-100;
-                            max-height: 20rem;
-                            object-fit: contain;
-                        }
-                    }
-                }
-            }
-
-            &.second {
-                & .col {
-                    &.first {
-                        flex-basis: 50%;
-                        & figure {
-                            & img {
-                                background-color: vars.$c-amber-100;
-                                max-height: 20rem;
-                                object-fit: contain;
-                            }
-                        }
-                    }
-
-                    &.second {
-                        flex-basis: 50%;
-                        color: vars.$c-gray-200;
-
-                        & p {
-                            margin-bottom: 2rem;
-                        }
-                    }
-                }
-            }
+      &.first {
+        & .col.first {
+          flex-basis: 50%;
+          & .h2 {
+            font-size: 4rem;
+            color: vars.$c-gray-400;
+            font-weight: 300;
+            line-height: 98%;
+            font-family: Inter;
+            text-align: left;
+            margin-block: 3rem;
+          }
         }
+
+        & .col.second {
+          flex-basis: 50%;
+          & figure {
+            & img {
+              background-color: vars.$c-amber-100;
+              max-height: 28rem;
+              object-fit: contain;
+              border-radius: 0.4rem;
+            }
+          }
+        }
+      }
+
+      &.second {
+        & .col {
+          &.first {
+            flex-basis: 50%;
+
+            @include mixins.respond("tab-port") {
+              order: 2;
+            }
+            & figure {
+              & img {
+                background-color: vars.$c-amber-100;
+                max-height: 28rem;
+                object-fit: contain;
+                border-radius: 0.4rem;
+              }
+            }
+          }
+
+          &.second {
+            flex-basis: 50%;
+            color: vars.$c-gray-400;
+            & p {
+              margin-bottom: 2rem;
+            }
+          }
+        }
+      }
     }
+  }
 }

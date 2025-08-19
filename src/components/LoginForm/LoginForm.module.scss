@@ -1,184 +1,184 @@
-@use '/src/scss/abstract/mixins.scss' as mixins;
-@use '/src/scss/abstract/variables.scss' as vars;
+@use "/src/scss/abstract/mixins.scss" as mixins;
+@use "/src/scss/abstract/variables.scss" as vars;
 
 .login-container {
-    position: relative;
-    // width: 45%;
-    flex-basis: 45%;
-    // flex-shrink: 0;
-    margin-inline: 0.5rem;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
+  position: relative;
+  // width: 45%;
+  flex-basis: 45%;
+  // flex-shrink: 0;
+  margin-inline: 0.5rem;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s ease;
+  @include mixins.respond("tab-port") {
     justify-content: center;
+    margin: 1rem 0;
+
+    width: 100%;
+    order: 2;
+  }
+  &--customer {
+  }
+  &--admin {
+  }
+
+  & .form-container {
+    position: relative;
+
+    flex-basis: 50rem;
+    max-width: 80rem;
+    margin: 0 auto;
+    background: rgb(255, 255, 255);
+    border: 2px solid rgb(205, 216, 235);
+    border-radius: 1.5rem;
+    color: black;
+    padding: 1rem 1.5rem;
     transition: transform 0.5s ease;
-    @include mixins.respond('tab-port') {
-        justify-content: center;
-        margin: 1rem 0;
 
-        width: 100%;
-        order: 2;
+    & .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      & .inactive {
+        position: absolute;
+        right: 0rem;
+
+        padding: 1rem 1.6rem;
+        background-color: vars.$c-berry-400;
+        color: vars.$c-white;
+        border-top-left-radius: 2rem;
+        border-bottom-left-radius: 2rem;
+        cursor: pointer;
+
+        font-weight: 300;
+        font-size: 1.4rem;
+
+        &.admin {
+          background-color: vars.$c-amber-400;
+          color: vars.$c-white;
+
+          &:active {
+            color: vars.$c-white;
+          }
+        }
+
+        &.customer {
+          &:active {
+            color: vars.$c-gray-300;
+          }
+        }
+      }
+      & .active {
+        color: vars.$c-berry-400;
+
+        padding: 1rem 1.6rem;
+        font-weight: 400;
+        font-size: 2.8rem;
+
+        &.admin {
+          color: vars.$c-amber-400;
+        }
+      }
     }
-    &--customer {
+
+    & .advanced-group {
+      display: flex;
+      justify-content: space-evenly;
     }
-    &--admin {
+    & .input-group {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-bottom: 1px solid vars.$c-berry-200;
+      margin: 2rem 2rem;
+
+      &--check {
+        display: block;
+        margin-bottom: 0;
+        padding-bottom: 0.5rem;
+      }
+      &--tab {
+        flex-direction: column;
+        & .input-field {
+          flex-basis: 15rem;
+        }
+      }
+      & .input-label {
+        flex: 1;
+        color: vars.$c-gray-300;
+
+        &--check {
+          font-size: 1.4rem;
+          cursor: pointer;
+        }
+      }
+
+      & .input-field {
+        flex: 1;
+        padding: 0.5rem 1rem;
+        font-size: 1.5rem;
+        border: 1px solid vars.$c-gray-100;
+        border-radius: 1rem;
+        margin-bottom: 0.4rem;
+        outline: none;
+
+        &:focus-visible {
+          border-color: vars.$c-gray-200;
+        }
+        &::placeholder {
+          font-size: 1.3rem;
+        }
+        &:disabled {
+          outline: none;
+          border: 1px solid rgba(233, 101, 101, 0.884);
+        }
+
+        &--check {
+          margin-inline: 0.5rem;
+          font-size: 1.4rem;
+          width: 1rem;
+          cursor: pointer;
+        }
+        &--due {
+          border: 1px solid rgba(233, 101, 101, 0.884);
+          cursor: not-allowed;
+          &:focus {
+            outline: none;
+          }
+        }
+      }
     }
+    & .action {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-inline: 2rem;
 
-    & .form-container {
-        position: relative;
-
-        flex-basis: 50rem;
-        max-width: 80rem;
-        margin: 0 auto;
-        background: rgb(255, 255, 255);
-        border: 2px solid rgb(205, 216, 235);
-        border-radius: 1.5rem;
-        color: black;
-        padding: 1rem 1.5rem;
-        transition: transform 0.5s ease;
-
-        & .header {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-
-            & .inactive {
-                position: absolute;
-                right: 0rem;
-
-                padding: 1rem 1.6rem;
-                background-color: vars.$c-berry-400;
-                color: vars.$c-amber-100;
-                border-top-left-radius: 2rem;
-                border-bottom-left-radius: 2rem;
-                cursor: pointer;
-
-                font-weight: 300;
-                font-size: 1.4rem;
-
-                &.admin {
-                    background-color: vars.$c-amber-400;
-                    color: vars.$c-gray-300;
-
-                    &:active {
-                        color: vars.$c-white;
-                    }
-                }
-
-                &.customer {
-                    &:active {
-                        color: vars.$c-gray-300;
-                    }
-                }
-            }
-            & .active {
-                color: vars.$c-berry-400;
-
-                padding: 1rem 1.6rem;
-                font-weight: 700;
-                font-size: 2rem;
-
-                &.admin {
-                    color: vars.$c-amber-400;
-                }
-            }
-        }
-
-        & .advanced-group {
-            display: flex;
-            justify-content: space-evenly;
-        }
-        & .input-group {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            border-bottom: 1px solid vars.$c-berry-200;
-            margin: 2rem 2rem;
-
-            &--check {
-                display: block;
-                margin-bottom: 0;
-                padding-bottom: 0.5rem;
-            }
-            &--tab {
-                flex-direction: column;
-                & .input-field {
-                    flex-basis: 15rem;
-                }
-            }
-            & .input-label {
-                flex: 1;
-                color: vars.$c-gray-300;
-
-                &--check {
-                    font-size: 1.4rem;
-                    cursor: pointer;
-                }
-            }
-
-            & .input-field {
-                flex: 1;
-                padding: 0.5rem 1rem;
-                font-size: 1.5rem;
-                border: 1px solid vars.$c-gray-100;
-                border-radius: 1rem;
-                margin-bottom: 0.4rem;
-                outline: none;
-
-                &:focus-visible {
-                    border-color: vars.$c-gray-200;
-                }
-                &::placeholder {
-                    font-size: 1.3rem;
-                }
-                &:disabled {
-                    outline: none;
-                    border: 1px solid rgba(233, 101, 101, 0.884);
-                }
-
-                &--check {
-                    margin-inline: 0.5rem;
-                    font-size: 1.4rem;
-                    width: 1rem;
-                    cursor: pointer;
-                }
-                &--due {
-                    border: 1px solid rgba(233, 101, 101, 0.884);
-                    cursor: not-allowed;
-                    &:focus {
-                        outline: none;
-                    }
-                }
-            }
-        }
-        & .action {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            margin-inline: 2rem;
-
-            & button {
-                // margin-top: 2rem;
-            }
-            & svg {
-                // vertical-align: bottom;
-                color: rgb(52, 221, 137);
-            }
-        }
-        & .error-message {
-            margin-block: 1rem;
-            font-size: 1.4rem;
-            word-break: break-word;
-            text-overflow: ellipsis;
-            max-height: 5em;
-            overflow: auto;
-            border: 1px solid red;
-            border-radius: 1rem;
-            padding: 0.5rem;
-        }
+      & button {
+        // margin-top: 2rem;
+      }
+      & svg {
+        // vertical-align: bottom;
+        color: rgb(52, 221, 137);
+      }
     }
+    & .error-message {
+      margin-block: 1rem;
+      font-size: 1.4rem;
+      word-break: break-word;
+      text-overflow: ellipsis;
+      max-height: 5em;
+      overflow: auto;
+      border: 1px solid red;
+      border-radius: 1rem;
+      padding: 0.5rem;
+    }
+  }
 }
