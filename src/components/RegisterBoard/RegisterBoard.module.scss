@@ -78,7 +78,7 @@
         border-bottom: 1px solid whitesmoke;
 
         &-item {
-            background: vars.$c-amber-200;
+            background: vars.$c-gray-200;
 
             color: black;
             letter-spacing: 0.5px;
@@ -94,7 +94,7 @@
             min-height: 1rem;
 
             &--head {
-                background: vars.$c-gray-300;
+                background: vars.$c-gray-400;
                 color: white;
             }
             &-piece {
@@ -137,17 +137,16 @@
                     text-align: center;
                 }
                 &-delete {
-                    color: white;
                     font-size: 1.5em;
                     vertical-align: sub;
                     cursor: pointer;
-                    color: vars.$c-gray-200;
+                    color: vars.$c-rose-700;
 
                     &:hover {
-                        color: vars.$c-berry-500;
+                    color: vars.$c-rose-500;
                     }
                     &:active {
-                        color: vars.$c-berry-bright;
+                    color: vars.$c-rose-800;
                     }
                 }
             }
@@ -164,14 +163,14 @@
             & .label {
                 display: inline-block;
                 padding: 1rem 1.2rem;
-                color: vars.$c-gray-200;
+                color: vars.$color-gray-400;
                 font-size: 1.4rem;
             }
 
             & .price {
                 display: inline-block;
                 padding: 1rem 1.2rem;
-                color: vars.$c-gray-300;
+                color: vars.$color-gray-400;
                 font-weight: 500;
             }
         }

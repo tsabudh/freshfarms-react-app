@@ -44,9 +44,9 @@
           cursor: pointer;
           padding-top: 0.6em;
 
-          color: vars.$c-gray-200;
+          color: vars.$c-gray-400;
           &:hover {
-            color: vars.$c-gray-300;
+            color: vars.$c-gray-400;
           }
 
           &:active {
@@ -118,7 +118,7 @@
       }
       & .message-window {
         flex-grow: 3;
-        background-color: whitesmoke;
+        background-color: white;
         overflow-y: scroll;
         height: 100%;
         padding: 0.4rem;
@@ -141,7 +141,7 @@
 
             &.sent {
               background-color: vars.$c-gray-100;
-              color: vars.$c-gray-400;
+              color: vars.$color-gray-400;
               align-self: flex-end;
               border-bottom-right-radius: 1.6rem;
 
@@ -248,6 +248,7 @@
       height: 2px;
       background-color: vars.$c-white;
       margin-block: 0.6rem;
+      
     }
     & .friend {
       background-color: transparent;
@@ -257,6 +258,7 @@
       border-radius: 0.6rem;
       border: 1px solid transparent;
       text-transform: capitalize;
+      color: vars.$color-gray-400;
 
       &:hover {
         background-color: vars.$c-amber-100;

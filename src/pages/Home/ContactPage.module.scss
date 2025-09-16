@@ -13,7 +13,7 @@
         & h2,
         h3 {
             font-weight: 400;
-            color: vars.$c-berry-400;
+            color: vars.$c-gray-400;
             margin-bottom: 1rem;
         }
 
@@ -38,12 +38,13 @@
 
                     & .field {
                         flex-basis: 20%;
-                        color: vars.$c-gray-300;
+                        color: vars.$c-gray-400;
+                        font-weight: 500;
                     }
 
                     & .value {
                         flex-basis: 50%;
-                        color: vars.$c-sky-400;
+                        color: vars.$c-blueGray-600;
                     }
                 }
             }
